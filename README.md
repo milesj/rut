@@ -1,2 +1,3 @@
-# rut
-⚛️ React unit testing made easy.
+# ⚛️ Rut
+
+React unit testing made easy. DOM not included.
