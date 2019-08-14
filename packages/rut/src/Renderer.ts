@@ -21,7 +21,7 @@ export default class RutRenderer<Props> {
     return new RutNode(this.renderer.root);
   }
 
-  toJSON(): ReactTestRendererJSON {
+  toJSON(): ReactTestRendererJSON | null {
     return this.renderer.toJSON();
   }
 
@@ -40,17 +40,21 @@ export default class RutRenderer<Props> {
   }
 
   async unmount() {
-    await act(() => {
-      this.renderer.unmount();
+    await act(async () => {
+      await this.renderer.unmount();
     });
   }
 
   async update(props?: Partial<Props>) {
-    await act(() => {
+    await act(async () => {
       if (props) {
-        this.renderer.update(React.cloneElement(this.element, props));
+        await this.renderer.update(React.cloneElement(this.element, props));
       } else {
-        this.renderer.update(this.element);
+        const inst = this.renderer.getInstance() as React.Component | null;
+
+        if (inst) {
+          await inst.forceUpdate();
+        }
       }
     });
   }

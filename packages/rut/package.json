@@ -25,10 +25,8 @@
     "react": "^16.9.0"
   },
   "dependencies": {
+    "@types/react": "*",
+    "@types/react-test-renderer": "*",
     "react-test-renderer": "^16.9.0"
-  },
-  "devDependencies": {
-    "@types/react": "^16.9.1",
-    "@types/react-test-renderer": "^16.9.0"
   }
 }

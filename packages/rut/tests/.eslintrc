@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "react/no-unsafe": "off",
+    "react/prefer-stateless-function": "off"
+  }
+}
