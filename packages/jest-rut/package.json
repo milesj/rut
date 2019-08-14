@@ -1,0 +1,32 @@
+{
+  "name": "jest-rut",
+  "version": "0.0.0",
+  "description": "Custom Jest matchers for Rut (React unit testing).",
+  "keywords": [
+    "react",
+    "test",
+    "unit",
+    "integration",
+    "suite",
+    "render",
+    "jest"
+  ],
+  "repository": "https://github.com/milesj/rut/tree/master/packages/jest-rut",
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "peerDependencies": {
+    "react": "^16.0.0",
+    "rut": "^0.0.0"
+  },
+  "dependencies": {
+    "@types/jest": "*"
+  }
+}
