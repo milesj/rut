@@ -1,0 +1,34 @@
+{
+  "name": "rut",
+  "version": "0.0.0",
+  "description": "React unit testing made easy. DOM not included.",
+  "keywords": [
+    "react",
+    "test",
+    "unit",
+    "integration",
+    "suite",
+    "render"
+  ],
+  "repository": "https://github.com/milesj/rut/tree/master/packages/rut",
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "peerDependencies": {
+    "react": "^16.9.0"
+  },
+  "dependencies": {
+    "react-test-renderer": "^16.9.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.1",
+    "@types/react-test-renderer": "^16.9.0"
+  }
+}

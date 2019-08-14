@@ -1,0 +1,38 @@
+{
+  "name": "rut-root",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "yarn run type",
+    "coverage": "yarn run jest --coverage",
+    "eslint": "beemo eslint",
+    "jest": "beemo jest",
+    "prettier": "beemo prettier",
+    "release": "lerna publish",
+    "type": "beemo typescript --build --reference-workspaces",
+    "prerelease": "yarn test && yarn run build",
+    "pretest": "yarn run type",
+    "test": "yarn run jest",
+    "posttest": "yarn run eslint"
+  },
+  "devDependencies": {
+    "@milesj/build-tools": "^0.52.1",
+    "lerna": "^3.16.4"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "beemo": {
+    "module": "@milesj/build-tools",
+    "drivers": [
+      "babel",
+      "eslint",
+      "jest",
+      "prettier",
+      "typescript"
+    ],
+    "settings": {
+      "node": true
+    }
+  }
+}
