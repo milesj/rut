@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Node from '../src/Node';
+import Element from '../src/Element';
 import render from '../src/render';
 
 describe('Renderer', () => {
@@ -14,25 +14,25 @@ describe('Renderer', () => {
   }
 
   describe('root()', () => {
-    it('returns a node for a host component', () => {
-      const node = render(<main />).root();
+    it('returns an element for a host component', () => {
+      const el = render(<main />).root();
 
-      expect(node).toBeInstanceOf(Node);
-      expect(node.type()).toBe('main');
+      expect(el).toBeInstanceOf(Element);
+      expect(el.type()).toBe('main');
     });
 
-    it('returns a node for a class component', () => {
-      const node = render(<ClassComp />).root();
+    it('returns an element for a class component', () => {
+      const el = render(<ClassComp />).root();
 
-      expect(node).toBeInstanceOf(Node);
-      expect(node.type()).toBe(ClassComp);
+      expect(el).toBeInstanceOf(Element);
+      expect(el.type()).toBe(ClassComp);
     });
 
-    it('returns a node for a function component', () => {
-      const node = render(<FuncComp />).root();
+    it('returns an element for a function component', () => {
+      const el = render(<FuncComp />).root();
 
-      expect(node).toBeInstanceOf(Node);
-      expect(node.type()).toBe(FuncComp);
+      expect(el).toBeInstanceOf(Element);
+      expect(el.type()).toBe(FuncComp);
     });
   });
 

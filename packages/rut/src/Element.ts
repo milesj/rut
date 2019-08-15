@@ -1,20 +1,20 @@
 import { ReactTestInstance } from 'react-test-renderer';
 import { Args, UnknownProps } from './types';
 
-export default class RutNode<Props = UnknownProps> {
+export default class RutElement<Props = UnknownProps> {
   private node: ReactTestInstance;
 
   constructor(node: ReactTestInstance) {
     this.node = node;
   }
 
-  children(): (string | RutNode)[] {
+  children(): (string | RutElement)[] {
     return this.node.children.map(child => {
       if (typeof child === 'string') {
         return child;
       }
 
-      return new RutNode(child);
+      return new RutElement(child);
     });
   }
 
@@ -30,8 +30,8 @@ export default class RutNode<Props = UnknownProps> {
     return prop(...args);
   }
 
-  find<P = UnknownProps>(type: React.ReactType<P>): RutNode<P>[] {
-    return this.node.findAllByType(type).map(node => new RutNode(node));
+  find<P = UnknownProps>(type: React.ReactType<P>): RutElement<P>[] {
+    return this.node.findAllByType(type).map(node => new RutElement(node));
   }
 
   prop<K extends keyof Props>(name: K): Props[K] | undefined {

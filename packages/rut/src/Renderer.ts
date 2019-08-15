@@ -1,6 +1,6 @@
 import React from 'react';
 import { act, create, ReactTestRenderer, ReactTestRendererJSON } from 'react-test-renderer';
-import RutNode from './Node';
+import RutElement from './Element';
 import { UnknownProps } from './types';
 
 export default class RutRenderer<Props> {
@@ -13,12 +13,12 @@ export default class RutRenderer<Props> {
     this.renderer = create(element);
   }
 
-  find<P = UnknownProps>(type: React.ReactType<P>): RutNode<P>[] {
-    return this.renderer.root.findAllByType(type).map(node => new RutNode(node));
+  find<P = UnknownProps>(type: React.ReactType<P>): RutElement<P>[] {
+    return this.renderer.root.findAllByType(type).map(node => new RutElement(node));
   }
 
-  root(): RutNode<Props> {
-    return new RutNode(this.renderer.root);
+  root(): RutElement<Props> {
+    return new RutElement(this.renderer.root);
   }
 
   toJSON(): ReactTestRendererJSON | null {

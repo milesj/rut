@@ -1,9 +1,8 @@
-import jest from 'jest';
-import isRutNode from './isRutNode';
+import isRutElement from './isRutElement';
 
 const toBeElementType: jest.CustomMatcher = (received, type) => {
-  if (!isRutNode(received)) {
-    throw new Error('toBeElementType: Expected a Rut node.');
+  if (!isRutElement(received)) {
+    throw new Error('toBeElementType: Expected a `RutElement`.');
   }
 
   if (received.type() === type) {
