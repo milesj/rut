@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+
 import React from 'react';
 
 export type Args<T> = T extends (...args: unknown[]) => unknown ? Parameters<T> : unknown[];
@@ -27,8 +29,25 @@ export interface FiberNode {
   type: React.ElementType;
 }
 
+export interface MatchResult {
+  context?: string;
+  message: string;
+  notMessage: string;
+  passed: boolean;
+}
+
 declare module 'react-test-renderer' {
   interface ReactTestInstance {
     _fiber: FiberNode;
+  }
+}
+
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeElementType(type: React.ReactType): R;
+      toContainNode(node: NonNullable<React.ReactNode>): R;
+      toRenderChildren(): R;
+    }
   }
 }

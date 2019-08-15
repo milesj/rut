@@ -1,11 +1,10 @@
 import React from 'react';
 import { act, create, ReactTestRenderer, ReactTestRendererJSON } from 'react-test-renderer';
-import RutElement from './Element';
+import Element from './Element';
 import Queryable from './Queryable';
-import { getTypeName } from './helpers';
 import { UnknownProps } from './types';
 
-export default class RutRenderer<Props = UnknownProps> extends Queryable {
+export default class Renderer<Props = UnknownProps> extends Queryable {
   private element: React.ReactElement<Props>;
 
   private renderer: ReactTestRenderer;
@@ -17,16 +16,12 @@ export default class RutRenderer<Props = UnknownProps> extends Queryable {
     this.renderer = create(element);
   }
 
-  root(): RutElement<Props> {
-    return new RutElement(this.renderer.root);
+  root(): Element<Props> {
+    return new Element(this.renderer.root);
   }
 
   toJSON(): ReactTestRendererJSON | null {
     return this.renderer.toJSON();
-  }
-
-  toString(): string {
-    return getTypeName(this.renderer.root.type);
   }
 
   async unmount() {
@@ -41,7 +36,7 @@ export default class RutRenderer<Props = UnknownProps> extends Queryable {
     });
   }
 
-  protected node() {
+  protected testInstance() {
     return this.renderer.root;
   }
 }

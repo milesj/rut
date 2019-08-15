@@ -2,7 +2,7 @@ import { ReactTestInstance } from 'react-test-renderer';
 import { Args, UnknownProps } from './types';
 import Queryable from './Queryable';
 
-export default class RutElement<Props = UnknownProps> extends Queryable {
+export default class Element<Props = UnknownProps> extends Queryable {
   private element: ReactTestInstance;
 
   constructor(element: ReactTestInstance) {
@@ -11,13 +11,13 @@ export default class RutElement<Props = UnknownProps> extends Queryable {
     this.element = element;
   }
 
-  children(): (string | RutElement)[] {
-    return this.node().children.map(child => {
+  children(): (string | Element)[] {
+    return this.testInstance().children.map(child => {
       if (typeof child === 'string') {
         return child;
       }
 
-      return new RutElement(child);
+      return new Element(child);
     });
   }
 
@@ -34,18 +34,18 @@ export default class RutElement<Props = UnknownProps> extends Queryable {
   }
 
   prop<K extends keyof Props>(name: K): Props[K] | undefined {
-    return this.node().props[name as string];
+    return this.testInstance().props[name as string];
   }
 
   props(): Props {
-    return this.node().props as Props;
+    return this.testInstance().props as Props;
   }
 
   type(): React.ElementType {
-    return this.node().type;
+    return this.testInstance().type;
   }
 
-  protected node() {
+  protected testInstance() {
     return this.element;
   }
 }

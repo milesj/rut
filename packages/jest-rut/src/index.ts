@@ -3,12 +3,22 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import toBeElementType from './toBeElementType';
-import toContainNode from './toContainNode';
-import toRenderChildren from './toRenderChildren';
+import { matchers } from 'rut';
 
-const matchers = { toBeElementType, toContainNode, toRenderChildren };
+const jestMatchers: jest.ExpectExtendMap = {};
 
-expect.extend(matchers);
+Object.entries(matchers).forEach(([name, matcher]) => {
+  jestMatchers[name] = function jestMatcher(this: jest.MatcherUtils, ...args: unknown[]) {
+    const result = (matcher as Function).call(this, ...args);
+    const message = this.isNot ? result.notMessage : result.message;
 
-export default matchers;
+    return {
+      message: () => message,
+      pass: result.passed,
+    };
+  };
+});
+
+expect.extend(jestMatchers);
+
+export default jestMatchers;

@@ -2,18 +2,6 @@ import React, { useEffect, useLayoutEffect } from 'react';
 import Element from '../src/Element';
 import render from '../src/render';
 
-/* eslint-disable @typescript-eslint/no-namespace, no-redeclare */
-
-declare global {
-  namespace jest {
-    interface Matchers<R> {
-      toBeElementType(type: React.ReactType): R;
-      toContainNode(node: NonNullable<React.ReactNode>): R;
-      toRenderChildren(): R;
-    }
-  }
-}
-
 describe('Renderer', () => {
   class ClassComp extends React.Component<{ foo?: string }> {
     render() {
