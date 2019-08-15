@@ -3,15 +3,12 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import React from 'react';
 import toBeElementType from './toBeElementType';
+import toContainNode from './toContainNode';
+import toRenderChildren from './toRenderChildren';
 
-declare global {
-  namespace jest {
-    interface Matchers<R> {
-      toBeElementType(type: React.ReactType): R;
-    }
-  }
-}
+const matchers = { toBeElementType, toContainNode, toRenderChildren };
 
-export default { toBeElementType };
+expect.extend(matchers);
+
+export default matchers;

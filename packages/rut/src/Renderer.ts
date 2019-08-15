@@ -1,6 +1,7 @@
 import React from 'react';
 import { act, create, ReactTestRenderer, ReactTestRendererJSON } from 'react-test-renderer';
 import RutElement from './Element';
+import { getTypeName } from './helpers';
 import { UnknownProps } from './types';
 
 export default class RutRenderer<Props> {
@@ -13,7 +14,7 @@ export default class RutRenderer<Props> {
     this.renderer = create(element);
   }
 
-  find<P = UnknownProps>(type: React.ReactType<P>): RutElement<P>[] {
+  find<P = UnknownProps>(type: React.ElementType<P>): RutElement<P>[] {
     return this.renderer.root.findAllByType(type).map(node => new RutElement(node));
   }
 
@@ -26,17 +27,7 @@ export default class RutRenderer<Props> {
   }
 
   toString(): string {
-    const { type } = this.renderer.root;
-
-    if (typeof type === 'string') {
-      return type;
-    }
-
-    if (typeof type === 'function') {
-      return type.name;
-    }
-
-    return 'UNKNOWN';
+    return getTypeName(this.renderer.root.type);
   }
 
   async unmount() {
@@ -45,17 +36,9 @@ export default class RutRenderer<Props> {
     });
   }
 
-  async update(props?: Partial<Props>) {
+  async update(props?: Partial<Props>, children?: React.ReactNode) {
     await act(async () => {
-      if (props) {
-        await this.renderer.update(React.cloneElement(this.element, props));
-      } else {
-        const inst = this.renderer.getInstance() as React.Component | null;
-
-        if (inst) {
-          await inst.forceUpdate();
-        }
-      }
+      await this.renderer.update(React.cloneElement(this.element, props, children));
     });
   }
 }

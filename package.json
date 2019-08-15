@@ -39,6 +39,9 @@
     "settings": {
       "node": true,
       "react": true
+    },
+    "jest": {
+      "setupFilesAfterEnv": ["./packages/jest-rut/lib/index.js"]
     }
   }
 }

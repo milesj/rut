@@ -1,6 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import Element from '../src/Element';
 import render from '../src/render';
+
+/* eslint-disable @typescript-eslint/no-namespace, no-redeclare */
+
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeElementType(type: React.ReactType): R;
+      toContainNode(node: NonNullable<React.ReactNode>): R;
+      toRenderChildren(): R;
+    }
+  }
+}
 
 describe('Renderer', () => {
   class ClassComp extends React.Component<{ foo?: string }> {
@@ -76,14 +88,70 @@ describe('Renderer', () => {
     });
   });
 
-  describe('unmount()', () => {
+  describe('mounting', () => {
+    describe('class component', () => {
+      it('triggers `componentWillMount` and `componentDidMount`', () => {
+        const spy = jest.fn();
+
+        class MountTest extends React.Component {
+          UNSAFE_componentWillMount() {
+            spy();
+          }
+
+          componentDidMount() {
+            spy();
+          }
+
+          render() {
+            return null;
+          }
+        }
+
+        render(<MountTest />);
+
+        expect(spy).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    describe('function component ', () => {
+      it('triggers `useEffect` mount on hook', () => {
+        const spy = jest.fn();
+
+        function MountTest() {
+          useEffect(spy);
+
+          return null;
+        }
+
+        render(<MountTest />);
+
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+
+      it('triggers `useLayoutEffect` mount on hook', () => {
+        const spy = jest.fn();
+
+        function MountTest() {
+          useLayoutEffect(spy);
+
+          return null;
+        }
+
+        render(<MountTest />);
+
+        expect(spy).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('unmounting', () => {
     describe('class component', () => {
       it('triggers `componentWillUnmount`', async () => {
-        expect.assertions(1);
+        const spy = jest.fn();
 
         class UnmountTest extends React.Component {
           componentWillUnmount() {
-            expect(1).toBe(1);
+            spy();
           }
 
           render() {
@@ -94,18 +162,18 @@ describe('Renderer', () => {
         const wrapper = render(<UnmountTest />);
 
         await wrapper.unmount();
+
+        expect(spy).toHaveBeenCalledTimes(1);
       });
     });
 
     describe('function component ', () => {
       it('triggers `useEffect` unmount on hook', async () => {
-        expect.assertions(1);
+        const spy = jest.fn();
 
         function UnmountTest() {
           useEffect(() => {
-            return () => {
-              expect(1).toBe(1);
-            };
+            return spy;
           });
 
           return null;
@@ -114,25 +182,34 @@ describe('Renderer', () => {
         const wrapper = render(<UnmountTest />);
 
         await wrapper.unmount();
+
+        expect(spy).toHaveBeenCalledTimes(1);
       });
     });
   });
 
-  describe('update()', () => {
+  describe('updating', () => {
     let count = 0;
 
-    class ClassUpdateTest extends React.Component<{ index?: number }> {
+    interface UpdateProps {
+      children?: React.ReactNode;
+      index?: number;
+    }
+
+    class ClassUpdateTest extends React.Component<UpdateProps> {
       render() {
+        const { children } = this.props;
+
         count += 1;
 
-        return null;
+        return children ? <div>{children}</div> : null;
       }
     }
 
-    function FuncUpdateTest(props: { index?: number }) {
+    function FuncUpdateTest({ children }: UpdateProps) {
       count += 1;
 
-      return null;
+      return children ? <div>{children}</div> : null;
     }
 
     beforeEach(() => {
@@ -165,8 +242,20 @@ describe('Renderer', () => {
         expect(count).toBe(3);
       });
 
+      it('re-renders with a different child', async () => {
+        const wrapper = render(<ClassUpdateTest>Foo</ClassUpdateTest>);
+
+        expect(wrapper.root()).toContainNode('Foo');
+
+        const child = <div>Bar</div>;
+
+        await wrapper.update({}, child);
+
+        expect(wrapper.root()).toContainNode(child);
+      });
+
       it('triggers update life cycles', async () => {
-        expect.assertions(3);
+        const spy = jest.fn();
 
         interface Props {
           test: string;
@@ -175,14 +264,17 @@ describe('Renderer', () => {
         class UpdateTest extends React.Component<Props> {
           UNSAFE_componentWillReceiveProps(nextProps: Props) {
             expect(nextProps.test).toBe('update');
+            spy();
           }
 
           UNSAFE_componentWillUpdate(nextProps: Props) {
             expect(nextProps.test).toBe('update');
+            spy();
           }
 
           componentDidUpdate() {
             expect(this.props.test).toBe('update');
+            spy();
           }
 
           render() {
@@ -193,10 +285,21 @@ describe('Renderer', () => {
         const wrapper = render(<UpdateTest test="mount" />);
 
         await wrapper.update({ test: 'update' });
+
+        expect(spy).toHaveBeenCalledTimes(3);
       });
     });
 
     describe('function component', () => {
+      it('re-renders if props dont change', async () => {
+        const wrapper = render(<FuncUpdateTest />);
+
+        await wrapper.update();
+        await wrapper.update();
+
+        expect(count).toBe(3);
+      });
+
       it('re-renders if props change', async () => {
         const wrapper = render(<FuncUpdateTest index={0} />);
 
@@ -213,17 +316,27 @@ describe('Renderer', () => {
         expect(count).toBe(3);
       });
 
+      it('re-renders with a different child', async () => {
+        const wrapper = render(<FuncUpdateTest>Foo</FuncUpdateTest>);
+
+        expect(wrapper.root()).toContainNode('Foo');
+
+        const child = <div>Bar</div>;
+
+        await wrapper.update({}, child);
+
+        expect(wrapper.root()).toContainNode(child);
+      });
+
       it('triggers `useEffect` each update when no cache', async () => {
-        expect.assertions(3);
+        const spy = jest.fn();
 
         interface Props {
           test: string;
         }
 
         function UpdateTest({ test }: Props) {
-          useEffect(() => {
-            expect(test).toBe('update');
-          });
+          useEffect(spy);
 
           return null;
         }
@@ -232,19 +345,19 @@ describe('Renderer', () => {
 
         await wrapper.update({ test: 'update' });
         await wrapper.update({ test: 'update' });
+
+        expect(spy).toHaveBeenCalledTimes(3);
       });
 
       it('triggers `useEffect` each update with caching and props change', async () => {
-        expect.assertions(2);
+        const spy = jest.fn();
 
         interface Props {
           test: string;
         }
 
         function UpdateTest({ test }: Props) {
-          useEffect(() => {
-            expect(1).toBe(1);
-          }, [test]);
+          useEffect(spy, [test]);
 
           return null;
         }
@@ -254,6 +367,8 @@ describe('Renderer', () => {
         await wrapper.update({ test: 'mount' });
         await wrapper.update({ test: 'update' });
         await wrapper.update({ test: 'update' });
+
+        expect(spy).toHaveBeenCalledTimes(2);
       });
     });
   });

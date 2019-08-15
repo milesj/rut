@@ -23,6 +23,6 @@ NODES
 
 EXPECTS
 
-- [ ] Check if an empty (null) render or not.
-- [ ] Check element is found within a node or its children.
-- [ ] Check root is of type.
+- [x] Check if an empty (null) render or not.
+- [x] Check element is found within a node or its children.
+- [x] Check root is of type.
