@@ -1,21 +1,20 @@
 import React from 'react';
 import { act, create, ReactTestRenderer, ReactTestRendererJSON } from 'react-test-renderer';
 import RutElement from './Element';
+import Queryable from './Queryable';
 import { getTypeName } from './helpers';
 import { UnknownProps } from './types';
 
-export default class RutRenderer<Props> {
+export default class RutRenderer<Props = UnknownProps> extends Queryable {
   private element: React.ReactElement<Props>;
 
   private renderer: ReactTestRenderer;
 
   constructor(element: React.ReactElement<Props>) {
+    super();
+
     this.element = element;
     this.renderer = create(element);
-  }
-
-  find<P = UnknownProps>(type: React.ElementType<P>): RutElement<P>[] {
-    return this.renderer.root.findAllByType(type).map(node => new RutElement(node));
   }
 
   root(): RutElement<Props> {
@@ -40,5 +39,9 @@ export default class RutRenderer<Props> {
     await act(async () => {
       await this.renderer.update(React.cloneElement(this.element, props, children));
     });
+  }
+
+  protected node() {
+    return this.renderer.root;
   }
 }
