@@ -3,7 +3,7 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import * as matchers from './matchers';
+import matchers from './matchers';
 import render from './render';
 
 export * from './helpers';

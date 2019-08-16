@@ -4,6 +4,23 @@ import React from 'react';
 import * as ReactIs from 'react-is';
 import { UnknownProps } from './types';
 
+export function checkIsRutElement(value: unknown) {
+  if (value instanceof Element) {
+    return;
+  }
+
+  if (
+    typeof value === 'object' &&
+    value !== null &&
+    Object.getPrototypeOf(value).constructor.name === 'Element' &&
+    Object.getPrototypeOf(Object.getPrototypeOf(value)).constructor.name === 'Queryable'
+  ) {
+    return;
+  }
+
+  throw new Error('Expected a Rut `Element`.');
+}
+
 interface NodeLike {
   $$typeof: symbol | number;
   type?: NodeLike;
