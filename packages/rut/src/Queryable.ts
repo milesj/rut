@@ -1,7 +1,7 @@
 import { ReactTestInstance } from 'react-test-renderer';
 import Element from './Element';
 import { UnknownProps, TestNode, FiberNode } from './types';
-import { getElementTypeName } from './helpers';
+import { getTypeName } from './helpers';
 
 export default abstract class Queryable {
   /**
@@ -24,11 +24,22 @@ export default abstract class Queryable {
 
     if (results.length !== 1) {
       throw new Error(
-        `Expected to find 1 element for \`${getElementTypeName(type)}\`, found ${results.length}.`,
+        `Expected to find 1 element for \`${getTypeName(type)}\`, found ${results.length}.`,
       );
     }
 
     return results[0];
+  }
+
+  /**
+   * Return the name of the component, element, or node. Will use `displayName` if available.
+   */
+  name(): string {
+    const inst = this.testInstance();
+
+    // Use the raw fiber types for names, as they preserve the node structures
+    // eslint-disable-next-line no-underscore-dangle
+    return getTypeName(inst._fiber.elementType || inst._fiber.type);
   }
 
   /**
@@ -48,11 +59,8 @@ export default abstract class Queryable {
     );
   }
 
-  /**
-   * Return the name of the component or element. Will use `displayName` if defined.
-   */
   toString(): string {
-    return getElementTypeName(this.testInstance().type);
+    return this.name();
   }
 
   protected abstract testInstance(): ReactTestInstance;

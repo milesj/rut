@@ -1,26 +1,16 @@
-import React, { Suspense, Profiler } from 'react';
-// import ReactDOM from 'react-dom';
+import React from 'react';
 import render from '../src/render';
-import { NodeType } from '../lib/types';
+import { NodeType } from '../src/types';
+import {
+  FuncComp,
+  FuncCompWithDisplayName,
+  ClassComp,
+  ClassCompWithDisplayName,
+  ForwardRefComp,
+  MemoComp,
+} from './fixtures';
 
 describe('matchers', () => {
-  function MismatchComp() {
-    return null;
-  }
-
-  function FuncComp() {
-    return null;
-  }
-
-  class ClassComp extends React.Component {
-    render() {
-      return null;
-    }
-  }
-
-  const ForwardRefComp = React.forwardRef(FuncComp);
-  const MemoComp = React.memo(FuncComp);
-
   describe('toBeElementType()', () => {
     it('errors if a non-Element is passed', () => {
       expect(() => {
@@ -63,13 +53,13 @@ describe('matchers', () => {
 
       it('errors when types dont match', () => {
         expect(() => {
-          expect(render(<FuncComp />).root()).toBeElementType(MismatchComp);
-        }).toThrowError('expected `FuncComp` to be a `MismatchComp`');
+          expect(render(<FuncComp />).root()).toBeElementType(FuncCompWithDisplayName);
+        }).toThrowError('expected `FuncComp` to be a `CustomFuncName`');
       });
 
       it('passes when types match (not negation)', () => {
         expect(() => {
-          expect(render(<FuncComp />).root()).not.toBeElementType(MismatchComp);
+          expect(render(<FuncComp />).root()).not.toBeElementType(FuncCompWithDisplayName);
         }).not.toThrowError();
       });
 
@@ -89,13 +79,13 @@ describe('matchers', () => {
 
       it('errors when types dont match', () => {
         expect(() => {
-          expect(render(<ClassComp />).root()).toBeElementType(MismatchComp);
-        }).toThrowError('expected `ClassComp` to be a `MismatchComp`');
+          expect(render(<ClassComp />).root()).toBeElementType(ClassCompWithDisplayName);
+        }).toThrowError('expected `ClassComp` to be a `CustomCompName`');
       });
 
       it('passes when types match (not negation)', () => {
         expect(() => {
-          expect(render(<ClassComp />).root()).not.toBeElementType(MismatchComp);
+          expect(render(<ClassComp />).root()).not.toBeElementType(ClassCompWithDisplayName);
         }).not.toThrowError();
       });
 
@@ -123,34 +113,21 @@ describe('matchers', () => {
       }).toThrowErrorMatchingSnapshot();
     });
 
-    const nodeTypeMap = {
+    const nodeTypes = {
       'class-component': <ClassComp />,
-      // 'context-consumer': <Ctx.Consumer>{() => null}</Ctx.Consumer>,
-      // 'context-provider': <Ctx.Provider value="test">{null}</Ctx.Provider>,
       'forward-ref': <ForwardRefComp />,
-      fragment: (
-        <>
-          <div />
-        </>
-      ),
       'function-component': <FuncComp />,
       'host-component': <div />,
-      lazy: React.lazy(() => Promise.resolve({ default: FuncComp })),
       memo: <MemoComp />,
-      // mode: 8,
-      //      portal: ReactDOM.createPortal(<div />),
-      profiler: <Profiler id="test" onRender={jest.fn()} />,
-      // root: 3,
-      suspense: <Suspense fallback={<div />} />,
-      text: 'test',
     };
 
-    Object.entries(nodeTypeMap).forEach(([testTypeName, testNode]) => {
-      const wrapper = render(<div>{testNode}</div>);
-      const expectedNode = wrapper.root().children()[0];
+    Object.entries(nodeTypes).forEach(([testTypeName, testNode]) => {
+      const expectedNode = render(<div>{testNode}</div>)
+        .root()
+        .children()[0];
       const typeName = testTypeName as NodeType;
 
-      describe(`${typeName} type`, () => {
+      describe(`"${typeName}" type`, () => {
         it('passes when types match', () => {
           expect(() => {
             expect(expectedNode).toBeNodeType(typeName);
@@ -159,13 +136,17 @@ describe('matchers', () => {
 
         it('errors when types dont match', () => {
           expect(() => {
-            expect(expectedNode).toBeNodeType(typeName === 'root' ? 'mode' : 'root');
+            expect(expectedNode).toBeNodeType(
+              typeName === 'function-component' ? 'class-component' : 'function-component',
+            );
           }).toThrowErrorMatchingSnapshot();
         });
 
         it('passes when types match (not negation)', () => {
           expect(() => {
-            expect(expectedNode).not.toBeNodeType(typeName === 'root' ? 'mode' : 'root');
+            expect(expectedNode).not.toBeNodeType(
+              typeName === 'function-component' ? 'class-component' : 'function-component',
+            );
           }).not.toThrowError();
         });
 

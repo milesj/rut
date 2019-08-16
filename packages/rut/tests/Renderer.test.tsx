@@ -1,18 +1,9 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import Element from '../src/Element';
 import render from '../src/render';
+import { ClassComp, FuncComp } from './fixtures';
 
 describe('Renderer', () => {
-  class ClassComp extends React.Component<{ foo?: string }> {
-    render() {
-      return <div />;
-    }
-  }
-
-  function FuncComp(props: { bar?: number }) {
-    return <section />;
-  }
-
   describe('root()', () => {
     it('returns an element for a host component', () => {
       const el = render(<main />).root();
@@ -52,7 +43,7 @@ describe('Renderer', () => {
     it('returns JSON for a function component', () => {
       const json = render(<FuncComp />).toJSON();
 
-      expect(json).toEqual(expect.objectContaining({ type: 'section' }));
+      expect(json).toEqual(expect.objectContaining({ type: 'span' }));
     });
   });
 

@@ -38,21 +38,10 @@ export interface MatchResult {
 
 export type NodeType =
   | 'class-component'
-  // | 'context-consumer'
-  // | 'context-provider'
   | 'forward-ref'
   | 'function-component'
   | 'host-component'
-  | 'indeterminate-component'
-  | 'fragment'
-  | 'lazy'
-  | 'memo'
-  | 'mode'
-  | 'portal'
-  | 'profiler'
-  | 'root'
-  | 'suspense'
-  | 'text';
+  | 'memo';
 
 declare module 'react-test-renderer' {
   interface ReactTestInstance {
