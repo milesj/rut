@@ -3,7 +3,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export function FuncComp() {
+interface TestProps {
+  name?: string;
+}
+
+export function FuncComp(props: TestProps) {
   return <span />;
 }
 
@@ -13,7 +17,7 @@ export function FuncCompWithDisplayName() {
 
 FuncCompWithDisplayName.displayName = 'CustomFuncName';
 
-export class ClassComp extends React.Component {
+export class ClassComp extends React.Component<TestProps> {
   render() {
     return <div />;
   }

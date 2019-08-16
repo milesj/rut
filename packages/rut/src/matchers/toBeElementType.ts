@@ -9,11 +9,11 @@ import { MatchResult } from '../types';
 export default function toBeElementType(element: Element, type: React.ElementType): MatchResult {
   checkIsRutElement(element);
 
-  const expectedName = getTypeName(type);
+  const typeName = getTypeName(type);
 
   return {
-    message: `expected \`${element}\` to be a \`${expectedName}\``,
-    notMessage: `expected \`${element}\` not to be a \`${expectedName}\``,
+    message: `expected \`${element}\` to be a \`${typeName}\``,
+    notMessage: `expected \`${element}\` not to be a \`${typeName}\``,
     passed: element.type() === type,
   };
 }
