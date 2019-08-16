@@ -1,5 +1,11 @@
 import React from 'react';
-import { act, create, ReactTestRenderer, ReactTestRendererJSON } from 'react-test-renderer';
+import {
+  act,
+  create,
+  ReactTestRenderer,
+  ReactTestRendererJSON,
+  ReactTestRendererTree,
+} from 'react-test-renderer';
 import Element from './Element';
 import Queryable from './Queryable';
 import { UnknownProps } from './types';
@@ -22,6 +28,10 @@ export default class Renderer<Props = UnknownProps> extends Queryable {
 
   toJSON(): ReactTestRendererJSON | null {
     return this.renderer.toJSON();
+  }
+
+  toTree(): ReactTestRendererTree | null {
+    return this.renderer.toTree();
   }
 
   async unmount() {

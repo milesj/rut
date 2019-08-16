@@ -37,7 +37,7 @@ export default abstract class Queryable {
   name(): string {
     const inst = this.testInstance();
 
-    // Use the raw fiber types for names, as they preserve the node structures
+    // Use the raw fiber types for names, as they preserve the internal node structures
     // eslint-disable-next-line no-underscore-dangle
     return getTypeName(inst._fiber.elementType || inst._fiber.type);
   }
@@ -59,6 +59,9 @@ export default abstract class Queryable {
     );
   }
 
+  /**
+   * Return name when cast as a string.
+   */
   toString(): string {
     return this.name();
   }

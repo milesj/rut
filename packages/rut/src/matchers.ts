@@ -23,7 +23,7 @@ function checkIsRutElement(matcher: string, value: unknown) {
 }
 
 /**
- * Check that a Rut `Element` is a valid React element type.
+ * Check that an element is a valid React element type.
  * Accepts either a class or function component, or the name of a host component (HTML tag).
  */
 export function toBeElementType(received: Element, type: React.ElementType): MatchResult {
@@ -49,7 +49,7 @@ const nodeTypeMap: { [K in NodeType]: number | number[] } = {
 };
 
 /**
- * Check that a Rut `Element` is a specific type of React node.
+ * Check that an element is a specific type of React node.
  * React nodes are based on React fiber work tags.
  */
 export function toBeNodeType(received: Element, type: NodeType): MatchResult {
@@ -104,6 +104,9 @@ export function toContainNode(received: Element, node: NonNullable<React.ReactNo
   };
 }
 
+/**
+ * Check that a component has either rendered children or `null`.
+ */
 export function toRenderChildren(received: Element): MatchResult {
   checkIsRutElement('toRenderChildren', received);
 

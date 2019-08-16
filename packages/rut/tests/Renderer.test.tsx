@@ -47,6 +47,26 @@ describe('Renderer', () => {
     });
   });
 
+  describe('toTree()', () => {
+    it('returns a tree for a host component', () => {
+      const tree = render(<main />).toTree();
+
+      expect(tree).toEqual(expect.objectContaining({ nodeType: 'host', type: 'main' }));
+    });
+
+    it('returns a tree for a class component', () => {
+      const tree = render(<ClassComp />).toTree();
+
+      expect(tree).toEqual(expect.objectContaining({ nodeType: 'component', type: ClassComp }));
+    });
+
+    it('returns a tree for a function component', () => {
+      const tree = render(<FuncComp />).toTree();
+
+      expect(tree).toEqual(expect.objectContaining({ nodeType: 'component', type: FuncComp }));
+    });
+  });
+
   describe('toString()', () => {
     it('returns name of host component', () => {
       const name = render(<main />).toString();

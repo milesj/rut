@@ -4,7 +4,7 @@ React unit testing made easy. DOM not included.
 
 ## Checklist
 
-ROOT
+RENDERER
 
 - [ ] Render a component, including hooks, lifecycles, context, and more.
 - [x] Re-render the component without prop changes.
@@ -15,14 +15,14 @@ ROOT
 - [ ] Handle dives/HOCs in a clean way.
 - [ ] Test rendering to the DOM???
 
-NODES
+ELEMENTS
 
 - [x] Query elements by name/type.
 - [x] Emit event handler props.
 - [x] Access props, type, and children.
 
-EXPECTS
+MATCHERS
 
 - [x] Check if an empty (null) render or not.
 - [x] Check element is found within a node or its children.
-- [x] Check root is of type.
+- [x] Check element is of a specific type.
