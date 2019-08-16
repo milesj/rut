@@ -20,6 +20,8 @@
     "@milesj/build-tools": "^0.52.1",
     "@types/jest": "^24.0.17",
     "@types/react": "^16.9.1",
+    "@types/react-dom": "^16.8.5",
+    "@types/react-is": "^16.7.1",
     "@types/react-test-renderer": "^16.9.0",
     "lerna": "^3.16.4",
     "react": "^16.9.0"
@@ -41,7 +43,9 @@
       "react": true
     },
     "jest": {
-      "setupFilesAfterEnv": ["./packages/jest-rut/lib/index.js"]
+      "setupFilesAfterEnv": [
+        "./packages/jest-rut/lib/index.js"
+      ]
     }
   }
 }

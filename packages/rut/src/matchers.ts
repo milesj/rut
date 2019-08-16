@@ -1,7 +1,9 @@
+/* eslint-disable no-magic-numbers, no-underscore-dangle */
+
 import React from 'react';
 import Element from './Element';
-import { getTypeName } from './helpers';
-import { MatchResult } from './types';
+import { getElementTypeName } from './helpers';
+import { MatchResult, NodeType } from './types';
 
 function checkIsRutElement(matcher: string, value: unknown) {
   if (value instanceof Element) {
@@ -20,15 +22,66 @@ function checkIsRutElement(matcher: string, value: unknown) {
   throw new Error(`${matcher}: Expected a Rut \`Element\`.`);
 }
 
+/**
+ * Check that an `Element` is a valid React element type.
+ * Accepts either a class or function component, or the name of a host component (HTML tag).
+ */
 export function toBeElementType(received: Element, type: React.ElementType): MatchResult {
   checkIsRutElement('toBeElementType', received);
 
-  const expectedName = getTypeName(type);
+  const expectedName = getElementTypeName(type);
 
   return {
     message: `expected \`${received}\` to be a \`${expectedName}\``,
     notMessage: `expected \`${received}\` not to be a \`${expectedName}\``,
     passed: received.type() === type,
+  };
+}
+
+// Keep in sync with React upstream!
+// https://github.com/facebook/react/blob/master/packages/shared/ReactWorkTags.js
+const nodeTypeMap: { [K in NodeType]: number | number[] } = {
+  'class-component': 1,
+  // 'context-consumer': 9,
+  // 'context-provider': 10,
+  'forward-ref': 11,
+  fragment: [7, 18],
+  'function-component': 0,
+  'host-component': 5,
+  'indeterminate-component': 2,
+  lazy: 16,
+  memo: [14, 15],
+  mode: 8,
+  portal: 4,
+  profiler: 12,
+  root: 3,
+  suspense: [13, 19],
+  text: 6,
+};
+
+/**
+ * Check that an `Element` is a specific type of React node.
+ * React nodes are based on React fiber work tags.
+ */
+export function toBeNodeType(received: Element, type: NodeType): MatchResult {
+  checkIsRutElement('toBeNodeType', received);
+
+  // @ts-ignore Allow access for matcher
+  const fiberTag = received.testInstance()._fiber.tag;
+  const nodeToTag = nodeTypeMap[type];
+
+  if (nodeToTag === undefined) {
+    throw new Error(
+      `toBeNodeType: Invalid node type "${type}", expected one of: ${Object.keys(nodeTypeMap).join(
+        ', ',
+      )}`,
+    );
+  }
+
+  return {
+    message: `expected \`${received}\` to be a "${type}"`,
+    notMessage: `expected \`${received}\` not to be a "${type}"`,
+    passed: Array.isArray(nodeToTag) ? nodeToTag.includes(fiberTag) : nodeToTag === fiberTag,
   };
 }
 

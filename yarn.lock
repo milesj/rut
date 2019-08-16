@@ -2247,6 +2247,20 @@
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.1.tgz#f1a11e7babb0c3cad68100be381d1e064c68f1f6"
   integrity sha512-CFzn9idOEpHrgdw8JsoTkaDDyRWk1jrzIV8djzcgpq0y9tG4B4lFT+Nxh52DVpDXV+n4+NPNv7M1Dj5uMp6XFg==
 
+"@types/react-dom@*", "@types/react-dom@^16.8.5":
+  version "16.8.5"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.8.5.tgz#3e3f4d99199391a7fb40aa3a155c8dd99b899cbd"
+  integrity sha512-idCEjROZ2cqh29+trmTmZhsBAUNQuYrF92JHKzZ5+aiFM1mlSk3bb23CK7HhYuOY75Apgap5y2jTyHzaM2AJGA==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-is@*", "@types/react-is@^16.7.1":
+  version "16.7.1"
+  resolved "https://registry.yarnpkg.com/@types/react-is/-/react-is-16.7.1.tgz#d3f1c68c358c00ce116b55ef5410cf486dd08539"
+  integrity sha512-dMLFD2cCsxtDgMkTydQCM0PxDq8vwc6uN5M/jRktDfYvH3nQj6pjC9OrCXS2lKlYoYTNJorI/dI8x9dpLshexQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-test-renderer@*", "@types/react-test-renderer@^16.9.0":
   version "16.9.0"
   resolved "https://registry.npmjs.org/@types/react-test-renderer/-/react-test-renderer-16.9.0.tgz#d60f530ecf4c906721511603cca711b4fa830d41"

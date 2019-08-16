@@ -24,10 +24,6 @@
   },
   "peerDependencies": {
     "jest": "^24.0.0",
-    "react": "^16.9.0",
     "rut": "^0.1.0"
-  },
-  "dependencies": {
-    "@types/react": "*"
   }
 }
