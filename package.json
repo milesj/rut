@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "yarn run type",
+    "clean": "rm -rf packages/*/{*.tsbuildinfo,lib}",
     "coverage": "yarn run jest --coverage",
     "eslint": "beemo eslint",
     "jest": "beemo jest",
