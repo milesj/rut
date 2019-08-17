@@ -52,9 +52,16 @@ declare module 'react-test-renderer' {
 declare global {
   namespace jest {
     interface Matchers<R> {
+      toBeChecked(): R;
+      toBeDisabled(): R;
       toBeElementType(type: React.ElementType): R;
       toBeNodeType(type: NodeType): R;
       toContainNode(node: NonNullable<React.ReactNode>): R;
+      // toHaveClassName(name: string): R;
+      // toHaveKey(name: string): R;
+      toHaveProp(name: string, value?: unknown): R;
+      // toHaveText(text: string): R;
+      toHaveValue(value: unknown): R;
       toRenderChildren(): R;
     }
   }
