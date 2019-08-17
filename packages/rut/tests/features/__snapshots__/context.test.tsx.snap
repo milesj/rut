@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Context Consumer renders within provider and inherits the defined value 1`] = `
+"<Provider theme=\\"dark\\">
+  <div>
+    <Consumer spy={function}>
+      <div>
+        Consumed!
+      </div>
+    </Consumer>
+  </div>
+</Provider>"
+`;
+
+exports[`Context Provider renders a provider without consumer, and its children 1`] = `
+"<Provider>
+  Child
+</Provider>"
+`;
+
+exports[`Context contextType renders within provider and inherits the defined value 1`] = `
+"<Provider theme=\\"dark\\">
+  <div>
+    <StaticConsumer spy={function}>
+      <div>
+        Consumed!
+      </div>
+    </StaticConsumer>
+  </div>
+</Provider>"
+`;
+
+exports[`Context useContext renders within provider and inherits the defined value 1`] = `
+"<Provider theme=\\"dark\\">
+  <div>
+    <HookConsumer spy={function}>
+      <div>
+        Consumed!
+      </div>
+    </HookConsumer>
+  </div>
+</Provider>"
+`;
