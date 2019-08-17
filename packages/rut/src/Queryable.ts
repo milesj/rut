@@ -32,7 +32,7 @@ export default abstract class Queryable {
   }
 
   /**
-   * Return the name of the component, element, or node. Will use `displayName` if available.
+   * Return the name of the component, element, or node.
    */
   name(): string {
     const inst = this.testInstance();

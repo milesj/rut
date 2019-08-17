@@ -4,6 +4,9 @@ import React from 'react';
 import * as ReactIs from 'react-is';
 import { UnknownProps } from './types';
 
+/**
+ * Check that a value is an instance of a Rut `Element`. Used primarily in matchers.
+ */
 export function checkIsRutElement(value: unknown) {
   if (value instanceof Element) {
     return;

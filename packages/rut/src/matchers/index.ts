@@ -3,10 +3,11 @@ import toBeDisabled from './toBeDisabled';
 import toBeElementType from './toBeElementType';
 import toBeNodeType from './toBeNodeType';
 import toContainNode from './toContainNode';
+import toHaveClassName from './toHaveClassName';
 import toHaveKey from './toHaveKey';
 import toHaveProp from './toHaveProp';
+import toHaveRendered from './toHaveRendered';
 import toHaveValue from './toHaveValue';
-import toRenderChildren from './toRenderChildren';
 
 export default {
   toBeChecked,
@@ -14,8 +15,9 @@ export default {
   toBeElementType,
   toBeNodeType,
   toContainNode,
+  toHaveClassName,
   toHaveKey,
   toHaveProp,
+  toHaveRendered,
   toHaveValue,
-  toRenderChildren,
 };

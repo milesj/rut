@@ -26,3 +26,4 @@ MATCHERS
 - [x] Check if an empty (null) render or not.
 - [x] Check element is found within a node or its children.
 - [x] Check element is of a specific type.
+- [x] Check common props, like `checked`, `disabled`, `className`, and `value`.

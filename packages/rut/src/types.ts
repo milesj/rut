@@ -57,12 +57,11 @@ declare global {
       toBeElementType(type: React.ElementType): R;
       toBeNodeType(type: NodeType): R;
       toContainNode(node: NonNullable<React.ReactNode>): R;
-      // toHaveClassName(name: string): R;
+      toHaveClassName(name: string): R;
       toHaveKey(value: string | number): R;
       toHaveProp(name: string, value?: unknown): R;
-      // toHaveText(text: string): R;
+      toHaveRendered(): R;
       toHaveValue(value: unknown): R;
-      toRenderChildren(): R;
     }
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import render from '../../src/render';
 import { FuncComp, ClassComp } from '../fixtures';
 
-describe('toRenderChildren()', () => {
+describe('toHaveRendered()', () => {
   function NullRender() {
     return null;
   }
@@ -41,46 +41,46 @@ describe('toRenderChildren()', () => {
 
   it('errors if a non-Element is passed', () => {
     expect(() => {
-      expect(123).toRenderChildren();
+      expect(123).toHaveRendered();
     }).toThrowError('Expected a Rut `Element`.');
   });
 
   it('returns false if null was returned', () => {
-    expect(render(<NullRender />).root()).not.toRenderChildren();
+    expect(render(<NullRender />).root()).not.toHaveRendered();
   });
 
   it('returns false if false was returned', () => {
     // @ts-ignore
-    expect(render(<FalseRender />).root()).not.toRenderChildren();
+    expect(render(<FalseRender />).root()).not.toHaveRendered();
   });
 
   it('returns true if a host component was rendered', () => {
-    expect(render(<HostCompRender />).root()).toRenderChildren();
+    expect(render(<HostCompRender />).root()).toHaveRendered();
   });
 
   it('returns true if a function component was rendered', () => {
-    expect(render(<FuncCompRender />).root()).toRenderChildren();
+    expect(render(<FuncCompRender />).root()).toHaveRendered();
   });
 
   it('returns true if a class component was rendered', () => {
-    expect(render(<ClassCompRender />).root()).toRenderChildren();
+    expect(render(<ClassCompRender />).root()).toHaveRendered();
   });
 
   it('returns true if a fragment was rendered', () => {
-    expect(render(<FragmentRender />).root()).toRenderChildren();
+    expect(render(<FragmentRender />).root()).toHaveRendered();
   });
 
   it('returns true if a string was rendered', () => {
     // @ts-ignore
-    expect(render(<StringRender />).root()).toRenderChildren();
+    expect(render(<StringRender />).root()).toHaveRendered();
   });
 
   it('returns true if an array of nodes was rendered', () => {
     // @ts-ignore
-    expect(render(<ArrayRender />).root()).toRenderChildren();
+    expect(render(<ArrayRender />).root()).toHaveRendered();
   });
 
   it('returns true if a child component that rendered null was rendered', () => {
-    expect(render(<NestedNullRender />).root()).toRenderChildren();
+    expect(render(<NestedNullRender />).root()).toHaveRendered();
   });
 });
