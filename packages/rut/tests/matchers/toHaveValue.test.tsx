@@ -4,7 +4,7 @@ import render from '../../src/render';
 describe('toHaveValue()', () => {
   it('errors if a non-Element is passed', () => {
     expect(() => {
-      expect(123).toHaveValue();
+      expect(123).toHaveValue('');
     }).toThrowError('Expected a Rut `Element`.');
   });
 
@@ -24,7 +24,7 @@ describe('toHaveValue()', () => {
     it('errors when value doesnt match', () => {
       expect(() => {
         expect(render(<input value="foo" />).root()).toHaveValue('bar');
-      }).toThrowError('expected `input` to have a "value" prop with a value of bar');
+      }).toThrowError('expected `input` to have a "value" prop with a value of "bar"');
     });
   });
 
@@ -38,13 +38,13 @@ describe('toHaveValue()', () => {
     it('errors when value matches', () => {
       expect(() => {
         expect(render(<input value="foo" />).root()).not.toHaveValue('foo');
-      }).toThrowError('expected `input` not to have a "value" prop with a value of foo');
+      }).toThrowError('expected `input` not to have a "value" prop with a value of "foo"');
     });
 
     it('errors when default value matches', () => {
       expect(() => {
         expect(render(<input defaultValue="foo" />).root()).not.toHaveValue('foo');
-      }).toThrowError('expected `input` not to have a "defaultValue" prop with a value of foo');
+      }).toThrowError('expected `input` not to have a "defaultValue" prop with a value of "foo"');
     });
   });
 });

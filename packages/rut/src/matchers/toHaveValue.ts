@@ -3,6 +3,10 @@ import toHaveProp from './toHaveProp';
 import { MatchResult } from '../types';
 import { checkIsRutElement } from '../helpers';
 
+/**
+ * Check that an element has a `value` or `defaultValue` prop that
+ * matches the provided value.
+ */
 export default function toHaveValue(element: Element, value: unknown): MatchResult {
   checkIsRutElement(element);
 

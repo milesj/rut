@@ -58,7 +58,7 @@ declare global {
       toBeNodeType(type: NodeType): R;
       toContainNode(node: NonNullable<React.ReactNode>): R;
       // toHaveClassName(name: string): R;
-      // toHaveKey(name: string): R;
+      toHaveKey(value: string | number): R;
       toHaveProp(name: string, value?: unknown): R;
       // toHaveText(text: string): R;
       toHaveValue(value: unknown): R;

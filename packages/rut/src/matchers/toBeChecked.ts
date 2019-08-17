@@ -3,6 +3,9 @@ import toHaveProp from './toHaveProp';
 import { MatchResult } from '../types';
 import { checkIsRutElement } from '../helpers';
 
+/**
+ * Check that an element has a truthy `checked` or `defaultChecked` prop.
+ */
 export default function toBeChecked(element: Element): MatchResult {
   checkIsRutElement(element);
 
