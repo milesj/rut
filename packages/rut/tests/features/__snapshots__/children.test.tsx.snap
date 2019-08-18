@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Children renders a function child 1`] = `
+"<FuncChildComp>
+  <div>
+    <span>
+      Child
+    </span>
+  </div>
+</FuncChildComp>"
+`;
+
+exports[`Children renders an only child 1`] = `
+"<OnlyChildComp>
+  <span>
+    Child
+  </span>
+</OnlyChildComp>"
+`;
+
+exports[`Children renders mapped children 1`] = `
+"<MapChildComp>
+  <ul>
+    <li>
+      <div>
+        1
+      </div>
+    </li>
+    <li>
+      <div>
+        2
+      </div>
+    </li>
+    <li>
+      <div>
+        3
+      </div>
+    </li>
+  </ul>
+</MapChildComp>"
+`;

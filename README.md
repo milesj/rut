@@ -44,7 +44,7 @@ SUPPORTED
 - [x] Refs: `createRef`, `forwardRef`, callback and string refs.
 - [x] Error boundaries.
 - [x] Fragments.
-- [ ] Function children.
+- [x] Function children.
 - [ ] Render props.
 - [ ] HOCs.
 - [ ] Event emitting.
