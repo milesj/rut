@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Refs callback refs resolves the callback ref 1`] = `
+"<Input value=\\"foo\\">
+  <input value=\\"foo\\">
+
+  </input>
+</Input>"
+`;
+
+exports[`Refs createRef resolves the ref 1`] = `
+"<Section>
+  <div>
+    Child
+  </div>
+</Section>"
+`;
+
+exports[`Refs forwardRef resolves the ref from the HOC 1`] = `
+"<WithRef forwardedRef={(InnerButton)}>
+  <InnerButton>
+    <button type=\\"button\\">
+      Child
+    </button>
+  </InnerButton>
+</WithRef>"
+`;
+
+exports[`Refs forwardRef resolves the ref from the inner component 1`] = `
+"<button type=\\"button\\">
+  Child
+</button>"
+`;
+
+exports[`Refs string refs resolves the string ref 1`] = `
+"<Link href=\\"/\\">
+  <a href=\\"/\\">
+    Child
+  </a>
+</Link>"
+`;

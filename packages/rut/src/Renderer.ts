@@ -17,22 +17,12 @@ export default class Renderer<Props = UnknownProps> extends Queryable {
 
   private renderer: ReactTestRenderer;
 
-  constructor(element: React.ReactElement<Props>, options: RendererOptions = {}) {
+  constructor(element: React.ReactElement<Props>, { refs = {} }: RendererOptions = {}) {
     super();
-
-    const { refs = {} } = options;
 
     this.element = element;
     this.renderer = create(element, {
-      createNodeMock: node => {
-        const name = getTypeName(node.type);
-
-        if (refs[name]) {
-          return refs[name];
-        }
-
-        return null;
-      },
+      createNodeMock: node => refs[getTypeName(node.type)] || null,
     });
   }
 

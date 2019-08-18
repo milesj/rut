@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fragment renders long form 1`] = `
+"<ul>
+  <Items>
+    <li>
+      One
+    </li>
+    <li>
+      Two
+    </li>
+    <li>
+      Three
+    </li>
+  </Items>
+</ul>"
+`;
+
+exports[`Fragment renders short form 1`] = `
+"<ul>
+  <Items>
+    <li>
+      One
+    </li>
+    <li>
+      Two
+    </li>
+    <li>
+      Three
+    </li>
+  </Items>
+</ul>"
+`;

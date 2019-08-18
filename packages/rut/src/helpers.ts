@@ -154,6 +154,12 @@ export function getTypeName(type: unknown): string {
  * formatted as a JSX element.
  */
 export function getNodeName(type: unknown): string {
+  // Text node
+  if (typeof type === 'string') {
+    return `"${type}"`;
+  }
+
+  // Component or element nodes
   const name = getTypeName(type);
 
   return name === 'UNKNOWN' ? name : `<${name} />`;
@@ -198,9 +204,13 @@ export function shallowEqual(objA: unknown, objB: unknown): boolean {
   return true;
 }
 
+// Keep a reference to the original timeout in case Jest
+// or another framework mocks it with a fake implementation.
+const nativeSetTimeout = global.setTimeout.bind(global);
+
 export function wait(delay: number = 1) {
   return new Promise(resolve => {
-    setTimeout(() => {
+    nativeSetTimeout(() => {
       resolve();
     }, delay);
   });

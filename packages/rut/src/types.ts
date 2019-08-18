@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-namespace */
 
 import React from 'react';
 
@@ -14,7 +14,12 @@ export interface UnknownProps {
 
 export interface TestNode {
   children: (TestNode | string)[];
-  instance: unknown;
+  instance: {
+    context: object;
+    props: UnknownProps;
+    refs: { [key: string]: any };
+    state: object;
+  } | null;
   parent: TestNode | null;
   props: UnknownProps;
   type: React.ElementType;
@@ -26,7 +31,7 @@ export interface FiberNode {
   index: number;
   key: string | null;
   mode: number;
-  ref: React.RefObject<unknown> | null;
+  ref: any;
   return: FiberNode | null;
   sibling: FiberNode | null;
   tag: number;

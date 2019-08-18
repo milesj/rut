@@ -41,6 +41,27 @@ export default class Element<Props = UnknownProps> extends Queryable {
     return this.testInstance().props as Props;
   }
 
+  ref<T>(name?: string): T | null {
+    const inst = this.testInstance().instance;
+    const fiber = this.testInstance()._fiber;
+
+    if (!name || fiber.ref) {
+      return fiber.ref;
+    }
+
+    // Callback refs
+    if (name in inst) {
+      return inst[name];
+    }
+
+    // String refs
+    if (inst.refs[name]) {
+      return inst.refs[name];
+    }
+
+    return null;
+  }
+
   type(): React.ElementType {
     return this.testInstance().type;
   }
