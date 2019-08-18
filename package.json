@@ -44,6 +44,11 @@
       "node": true,
       "react": true
     },
+    "eslint": {
+      "rules": {
+        "no-underscore-dangle": "off"
+      }
+    },
     "jest": {
       "setupFilesAfterEnv": [
         "./packages/jest-rut/lib/index.js"

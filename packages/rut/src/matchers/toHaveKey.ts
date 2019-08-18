@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-
 import Element from '../Element';
 import { checkIsRutElement } from '../helpers';
 import { MatchResult } from '../types';

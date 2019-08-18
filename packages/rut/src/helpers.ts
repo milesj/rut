@@ -1,4 +1,4 @@
-/* eslint-disable complexity, no-underscore-dangle */
+/* eslint-disable complexity */
 
 import React from 'react';
 import * as ReactIs from 'react-is';

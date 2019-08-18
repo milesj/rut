@@ -1,4 +1,4 @@
-/* eslint-disable max-classes-per-file, import/no-extraneous-dependencies */
+/* eslint-disable max-classes-per-file */
 
 import React from 'react';
 

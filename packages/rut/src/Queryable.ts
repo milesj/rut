@@ -38,7 +38,6 @@ export default abstract class Queryable {
     const inst = this.testInstance();
 
     // Use the raw fiber types for names, as they preserve the internal node structures
-    // eslint-disable-next-line no-underscore-dangle
     return getTypeName(inst._fiber.elementType || inst._fiber.type);
   }
 
@@ -51,12 +50,9 @@ export default abstract class Queryable {
     predicate: (node: TestNode, fiber: FiberNode) => boolean,
     options?: { deep?: boolean },
   ): Element[] {
-    return (
-      this.testInstance()
-        // eslint-disable-next-line no-underscore-dangle
-        .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
-        .map(node => new Element(node))
-    );
+    return this.testInstance()
+      .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
+      .map(node => new Element(node));
   }
 
   /**
