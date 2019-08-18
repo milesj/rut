@@ -6,7 +6,7 @@ exports[`State class components re-renders when state changes 1`] = `
     <div>
       Inactive
     </div>
-    <button type=\\"button\\" onClick={(function)}>
+    <button type=\\"button\\" onClick={func()}>
       Toggle
     </button>
   </div>
@@ -19,7 +19,7 @@ exports[`State class components re-renders when state changes 2`] = `
     <div>
       Active
     </div>
-    <button type=\\"button\\" onClick={(function)}>
+    <button type=\\"button\\" onClick={func()}>
       Toggle
     </button>
   </div>
@@ -32,7 +32,7 @@ exports[`State function components (\`useState\` hook) re-renders when state cha
     <div>
       Inactive
     </div>
-    <button type=\\"button\\" onClick={(function)}>
+    <button type=\\"button\\" onClick={handleToggle()}>
       Toggle
     </button>
   </div>
@@ -45,7 +45,7 @@ exports[`State function components (\`useState\` hook) re-renders when state cha
     <div>
       Active
     </div>
-    <button type=\\"button\\" onClick={(function)}>
+    <button type=\\"button\\" onClick={handleToggle()}>
       Toggle
     </button>
   </div>

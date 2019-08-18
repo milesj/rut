@@ -17,7 +17,7 @@ exports[`Refs createRef resolves the ref 1`] = `
 `;
 
 exports[`Refs forwardRef resolves the ref from the HOC 1`] = `
-"<WithRef forwardedRef={(InnerButton)}>
+"<WithRef forwardedRef={InnerButton}>
   <InnerButton>
     <button type=\\"button\\">
       Child

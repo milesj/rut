@@ -33,12 +33,13 @@ function sortAndFormatProps(names: string[], props: ReactTestRendererTree['props
     if (typeOf === 'string') {
       propValue = `"${value}"`;
     } else if (typeOf === 'function') {
-      propValue = '(function)';
+      propValue = `${value.name || 'func'}()`;
     } else if (typeOf === 'object') {
       console.log({ name, typeOf, value });
 
+      // Ref
       if ('current' in value) {
-        propValue = `(${getTypeName(value.current)})`;
+        propValue = getTypeName(value.current);
       } else {
         propValue = 'TODO';
       }
