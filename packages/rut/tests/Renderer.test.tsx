@@ -205,11 +205,23 @@ describe('Renderer', () => {
       }
     }
 
+    class PureClassUpdateTest extends React.PureComponent<UpdateProps> {
+      render() {
+        const { children } = this.props;
+
+        count += 1;
+
+        return children ? <div>{children}</div> : null;
+      }
+    }
+
     function FuncUpdateTest({ children }: UpdateProps) {
       count += 1;
 
       return children ? <div>{children}</div> : null;
     }
+
+    const MemoFuncUpdateTest = React.memo(FuncUpdateTest);
 
     beforeEach(() => {
       count = 0;
@@ -251,6 +263,18 @@ describe('Renderer', () => {
         await wrapper.update({}, child);
 
         expect(wrapper.root()).toContainNode(child);
+      });
+
+      it('doesnt re-render if pure and props dont change', async () => {
+        const wrapper = render(<PureClassUpdateTest />);
+
+        await wrapper.update();
+        await wrapper.update();
+        await wrapper.update();
+        await wrapper.update();
+        await wrapper.update();
+
+        expect(count).toBe(2);
       });
 
       it('triggers update life cycles', async () => {
@@ -325,6 +349,18 @@ describe('Renderer', () => {
         await wrapper.update({}, child);
 
         expect(wrapper.root()).toContainNode(child);
+      });
+
+      it('doesnt re-render if memoized and props dont change', async () => {
+        const wrapper = render(<MemoFuncUpdateTest />);
+
+        await wrapper.update();
+        await wrapper.update();
+        await wrapper.update();
+        await wrapper.update();
+        await wrapper.update();
+
+        expect(count).toBe(2);
       });
 
       it('triggers `useEffect` each update when no cache', async () => {

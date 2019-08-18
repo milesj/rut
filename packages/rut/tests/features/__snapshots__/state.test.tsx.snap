@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`State class components re-renders when state changes 1`] = `
+"<StatefulComp>
+  <div>
+    <div>
+      Inactive
+    </div>
+    <button type=\\"button\\" onClick={(function)}>
+      Toggle
+    </button>
+  </div>
+</StatefulComp>"
+`;
+
+exports[`State class components re-renders when state changes 2`] = `
+"<StatefulComp>
+  <div>
+    <div>
+      Active
+    </div>
+    <button type=\\"button\\" onClick={(function)}>
+      Toggle
+    </button>
+  </div>
+</StatefulComp>"
+`;
+
+exports[`State function components (\`useState\` hook) re-renders when state changes 1`] = `
+"<StatefulComp>
+  <div>
+    <div>
+      Inactive
+    </div>
+    <button type=\\"button\\" onClick={(function)}>
+      Toggle
+    </button>
+  </div>
+</StatefulComp>"
+`;
+
+exports[`State function components (\`useState\` hook) re-renders when state changes 2`] = `
+"<StatefulComp>
+  <div>
+    <div>
+      Active
+    </div>
+    <button type=\\"button\\" onClick={(function)}>
+      Toggle
+    </button>
+  </div>
+</StatefulComp>"
+`;

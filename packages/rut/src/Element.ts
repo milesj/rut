@@ -1,4 +1,4 @@
-import { ReactTestInstance } from 'react-test-renderer';
+import { ReactTestInstance, act } from 'react-test-renderer';
 import { Args, UnknownProps } from './types';
 import Queryable from './Queryable';
 
@@ -30,7 +30,13 @@ export default class Element<Props = UnknownProps> extends Queryable {
       throw new TypeError(`${name} is not a function.`);
     }
 
-    return prop(...args);
+    let value;
+
+    act(() => {
+      value = prop(...args);
+    });
+
+    return value;
   }
 
   prop<K extends keyof Props>(name: K): Props[K] | undefined {

@@ -35,11 +35,11 @@ SUPPORTED
 
 - [x] Class components.
   - [x] Life-cycles.
-  - [ ] State changes.
-  - [ ] Pure.
+  - [x] State changes.
+  - [x] Pure.
 - [x] Function components.
   - [ ] Hooks.
-  - [ ] Memo.
+  - [x] Memo.
 - [x] Context: `Provider`, `Consumer`, `useContext`.
 - [x] Refs: `createRef`, `forwardRef`, callback and string refs.
 - [x] Error boundaries.
