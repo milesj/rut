@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ForwardRef HOC resolves the ref from the HOC 1`] = `
+"<WithRef forwardedRef={(InnerButton)}>
+  <InnerButton>
+    <button type=\\"button\\">
+      Child
+    </button>
+  </InnerButton>
+</WithRef>"
+`;
+
+exports[`ForwardRef common resolves the ref from the inner component 1`] = `
+"<button type=\\"button\\">
+  Child
+</button>"
+`;

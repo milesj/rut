@@ -1,7 +1,6 @@
 /* eslint-disable max-classes-per-file, import/no-extraneous-dependencies */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 interface TestProps {
   name?: string;
@@ -43,5 +42,3 @@ export const ForwardRefComp = React.forwardRef((props, ref) => {
 export const LazyComp = React.lazy(() => Promise.resolve({ default: FuncComp }));
 
 export const MemoComp = React.memo(FuncComp);
-
-export const portalElement = ReactDOM.createPortal(<div />, document.createElement('div'));

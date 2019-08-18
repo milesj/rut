@@ -22,18 +22,34 @@ function sortAndFormatProps(names: string[], props: ReactTestRendererTree['props
 
     if (value === undefined) {
       return;
+    } else if (value === true) {
+      output.push(name);
+
+      return;
     }
 
-    if (value === true) {
-      output.push(name);
-    } else if (typeOf === 'string') {
-      output.push(`${name}="${value}"`);
+    let propValue;
+
+    if (typeOf === 'string') {
+      propValue = `"${value}"`;
     } else if (typeOf === 'function') {
-      output.push(`${name}={function}`);
+      propValue = '(function)';
     } else if (typeOf === 'object') {
-      output.push(`${name}={TODO}`);
+      console.log({ name, typeOf, value });
+
+      if ('current' in value) {
+        propValue = `(${getTypeName(value.current)})`;
+      } else {
+        propValue = 'TODO';
+      }
     } else {
-      output.push(`${name}={${formatValue(value)}}`);
+      propValue = formatValue(value);
+    }
+
+    if (propValue.startsWith('"')) {
+      output.push(`${name}=${propValue}`);
+    } else {
+      output.push(`${name}={${propValue}}`);
     }
   });
 

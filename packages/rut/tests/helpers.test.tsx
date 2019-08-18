@@ -9,7 +9,6 @@ import {
   ForwardRefComp,
   LazyComp,
   MemoComp,
-  portalElement,
 } from './fixtures';
 
 describe('helpers', () => {
@@ -79,10 +78,6 @@ describe('helpers', () => {
 
     it('returns profiler + id name', () => {
       expect(getTypeName(<React.Profiler id="test" onRender={jest.fn()} />)).toBe('Profiler(test)');
-    });
-
-    it('returns portal name', () => {
-      expect(getTypeName(portalElement)).toBe('Portal(div)');
     });
 
     it('returns strict mode name', () => {

@@ -9,18 +9,31 @@ import {
 import Element from './Element';
 import Queryable from './Queryable';
 import debug from './debug';
-import { UnknownProps } from './types';
+import { UnknownProps, RendererOptions } from './types';
+import { getTypeName } from './helpers';
 
 export default class Renderer<Props = UnknownProps> extends Queryable {
   private element: React.ReactElement<Props>;
 
   private renderer: ReactTestRenderer;
 
-  constructor(element: React.ReactElement<Props>) {
+  constructor(element: React.ReactElement<Props>, options: RendererOptions = {}) {
     super();
 
+    const { refs = {} } = options;
+
     this.element = element;
-    this.renderer = create(element);
+    this.renderer = create(element, {
+      createNodeMock: node => {
+        const name = getTypeName(node.type);
+
+        if (refs[name]) {
+          return refs[name];
+        }
+
+        return null;
+      },
+    });
   }
 
   /**

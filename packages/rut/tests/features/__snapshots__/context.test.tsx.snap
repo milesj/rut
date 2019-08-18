@@ -3,7 +3,7 @@
 exports[`Context Consumer renders within provider and inherits the defined value 1`] = `
 "<Provider theme=\\"dark\\">
   <div>
-    <Consumer spy={function}>
+    <Consumer spy={(function)}>
       <div>
         Consumed!
       </div>
@@ -21,7 +21,7 @@ exports[`Context Provider renders a provider without consumer, and its children 
 exports[`Context contextType renders within provider and inherits the defined value 1`] = `
 "<Provider theme=\\"dark\\">
   <div>
-    <StaticConsumer spy={function}>
+    <StaticConsumer spy={(function)}>
       <div>
         Consumed!
       </div>
@@ -33,7 +33,7 @@ exports[`Context contextType renders within provider and inherits the defined va
 exports[`Context useContext renders within provider and inherits the defined value 1`] = `
 "<Provider theme=\\"dark\\">
   <div>
-    <HookConsumer spy={function}>
+    <HookConsumer spy={(function)}>
       <div>
         Consumed!
       </div>

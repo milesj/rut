@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ErrorBoundary renders and logs a caught error 1`] = `
-"<ErrorBoundary spy={function}>
+"<ErrorBoundary spy={(function)}>
   <div>
     Oops!
   </div>
@@ -9,7 +9,7 @@ exports[`ErrorBoundary renders and logs a caught error 1`] = `
 `;
 
 exports[`ErrorBoundary renders the child if no error 1`] = `
-"<ErrorBoundary spy={function}>
+"<ErrorBoundary spy={(function)}>
   <section>
     <div>
       Content

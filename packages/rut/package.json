@@ -30,9 +30,5 @@
     "@types/react-test-renderer": "*",
     "react-is": "^16.9.0",
     "react-test-renderer": "^16.9.0"
-  },
-  "devDependencies": {
-    "@types/react-dom": "*",
-    "react-dom": "^16.9.0"
   }
 }

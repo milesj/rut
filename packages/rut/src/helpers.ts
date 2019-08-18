@@ -2,6 +2,7 @@
 
 import React from 'react';
 import * as ReactIs from 'react-is';
+import Element from './Element';
 import { UnknownProps } from './types';
 
 /**
@@ -56,6 +57,15 @@ export function isReactNodeLike(value: unknown): value is NodeLike {
 }
 
 /**
+ * Return true if the value is a React class component instance.
+ */
+export function isReactClassInstance(value: unknown): value is Function {
+  return (
+    typeof value === 'object' && !!value && 'isReactComponent' in value && 'constructor' in value
+  );
+}
+
+/**
  * Return the `displayName` of a React context node, otherwise return "Context".
  */
 export function getContextName(node: NodeLike): string {
@@ -80,7 +90,11 @@ export function getTypeName(type: unknown): string {
     return type.displayName || type.name;
   }
 
-  if (!isReactNodeLike(type)) {
+  if (isReactClassInstance(type)) {
+    return getTypeName(type.constructor);
+  }
+
+  if (!isReactNodeLike(type) || typeof type === 'string') {
     return String(type);
   }
 
@@ -182,4 +196,12 @@ export function shallowEqual(objA: unknown, objB: unknown): boolean {
   }
 
   return true;
+}
+
+export function wait(delay: number = 1) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, delay);
+  });
 }

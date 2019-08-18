@@ -25,7 +25,8 @@
     "@types/react-is": "^16.7.1",
     "@types/react-test-renderer": "^16.9.0",
     "lerna": "^3.16.4",
-    "react": "^16.9.0"
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   },
   "workspaces": [
     "packages/*"
@@ -46,7 +47,8 @@
     "jest": {
       "setupFilesAfterEnv": [
         "./packages/jest-rut/lib/index.js"
-      ]
+      ],
+      "testEnvironment": "node"
     }
   }
 }
