@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`debug() adds key and ref props first 1`] = `
+"<ClassComp key=\\"123\\" ref={ClassComp} name=\\"test\\">
+  <div />
+</ClassComp>"
+`;
+
 exports[`debug() formats array props 1`] = `
 "<ArrayProp list={['string', 123, true, null, {}, ... 1 more item]}>
   <ul />

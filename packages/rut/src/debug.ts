@@ -1,24 +1,11 @@
 import util from 'util';
 import React from 'react';
-import { ReactTestRendererTree } from 'react-test-renderer';
-import { getTypeName, shallowEqual } from './helpers';
+import { ReactTestRendererTree as Node } from 'react-test-renderer';
+import { getTypeName, getNodeName } from './helpers';
 
-export function formatValue(value: unknown): string {
-  const typeOf = typeof value;
+type Props = Node['props'];
 
-  if (typeOf === 'string') {
-    return `"${value}"`;
-  } else if (
-    typeOf === 'number' ||
-    typeOf === 'boolean' ||
-    value === null ||
-    value instanceof RegExp
-  ) {
-    return String(value);
-  }
-
-  return `\`${String(value)}\``;
-}
+const MAX_INLINE_PROPS = 10;
 
 function toArray<T>(value?: null | T | T[]): T[] {
   if (!value) {
@@ -28,30 +15,7 @@ function toArray<T>(value?: null | T | T[]): T[] {
   return Array.isArray(value) ? value : [value];
 }
 
-function findMatchingNodeProp(
-  nodes: ReactTestRendererTree[],
-  element: React.ReactElement,
-): ReactTestRendererTree | null {
-  return (
-    nodes.find(node => {
-      if (node.type === element.type && shallowEqual(node.props, element.props)) {
-        return node;
-      }
-
-      if (node.rendered) {
-        return findMatchingNodeProp(toArray(node.rendered), element);
-      }
-
-      return undefined;
-    }) || null
-  );
-}
-
-function sortAndFormatProps(
-  names: string[],
-  props: ReactTestRendererTree['props'],
-  nodes: ReactTestRendererTree[],
-): string[] {
+function sortAndFormatProps(names: string[], props: Props): string[] {
   const output: string[] = [];
 
   names.sort().forEach(name => {
@@ -68,21 +32,25 @@ function sortAndFormatProps(
 
     let propValue;
 
+    // String
     if (typeOf === 'string') {
       propValue = `"${value}"`;
+
+      // Function
     } else if (typeOf === 'function') {
       propValue = `${value.name || 'func'}()`;
-    } else if (typeOf === 'object') {
-      console.log({ name, typeOf, value });
 
+      // Objects
+    } else if (typeOf === 'object' && !!value) {
       // Element
       if (React.isValidElement(value)) {
-        // eslint-disable-next-line
-        propValue = debug(findMatchingNodeProp(nodes, value));
+        propValue = getNodeName(value);
+
         // Ref
       } else if ('current' in value) {
         propValue = getTypeName(value.current);
-        // Arrays, objects, maps, sets
+
+        // Arrays, objects, maps, sets, etc
       } else {
         propValue = util
           .inspect(value, {
@@ -94,8 +62,10 @@ function sortAndFormatProps(
           .replace(/ \}/gu, '}')
           .replace(/ \]/gu, ']');
       }
+
+      // Everything else
     } else {
-      propValue = formatValue(value);
+      propValue = String(value);
     }
 
     if (propValue.startsWith('"')) {
@@ -108,12 +78,30 @@ function sortAndFormatProps(
   return output;
 }
 
-function formatProps(
-  props: ReactTestRendererTree['props'],
-  nodes: ReactTestRendererTree[],
-): string {
+function getKeyAndRef(node: Node): Props {
+  const props: Props = {};
+
+  if (!node.instance) {
+    return props;
+  }
+
+  // @ts-ignore Allow internal access
+  const { key, ref } = node.instance._reactInternalFiber;
+
+  if (key) {
+    props.key = key;
+  }
+
+  if (ref) {
+    props.ref = ref;
+  }
+
+  return props;
+}
+
+function getProps(props: Props, internal: Props): string[] {
   if (!props || typeof props !== 'object') {
-    return '';
+    return [];
   }
 
   const all: string[] = [];
@@ -134,50 +122,79 @@ function formatProps(
     }
   });
 
-  const output = [
-    ...sortAndFormatProps(truthies, props, nodes),
-    ...sortAndFormatProps(all, props, nodes),
-    ...sortAndFormatProps(handlers, props, nodes),
+  return [
+    ...sortAndFormatProps(['key', 'ref'], internal),
+    ...sortAndFormatProps(truthies, props),
+    ...sortAndFormatProps(all, props),
+    ...sortAndFormatProps(handlers, props),
   ];
-
-  return output.length === 0 ? '' : ` ${output.join(' ')}`;
 }
 
 function isAllTextNodes(nodes: unknown[]): boolean {
   return nodes.every(node => typeof node === 'string');
 }
 
-export default function debug(
-  node: ReactTestRendererTree | string | null,
-  depth: number = 0,
-): string {
+export default function debug(node: Node | string | null, depth: number = 0): string {
   if (!node) {
     return '';
   }
 
   const indent = '  '.repeat(depth);
 
+  // Text node, return immediately
   if (typeof node === 'string') {
     return `${indent}${node}`;
   }
 
-  const nodes: ReactTestRendererTree[] = toArray(node.rendered);
+  const nodes = toArray(node.rendered);
   const name = getTypeName(node.type);
-  const props = formatProps(node.props, nodes);
+  const props = getProps(node.props, getKeyAndRef(node));
+  const inlineProps = props.join(' ');
+  const isStacked =
+    props.length >= MAX_INLINE_PROPS || inlineProps.length >= process.stdout.columns!;
+  let output = `${indent}<${name}`;
 
-  if (nodes.length === 0) {
-    return `${indent}<${name}${props} />`;
+  // Stack vertically when props exceed the limit or terminal width
+  if (isStacked) {
+    output += '\n';
+    output += props.map(prop => indent + indent + prop).join('\n');
+    output += '\n';
+
+    // Otherwise inline them
+  } else if (inlineProps) {
+    output += ` ${inlineProps}`;
   }
 
-  let children = '';
+  // If no children, self close and return
+  if (nodes.length === 0) {
+    if (isStacked) {
+      output += `${indent}/>`;
+    } else {
+      output += ' />';
+    }
+
+    return output;
+  }
+
+  // Otherwise finish opening tag
+  if (isStacked) {
+    output += `${indent}>`;
+  } else {
+    output += '>';
+  }
 
   // Inline if only text with no props
-  if (isAllTextNodes(nodes) && props === '') {
-    children = nodes.join('');
+  if (isAllTextNodes(nodes) && props.length === 0) {
+    output += nodes.join('');
+
     // Otherwise continue nested indentation
   } else {
-    children = `\n${nodes.map(child => debug(child, depth + 1)).join('\n')}\n${indent}`;
+    output += '\n';
+    output += nodes.map(child => debug(child, depth + 1)).join('\n');
+    output += `\n${indent}`;
   }
 
-  return `${indent}<${name}${props}>${children}</${name}>`;
+  output += `</${name}>`;
+
+  return output;
 }

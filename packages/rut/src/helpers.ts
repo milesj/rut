@@ -25,6 +25,21 @@ export function checkIsRutElement(value: unknown) {
   throw new Error('Expected a Rut `Element`.');
 }
 
+/**
+ * Format a value for use within error messages.
+ */
+export function formatValue(value: unknown): string {
+  const typeOf = typeof value;
+
+  if (typeOf === 'string') {
+    return `"${value}"`;
+  } else if (typeOf === 'number' || typeOf === 'boolean' || value === null) {
+    return String(value);
+  }
+
+  return `\`${String(value)}\``;
+}
+
 interface NodeLike {
   $$typeof: symbol | number;
   type?: NodeLike;
@@ -160,9 +175,7 @@ export function getNodeName(type: unknown): string {
   }
 
   // Component or element nodes
-  const name = getTypeName(type);
-
-  return name === 'UNKNOWN' ? name : `<${name} />`;
+  return `<${getTypeName(type)} />`;
 }
 
 // Keep shallow equal in sync with React core!
