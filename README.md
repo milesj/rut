@@ -45,7 +45,7 @@ SUPPORTED
 - [x] Error boundaries.
 - [x] Fragments.
 - [x] Function children.
-- [ ] Render props.
+- [x] Render props.
 - [ ] HOCs.
 - [ ] Event emitting.
 - [ ] Uncontrolled forms.

@@ -3,9 +3,7 @@
 exports[`State class components re-renders when state changes 1`] = `
 "<StatefulComp>
   <div>
-    <div>
-      Inactive
-    </div>
+    <div>Inactive</div>
     <button type=\\"button\\" onClick={func()}>
       Toggle
     </button>
@@ -16,9 +14,7 @@ exports[`State class components re-renders when state changes 1`] = `
 exports[`State class components re-renders when state changes 2`] = `
 "<StatefulComp>
   <div>
-    <div>
-      Active
-    </div>
+    <div>Active</div>
     <button type=\\"button\\" onClick={func()}>
       Toggle
     </button>
@@ -29,9 +25,7 @@ exports[`State class components re-renders when state changes 2`] = `
 exports[`State function components (\`useState\` hook) re-renders when state changes 1`] = `
 "<StatefulComp>
   <div>
-    <div>
-      Inactive
-    </div>
+    <div>Inactive</div>
     <button type=\\"button\\" onClick={handleToggle()}>
       Toggle
     </button>
@@ -42,9 +36,7 @@ exports[`State function components (\`useState\` hook) re-renders when state cha
 exports[`State function components (\`useState\` hook) re-renders when state changes 2`] = `
 "<StatefulComp>
   <div>
-    <div>
-      Active
-    </div>
+    <div>Active</div>
     <button type=\\"button\\" onClick={handleToggle()}>
       Toggle
     </button>

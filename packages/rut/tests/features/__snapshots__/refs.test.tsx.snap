@@ -2,17 +2,13 @@
 
 exports[`Refs callback refs resolves the callback ref 1`] = `
 "<Input value=\\"foo\\">
-  <input value=\\"foo\\">
-
-  </input>
+  <input value=\\"foo\\" />
 </Input>"
 `;
 
 exports[`Refs createRef resolves the ref 1`] = `
 "<Section>
-  <div>
-    Child
-  </div>
+  <div>Child</div>
 </Section>"
 `;
 

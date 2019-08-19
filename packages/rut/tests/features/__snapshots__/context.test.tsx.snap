@@ -4,27 +4,19 @@ exports[`Context Consumer renders within provider and inherits the defined value
 "<Provider theme=\\"dark\\">
   <div>
     <Consumer spy={mockConstructor()}>
-      <div>
-        Consumed!
-      </div>
+      <div>Consumed!</div>
     </Consumer>
   </div>
 </Provider>"
 `;
 
-exports[`Context Provider renders a provider without consumer, and its children 1`] = `
-"<Provider>
-  Child
-</Provider>"
-`;
+exports[`Context Provider renders a provider without consumer, and its children 1`] = `"<Provider>Child</Provider>"`;
 
 exports[`Context contextType renders within provider and inherits the defined value 1`] = `
 "<Provider theme=\\"dark\\">
   <div>
     <StaticConsumer spy={mockConstructor()}>
-      <div>
-        Consumed!
-      </div>
+      <div>Consumed!</div>
     </StaticConsumer>
   </div>
 </Provider>"
@@ -34,9 +26,7 @@ exports[`Context useContext renders within provider and inherits the defined val
 "<Provider theme=\\"dark\\">
   <div>
     <HookConsumer spy={mockConstructor()}>
-      <div>
-        Consumed!
-      </div>
+      <div>Consumed!</div>
     </HookConsumer>
   </div>
 </Provider>"

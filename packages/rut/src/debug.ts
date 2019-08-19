@@ -89,6 +89,10 @@ function formatProps(props: ReactTestRendererTree['props']): string {
   return output.length === 0 ? '' : ` ${output.join(' ')}`;
 }
 
+function isAllTextNodes(nodes: unknown[]): boolean {
+  return nodes.every(node => typeof node === 'string');
+}
+
 export default function debug(
   node: ReactTestRendererTree | string | null,
   depth: number = 0,
@@ -106,14 +110,23 @@ export default function debug(
   const name = getTypeName(node.type);
   const props = formatProps(node.props);
 
-  if (!node.rendered) {
+  // @ts-ignore Types upstream are incorrect
+  if (!node.rendered || node.rendered.length === 0) {
     return `${indent}<${name}${props} />`;
   }
 
   const nodes: ReactTestRendererTree[] = Array.isArray(node.rendered)
     ? node.rendered
     : [node.rendered];
-  const children = nodes.map(child => debug(child, depth + 1));
+  let children = '';
 
-  return `${indent}<${name}${props}>\n${children.join('\n')}\n${indent}</${name}>`;
+  // Inline if only text with no props
+  if (isAllTextNodes(nodes) && props === '') {
+    children = nodes.join('');
+    // Otherwise continue nested indentation
+  } else {
+    children = `\n${nodes.map(child => debug(child, depth + 1)).join('\n')}\n${indent}`;
+  }
+
+  return `${indent}<${name}${props}>${children}</${name}>`;
 }

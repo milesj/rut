@@ -2,18 +2,14 @@
 
 exports[`ErrorBoundary renders and logs a caught error 1`] = `
 "<ErrorBoundary spy={mockConstructor()}>
-  <div>
-    Oops!
-  </div>
+  <div>Oops!</div>
 </ErrorBoundary>"
 `;
 
 exports[`ErrorBoundary renders the child if no error 1`] = `
 "<ErrorBoundary spy={mockConstructor()}>
   <section>
-    <div>
-      Content
-    </div>
+    <div>Content</div>
   </section>
 </ErrorBoundary>"
 `;
