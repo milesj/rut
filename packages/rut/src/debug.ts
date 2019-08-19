@@ -1,19 +1,57 @@
+import util from 'util';
+import React from 'react';
 import { ReactTestRendererTree } from 'react-test-renderer';
-import { getTypeName } from './helpers';
+import { getTypeName, shallowEqual } from './helpers';
 
 export function formatValue(value: unknown): string {
   const typeOf = typeof value;
 
   if (typeOf === 'string') {
     return `"${value}"`;
-  } else if (typeOf === 'number' || typeOf === 'boolean' || value === null) {
+  } else if (
+    typeOf === 'number' ||
+    typeOf === 'boolean' ||
+    value === null ||
+    value instanceof RegExp
+  ) {
     return String(value);
   }
 
   return `\`${String(value)}\``;
 }
 
-function sortAndFormatProps(names: string[], props: ReactTestRendererTree['props']): string[] {
+function toArray<T>(value?: null | T | T[]): T[] {
+  if (!value) {
+    return [];
+  }
+
+  return Array.isArray(value) ? value : [value];
+}
+
+function findMatchingNodeProp(
+  nodes: ReactTestRendererTree[],
+  element: React.ReactElement,
+): ReactTestRendererTree | null {
+  return (
+    nodes.find(node => {
+      if (node.type === element.type && shallowEqual(node.props, element.props)) {
+        return node;
+      }
+
+      if (node.rendered) {
+        return findMatchingNodeProp(toArray(node.rendered), element);
+      }
+
+      return undefined;
+    }) || null
+  );
+}
+
+function sortAndFormatProps(
+  names: string[],
+  props: ReactTestRendererTree['props'],
+  nodes: ReactTestRendererTree[],
+): string[] {
   const output: string[] = [];
 
   names.sort().forEach(name => {
@@ -37,11 +75,24 @@ function sortAndFormatProps(names: string[], props: ReactTestRendererTree['props
     } else if (typeOf === 'object') {
       console.log({ name, typeOf, value });
 
-      // Ref
-      if ('current' in value) {
+      // Element
+      if (React.isValidElement(value)) {
+        // eslint-disable-next-line
+        propValue = debug(findMatchingNodeProp(nodes, value));
+        // Ref
+      } else if ('current' in value) {
         propValue = getTypeName(value.current);
+        // Arrays, objects, maps, sets
       } else {
-        propValue = 'TODO';
+        propValue = util
+          .inspect(value, {
+            depth: 1,
+            maxArrayLength: 5,
+          })
+          .replace(/\{ /gu, '{')
+          .replace(/\[ /gu, '[')
+          .replace(/ \}/gu, '}')
+          .replace(/ \]/gu, ']');
       }
     } else {
       propValue = formatValue(value);
@@ -57,7 +108,10 @@ function sortAndFormatProps(names: string[], props: ReactTestRendererTree['props
   return output;
 }
 
-function formatProps(props: ReactTestRendererTree['props']): string {
+function formatProps(
+  props: ReactTestRendererTree['props'],
+  nodes: ReactTestRendererTree[],
+): string {
   if (!props || typeof props !== 'object') {
     return '';
   }
@@ -81,9 +135,9 @@ function formatProps(props: ReactTestRendererTree['props']): string {
   });
 
   const output = [
-    ...sortAndFormatProps(truthies, props),
-    ...sortAndFormatProps(all, props),
-    ...sortAndFormatProps(handlers, props),
+    ...sortAndFormatProps(truthies, props, nodes),
+    ...sortAndFormatProps(all, props, nodes),
+    ...sortAndFormatProps(handlers, props, nodes),
   ];
 
   return output.length === 0 ? '' : ` ${output.join(' ')}`;
@@ -107,17 +161,14 @@ export default function debug(
     return `${indent}${node}`;
   }
 
+  const nodes: ReactTestRendererTree[] = toArray(node.rendered);
   const name = getTypeName(node.type);
-  const props = formatProps(node.props);
+  const props = formatProps(node.props, nodes);
 
-  // @ts-ignore Types upstream are incorrect
-  if (!node.rendered || node.rendered.length === 0) {
+  if (nodes.length === 0) {
     return `${indent}<${name}${props} />`;
   }
 
-  const nodes: ReactTestRendererTree[] = Array.isArray(node.rendered)
-    ? node.rendered
-    : [node.rendered];
   let children = '';
 
   // Inline if only text with no props
