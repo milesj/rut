@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HOCs can render the wrapped component + hoc 1`] = `
+<withStyles(Wrapped) id={1}>
+  <Wrapped id={1} styles={{ color: 'green' }}>
+    <div>Styled!</div>
+  </Wrapped>
+</withStyles(Wrapped)>
+`;
+
+exports[`HOCs supports multiple layers of HOCs 1`] = `
+<connect(withStyles(DeepWrapped)) id={4}>
+  <withStyles(DeepWrapped) connected id={4}>
+    <DeepWrapped connected id={4} styles={{ color: 'green' }}>
+      <div>Styled!</div>
+    </DeepWrapped>
+  </withStyles(DeepWrapped)>
+</connect(withStyles(DeepWrapped))>
+`;

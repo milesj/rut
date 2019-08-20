@@ -45,7 +45,7 @@ SUPPORTED
 - [x] Fragments.
 - [x] Function children.
 - [x] Render props.
-- [ ] HOCs and composition.
+- [x] HOCs and composition.
 - [ ] Event emitting.
 - [ ] Uncontrolled forms.
 
