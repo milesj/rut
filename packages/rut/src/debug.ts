@@ -5,7 +5,8 @@ import { getTypeName, getNodeName } from './helpers';
 
 type Props = Node['props'];
 
-const MAX_INLINE_PROPS = 10;
+const MAX_INLINE_PROPS = 6;
+const DEFAULT_TERM_WIDTH = 80;
 
 function toArray<T>(value?: null | T | T[]): T[] {
   if (!value) {
@@ -52,15 +53,10 @@ function sortAndFormatProps(names: string[], props: Props): string[] {
 
         // Arrays, objects, maps, sets, etc
       } else {
-        propValue = util
-          .inspect(value, {
-            depth: 1,
-            maxArrayLength: 5,
-          })
-          .replace(/\{ /gu, '{')
-          .replace(/\[ /gu, '[')
-          .replace(/ \}/gu, '}')
-          .replace(/ \]/gu, ']');
+        propValue = util.inspect(value, {
+          depth: 1,
+          maxArrayLength: 5,
+        });
       }
 
       // Everything else
@@ -134,12 +130,21 @@ function isAllTextNodes(nodes: unknown[]): boolean {
   return nodes.every(node => typeof node === 'string');
 }
 
+function indentAllLines(value: string, indent: string): string {
+  return value
+    .split('\n')
+    .map(line => indent + line)
+    .join('\n');
+}
+
+// eslint-disable-next-line complexity
 export default function debug(node: Node | string | null, depth: number = 0): string {
   if (!node) {
     return '';
   }
 
   const indent = '  '.repeat(depth);
+  const { columns = DEFAULT_TERM_WIDTH } = process.stdout;
 
   // Text node, return immediately
   if (typeof node === 'string') {
@@ -150,14 +155,21 @@ export default function debug(node: Node | string | null, depth: number = 0): st
   const name = getTypeName(node.type);
   const props = getProps(node.props, getKeyAndRef(node));
   const inlineProps = props.join(' ');
-  const isStacked =
-    props.length >= MAX_INLINE_PROPS || inlineProps.length >= process.stdout.columns!;
   let output = `${indent}<${name}`;
 
-  // Stack vertically when props exceed the limit or terminal width
+  // Determine when to stack props vertically
+  const isStacked =
+    // Too many props inlined
+    props.length >= MAX_INLINE_PROPS ||
+    // A prop contains new lines (arrays, objects) which are hard to inline correctly
+    inlineProps.includes('\n') ||
+    // The inline props would wrap to the next line
+    inlineProps.length + output.length >= columns;
+
+  // Stack props vertically
   if (isStacked) {
     output += '\n';
-    output += props.map(prop => indent + indent + prop).join('\n');
+    output += props.map(prop => indentAllLines(prop, '  '.repeat(depth + 1))).join('\n');
     output += '\n';
 
     // Otherwise inline them

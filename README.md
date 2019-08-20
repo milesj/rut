@@ -40,13 +40,13 @@ SUPPORTED
 - [x] Function components.
   - [ ] Hooks.
   - [x] Memo.
-- [x] Context: `Provider`, `Consumer`, `useContext`.
+- [x] Context: `Provider`, `Consumer`, `useContext`, `contextType`.
 - [x] Refs: `createRef`, `forwardRef`, callback and string refs.
 - [x] Error boundaries.
 - [x] Fragments.
 - [x] Function children.
 - [x] Render props.
-- [ ] HOCs.
+- [ ] HOCs and composition.
 - [ ] Event emitting.
 - [ ] Uncontrolled forms.
 
