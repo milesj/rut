@@ -4,6 +4,7 @@ import React from 'react';
 
 export interface RendererOptions {
   refs?: { [name: string]: unknown };
+  strict?: boolean;
 }
 
 export type Args<T> = T extends (...args: unknown[]) => unknown ? Parameters<T> : unknown[];

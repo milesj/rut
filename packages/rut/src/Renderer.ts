@@ -16,10 +16,13 @@ export default class Renderer<Props = UnknownProps> {
 
   private renderer: ReactTestRenderer;
 
-  constructor(element: React.ReactElement<Props>, { refs = {} }: RendererOptions = {}) {
+  private options: RendererOptions;
+
+  constructor(element: React.ReactElement<Props>, options: RendererOptions = {}) {
     this.element = element;
-    this.renderer = create(element, {
-      createNodeMock: node => refs[getTypeName(node.type)] || null,
+    this.options = options;
+    this.renderer = create(this.wrapElement(), {
+      createNodeMock: node => (options.refs && options.refs[getTypeName(node.type)]) || null,
     });
   }
 
@@ -92,5 +95,19 @@ export default class Renderer<Props = UnknownProps> {
         React.cloneElement(this.element, { ...props, ...newProps }, newChildren || children),
       );
     });
+  }
+
+  /**
+   * Wrap the root element with additional elements for convenience composition.
+   */
+  private wrapElement(): React.ReactElement {
+    let el: React.ReactElement = this.element;
+
+    // Wrap with strict mode
+    if (this.options.strict) {
+      el = React.createElement(React.StrictMode, {}, el);
+    }
+
+    return el;
   }
 }

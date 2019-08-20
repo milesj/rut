@@ -11,12 +11,11 @@ RENDERER
 - [x] Re-render the component with updated props.
 - [x] Unmount the component.
 - [x] Query elements by name/type.
-- [ ] Debug JSX output of the React tree.
-  - TEST MORE VALUES, arrays, objects, etc.
+- [x] Debug JSX output of the React tree.
 - [ ] Handle dives/HOCs in a clean way.
 - [ ] Test rendering to the DOM (`rut-dom`).
 - [ ] Wrapping component option.
-- [ ] Strict mode option.
+- [x] Strict mode option.
 
 ELEMENTS
 

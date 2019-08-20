@@ -4,7 +4,37 @@ import render from '../src/render';
 import { ClassComp, FuncComp } from './fixtures';
 
 describe('Renderer', () => {
-  describe('root(', () => {
+  const oldWarn = console.warn;
+  let warnSpy: jest.Mock;
+
+  beforeEach(() => {
+    warnSpy = jest.fn();
+    console.warn = warnSpy;
+  });
+
+  afterEach(() => {
+    console.warn = oldWarn;
+  });
+
+  it('wraps with `StrictMode` when `strict` is enabled', () => {
+    class WillWarn extends React.Component {
+      componentWillMount() {
+        // Logs a warning to be UNSAFE
+      }
+
+      render() {
+        return null;
+      }
+    }
+
+    render(<WillWarn />, { strict: true });
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('componentWillMount has been renamed'),
+    );
+  });
+
+  describe('root()', () => {
     it('returns an element for a host component', () => {
       const el = render(<main />).root;
 
@@ -21,6 +51,13 @@ describe('Renderer', () => {
 
     it('returns an element for a function component', () => {
       const el = render(<FuncComp />).root;
+
+      expect(el).toBeInstanceOf(Element);
+      expect(el.type()).toBe(FuncComp);
+    });
+
+    it('returns the correct element when using `strict`', () => {
+      const el = render(<FuncComp />, { strict: true }).root;
 
       expect(el).toBeInstanceOf(Element);
       expect(el.type()).toBe(FuncComp);
