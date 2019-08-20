@@ -9,7 +9,7 @@ import {
 import Element from './Element';
 import debug from './debug';
 import { UnknownProps, RendererOptions } from './types';
-import { getTypeName } from './helpers';
+import { getTypeName, shallowEqual } from './helpers';
 
 export default class Renderer<Props = UnknownProps> {
   private element: React.ReactElement<Props>;
@@ -21,7 +21,7 @@ export default class Renderer<Props = UnknownProps> {
   constructor(element: React.ReactElement<Props>, options: RendererOptions = {}) {
     this.element = element;
     this.options = options;
-    this.renderer = create(this.wrapElement(), {
+    this.renderer = create(this.wrapElement(element), {
       createNodeMock: node => (options.refs && options.refs[getTypeName(node.type)]) || null,
     });
   }
@@ -41,7 +41,20 @@ export default class Renderer<Props = UnknownProps> {
    * Return the root component as an `Element`.
    */
   get root(): Element<Props> {
-    return new Element(this.renderer.root);
+    const { element } = this;
+    const root = new Element<Props>(this.renderer.root);
+
+    // When being wrapped, we need to drill down and find the
+    // element that matches the one initially passed in.
+    if (this.options.wrapper) {
+      return root.query<Props>(
+        node => node.type === element.type && shallowEqual(node.props, element.props),
+      )[0];
+    }
+
+    // `StrictMode` does not appear in the rendered tree,
+    // so we don't have to worry about handling it.
+    return root;
   }
 
   /**
@@ -84,30 +97,35 @@ export default class Renderer<Props = UnknownProps> {
    * previous element, the tree will be updated; otherwise, it will mount a new tree.
    */
   async update(newProps?: Partial<Props>, newChildren?: React.ReactNode) {
-    const { children, ...props } = this.element.props as {
+    const { children } = this.element.props as {
       children?: React.ReactNode;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      [key: string]: any;
     };
 
+    // Replace the previous element with a new one
+    this.element = React.cloneElement(this.element, newProps, newChildren || children);
+
+    // Act and update the new element
     await act(async () => {
-      await this.renderer.update(
-        React.cloneElement(this.element, { ...props, ...newProps }, newChildren || children),
-      );
+      await this.renderer.update(this.wrapElement(this.element));
     });
   }
 
   /**
-   * Wrap the root element with additional elements for convenience composition.
+   * Wrap the root element with additional elements for convenient composition.
    */
-  private wrapElement(): React.ReactElement {
-    let el: React.ReactElement = this.element;
+  private wrapElement(root: React.ReactElement): React.ReactElement {
+    let element: React.ReactElement = root;
+
+    // Wrap with another elemnt
+    if (this.options.wrapper) {
+      element = React.cloneElement(this.options.wrapper, {}, element);
+    }
 
     // Wrap with strict mode
     if (this.options.strict) {
-      el = React.createElement(React.StrictMode, {}, el);
+      element = React.createElement(React.StrictMode, {}, element);
     }
 
-    return el;
+    return element;
   }
 }

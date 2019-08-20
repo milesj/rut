@@ -1,7 +1,7 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useContext } from 'react';
 import Element from '../src/Element';
 import render from '../src/render';
-import { ClassComp, FuncComp } from './fixtures';
+import { ClassComp, FuncComp, TestContext } from './fixtures';
 
 describe('Renderer', () => {
   const oldWarn = console.warn;
@@ -16,8 +16,12 @@ describe('Renderer', () => {
     console.warn = oldWarn;
   });
 
-  it('wraps with `StrictMode` when `strict` is enabled', () => {
-    class WillWarn extends React.Component {
+  function Wrapper({ children }: { children?: React.ReactNode }) {
+    return <TestContext.Provider value="wrapped">{children || null}</TestContext.Provider>;
+  }
+
+  it('wraps with `StrictMode` when using `strict`', () => {
+    class StrictComp extends React.Component {
       componentWillMount() {
         // Logs a warning to be UNSAFE
       }
@@ -27,40 +31,97 @@ describe('Renderer', () => {
       }
     }
 
-    render(<WillWarn />, { strict: true });
+    const wrapper = render(<StrictComp />, { strict: true });
 
+    expect(wrapper.debug()).toMatchSnapshot();
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('componentWillMount has been renamed'),
     );
   });
 
+  it('wraps with another element when using `wrapper`', () => {
+    function ContextComp() {
+      const value = useContext(TestContext);
+
+      return <div>{value}</div>;
+    }
+
+    const wrapper = render(<ContextComp />, { wrapper: <Wrapper /> });
+
+    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper.debug()).toContain('<Wrapper>');
+    expect(wrapper.root).toContainNode('wrapped');
+  });
+
+  it('wraps with both `strict` and `wrapper`', () => {
+    class StrictComp extends React.Component {
+      componentWillReceiveProps() {
+        // Logs a warning to be UNSAFE
+      }
+
+      render() {
+        return null;
+      }
+    }
+
+    function Wrapped() {
+      return (
+        <div>
+          <StrictComp />
+        </div>
+      );
+    }
+
+    const wrapper = render(<Wrapped />, { strict: true, wrapper: <Wrapper /> });
+
+    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper.debug()).toContain('<Wrapper>');
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('componentWillReceiveProps has been renamed'),
+    );
+  });
+
   describe('root()', () => {
     it('returns an element for a host component', () => {
-      const el = render(<main />).root;
+      const { root } = render(<main />);
 
-      expect(el).toBeInstanceOf(Element);
-      expect(el.type()).toBe('main');
+      expect(root).toBeInstanceOf(Element);
+      expect(root.type()).toBe('main');
     });
 
     it('returns an element for a class component', () => {
-      const el = render(<ClassComp />).root;
+      const { root } = render(<ClassComp />);
 
-      expect(el).toBeInstanceOf(Element);
-      expect(el.type()).toBe(ClassComp);
+      expect(root).toBeInstanceOf(Element);
+      expect(root.type()).toBe(ClassComp);
     });
 
     it('returns an element for a function component', () => {
-      const el = render(<FuncComp />).root;
+      const { root } = render(<FuncComp />);
 
-      expect(el).toBeInstanceOf(Element);
-      expect(el.type()).toBe(FuncComp);
+      expect(root).toBeInstanceOf(Element);
+      expect(root.type()).toBe(FuncComp);
     });
 
-    it('returns the correct element when using `strict`', () => {
-      const el = render(<FuncComp />, { strict: true }).root;
+    it('returns the passed element when using `strict`', () => {
+      const { root } = render(<FuncComp />, { strict: true });
 
-      expect(el).toBeInstanceOf(Element);
-      expect(el.type()).toBe(FuncComp);
+      expect(root).toBeInstanceOf(Element);
+      expect(root.type()).toBe(FuncComp);
+    });
+
+    it('returns the passed element when using `wrapper`', () => {
+      const { root } = render(<FuncComp />, { wrapper: <Wrapper /> });
+
+      expect(root).toBeInstanceOf(Element);
+      expect(root.type()).toBe(FuncComp);
+    });
+
+    it('returns the passed element when using `strict` and `wrapper`', () => {
+      const { root } = render(<FuncComp />, { strict: true, wrapper: <Wrapper /> });
+
+      expect(root).toBeInstanceOf(Element);
+      expect(root.type()).toBe(FuncComp);
     });
   });
 
@@ -262,6 +323,42 @@ describe('Renderer', () => {
 
     beforeEach(() => {
       count = 0;
+    });
+
+    it('when using `strict`, re-renders the passed element', async () => {
+      const wrapper = render(<FuncComp name="mount" />, { strict: true });
+
+      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper.root.prop('name')).toBe('mount');
+
+      await wrapper.update({ name: 'update' });
+
+      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper.root.prop('name')).toBe('update');
+    });
+
+    it('when using `wrapper`, re-renders the passed element', async () => {
+      const wrapper = render(<FuncComp name="mount" />, { wrapper: <Wrapper /> });
+
+      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper.root.prop('name')).toBe('mount');
+
+      await wrapper.update({ name: 'update' });
+
+      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper.root.prop('name')).toBe('update');
+    });
+
+    it('when using `strict` and `wrapper`, re-renders the passed element', async () => {
+      const wrapper = render(<FuncComp name="mount" />, { strict: true, wrapper: <Wrapper /> });
+
+      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper.root.prop('name')).toBe('mount');
+
+      await wrapper.update({ name: 'update' });
+
+      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper.root.prop('name')).toBe('update');
     });
 
     describe('class component', () => {

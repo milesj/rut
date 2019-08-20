@@ -83,10 +83,10 @@ export default class Element<Props = UnknownProps> {
    * React TestRenderer node and internal React fiber node. If any are found,
    * a list of `Element`s is returned.
    */
-  query(
+  query<P = UnknownProps>(
     predicate: (node: TestNode, fiber: FiberNode) => boolean,
     options?: { deep?: boolean },
-  ): Element[] {
+  ): Element<P>[] {
     return this.element
       .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
       .map(node => new Element(node));

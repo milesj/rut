@@ -14,7 +14,7 @@ RENDERER
 - [x] Debug JSX output of the React tree.
 - [ ] Handle dives/HOCs in a clean way.
 - [ ] Test rendering to the DOM (`rut-dom`).
-- [ ] Wrapping component option.
+- [x] Wrapping component option.
 - [x] Strict mode option.
 
 ELEMENTS
