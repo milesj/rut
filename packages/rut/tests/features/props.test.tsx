@@ -40,6 +40,6 @@ describe('Props', () => {
     const wrapper = render(<RenderPropComp renderItem={value => <b>{value * 2}</b>} />);
 
     expect(wrapper.debug()).toMatchSnapshot();
-    expect(wrapper.root()).toContainNode(246);
+    expect(wrapper.root).toContainNode(246);
   });
 });

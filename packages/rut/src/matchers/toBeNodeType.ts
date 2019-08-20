@@ -22,7 +22,7 @@ export default function toBeNodeType(element: Element, type: NodeType): MatchRes
   checkIsRutElement(element);
 
   // @ts-ignore Allow access for matcher
-  const fiberTag = element.testInstance()._fiber.tag;
+  const fiberTag = element.element._fiber.tag;
   const nodeToTag = nodeTypeMap[type];
 
   if (nodeToTag === undefined) {

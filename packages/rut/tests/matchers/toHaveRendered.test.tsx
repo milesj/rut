@@ -46,41 +46,41 @@ describe('toHaveRendered()', () => {
   });
 
   it('returns false if null was returned', () => {
-    expect(render(<NullRender />).root()).not.toHaveRendered();
+    expect(render(<NullRender />).root).not.toHaveRendered();
   });
 
   it('returns false if false was returned', () => {
     // @ts-ignore
-    expect(render(<FalseRender />).root()).not.toHaveRendered();
+    expect(render(<FalseRender />).root).not.toHaveRendered();
   });
 
   it('returns true if a host component was rendered', () => {
-    expect(render(<HostCompRender />).root()).toHaveRendered();
+    expect(render(<HostCompRender />).root).toHaveRendered();
   });
 
   it('returns true if a function component was rendered', () => {
-    expect(render(<FuncCompRender />).root()).toHaveRendered();
+    expect(render(<FuncCompRender />).root).toHaveRendered();
   });
 
   it('returns true if a class component was rendered', () => {
-    expect(render(<ClassCompRender />).root()).toHaveRendered();
+    expect(render(<ClassCompRender />).root).toHaveRendered();
   });
 
   it('returns true if a fragment was rendered', () => {
-    expect(render(<FragmentRender />).root()).toHaveRendered();
+    expect(render(<FragmentRender />).root).toHaveRendered();
   });
 
   it('returns true if a string was rendered', () => {
     // @ts-ignore
-    expect(render(<StringRender />).root()).toHaveRendered();
+    expect(render(<StringRender />).root).toHaveRendered();
   });
 
   it('returns true if an array of nodes was rendered', () => {
     // @ts-ignore
-    expect(render(<ArrayRender />).root()).toHaveRendered();
+    expect(render(<ArrayRender />).root).toHaveRendered();
   });
 
   it('returns true if a child component that rendered null was rendered', () => {
-    expect(render(<NestedNullRender />).root()).toHaveRendered();
+    expect(render(<NestedNullRender />).root).toHaveRendered();
   });
 });

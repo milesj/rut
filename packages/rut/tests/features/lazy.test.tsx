@@ -15,6 +15,6 @@ describe.skip('Lazy', () => {
       </React.Suspense>,
     );
 
-    expect(wrapper.root()).toContainNode('Lazy loaded!');
+    expect(wrapper.root).toContainNode('Lazy loaded!');
   });
 });

@@ -7,19 +7,16 @@ import {
   ReactTestRendererTree,
 } from 'react-test-renderer';
 import Element from './Element';
-import Queryable from './Queryable';
 import debug from './debug';
 import { UnknownProps, RendererOptions } from './types';
 import { getTypeName } from './helpers';
 
-export default class Renderer<Props = UnknownProps> extends Queryable {
+export default class Renderer<Props = UnknownProps> {
   private element: React.ReactElement<Props>;
 
   private renderer: ReactTestRenderer;
 
   constructor(element: React.ReactElement<Props>, { refs = {} }: RendererOptions = {}) {
-    super();
-
     this.element = element;
     this.renderer = create(element, {
       createNodeMock: node => refs[getTypeName(node.type)] || null,
@@ -40,7 +37,7 @@ export default class Renderer<Props = UnknownProps> extends Queryable {
   /**
    * Return the root component as an `Element`.
    */
-  root(): Element<Props> {
+  get root(): Element<Props> {
     return new Element(this.renderer.root);
   }
 
@@ -51,6 +48,13 @@ export default class Renderer<Props = UnknownProps> extends Queryable {
    */
   toJSON(): ReactTestRendererJSON | null {
     return this.renderer.toJSON();
+  }
+
+  /**
+   * Return root element name.
+   */
+  toString(): string {
+    return this.root.toString();
   }
 
   /**
@@ -88,9 +92,5 @@ export default class Renderer<Props = UnknownProps> extends Queryable {
         React.cloneElement(this.element, { ...props, ...newProps }, newChildren || children),
       );
     });
-  }
-
-  protected testInstance() {
-    return this.renderer.root;
   }
 }

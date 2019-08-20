@@ -11,7 +11,7 @@ describe('Children', () => {
     const wrapper = render(<FuncChildComp>{spy}</FuncChildComp>);
 
     expect(wrapper.debug()).toMatchSnapshot();
-    expect(wrapper.root()).toContainNode('Child');
+    expect(wrapper.root).toContainNode('Child');
     expect(spy).toHaveBeenCalled();
   });
 
@@ -24,7 +24,7 @@ describe('Children', () => {
     const wrapper = render(<OnlyChildComp>{node}</OnlyChildComp>);
 
     expect(wrapper.debug()).toMatchSnapshot();
-    expect(wrapper.root()).toContainNode(node);
+    expect(wrapper.root).toContainNode(node);
   });
 
   it('renders mapped children', () => {
@@ -47,6 +47,6 @@ describe('Children', () => {
     );
 
     expect(wrapper.debug()).toMatchSnapshot();
-    expect(wrapper.find('li')).toHaveLength(3);
+    expect(wrapper.root.find('li')).toHaveLength(3);
   });
 });

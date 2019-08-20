@@ -12,7 +12,7 @@ describe('toBeNodeType()', () => {
 
   it('errors if an invalid node type', () => {
     expect(() => {
-      expect(render(<div />).root()).toBeNodeType(
+      expect(render(<div />).root).toBeNodeType(
         // @ts-ignore Allow invalid
         'unknown-type',
       );
@@ -28,9 +28,7 @@ describe('toBeNodeType()', () => {
   };
 
   Object.entries(nodeTypes).forEach(([testTypeName, testNode]) => {
-    const expectedNode = render(<div>{testNode}</div>)
-      .root()
-      .children()[0];
+    const expectedNode = render(<div>{testNode}</div>).root.children()[0];
     const typeName = testTypeName as NodeType;
 
     describe(`"${typeName}" type`, () => {

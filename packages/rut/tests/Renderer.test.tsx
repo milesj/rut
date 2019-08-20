@@ -4,23 +4,23 @@ import render from '../src/render';
 import { ClassComp, FuncComp } from './fixtures';
 
 describe('Renderer', () => {
-  describe('root()', () => {
+  describe('root(', () => {
     it('returns an element for a host component', () => {
-      const el = render(<main />).root();
+      const el = render(<main />).root;
 
       expect(el).toBeInstanceOf(Element);
       expect(el.type()).toBe('main');
     });
 
     it('returns an element for a class component', () => {
-      const el = render(<ClassComp />).root();
+      const el = render(<ClassComp />).root;
 
       expect(el).toBeInstanceOf(Element);
       expect(el.type()).toBe(ClassComp);
     });
 
     it('returns an element for a function component', () => {
-      const el = render(<FuncComp />).root();
+      const el = render(<FuncComp />).root;
 
       expect(el).toBeInstanceOf(Element);
       expect(el.type()).toBe(FuncComp);
@@ -240,15 +240,15 @@ describe('Renderer', () => {
       it('re-renders if props change', async () => {
         const wrapper = render(<ClassUpdateTest index={0} />);
 
-        expect(wrapper.root().prop('index')).toBe(0);
+        expect(wrapper.root.prop('index')).toBe(0);
 
         await wrapper.update({ index: 1 });
 
-        expect(wrapper.root().prop('index')).toBe(1);
+        expect(wrapper.root.prop('index')).toBe(1);
 
         await wrapper.update({ index: 2 });
 
-        expect(wrapper.root().prop('index')).toBe(2);
+        expect(wrapper.root.prop('index')).toBe(2);
 
         expect(count).toBe(3);
       });
@@ -256,13 +256,13 @@ describe('Renderer', () => {
       it('re-renders with a different child', async () => {
         const wrapper = render(<ClassUpdateTest>Foo</ClassUpdateTest>);
 
-        expect(wrapper.root()).toContainNode('Foo');
+        expect(wrapper.root).toContainNode('Foo');
 
         const child = <div>Bar</div>;
 
         await wrapper.update({}, child);
 
-        expect(wrapper.root()).toContainNode(child);
+        expect(wrapper.root).toContainNode(child);
       });
 
       it('doesnt re-render if pure and props dont change', async () => {
@@ -326,15 +326,15 @@ describe('Renderer', () => {
       it('re-renders if props change', async () => {
         const wrapper = render(<FuncUpdateTest index={0} />);
 
-        expect(wrapper.root().prop('index')).toBe(0);
+        expect(wrapper.root.prop('index')).toBe(0);
 
         await wrapper.update({ index: 1 });
 
-        expect(wrapper.root().prop('index')).toBe(1);
+        expect(wrapper.root.prop('index')).toBe(1);
 
         await wrapper.update({ index: 2 });
 
-        expect(wrapper.root().prop('index')).toBe(2);
+        expect(wrapper.root.prop('index')).toBe(2);
 
         expect(count).toBe(3);
       });
@@ -342,13 +342,13 @@ describe('Renderer', () => {
       it('re-renders with a different child', async () => {
         const wrapper = render(<FuncUpdateTest>Foo</FuncUpdateTest>);
 
-        expect(wrapper.root()).toContainNode('Foo');
+        expect(wrapper.root).toContainNode('Foo');
 
         const child = <div>Bar</div>;
 
         await wrapper.update({}, child);
 
-        expect(wrapper.root()).toContainNode(child);
+        expect(wrapper.root).toContainNode(child);
       });
 
       it('doesnt re-render if memoized and props dont change', async () => {

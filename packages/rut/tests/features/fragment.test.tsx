@@ -20,8 +20,8 @@ describe('Fragment', () => {
     );
 
     expect(wrapper.debug()).toMatchSnapshot();
-    expect(wrapper.root()).toContainNode('Two');
-    expect(wrapper.find('li')).toHaveLength(3);
+    expect(wrapper.root).toContainNode('Two');
+    expect(wrapper.root.find('li')).toHaveLength(3);
   });
 
   it('renders long form', () => {
@@ -43,7 +43,7 @@ describe('Fragment', () => {
     );
 
     expect(wrapper.debug()).toMatchSnapshot();
-    expect(wrapper.root()).toContainNode('Three');
-    expect(wrapper.find('li')).toHaveLength(3);
+    expect(wrapper.root).toContainNode('Three');
+    expect(wrapper.root.find('li')).toHaveLength(3);
   });
 });

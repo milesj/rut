@@ -18,7 +18,7 @@ describe('toContainNode()', () => {
       );
     }
 
-    expect(render(<TestComp />).root()).toContainNode(<span id="foo">Foo</span>);
+    expect(render(<TestComp />).root).toContainNode(<span id="foo">Foo</span>);
   });
 
   it('supports nodes passed through props', () => {
@@ -33,7 +33,7 @@ describe('toContainNode()', () => {
       );
     }
 
-    const root = render(<TestComp after={<div>Bar</div>}>Child</TestComp>).root();
+    const { root } = render(<TestComp after={<div>Bar</div>}>Child</TestComp>);
 
     expect(root).toContainNode('Child');
     expect(root).toContainNode(<div>Bar</div>);
@@ -41,47 +41,47 @@ describe('toContainNode()', () => {
 
   describe('immediate', () => {
     it('returns true for a string', () => {
-      expect(render(<div>Foo</div>).root()).toContainNode('Foo');
+      expect(render(<div>Foo</div>).root).toContainNode('Foo');
     });
 
     it('returns true for a number', () => {
-      expect(render(<div>{123}</div>).root()).toContainNode(123);
+      expect(render(<div>{123}</div>).root).toContainNode(123);
     });
 
     it('returns true for a host component node', () => {
       const node = <b>Foo</b>;
 
-      expect(render(<div>{node}</div>).root()).toContainNode(node);
+      expect(render(<div>{node}</div>).root).toContainNode(node);
     });
 
     it('returns true for a host component node with props', () => {
       const node = <b id="foo">Foo</b>;
 
-      expect(render(<div>{node}</div>).root()).toContainNode(node);
+      expect(render(<div>{node}</div>).root).toContainNode(node);
     });
 
     it('returns true for a function component node', () => {
       const node = <FuncComp />;
 
-      expect(render(<div>{node}</div>).root()).toContainNode(node);
+      expect(render(<div>{node}</div>).root).toContainNode(node);
     });
 
     it('returns true for a function component node with props', () => {
       const node = <FuncComp name="func" />;
 
-      expect(render(<div>{node}</div>).root()).toContainNode(node);
+      expect(render(<div>{node}</div>).root).toContainNode(node);
     });
 
     it('returns true for a class component node', () => {
       const node = <ClassComp />;
 
-      expect(render(<div>{node}</div>).root()).toContainNode(node);
+      expect(render(<div>{node}</div>).root).toContainNode(node);
     });
 
     it('returns true for a class component node with props', () => {
       const node = <ClassComp name="class" />;
 
-      expect(render(<div>{node}</div>).root()).toContainNode(node);
+      expect(render(<div>{node}</div>).root).toContainNode(node);
     });
   });
 
@@ -96,7 +96,7 @@ describe('toContainNode()', () => {
               </span>
             </section>
           </div>,
-        ).root(),
+        ).root,
       ).toContainNode('Foo');
     });
 
@@ -110,7 +110,7 @@ describe('toContainNode()', () => {
               </span>
             </section>
           </div>,
-        ).root(),
+        ).root,
       ).toContainNode(123);
     });
 
@@ -122,7 +122,7 @@ describe('toContainNode()', () => {
           <div>
             <section>{node}</section>
           </div>,
-        ).root(),
+        ).root,
       ).toContainNode(node);
     });
 
@@ -136,7 +136,7 @@ describe('toContainNode()', () => {
               <span>{node}</span>
             </button>
           </div>,
-        ).root(),
+        ).root,
       ).toContainNode(node);
     });
 
@@ -148,7 +148,7 @@ describe('toContainNode()', () => {
           <div>
             <main>{node}</main>
           </div>,
-        ).root(),
+        ).root,
       ).toContainNode(node);
     });
 
@@ -162,7 +162,7 @@ describe('toContainNode()', () => {
               <div>{node}</div>
             </header>
           </div>,
-        ).root(),
+        ).root,
       ).toContainNode(node);
     });
 
@@ -174,7 +174,7 @@ describe('toContainNode()', () => {
           <div>
             <a href="/">{node}</a>
           </div>,
-        ).root(),
+        ).root,
       ).toContainNode(node);
     });
 
@@ -190,7 +190,7 @@ describe('toContainNode()', () => {
               </section>
             </footer>
           </div>,
-        ).root(),
+        ).root,
       ).toContainNode(node);
     });
   });

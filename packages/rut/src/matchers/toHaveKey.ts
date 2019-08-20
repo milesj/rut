@@ -9,7 +9,7 @@ export default function toHaveKey(element: Element, value: string | number): Mat
   checkIsRutElement(element);
 
   // @ts-ignore Allow access for matcher
-  const { key } = element.testInstance()._fiber;
+  const { key } = element.element._fiber;
   const formattedValue = formatValue(value);
 
   return {

@@ -22,8 +22,8 @@ describe('Refs', () => {
       });
 
       expect(wrapper.debug()).toMatchSnapshot();
-      expect(wrapper.root().ref()).toBe(ref);
-      expect(wrapper.root().ref<typeof ref>()!.current).toBe(mock);
+      expect(wrapper.root.ref()).toBe(ref);
+      expect(wrapper.root.ref<typeof ref>()!.current).toBe(mock);
     });
 
     function withRef(WrappedComponent: React.ComponentType<{ children: React.ReactNode }>): any {
@@ -77,7 +77,7 @@ describe('Refs', () => {
       });
 
       expect(wrapper.debug()).toMatchSnapshot();
-      expect(wrapper.root().ref('ref')).toEqual({ current: div });
+      expect(wrapper.root.ref('ref')).toEqual({ current: div });
     });
   });
 
@@ -104,7 +104,7 @@ describe('Refs', () => {
       });
 
       expect(wrapper.debug()).toMatchSnapshot();
-      expect(wrapper.root().ref('inputRef')).toBe(input);
+      expect(wrapper.root.ref('inputRef')).toBe(input);
     });
   });
 
@@ -127,7 +127,7 @@ describe('Refs', () => {
       });
 
       expect(wrapper.debug()).toMatchSnapshot();
-      expect(wrapper.root().ref('link')).toBe(a);
+      expect(wrapper.root.ref('link')).toBe(a);
     });
   });
 });

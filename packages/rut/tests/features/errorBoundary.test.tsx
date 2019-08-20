@@ -52,7 +52,7 @@ describe('ErrorBoundary', () => {
     );
 
     expect(wrapper.debug()).toMatchSnapshot();
-    expect(wrapper.root()).toContainNode('Content');
+    expect(wrapper.root).toContainNode('Content');
   });
 
   it('renders and logs a caught error', () => {
@@ -69,7 +69,7 @@ describe('ErrorBoundary', () => {
     );
 
     expect(wrapper.debug()).toMatchSnapshot();
-    expect(wrapper.root()).toContainNode('Oops!');
+    expect(wrapper.root).toContainNode('Oops!');
     expect(spy).toHaveBeenCalledWith(new Error('Oops!'), { componentStack: expect.any(String) });
   });
 });

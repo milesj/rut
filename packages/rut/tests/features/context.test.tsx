@@ -47,7 +47,7 @@ describe('Context', () => {
       const wrapper = render(<Provider>Child</Provider>);
 
       expect(wrapper.debug()).toMatchSnapshot();
-      expect(wrapper.root()).toContainNode('Child');
+      expect(wrapper.root).toContainNode('Child');
     });
   });
 

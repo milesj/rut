@@ -11,19 +11,19 @@ describe('toHaveKey()', () => {
   describe('normal', () => {
     it('passes when a key matches', () => {
       expect(() => {
-        expect(render(<div key="foo" />).root()).toHaveKey('foo');
+        expect(render(<div key="foo" />).root).toHaveKey('foo');
       }).not.toThrowError();
     });
 
     it('errors when a key doesnt exist', () => {
       expect(() => {
-        expect(render(<div />).root()).toHaveKey('id');
+        expect(render(<div />).root).toHaveKey('id');
       }).toThrowError('expected `div` to have a "id" key');
     });
 
     it('errors when a key exists but doesnt match', () => {
       expect(() => {
-        expect(render(<div key="foo" />).root()).toHaveKey('bar');
+        expect(render(<div key="foo" />).root).toHaveKey('bar');
       }).toThrowError('expected `div` to have a "bar" key');
     });
   });
@@ -31,13 +31,13 @@ describe('toHaveKey()', () => {
   describe('negated', () => {
     it('passes when a key doesnt matches', () => {
       expect(() => {
-        expect(render(<div key="foo" />).root()).not.toHaveKey('bar');
+        expect(render(<div key="foo" />).root).not.toHaveKey('bar');
       }).not.toThrowError();
     });
 
     it('errors when a key exists and matches', () => {
       expect(() => {
-        expect(render(<div key="foo" />).root()).not.toHaveKey('foo');
+        expect(render(<div key="foo" />).root).not.toHaveKey('foo');
       }).toThrowError('expected `div` not to have a "foo" key');
     });
   });

@@ -11,19 +11,19 @@ describe('toHaveValue()', () => {
   describe('normal', () => {
     it('passes when value matches', () => {
       expect(() => {
-        expect(render(<input value="foo" />).root()).toHaveValue('foo');
+        expect(render(<input value="foo" />).root).toHaveValue('foo');
       }).not.toThrowError();
     });
 
     it('passes when default value matches', () => {
       expect(() => {
-        expect(render(<input defaultValue="foo" />).root()).toHaveValue('foo');
+        expect(render(<input defaultValue="foo" />).root).toHaveValue('foo');
       }).not.toThrowError();
     });
 
     it('errors when value doesnt match', () => {
       expect(() => {
-        expect(render(<input value="foo" />).root()).toHaveValue('bar');
+        expect(render(<input value="foo" />).root).toHaveValue('bar');
       }).toThrowError('expected `input` to have a "value" prop with a value of "bar"');
     });
   });
@@ -31,19 +31,19 @@ describe('toHaveValue()', () => {
   describe('negated', () => {
     it('passes when value doesnt match', () => {
       expect(() => {
-        expect(render(<input value="foo" />).root()).not.toHaveValue('bar');
+        expect(render(<input value="foo" />).root).not.toHaveValue('bar');
       }).not.toThrowError();
     });
 
     it('errors when value matches', () => {
       expect(() => {
-        expect(render(<input value="foo" />).root()).not.toHaveValue('foo');
+        expect(render(<input value="foo" />).root).not.toHaveValue('foo');
       }).toThrowError('expected `input` not to have a "value" prop with a value of "foo"');
     });
 
     it('errors when default value matches', () => {
       expect(() => {
-        expect(render(<input defaultValue="foo" />).root()).not.toHaveValue('foo');
+        expect(render(<input defaultValue="foo" />).root).not.toHaveValue('foo');
       }).toThrowError('expected `input` not to have a "defaultValue" prop with a value of "foo"');
     });
   });

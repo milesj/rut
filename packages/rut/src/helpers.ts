@@ -5,6 +5,22 @@ import * as ReactIs from 'react-is';
 import Element from './Element';
 import { UnknownProps } from './types';
 
+interface NodeLike {
+  $$typeof: symbol | number;
+  type?: NodeLike;
+  props?: UnknownProps;
+}
+
+interface ContextLike extends NodeLike {
+  _context: {
+    displayName?: string;
+  };
+}
+
+interface PortalLike extends NodeLike {
+  containerInfo: HTMLElement;
+}
+
 /**
  * Check that a value is an instance of a Rut `Element`. Used primarily in matchers.
  */
@@ -13,12 +29,7 @@ export function checkIsRutElement(value: unknown) {
     return;
   }
 
-  if (
-    typeof value === 'object' &&
-    value !== null &&
-    Object.getPrototypeOf(value).constructor.name === 'Element' &&
-    Object.getPrototypeOf(Object.getPrototypeOf(value)).constructor.name === 'Queryable'
-  ) {
+  if (typeof value === 'object' && value !== null && value.constructor.name === 'Element') {
     return;
   }
 
@@ -38,22 +49,6 @@ export function formatValue(value: unknown): string {
   }
 
   return `\`${String(value)}\``;
-}
-
-interface NodeLike {
-  $$typeof: symbol | number;
-  type?: NodeLike;
-  props?: UnknownProps;
-}
-
-interface ContextLike extends NodeLike {
-  _context: {
-    displayName?: string;
-  };
-}
-
-interface PortalLike extends NodeLike {
-  containerInfo: HTMLElement;
 }
 
 /**
@@ -217,14 +212,10 @@ export function shallowEqual(objA: unknown, objB: unknown): boolean {
   return true;
 }
 
-// Keep a reference to the original timeout in case Jest
-// or another framework mocks it with a fake implementation.
-const nativeSetTimeout = global.setTimeout.bind(global);
-
-export function wait(delay: number = 1) {
+export function wait(): Promise<void> {
   return new Promise(resolve => {
-    nativeSetTimeout(() => {
+    process.nextTick(() => {
       resolve();
-    }, delay);
+    });
   });
 }
