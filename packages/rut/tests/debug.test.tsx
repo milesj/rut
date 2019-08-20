@@ -7,7 +7,7 @@ describe('debug()', () => {
     const ref = React.createRef<ClassComp>();
     const wrapper = render(<ClassComp key={123} ref={ref} name="test" />);
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('formats array props', () => {
@@ -17,7 +17,7 @@ describe('debug()', () => {
 
     const wrapper = render(<ArrayProp list={['string', 123, true, null, {}, []]} />);
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
 
     // Test long and complex arrays + objects
     wrapper.update({
@@ -31,7 +31,7 @@ describe('debug()', () => {
       ],
     });
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('formats object props', () => {
@@ -43,7 +43,7 @@ describe('debug()', () => {
       <ObjectProp data={{ id: 1, name: 'Bruce Wayne', alias: 'Batman', age: 40 }} />,
     );
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('formats regex props', () => {
@@ -53,7 +53,7 @@ describe('debug()', () => {
 
     const wrapper = render(<RegexProp pattern={/foo|bar|baz/u} />);
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('formats map props', () => {
@@ -63,7 +63,7 @@ describe('debug()', () => {
 
     const wrapper = render(<MapProp map={new Map([['foo', 123], ['bar', 456], ['baz', 789]])} />);
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('formats set props', () => {
@@ -73,6 +73,6 @@ describe('debug()', () => {
 
     const wrapper = render(<SetProp set={new Set(['foo', 'bar', 'foo', 'baz'])} />);
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 });

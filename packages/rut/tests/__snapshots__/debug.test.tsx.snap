@@ -1,52 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`debug() adds key and ref props first 1`] = `
-"<ClassComp key=\\"123\\" ref={ClassComp} name=\\"test\\">
+<ClassComp key="123" ref={ClassComp} name="test">
   <div />
-</ClassComp>"
+</ClassComp>
 `;
 
 exports[`debug() formats array props 1`] = `
-"<ArrayProp list={[ 'string', 123, true, null, {}, ... 1 more item ]}>
+<ArrayProp list={[ 'string', 123, true, null, {}, ... 1 more item ]}>
   <ul />
-</ArrayProp>"
+</ArrayProp>
 `;
 
 exports[`debug() formats array props 2`] = `
-"<ArrayProp
-  list={[
-    { id: 1, name: 'Bruce Wayne' },
+<ArrayProp
+  list={[ { id: 1, name: 'Bruce Wayne' },
     { id: 2, name: 'Clark Kent' },
     { id: 3, name: 'Barry Allen' },
     { id: 4, name: 'Tony Stark' },
     { id: 5, name: 'Steve Rogers' },
-    ... 1 more item
-  ]}
+    ... 1 more item ]}
 >
   <ul />
-</ArrayProp>"
+</ArrayProp>
 `;
 
 exports[`debug() formats map props 1`] = `
-"<MapProp map={Map { 'foo' => 123, 'bar' => 456, 'baz' => 789 }}>
+<MapProp map={Map { 'foo' => 123, 'bar' => 456, 'baz' => 789 }}>
   <div />
-</MapProp>"
+</MapProp>
 `;
 
 exports[`debug() formats object props 1`] = `
-"<ObjectProp data={{ id: 1, name: 'Bruce Wayne', alias: 'Batman', age: 40 }}>
+<ObjectProp data={{ id: 1, name: 'Bruce Wayne', alias: 'Batman', age: 40 }}>
   <div />
-</ObjectProp>"
+</ObjectProp>
 `;
 
 exports[`debug() formats regex props 1`] = `
-"<RegexProp pattern={/foo|bar|baz/u}>
+<RegexProp pattern={/foo|bar|baz/u}>
   <div />
-</RegexProp>"
+</RegexProp>
 `;
 
 exports[`debug() formats set props 1`] = `
-"<SetProp set={Set { 'foo', 'bar', 'baz' }}>
+<SetProp set={Set { 'foo', 'bar', 'baz' }}>
   <div />
-</SetProp>"
+</SetProp>
 `;

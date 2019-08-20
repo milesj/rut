@@ -12,6 +12,8 @@ import { UnknownProps, RendererOptions } from './types';
 import { getTypeName, shallowEqual } from './helpers';
 
 export default class Renderer<Props = UnknownProps> {
+  readonly isRutRenderer = true;
+
   private element: React.ReactElement<Props>;
 
   private renderer: ReactTestRenderer;

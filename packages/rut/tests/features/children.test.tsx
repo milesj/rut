@@ -10,7 +10,7 @@ describe('Children', () => {
     const spy = jest.fn(() => <span>Child</span>);
     const wrapper = render(<FuncChildComp>{spy}</FuncChildComp>);
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.root).toContainNode('Child');
     expect(spy).toHaveBeenCalled();
   });
@@ -23,7 +23,7 @@ describe('Children', () => {
     const node = <span>Child</span>;
     const wrapper = render(<OnlyChildComp>{node}</OnlyChildComp>);
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.root).toContainNode(node);
   });
 
@@ -46,7 +46,7 @@ describe('Children', () => {
       </MapChildComp>,
     );
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.root.find('li')).toHaveLength(3);
   });
 });

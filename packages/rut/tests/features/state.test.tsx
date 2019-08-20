@@ -29,12 +29,12 @@ describe('State', () => {
     it('re-renders when state changes', () => {
       const wrapper = render(<StatefulComp />);
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root).toContainNode('Inactive');
 
       wrapper.root.findOne('button').emit('onClick');
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root).toContainNode('Active');
     });
   });
@@ -59,12 +59,12 @@ describe('State', () => {
     it('re-renders when state changes', () => {
       const wrapper = render(<StatefulComp />);
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root).toContainNode('Inactive');
 
       wrapper.root.findOne('button').emit('onClick');
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root).toContainNode('Active');
     });
   });

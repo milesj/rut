@@ -46,7 +46,7 @@ describe('Context', () => {
     it('renders a provider without consumer, and its children', () => {
       const wrapper = render(<Provider>Child</Provider>);
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root).toContainNode('Child');
     });
   });
@@ -70,7 +70,7 @@ describe('Context', () => {
         </Provider>,
       );
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
@@ -126,7 +126,7 @@ describe('Context', () => {
         </Provider>,
       );
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
@@ -182,7 +182,7 @@ describe('Context', () => {
         </Provider>,
       );
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(spy).toHaveBeenCalledWith('dark');
     });
 

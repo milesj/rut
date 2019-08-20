@@ -4,6 +4,7 @@
  */
 
 import { matchers } from 'rut';
+import serializer from './serializer';
 
 const jestMatchers: jest.ExpectExtendMap = {};
 
@@ -20,5 +21,6 @@ Object.entries(matchers).forEach(([name, matcher]) => {
 });
 
 expect.extend(jestMatchers);
+expect.addSnapshotSerializer(serializer);
 
 export default jestMatchers;

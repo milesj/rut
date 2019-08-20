@@ -19,7 +19,7 @@ describe('Fragment', () => {
       </ul>,
     );
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.root).toContainNode('Two');
     expect(wrapper.root.find('li')).toHaveLength(3);
   });
@@ -42,7 +42,7 @@ describe('Fragment', () => {
       </ul>,
     );
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.root).toContainNode('Three');
     expect(wrapper.root.find('li')).toHaveLength(3);
   });

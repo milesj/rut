@@ -51,7 +51,7 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.root).toContainNode('Content');
   });
 
@@ -68,7 +68,7 @@ describe('ErrorBoundary', () => {
       </ErrorBoundary>,
     );
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.root).toContainNode('Oops!');
     expect(spy).toHaveBeenCalledWith(new Error('Oops!'), { componentStack: expect.any(String) });
   });

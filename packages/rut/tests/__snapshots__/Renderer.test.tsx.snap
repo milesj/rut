@@ -1,65 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Renderer updating when using \`strict\` and \`wrapper\`, re-renders the passed element 1`] = `
-"<Wrapper>
-  <FuncComp name=\\"mount\\">
+<Wrapper>
+  <FuncComp name="mount">
     <span />
   </FuncComp>
-</Wrapper>"
+</Wrapper>
 `;
 
 exports[`Renderer updating when using \`strict\` and \`wrapper\`, re-renders the passed element 2`] = `
-"<Wrapper>
-  <FuncComp name=\\"update\\">
+<Wrapper>
+  <FuncComp name="update">
     <span />
   </FuncComp>
-</Wrapper>"
+</Wrapper>
 `;
 
 exports[`Renderer updating when using \`strict\`, re-renders the passed element 1`] = `
-"<FuncComp name=\\"mount\\">
+<FuncComp name="mount">
   <span />
-</FuncComp>"
+</FuncComp>
 `;
 
 exports[`Renderer updating when using \`strict\`, re-renders the passed element 2`] = `
-"<FuncComp name=\\"update\\">
+<FuncComp name="update">
   <span />
-</FuncComp>"
+</FuncComp>
 `;
 
 exports[`Renderer updating when using \`wrapper\`, re-renders the passed element 1`] = `
-"<Wrapper>
-  <FuncComp name=\\"mount\\">
+<Wrapper>
+  <FuncComp name="mount">
     <span />
   </FuncComp>
-</Wrapper>"
+</Wrapper>
 `;
 
 exports[`Renderer updating when using \`wrapper\`, re-renders the passed element 2`] = `
-"<Wrapper>
-  <FuncComp name=\\"update\\">
+<Wrapper>
+  <FuncComp name="update">
     <span />
   </FuncComp>
-</Wrapper>"
+</Wrapper>
 `;
 
-exports[`Renderer wraps with \`StrictMode\` when using \`strict\` 1`] = `"<StrictComp />"`;
+exports[`Renderer wraps with \`StrictMode\` when using \`strict\` 1`] = `<StrictComp />`;
 
 exports[`Renderer wraps with another element when using \`wrapper\` 1`] = `
-"<Wrapper>
+<Wrapper>
   <ContextComp>
     <div>wrapped</div>
   </ContextComp>
-</Wrapper>"
+</Wrapper>
 `;
 
 exports[`Renderer wraps with both \`strict\` and \`wrapper\` 1`] = `
-"<Wrapper>
+<Wrapper>
   <Wrapped>
     <div>
       <StrictComp />
     </div>
   </Wrapped>
-</Wrapper>"
+</Wrapper>
 `;

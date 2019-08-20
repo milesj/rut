@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Props supports primitives and scalars 1`] = `
-"<PrimitiveComp count={123456} node={<div />} text=\\"This is a string of text.\\">
+<PrimitiveComp count={123456} node={<div />} text="This is a string of text.">
   <div>
     <h1>This is a string of text.</h1>
     <section>Count: 123,456</section>
@@ -9,13 +9,13 @@ exports[`Props supports primitives and scalars 1`] = `
       <div>This is a sidebar!</div>
     </aside>
   </div>
-</PrimitiveComp>"
+</PrimitiveComp>
 `;
 
 exports[`Props supports render props 1`] = `
-"<RenderPropComp renderItem={renderItem()}>
+<RenderPropComp renderItem={renderItem()}>
   <div>
     <b>246</b>
   </div>
-</RenderPropComp>"
+</RenderPropComp>
 `;

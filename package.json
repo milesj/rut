@@ -50,7 +50,7 @@
     },
     "jest": {
       "setupFilesAfterEnv": [
-        "./packages/jest-rut/lib/index.js"
+        "jest-rut"
       ],
       "testEnvironment": "node"
     }

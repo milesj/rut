@@ -1,21 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Children renders a function child 1`] = `
-"<FuncChildComp>
+<FuncChildComp>
   <div>
     <span>Child</span>
   </div>
-</FuncChildComp>"
+</FuncChildComp>
 `;
 
 exports[`Children renders an only child 1`] = `
-"<OnlyChildComp>
+<OnlyChildComp>
   <span>Child</span>
-</OnlyChildComp>"
+</OnlyChildComp>
 `;
 
 exports[`Children renders mapped children 1`] = `
-"<MapChildComp>
+<MapChildComp>
   <ul>
     <li>
       <div>1</div>
@@ -27,5 +27,5 @@ exports[`Children renders mapped children 1`] = `
       <div>3</div>
     </li>
   </ul>
-</MapChildComp>"
+</MapChildComp>
 `;

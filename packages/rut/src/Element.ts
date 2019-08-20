@@ -3,6 +3,8 @@ import { Args, UnknownProps, TestNode, FiberNode } from './types';
 import { getTypeName } from './helpers';
 
 export default class Element<Props = UnknownProps> {
+  readonly isRutElement = true;
+
   private element: ReactTestInstance;
 
   constructor(element: ReactTestInstance) {

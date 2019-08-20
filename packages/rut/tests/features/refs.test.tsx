@@ -21,7 +21,7 @@ describe('Refs', () => {
         refs: { button: mock },
       });
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root.ref()).toBe(ref);
       expect(wrapper.root.ref<typeof ref>()!.current).toBe(mock);
     });
@@ -56,7 +56,7 @@ describe('Refs', () => {
 
       const wrapper = render(<HocButton ref={ref}>Child</HocButton>);
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(ref.current!.constructor.name).toBe('InnerButton');
     });
   });
@@ -76,7 +76,7 @@ describe('Refs', () => {
         refs: { div },
       });
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root.ref('ref')).toEqual({ current: div });
     });
   });
@@ -103,7 +103,7 @@ describe('Refs', () => {
         refs: { input },
       });
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root.ref('inputRef')).toBe(input);
     });
   });
@@ -126,7 +126,7 @@ describe('Refs', () => {
         refs: { a },
       });
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root.ref('link')).toBe(a);
     });
   });

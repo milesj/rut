@@ -29,7 +29,11 @@ export function checkIsRutElement(value: unknown) {
     return;
   }
 
-  if (typeof value === 'object' && value !== null && value.constructor.name === 'Element') {
+  if (
+    typeof value === 'object' &&
+    value !== null &&
+    (value.constructor.name === 'Element' || (value as Element).isRutElement === true)
+  ) {
     return;
   }
 

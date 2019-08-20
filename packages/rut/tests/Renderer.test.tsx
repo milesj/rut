@@ -33,7 +33,7 @@ describe('Renderer', () => {
 
     const wrapper = render(<StrictComp />, { strict: true });
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('componentWillMount has been renamed'),
     );
@@ -48,7 +48,7 @@ describe('Renderer', () => {
 
     const wrapper = render(<ContextComp />, { wrapper: <Wrapper /> });
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.debug()).toContain('<Wrapper>');
     expect(wrapper.root).toContainNode('wrapped');
   });
@@ -74,7 +74,7 @@ describe('Renderer', () => {
 
     const wrapper = render(<Wrapped />, { strict: true, wrapper: <Wrapper /> });
 
-    expect(wrapper.debug()).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
     expect(wrapper.debug()).toContain('<Wrapper>');
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('componentWillReceiveProps has been renamed'),
@@ -328,36 +328,36 @@ describe('Renderer', () => {
     it('when using `strict`, re-renders the passed element', async () => {
       const wrapper = render(<FuncComp name="mount" />, { strict: true });
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root.prop('name')).toBe('mount');
 
       await wrapper.update({ name: 'update' });
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root.prop('name')).toBe('update');
     });
 
     it('when using `wrapper`, re-renders the passed element', async () => {
       const wrapper = render(<FuncComp name="mount" />, { wrapper: <Wrapper /> });
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root.prop('name')).toBe('mount');
 
       await wrapper.update({ name: 'update' });
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root.prop('name')).toBe('update');
     });
 
     it('when using `strict` and `wrapper`, re-renders the passed element', async () => {
       const wrapper = render(<FuncComp name="mount" />, { strict: true, wrapper: <Wrapper /> });
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root.prop('name')).toBe('mount');
 
       await wrapper.update({ name: 'update' });
 
-      expect(wrapper.debug()).toMatchSnapshot();
+      expect(wrapper).toMatchSnapshot();
       expect(wrapper.root.prop('name')).toBe('update');
     });
 
