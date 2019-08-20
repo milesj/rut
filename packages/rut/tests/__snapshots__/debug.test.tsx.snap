@@ -48,3 +48,16 @@ exports[`debug() formats set props 1`] = `
   <div />
 </SetProp>
 `;
+
+exports[`debug() sorts props, and groups into: true first, everything second, event handlers last 1`] = `
+<SortProps
+  enabled
+  content={<div />}
+  name="Rut"
+  selected={false}
+  onClick={mockConstructor()}
+  onUpdate={mockConstructor()}
+>
+  <div />
+</SortProps>
+`;

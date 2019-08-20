@@ -10,8 +10,37 @@ describe('debug()', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('sorts props, and groups into: true first, everything else, event handlers last', () => {
+    function SortProps(props: {
+      enabled: boolean;
+      selected: boolean;
+      name: string;
+      content: React.ReactNode;
+      onClick?: () => void;
+      onDelete?: () => void;
+      onUpdate?: () => void;
+    }) {
+      return <div />;
+    }
+
+    const wrapper = render(
+      <SortProps
+        // Wont show up since its a function component
+        key="key"
+        enabled
+        selected={false}
+        name="Rut"
+        content={<div>Content</div>}
+        onUpdate={jest.fn()}
+        onClick={jest.fn()}
+      />,
+    );
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('formats array props', () => {
-    function ArrayProp({ list }: { list: unknown[] }) {
+    function ArrayProp(props: { list: unknown[] }) {
       return <ul />;
     }
 
@@ -35,7 +64,7 @@ describe('debug()', () => {
   });
 
   it('formats object props', () => {
-    function ObjectProp({ data }: { data: unknown }) {
+    function ObjectProp(props: { data: unknown }) {
       return <div />;
     }
 
@@ -47,7 +76,7 @@ describe('debug()', () => {
   });
 
   it('formats regex props', () => {
-    function RegexProp({ pattern }: { pattern: RegExp }) {
+    function RegexProp(props: { pattern: RegExp }) {
       return <div />;
     }
 
@@ -57,7 +86,7 @@ describe('debug()', () => {
   });
 
   it('formats map props', () => {
-    function MapProp({ map }: { map: Map<string, number> }) {
+    function MapProp(props: { map: Map<string, number> }) {
       return <div />;
     }
 
@@ -67,7 +96,7 @@ describe('debug()', () => {
   });
 
   it('formats set props', () => {
-    function SetProp({ set }: { set: Set<string> }) {
+    function SetProp(props: { set: Set<string> }) {
       return <div />;
     }
 

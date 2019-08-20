@@ -12,7 +12,6 @@ RENDERER
 - [x] Unmount the component.
 - [x] Query elements by name/type.
 - [x] Debug JSX output of the React tree.
-- [ ] Handle dives/HOCs in a clean way.
 - [ ] Test rendering to the DOM (`rut-dom`).
 - [x] Wrapping component option.
 - [x] Strict mode option.
@@ -46,7 +45,7 @@ SUPPORTED
 - [x] Function children.
 - [x] Render props.
 - [x] HOCs and composition.
-- [ ] Event emitting.
+- [x] Event emitting.
 - [ ] Uncontrolled forms.
 
 NOT SUPPORTED
