@@ -25,8 +25,10 @@ export default class Element<Props = UnknownProps> {
   }
 
   /**
-   * Find and execute a function prop for the defined name.
+   * Find and execute an event handler (a function prop for the defined name).
    * Accepts a list of arguments, and returns the result of the execution.
+   *
+   * Note: This may only be executed on host components (HTML elements).
    */
   emit<K extends keyof Props>(name: K, ...args: ArgsOf<Props[K]>): ReturnOf<Props[K]> {
     const prop = this.prop(name);
@@ -35,6 +37,8 @@ export default class Element<Props = UnknownProps> {
       throw new Error(`Prop \`${name}\` does not exist.`);
     } else if (typeof prop !== 'function') {
       throw new TypeError(`Prop \`${name}\` is not a function.`);
+    } else if (typeof this.type() !== 'string') {
+      throw new TypeError('Emitting events is only allowed on host components (HTML elements).');
     }
 
     let value: ReturnOf<Props[K]>;

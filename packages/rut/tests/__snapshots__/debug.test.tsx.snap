@@ -14,12 +14,14 @@ exports[`debug() formats array props 1`] = `
 
 exports[`debug() formats array props 2`] = `
 <ArrayProp
-  list={[ { id: 1, name: 'Bruce Wayne' },
+  list={[
+    { id: 1, name: 'Bruce Wayne' },
     { id: 2, name: 'Clark Kent' },
     { id: 3, name: 'Barry Allen' },
     { id: 4, name: 'Tony Stark' },
     { id: 5, name: 'Steve Rogers' },
-    ... 1 more item ]}
+    ... 1 more item
+  ]}
 >
   <ul />
 </ArrayProp>

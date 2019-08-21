@@ -49,6 +49,18 @@ describe('Element', () => {
       }).toThrowError('Prop `name` is not a function.');
     });
 
+    it('errors if emitting on a non-host component', () => {
+      function EmitComp(props: { onSomething: () => void }) {
+        return <div />;
+      }
+
+      expect(() => {
+        const { root } = render(<EmitComp onSomething={() => {}} />);
+
+        root.emit('onSomething');
+      }).toThrowError('Emitting events is only allowed on host components (HTML elements).');
+    });
+
     it('executes the function prop', () => {
       const spy = jest.fn();
 

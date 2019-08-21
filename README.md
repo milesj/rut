@@ -36,7 +36,7 @@ SUPPORTED
   - [x] State changes.
   - [x] Pure.
 - [x] Function components.
-  - [ ] Hooks.
+  - [x] Hooks.
   - [x] Memo.
 - [x] Context: `Provider`, `Consumer`, `useContext`, `contextType`.
 - [x] Refs: `createRef`, `forwardRef`, callback and string refs.
@@ -46,7 +46,6 @@ SUPPORTED
 - [x] Render props.
 - [x] HOCs and composition.
 - [x] Event emitting.
-- [ ] Uncontrolled forms.
 
 NOT SUPPORTED
 
