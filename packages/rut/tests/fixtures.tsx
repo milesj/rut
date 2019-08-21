@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-interface TestProps {
+export interface TestProps {
   name?: string;
 }
 

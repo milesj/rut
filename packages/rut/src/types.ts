@@ -8,7 +8,9 @@ export interface RendererOptions {
   wrapper?: React.ReactElement;
 }
 
-export type Args<T> = T extends (...args: unknown[]) => unknown ? Parameters<T> : unknown[];
+export type ArgsOf<T> = T extends (...args: infer A) => unknown ? A : unknown[];
+
+export type ReturnOf<T> = T extends (...args: unknown[]) => infer R ? R : unknown;
 
 export interface UnknownProps {
   [name: string]: unknown;

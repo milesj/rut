@@ -20,6 +20,6 @@ exports[`toBeNodeType() "memo" type errors when types dont match (not negation) 
 
 exports[`toBeNodeType() "memo" type errors when types dont match 1`] = `"expected \`Memo(FuncComp)\` to be a \\"function-component\\""`;
 
-exports[`toBeNodeType() errors if an invalid node type 1`] = `"toBeNodeType: Invalid node type \\"unknown-type\\", expected one of: class-component, forward-ref, function-component, host-component, memo"`;
+exports[`toBeNodeType() errors if an invalid node type 1`] = `"Invalid node type \\"unknown-type\\", expected one of: class-component, forward-ref, function-component, host-component, memo"`;
 
-exports[`toBeNodeType() errors if an invalid node type 2`] = `"toBeNodeType: Invalid node type \\"unknown-type\\", expected one of: class-component, forward-ref, function-component, host-component, memo"`;
+exports[`toBeNodeType() errors if an invalid node type 2`] = `"Invalid node type \\"unknown-type\\", expected one of: class-component, forward-ref, function-component, host-component, memo"`;

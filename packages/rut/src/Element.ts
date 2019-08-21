@@ -1,5 +1,5 @@
 import { ReactTestInstance, act } from 'react-test-renderer';
-import { Args, UnknownProps, TestNode, FiberNode } from './types';
+import { ArgsOf, ReturnOf, UnknownProps, TestNode, FiberNode } from './types';
 import { getTypeName } from './helpers';
 
 export default class Element<Props = UnknownProps> {
@@ -11,6 +11,9 @@ export default class Element<Props = UnknownProps> {
     this.element = element;
   }
 
+  /**
+   * Return all children as a list of strings and `Element`s.
+   */
   children(): (string | Element)[] {
     return this.element.children.map(child => {
       if (typeof child === 'string') {
@@ -21,21 +24,26 @@ export default class Element<Props = UnknownProps> {
     });
   }
 
-  emit<K extends keyof Props>(name: K, ...args: Args<Props[K]>): unknown {
+  /**
+   * Find and execute a function prop for the defined name.
+   * Accepts a list of arguments, and returns the result of the execution.
+   */
+  emit<K extends keyof Props>(name: K, ...args: ArgsOf<Props[K]>): ReturnOf<Props[K]> {
     const prop = this.prop(name);
 
     if (!prop) {
-      throw new Error(`${name} does not exist.`);
+      throw new Error(`Prop \`${name}\` does not exist.`);
     } else if (typeof prop !== 'function') {
-      throw new TypeError(`${name} is not a function.`);
+      throw new TypeError(`Prop \`${name}\` is not a function.`);
     }
 
-    let value;
+    let value: ReturnOf<Props[K]>;
 
     act(() => {
       value = prop(...args);
     });
 
+    // @ts-ignore Is assigned
     return value;
   }
 
