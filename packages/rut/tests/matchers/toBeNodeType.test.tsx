@@ -1,6 +1,8 @@
 import React from 'react';
 import render from '../../src/render';
 import { NodeType } from '../../src/types';
+import toBeNodeType from '../../src/matchers/toBeNodeType';
+import { runMatcher } from '../helpers';
 import { FuncComp, ClassComp, ForwardRefComp, MemoComp } from '../fixtures';
 
 describe('toBeNodeType()', () => {
@@ -17,6 +19,16 @@ describe('toBeNodeType()', () => {
         'unknown-type',
       );
     }).toThrowErrorMatchingSnapshot();
+
+    expect(() => {
+      runMatcher(
+        toBeNodeType(
+          render(<div />).root,
+          // @ts-ignore Allow invalid
+          'unknown-type',
+        ),
+      );
+    }).toThrowErrorMatchingSnapshot();
   });
 
   const nodeTypes = {
@@ -31,32 +43,43 @@ describe('toBeNodeType()', () => {
     const expectedNode = render(<div>{testNode}</div>).root.children()[0];
     const typeName = testTypeName as NodeType;
 
+    if (typeof expectedNode === 'string') {
+      return;
+    }
+
     describe(`"${typeName}" type`, () => {
       it('passes when types match', () => {
         expect(() => {
-          expect(expectedNode).toBeNodeType(typeName);
+          runMatcher(toBeNodeType(expectedNode, typeName));
         }).not.toThrowError();
       });
 
       it('errors when types dont match', () => {
         expect(() => {
-          expect(expectedNode).toBeNodeType(
-            typeName === 'function-component' ? 'class-component' : 'function-component',
+          runMatcher(
+            toBeNodeType(
+              expectedNode,
+              typeName === 'function-component' ? 'class-component' : 'function-component',
+            ),
           );
         }).toThrowErrorMatchingSnapshot();
       });
 
       it('passes when types match (not negation)', () => {
         expect(() => {
-          expect(expectedNode).not.toBeNodeType(
-            typeName === 'function-component' ? 'class-component' : 'function-component',
+          runMatcher(
+            toBeNodeType(
+              expectedNode,
+              typeName === 'function-component' ? 'class-component' : 'function-component',
+            ),
+            true,
           );
         }).not.toThrowError();
       });
 
       it('errors when types dont match (not negation)', () => {
         expect(() => {
-          expect(expectedNode).not.toBeNodeType(typeName);
+          runMatcher(toBeNodeType(expectedNode, typeName), true);
         }).toThrowErrorMatchingSnapshot();
       });
     });

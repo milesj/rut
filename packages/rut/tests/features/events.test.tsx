@@ -44,7 +44,7 @@ describe('Events', () => {
   });
 
   function EventComp() {
-    const handleClick = event => {
+    const handleClick = (event: React.MouseEvent) => {
       event.preventDefault();
     };
 

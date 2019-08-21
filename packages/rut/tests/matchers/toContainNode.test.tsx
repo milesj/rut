@@ -1,5 +1,9 @@
+/* eslint-disable jest/expect-expect */
+
 import React from 'react';
 import render from '../../src/render';
+import toContainNode from '../../src/matchers/toContainNode';
+import { runMatcher } from '../helpers';
 import { FuncComp, ClassComp } from '../fixtures';
 
 describe('toContainNode()', () => {
@@ -18,7 +22,7 @@ describe('toContainNode()', () => {
       );
     }
 
-    expect(render(<TestComp />).root).toContainNode(<span id="foo">Foo</span>);
+    runMatcher(toContainNode(render(<TestComp />).root, <span id="foo">Foo</span>));
   });
 
   it('supports nodes passed through props', () => {
@@ -35,163 +39,187 @@ describe('toContainNode()', () => {
 
     const { root } = render(<TestComp after={<div>Bar</div>}>Child</TestComp>);
 
-    expect(root).toContainNode('Child');
-    expect(root).toContainNode(<div>Bar</div>);
+    runMatcher(toContainNode(root, 'Child'));
+    runMatcher(toContainNode(root, <div>Bar</div>));
   });
 
   describe('immediate', () => {
     it('returns true for a string', () => {
-      expect(render(<div>Foo</div>).root).toContainNode('Foo');
+      runMatcher(toContainNode(render(<div>Foo</div>).root, 'Foo'));
     });
 
     it('returns true for a number', () => {
-      expect(render(<div>{123}</div>).root).toContainNode(123);
+      runMatcher(toContainNode(render(<div>{123}</div>).root, 123));
     });
 
     it('returns true for a host component node', () => {
       const node = <b>Foo</b>;
 
-      expect(render(<div>{node}</div>).root).toContainNode(node);
+      runMatcher(toContainNode(render(<div>{node}</div>).root, node));
     });
 
     it('returns true for a host component node with props', () => {
       const node = <b id="foo">Foo</b>;
 
-      expect(render(<div>{node}</div>).root).toContainNode(node);
+      runMatcher(toContainNode(render(<div>{node}</div>).root, node));
     });
 
     it('returns true for a function component node', () => {
       const node = <FuncComp />;
 
-      expect(render(<div>{node}</div>).root).toContainNode(node);
+      runMatcher(toContainNode(render(<div>{node}</div>).root, node));
     });
 
     it('returns true for a function component node with props', () => {
       const node = <FuncComp name="func" />;
 
-      expect(render(<div>{node}</div>).root).toContainNode(node);
+      runMatcher(toContainNode(render(<div>{node}</div>).root, node));
     });
 
     it('returns true for a class component node', () => {
       const node = <ClassComp />;
 
-      expect(render(<div>{node}</div>).root).toContainNode(node);
+      runMatcher(toContainNode(render(<div>{node}</div>).root, node));
     });
 
     it('returns true for a class component node with props', () => {
       const node = <ClassComp name="class" />;
 
-      expect(render(<div>{node}</div>).root).toContainNode(node);
+      runMatcher(toContainNode(render(<div>{node}</div>).root, node));
     });
   });
 
   describe('nested', () => {
     it('returns true for a string', () => {
-      expect(
-        render(
-          <div>
-            <section>
-              <span>
-                <b>Foo</b>
-              </span>
-            </section>
-          </div>,
-        ).root,
-      ).toContainNode('Foo');
+      runMatcher(
+        toContainNode(
+          render(
+            <div>
+              <section>
+                <span>
+                  <b>Foo</b>
+                </span>
+              </section>
+            </div>,
+          ).root,
+          'Foo',
+        ),
+      );
     });
 
     it('returns true for a number', () => {
-      expect(
-        render(
-          <div>
-            <section>
-              <span>
-                <b>{123}</b>
-              </span>
-            </section>
-          </div>,
-        ).root,
-      ).toContainNode(123);
+      runMatcher(
+        toContainNode(
+          render(
+            <div>
+              <section>
+                <span>
+                  <b>{123}</b>
+                </span>
+              </section>
+            </div>,
+          ).root,
+          123,
+        ),
+      );
     });
 
     it('returns true for a host component node', () => {
       const node = <b>Foo</b>;
 
-      expect(
-        render(
-          <div>
-            <section>{node}</section>
-          </div>,
-        ).root,
-      ).toContainNode(node);
+      runMatcher(
+        toContainNode(
+          render(
+            <div>
+              <section>{node}</section>
+            </div>,
+          ).root,
+          node,
+        ),
+      );
     });
 
     it('returns true for a host component node with props', () => {
       const node = <b id="foo">Foo</b>;
 
-      expect(
-        render(
-          <div>
-            <button type="button">
-              <span>{node}</span>
-            </button>
-          </div>,
-        ).root,
-      ).toContainNode(node);
+      runMatcher(
+        toContainNode(
+          render(
+            <div>
+              <button type="button">
+                <span>{node}</span>
+              </button>
+            </div>,
+          ).root,
+          node,
+        ),
+      );
     });
 
     it('returns true for a function component node', () => {
       const node = <FuncComp />;
 
-      expect(
-        render(
-          <div>
-            <main>{node}</main>
-          </div>,
-        ).root,
-      ).toContainNode(node);
+      runMatcher(
+        toContainNode(
+          render(
+            <div>
+              <main>{node}</main>
+            </div>,
+          ).root,
+          node,
+        ),
+      );
     });
 
     it('returns true for a function component node with props', () => {
       const node = <FuncComp name="func" />;
 
-      expect(
-        render(
-          <div>
-            <header>
-              <div>{node}</div>
-            </header>
-          </div>,
-        ).root,
-      ).toContainNode(node);
+      runMatcher(
+        toContainNode(
+          render(
+            <div>
+              <header>
+                <div>{node}</div>
+              </header>
+            </div>,
+          ).root,
+          node,
+        ),
+      );
     });
 
     it('returns true for a class component node', () => {
       const node = <ClassComp />;
 
-      expect(
-        render(
-          <div>
-            <a href="/">{node}</a>
-          </div>,
-        ).root,
-      ).toContainNode(node);
+      runMatcher(
+        toContainNode(
+          render(
+            <div>
+              <a href="/">{node}</a>
+            </div>,
+          ).root,
+          node,
+        ),
+      );
     });
 
     it('returns true for a class component node with props', () => {
       const node = <ClassComp name="class" />;
 
-      expect(
-        render(
-          <div>
-            <footer>
-              <section>
-                <div>{node}</div>
-              </section>
-            </footer>
-          </div>,
-        ).root,
-      ).toContainNode(node);
+      runMatcher(
+        toContainNode(
+          render(
+            <div>
+              <footer>
+                <section>
+                  <div>{node}</div>
+                </section>
+              </footer>
+            </div>,
+          ).root,
+          node,
+        ),
+      );
     });
   });
 });

@@ -1,5 +1,9 @@
+/* eslint-disable jest/expect-expect */
+
 import React from 'react';
 import render from '../../src/render';
+import toHaveRendered from '../../src/matchers/toHaveRendered';
+import { runMatcher } from '../helpers';
 import { FuncComp, ClassComp } from '../fixtures';
 
 describe('toHaveRendered()', () => {
@@ -46,41 +50,41 @@ describe('toHaveRendered()', () => {
   });
 
   it('returns false if null was returned', () => {
-    expect(render(<NullRender />).root).not.toHaveRendered();
+    runMatcher(toHaveRendered(render(<NullRender />).root), true);
   });
 
   it('returns false if false was returned', () => {
     // @ts-ignore
-    expect(render(<FalseRender />).root).not.toHaveRendered();
+    runMatcher(toHaveRendered(render(<FalseRender />).root), true);
   });
 
   it('returns true if a host component was rendered', () => {
-    expect(render(<HostCompRender />).root).toHaveRendered();
+    runMatcher(toHaveRendered(render(<HostCompRender />).root));
   });
 
   it('returns true if a function component was rendered', () => {
-    expect(render(<FuncCompRender />).root).toHaveRendered();
+    runMatcher(toHaveRendered(render(<FuncCompRender />).root));
   });
 
   it('returns true if a class component was rendered', () => {
-    expect(render(<ClassCompRender />).root).toHaveRendered();
+    runMatcher(toHaveRendered(render(<ClassCompRender />).root));
   });
 
   it('returns true if a fragment was rendered', () => {
-    expect(render(<FragmentRender />).root).toHaveRendered();
+    runMatcher(toHaveRendered(render(<FragmentRender />).root));
   });
 
   it('returns true if a string was rendered', () => {
     // @ts-ignore
-    expect(render(<StringRender />).root).toHaveRendered();
+    runMatcher(toHaveRendered(render(<StringRender />).root));
   });
 
   it('returns true if an array of nodes was rendered', () => {
     // @ts-ignore
-    expect(render(<ArrayRender />).root).toHaveRendered();
+    runMatcher(toHaveRendered(render(<ArrayRender />).root));
   });
 
   it('returns true if a child component that rendered null was rendered', () => {
-    expect(render(<NestedNullRender />).root).toHaveRendered();
+    runMatcher(toHaveRendered(render(<NestedNullRender />).root));
   });
 });

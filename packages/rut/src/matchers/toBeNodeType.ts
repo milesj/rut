@@ -27,9 +27,7 @@ export default function toBeNodeType(element: Element, type: NodeType): MatchRes
 
   if (nodeToTag === undefined) {
     throw new Error(
-      `toBeNodeType: Invalid node type "${type}", expected one of: ${Object.keys(nodeTypeMap).join(
-        ', ',
-      )}`,
+      `Invalid node type "${type}", expected one of: ${Object.keys(nodeTypeMap).join(', ')}`,
     );
   }
 

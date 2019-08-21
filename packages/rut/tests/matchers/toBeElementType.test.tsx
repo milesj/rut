@@ -1,5 +1,7 @@
 import React from 'react';
 import render from '../../src/render';
+import toBeElementType from '../../src/matchers/toBeElementType';
+import { runMatcher } from '../helpers';
 import {
   FuncComp,
   FuncCompWithDisplayName,
@@ -17,25 +19,25 @@ describe('toBeElementType()', () => {
   describe('host components', () => {
     it('passes when types match', () => {
       expect(() => {
-        expect(render(<div />).root).toBeElementType('div');
+        runMatcher(toBeElementType(render(<div />).root, 'div'));
       }).not.toThrowError();
     });
 
     it('errors when types dont match', () => {
       expect(() => {
-        expect(render(<div />).root).toBeElementType('span');
+        runMatcher(toBeElementType(render(<div />).root, 'span'));
       }).toThrowError('expected `div` to be a `span`');
     });
 
     it('passes when types match (not negation)', () => {
       expect(() => {
-        expect(render(<div />).root).not.toBeElementType('span');
+        runMatcher(toBeElementType(render(<div />).root, 'span'), true);
       }).not.toThrowError();
     });
 
     it('errors when types dont match (not negation)', () => {
       expect(() => {
-        expect(render(<div />).root).not.toBeElementType('div');
+        runMatcher(toBeElementType(render(<div />).root, 'div'), true);
       }).toThrowError('expected `div` not to be a `div`');
     });
   });
@@ -43,25 +45,25 @@ describe('toBeElementType()', () => {
   describe('function components', () => {
     it('passes when types match', () => {
       expect(() => {
-        expect(render(<FuncComp />).root).toBeElementType(FuncComp);
+        runMatcher(toBeElementType(render(<FuncComp />).root, FuncComp));
       }).not.toThrowError();
     });
 
     it('errors when types dont match', () => {
       expect(() => {
-        expect(render(<FuncComp />).root).toBeElementType(FuncCompWithDisplayName);
+        runMatcher(toBeElementType(render(<FuncComp />).root, FuncCompWithDisplayName));
       }).toThrowError('expected `FuncComp` to be a `CustomFuncName`');
     });
 
     it('passes when types match (not negation)', () => {
       expect(() => {
-        expect(render(<FuncComp />).root).not.toBeElementType(FuncCompWithDisplayName);
+        runMatcher(toBeElementType(render(<FuncComp />).root, FuncCompWithDisplayName), true);
       }).not.toThrowError();
     });
 
     it('errors when types dont match (not negation)', () => {
       expect(() => {
-        expect(render(<FuncComp />).root).not.toBeElementType(FuncComp);
+        runMatcher(toBeElementType(render(<FuncComp />).root, FuncComp), true);
       }).toThrowError('expected `FuncComp` not to be a `FuncComp`');
     });
   });
@@ -69,25 +71,25 @@ describe('toBeElementType()', () => {
   describe('class components', () => {
     it('passes when types match', () => {
       expect(() => {
-        expect(render(<ClassComp />).root).toBeElementType(ClassComp);
+        runMatcher(toBeElementType(render(<ClassComp />).root, ClassComp));
       }).not.toThrowError();
     });
 
     it('errors when types dont match', () => {
       expect(() => {
-        expect(render(<ClassComp />).root).toBeElementType(ClassCompWithDisplayName);
+        runMatcher(toBeElementType(render(<ClassComp />).root, ClassCompWithDisplayName));
       }).toThrowError('expected `ClassComp` to be a `CustomCompName`');
     });
 
     it('passes when types match (not negation)', () => {
       expect(() => {
-        expect(render(<ClassComp />).root).not.toBeElementType(ClassCompWithDisplayName);
+        runMatcher(toBeElementType(render(<ClassComp />).root, ClassCompWithDisplayName), true);
       }).not.toThrowError();
     });
 
     it('errors when types dont match (not negation)', () => {
       expect(() => {
-        expect(render(<ClassComp />).root).not.toBeElementType(ClassComp);
+        runMatcher(toBeElementType(render(<ClassComp />).root, ClassComp), true);
       }).toThrowError('expected `ClassComp` not to be a `ClassComp`');
     });
   });

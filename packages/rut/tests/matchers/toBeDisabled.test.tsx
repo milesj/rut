@@ -1,5 +1,7 @@
 import React from 'react';
 import render from '../../src/render';
+import toBeDisabled from '../../src/matchers/toBeDisabled';
+import { runMatcher } from '../helpers';
 
 describe('toBeDisabled()', () => {
   it('errors if a non-Element is passed', () => {
@@ -11,13 +13,13 @@ describe('toBeDisabled()', () => {
   describe('normal', () => {
     it('passes when disabled', () => {
       expect(() => {
-        expect(render(<input disabled />).root).toBeDisabled();
+        runMatcher(toBeDisabled(render(<input disabled />).root));
       }).not.toThrowError();
     });
 
     it('errors when not disabled', () => {
       expect(() => {
-        expect(render(<input />).root).toBeDisabled();
+        runMatcher(toBeDisabled(render(<input />).root));
       }).toThrowError('expected `input` to have a "disabled" prop with a value of true');
     });
   });
@@ -25,13 +27,13 @@ describe('toBeDisabled()', () => {
   describe('negated', () => {
     it('passes when not disabled', () => {
       expect(() => {
-        expect(render(<input />).root).not.toBeDisabled();
+        runMatcher(toBeDisabled(render(<input />).root), true);
       }).not.toThrowError();
     });
 
     it('errors when disabled', () => {
       expect(() => {
-        expect(render(<input disabled />).root).not.toBeDisabled();
+        runMatcher(toBeDisabled(render(<input disabled />).root), true);
       }).toThrowError('expected `input` not to have a "disabled" prop with a value of true');
     });
   });

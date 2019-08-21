@@ -49,7 +49,7 @@ exports[`debug() formats set props 1`] = `
 </SetProp>
 `;
 
-exports[`debug() sorts props, and groups into: true first, everything second, event handlers last 1`] = `
+exports[`debug() sorts props, and groups into: true first, everything else, event handlers last 1`] = `
 <SortProps
   enabled
   content={<div />}
