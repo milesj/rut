@@ -1,5 +1,5 @@
 import React, { useReducer, useCallback, useMemo, useRef } from 'react';
-import render from '../../src/render';
+import { render } from '../../src/render';
 
 // useState, useContext, useEffect covered in other tests
 describe('Hooks', () => {

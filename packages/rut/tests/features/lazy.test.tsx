@@ -1,5 +1,5 @@
 import React from 'react';
-import render from '../../src/render';
+import { render } from '../../src/render';
 
 // Not supported by RTR: https://github.com/facebook/react/issues/14170
 describe.skip('Lazy', () => {

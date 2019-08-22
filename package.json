@@ -45,6 +45,7 @@
     },
     "eslint": {
       "rules": {
+        "no-magic-numbers": "off",
         "no-underscore-dangle": "off"
       }
     },

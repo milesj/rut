@@ -3,7 +3,7 @@ import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
 import debug from './debug';
 import { UnknownProps, RendererOptions } from './types';
-import { getTypeName, shallowEqual } from './helpers';
+import { getTypeName, shallowEqual, wait } from './helpers';
 
 export default class Renderer<Props = UnknownProps> {
   readonly isRutRenderer = true;
@@ -73,9 +73,9 @@ export default class Renderer<Props = UnknownProps> {
   /**
    * Unmount the in-memory tree, triggering the appropriate lifecycle events.
    */
-  unmount = async () => {
-    await act(async () => {
-      await this.renderer.unmount();
+  unmount = () => {
+    act(() => {
+      this.renderer.unmount();
     });
   };
 
@@ -84,24 +84,46 @@ export default class Renderer<Props = UnknownProps> {
    * a React update at the root. If the new element has the same type and key as the
    * previous element, the tree will be updated; otherwise, it will mount a new tree.
    */
-  update = async (newProps?: Partial<Props>, newChildren?: React.ReactNode) => {
-    const { children } = this.element.props as {
-      children?: React.ReactNode;
-    };
-
-    // Replace the previous element with a new one
-    this.element = React.cloneElement(this.element, newProps, newChildren || children);
-
-    // Act and update the new element
-    await act(async () => {
-      await this.renderer.update(this.wrapElement(this.element));
+  update = (newProps?: Partial<Props>, newChildren?: React.ReactNode) => {
+    act(() => {
+      this.renderer.update(this.updateElement(newProps, newChildren));
     });
   };
 
   /**
+   * Like `update` but also awaits the re-render so that async calls have time to finish.
+   */
+  updateAndWait = async (
+    newProps?: Partial<Props>,
+    newChildren?: React.ReactNode,
+    delay?: number,
+  ) => {
+    await act(async () => {
+      await this.renderer.update(this.updateElement(newProps, newChildren));
+      await wait(delay);
+    });
+  };
+
+  /**
+   * Replace the previous element with a new one. Return the new wrapped element.
+   */
+  protected updateElement(
+    newProps?: Partial<Props>,
+    newChildren?: React.ReactNode,
+  ): React.ReactElement {
+    const { children } = this.element.props as {
+      children?: React.ReactNode;
+    };
+
+    this.element = React.cloneElement(this.element, newProps, newChildren || children);
+
+    return this.wrapElement(this.element);
+  }
+
+  /**
    * Wrap the root element with additional elements for convenient composition.
    */
-  private wrapElement(root: React.ReactElement): React.ReactElement {
+  protected wrapElement(root: React.ReactElement): React.ReactElement {
     let element: React.ReactElement = root;
 
     // Wrap with another elemnt

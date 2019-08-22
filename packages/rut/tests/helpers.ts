@@ -9,3 +9,12 @@ export function runMatcher(result: MatchResult, isNot: boolean = false) {
     throw new Error(result.message);
   }
 }
+
+export function runAsyncCall(done: () => void) {
+  return new Promise(resolve => {
+    process.nextTick(() => {
+      done();
+      resolve();
+    });
+  });
+}

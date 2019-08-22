@@ -1,5 +1,3 @@
-/* eslint-disable no-magic-numbers */
-
 import Element from '../Element';
 import { checkIsRutElement } from '../helpers';
 import { MatchResult, NodeType } from '../types';
