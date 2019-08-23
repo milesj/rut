@@ -12,9 +12,9 @@ export function runMatcher(result: MatchResult, isNot: boolean = false) {
 
 export function runAsyncCall(done: () => void) {
   return new Promise(resolve => {
-    process.nextTick(() => {
+    setTimeout(() => {
       done();
       resolve();
-    });
+    }, 50);
   });
 }
