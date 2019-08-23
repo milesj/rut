@@ -1,5 +1,5 @@
 import React from 'react';
-import render from '../../src/render';
+import { render } from '../../src/render';
 import { NodeType } from '../../src/types';
 import toBeNodeType from '../../src/matchers/toBeNodeType';
 import { runMatcher } from '../helpers';

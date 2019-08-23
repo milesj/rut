@@ -2,8 +2,9 @@ import React from 'react';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
 import debug from './debug';
-import { UnknownProps, RendererOptions } from './types';
+import { wrapAndCaptureAsync, waitForAsyncQueue } from './async';
 import { getTypeName, shallowEqual } from './helpers';
+import { UnknownProps, RendererOptions } from './types';
 
 export default class Renderer<Props = UnknownProps> {
   readonly isRutRenderer = true;
@@ -23,11 +24,14 @@ export default class Renderer<Props = UnknownProps> {
   }
 
   /**
-   * Return a rough JSX representation of the current React component tree.
-   * Does not include the following exotic components or nodes:
+   * Return a JSX representation of the *reconciled* React component tree.
+   * Does not include exotic components or nodes, such as:
    *
    *  - Context consumers and providers
-   *  - Memo components
+   *  - Memo and forwardRef components
+   *  - Roots, portals, modes
+   *  - Profiler, Suspense
+   *  - Fragments
    */
   debug = () => debug(this.toTree());
 
@@ -41,9 +45,15 @@ export default class Renderer<Props = UnknownProps> {
     // When being wrapped, we need to drill down and find the
     // element that matches the one initially passed in.
     if (this.options.wrapper) {
-      return root.query<Props>(
+      const nodes = root.query<Props>(
         node => node.type === element.type && shallowEqual(node.props, element.props),
-      )[0];
+      );
+
+      if (nodes.length !== 1) {
+        throw new Error('Unable to find root node. Wrapping elements may be obfuscating it.');
+      }
+
+      return nodes[0];
     }
 
     // `StrictMode` does not appear in the rendered tree,
@@ -73,9 +83,9 @@ export default class Renderer<Props = UnknownProps> {
   /**
    * Unmount the in-memory tree, triggering the appropriate lifecycle events.
    */
-  unmount = async () => {
-    await act(async () => {
-      await this.renderer.unmount();
+  unmount = () => {
+    act(() => {
+      this.renderer.unmount();
     });
   };
 
@@ -84,24 +94,48 @@ export default class Renderer<Props = UnknownProps> {
    * a React update at the root. If the new element has the same type and key as the
    * previous element, the tree will be updated; otherwise, it will mount a new tree.
    */
-  update = async (newProps?: Partial<Props>, newChildren?: React.ReactNode) => {
-    const { children } = this.element.props as {
-      children?: React.ReactNode;
-    };
-
-    // Replace the previous element with a new one
-    this.element = React.cloneElement(this.element, newProps, newChildren || children);
-
-    // Act and update the new element
-    await act(async () => {
-      await this.renderer.update(this.wrapElement(this.element));
+  update = (newProps?: Partial<Props>, newChildren?: React.ReactNode) => {
+    act(() => {
+      this.renderer.update(this.updateElement(newProps, newChildren));
     });
   };
 
   /**
+   * Like `update` but also awaits the re-render so that async calls have time to finish.
+   */
+  updateAndWait = async (newProps?: Partial<Props>, newChildren?: React.ReactNode) => {
+    const queue = wrapAndCaptureAsync();
+
+    await act(async () => {
+      await this.renderer.update(this.updateElement(newProps, newChildren));
+    });
+
+    // We need an additional act as async results may cause re-renders
+    await act(async () => {
+      await waitForAsyncQueue(queue);
+    });
+  };
+
+  /**
+   * Replace the previous element with a new one. Return the new wrapped element.
+   */
+  protected updateElement(
+    newProps?: Partial<Props>,
+    newChildren?: React.ReactNode,
+  ): React.ReactElement {
+    const { children } = this.element.props as {
+      children?: React.ReactNode;
+    };
+
+    this.element = React.cloneElement(this.element, newProps, newChildren || children);
+
+    return this.wrapElement(this.element);
+  }
+
+  /**
    * Wrap the root element with additional elements for convenient composition.
    */
-  private wrapElement(root: React.ReactElement): React.ReactElement {
+  protected wrapElement(root: React.ReactElement): React.ReactElement {
     let element: React.ReactElement = root;
 
     // Wrap with another elemnt

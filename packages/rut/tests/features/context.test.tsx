@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import render from '../../src/render';
+import { render } from '../../src/render';
 
 describe('Context', () => {
   const ThemeContext = React.createContext('default');
@@ -74,7 +74,7 @@ describe('Context', () => {
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
-    it('updates with new value when provider changes', async () => {
+    it('updates with new value when provider changes', () => {
       const spy = jest.fn();
       const wrapper = render(
         <Provider theme="dark">
@@ -86,12 +86,12 @@ describe('Context', () => {
 
       expect(spy).toHaveBeenCalledWith('dark');
 
-      await wrapper.update({ theme: 'light' });
+      wrapper.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledWith('light');
     });
 
-    it('updates consumer that has been memoized', async () => {
+    it('updates consumer that has been memoized', () => {
       const spy = jest.fn();
       const MemoConsumer = React.memo(Consumer);
       const wrapper = render(
@@ -100,7 +100,7 @@ describe('Context', () => {
         </Provider>,
       );
 
-      await wrapper.update({ theme: 'light' });
+      wrapper.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith('light');
@@ -130,7 +130,7 @@ describe('Context', () => {
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
-    it('updates with new value when provider changes', async () => {
+    it('updates with new value when provider changes', () => {
       const spy = jest.fn();
       const wrapper = render(
         <Provider theme="dark">
@@ -142,12 +142,12 @@ describe('Context', () => {
 
       expect(spy).toHaveBeenCalledWith('dark');
 
-      await wrapper.update({ theme: 'light' });
+      wrapper.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledWith('light');
     });
 
-    it('updates consumer that has been memoized', async () => {
+    it('updates consumer that has been memoized', () => {
       const spy = jest.fn();
       const MemoConsumer = React.memo(HookConsumer);
       const wrapper = render(
@@ -156,7 +156,7 @@ describe('Context', () => {
         </Provider>,
       );
 
-      await wrapper.update({ theme: 'light' });
+      wrapper.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith('light');
@@ -186,7 +186,7 @@ describe('Context', () => {
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
-    it('updates with new value when provider changes', async () => {
+    it('updates with new value when provider changes', () => {
       const spy = jest.fn();
       const wrapper = render(
         <Provider theme="dark">
@@ -198,12 +198,12 @@ describe('Context', () => {
 
       expect(spy).toHaveBeenCalledWith('dark');
 
-      await wrapper.update({ theme: 'light' });
+      wrapper.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledWith('light');
     });
 
-    it('updates consumer that is pure', async () => {
+    it('updates consumer that is pure', () => {
       class PureStaticConsumer extends React.PureComponent<SpyProps> {
         static contextType = ThemeContext;
 
@@ -221,7 +221,7 @@ describe('Context', () => {
         </Provider>,
       );
 
-      await wrapper.update({ theme: 'light' });
+      wrapper.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith('light');

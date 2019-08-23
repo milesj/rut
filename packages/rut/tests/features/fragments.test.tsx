@@ -1,5 +1,5 @@
 import React from 'react';
-import render from '../../src/render';
+import { render } from '../../src/render';
 
 describe('Fragment', () => {
   it('renders short form', () => {

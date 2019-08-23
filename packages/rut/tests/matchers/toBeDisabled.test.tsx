@@ -1,5 +1,5 @@
 import React from 'react';
-import render from '../../src/render';
+import { render } from '../../src/render';
 import toBeDisabled from '../../src/matchers/toBeDisabled';
 import { runMatcher } from '../helpers';
 

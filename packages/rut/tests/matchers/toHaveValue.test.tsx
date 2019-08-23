@@ -1,5 +1,5 @@
 import React from 'react';
-import render from '../../src/render';
+import { render } from '../../src/render';
 import toHaveValue from '../../src/matchers/toHaveValue';
 import { runMatcher } from '../helpers';
 

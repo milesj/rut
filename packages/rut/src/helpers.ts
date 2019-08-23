@@ -216,10 +216,8 @@ export function shallowEqual(objA: unknown, objB: unknown): boolean {
   return true;
 }
 
-export function wait(): Promise<void> {
+export function wait(delay: number = 10): Promise<void> {
   return new Promise(resolve => {
-    process.nextTick(() => {
-      resolve();
-    });
+    setTimeout(resolve, delay);
   });
 }

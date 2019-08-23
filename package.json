@@ -45,6 +45,7 @@
     },
     "eslint": {
       "rules": {
+        "no-magic-numbers": "off",
         "no-underscore-dangle": "off"
       }
     },
@@ -52,7 +53,8 @@
       "setupFilesAfterEnv": [
         "jest-rut"
       ],
-      "testEnvironment": "node"
+      "testEnvironment": "node",
+      "timers": "real"
     }
   }
 }

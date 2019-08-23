@@ -1,6 +1,6 @@
 import React from 'react';
 import Element from '../src/Element';
-import render from '../src/render';
+import { render } from '../src/render';
 import { FuncComp } from './fixtures';
 
 describe('Element', () => {

@@ -1,7 +1,7 @@
 /* eslint-disable jest/expect-expect */
 
 import React from 'react';
-import render from '../../src/render';
+import { render } from '../../src/render';
 import toHaveRendered from '../../src/matchers/toHaveRendered';
 import { runMatcher } from '../helpers';
 import { FuncComp, ClassComp } from '../fixtures';
