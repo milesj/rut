@@ -49,7 +49,11 @@ export interface AsyncProps {
   onLoad: () => void;
 }
 
-export class AsyncCdmComp extends React.Component<AsyncProps, { initialized: boolean }> {
+export interface AsyncState {
+  initialized: boolean;
+}
+
+export class AsyncCdmComp extends React.Component<AsyncProps, AsyncState> {
   state = {
     initialized: false,
   };
@@ -68,7 +72,7 @@ export class AsyncCdmComp extends React.Component<AsyncProps, { initialized: boo
   }
 }
 
-export class AsyncCduComp extends React.Component<AsyncProps, { initialized: boolean }> {
+export class AsyncCduComp extends React.Component<AsyncProps, AsyncState> {
   state = {
     initialized: false,
   };
@@ -93,6 +97,10 @@ export function AsyncHookComp({ id, onLoad }: AsyncProps) {
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
+    if (id === 'first') {
+      return;
+    }
+
     runAsyncCall(onLoad)
       .then(result => {
         setInitialized(true);
@@ -100,6 +108,65 @@ export function AsyncHookComp({ id, onLoad }: AsyncProps) {
         return result;
       })
       .catch(() => {});
+  }, [id, onLoad]);
+
+  return <span>{initialized ? 'Loaded' : 'Loading...'}</span>;
+}
+
+export class TimerCdmComp extends React.Component<AsyncProps, AsyncState> {
+  state = {
+    initialized: false,
+  };
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.props.onLoad();
+
+      this.setState({
+        initialized: true,
+      });
+    }, 250);
+  }
+
+  render() {
+    return <span>{this.state.initialized ? 'Loaded' : 'Loading...'}</span>;
+  }
+}
+
+export class TimerCduComp extends React.Component<AsyncProps, AsyncState> {
+  state = {
+    initialized: false,
+  };
+
+  componentDidUpdate(prevProps: AsyncProps) {
+    if (this.props.id !== prevProps.id) {
+      setTimeout(() => {
+        this.props.onLoad();
+
+        this.setState({
+          initialized: true,
+        });
+      }, 250);
+    }
+  }
+
+  render() {
+    return <span>{this.state.initialized ? 'Loaded' : 'Loading...'}</span>;
+  }
+}
+
+export function TimerHookComp({ id, onLoad }: AsyncProps) {
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    if (id === 'first') {
+      return;
+    }
+
+    setTimeout(() => {
+      onLoad();
+      setInitialized(true);
+    }, 250);
   }, [id, onLoad]);
 
   return <span>{initialized ? 'Loaded' : 'Loading...'}</span>;

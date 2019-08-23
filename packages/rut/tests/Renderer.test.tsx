@@ -8,6 +8,9 @@ import {
   AsyncHookComp,
   AsyncCdmComp,
   AsyncCduComp,
+  TimerCdmComp,
+  TimerHookComp,
+  TimerCduComp,
 } from './fixtures';
 
 describe('Renderer', () => {
@@ -222,7 +225,16 @@ describe('Renderer', () => {
         const { root } = await renderAndWait(<AsyncCdmComp onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(root.name()).toBe('AsyncCdmComp');
+        expect(root).toContainNode('Loaded');
+      });
+
+      it('supports `componentDidMount` with timers', async () => {
+        const spy = jest.fn();
+
+        const { root } = await renderAndWait(<TimerCdmComp onLoad={spy} />);
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(root).toContainNode('Loaded');
       });
     });
 
@@ -261,7 +273,16 @@ describe('Renderer', () => {
         const { root } = await renderAndWait(<AsyncHookComp onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(root.name()).toBe('AsyncHookComp');
+        expect(root).toContainNode('Loaded');
+      });
+
+      it('supports `useEffect` with timers', async () => {
+        const spy = jest.fn();
+
+        const { root } = await renderAndWait(<TimerHookComp onLoad={spy} />);
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(root).toContainNode('Loaded');
       });
     });
   });
@@ -477,11 +498,26 @@ describe('Renderer', () => {
         const wrapper = render(<AsyncCduComp id="first" onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(0);
-        expect(wrapper.root.name()).toBe('AsyncCduComp');
+        expect(wrapper.root).toContainNode('Loading...');
 
         await wrapper.updateAndWait({ id: 'second' });
 
         expect(spy).toHaveBeenCalledTimes(1);
+        expect(wrapper.root).toContainNode('Loaded');
+      });
+
+      it('supports `componentDidUpdate` with timers', async () => {
+        const spy = jest.fn();
+
+        const wrapper = render(<TimerCduComp id="first" onLoad={spy} />);
+
+        expect(spy).toHaveBeenCalledTimes(0);
+        expect(wrapper.root).toContainNode('Loading...');
+
+        await wrapper.updateAndWait({ id: 'second' });
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(wrapper.root).toContainNode('Loaded');
       });
     });
 
@@ -584,11 +620,26 @@ describe('Renderer', () => {
         const wrapper = render(<AsyncHookComp id="first" onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(0);
-        expect(wrapper.root.name()).toBe('AsyncHookComp');
+        expect(wrapper.root).toContainNode('Loading...');
 
         await wrapper.updateAndWait({ id: 'second' });
 
-        expect(spy).toHaveBeenCalledTimes(2);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(wrapper.root).toContainNode('Loaded');
+      });
+
+      it('supports `useEffect` with timers', async () => {
+        const spy = jest.fn();
+
+        const wrapper = render(<AsyncHookComp id="first" onLoad={spy} />);
+
+        expect(spy).toHaveBeenCalledTimes(0);
+        expect(wrapper.root).toContainNode('Loading...');
+
+        await wrapper.updateAndWait({ id: 'second' });
+
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(wrapper.root).toContainNode('Loaded');
       });
     });
   });
