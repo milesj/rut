@@ -53,7 +53,8 @@
       "setupFilesAfterEnv": [
         "jest-rut"
       ],
-      "testEnvironment": "node"
+      "testEnvironment": "node",
+      "timers": "real"
     }
   }
 }
