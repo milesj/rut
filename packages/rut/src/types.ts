@@ -8,7 +8,7 @@ export interface RendererOptions {
   wrapper?: React.ReactElement;
 }
 
-export type ArgsOf<T> = T extends (...args: infer A) => unknown ? A : unknown[];
+export type ArgsOf<T> = T extends (...args: infer A) => unknown ? A : never;
 
 export type ReturnOf<T> = T extends (...args: unknown[]) => infer R ? R : unknown;
 
@@ -55,6 +55,8 @@ export type NodeType =
   | 'function-component'
   | 'host-component'
   | 'memo';
+
+export type HostComponentType = keyof JSX.IntrinsicElements;
 
 declare module 'react-test-renderer' {
   interface ReactTestInstance {

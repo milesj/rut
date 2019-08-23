@@ -1,8 +1,11 @@
-import { ReactTestInstance, act } from 'react-test-renderer';
-import { ArgsOf, ReturnOf, UnknownProps, TestNode, FiberNode } from './types';
+/* eslint-disable lines-between-class-members, no-dupe-class-members */
+
+import React from 'react';
+import { act, ReactTestInstance } from 'react-test-renderer';
+import { ArgsOf, ReturnOf, TestNode, FiberNode, HostComponentType } from './types';
 import { getTypeName } from './helpers';
 
-export default class Element<Props = UnknownProps> {
+export default class Element<Props = {}> {
   readonly isRutElement = true;
 
   private element: ReactTestInstance;
@@ -52,19 +55,23 @@ export default class Element<Props = UnknownProps> {
   }
 
   /**
-   * Search through the current children tree for all elements that match the defined React
+   * Search through the current child tree for all elements that match the defined React
    * element type. If any are found, a list of `Element`s is returned.
    */
-  find<P = UnknownProps>(type: React.ElementType<P>): Element<P>[] {
+  find<T extends HostComponentType>(type: T): Element<JSX.IntrinsicElements[T]>[];
+  find<P>(type: React.ComponentType<P>): Element<P>[];
+  find(type: React.ElementType<unknown>): Element<unknown>[] {
     return this.element.findAllByType(type).map(node => new Element(node));
   }
 
   /**
-   * Search through the current children tree for a single element that matches the defined React
+   * Search through the current child tree for a single element that matches the defined React
    * element type. If exactly 1 is found, a `Element`s is returned, otherwise an error
    * is thrown.
    */
-  findOne<P = UnknownProps>(type: React.ElementType<P>): Element<P> {
+  findOne<T extends HostComponentType>(type: T): Element<JSX.IntrinsicElements[T]>;
+  findOne<P>(type: React.ComponentType<P>): Element<P>;
+  findOne(type: React.ElementType<unknown>): Element<unknown> {
     const results = this.find(type);
 
     if (results.length !== 1) {
@@ -84,20 +91,26 @@ export default class Element<Props = UnknownProps> {
     return getTypeName(this.element._fiber.elementType || this.element._fiber.type);
   }
 
+  /**
+   * Return the value of a prop by name, or undefined if not found.
+   */
   prop<K extends keyof Props>(name: K): Props[K] | undefined {
     return this.element.props[name as string];
   }
 
+  /**
+   * Return an object of all props on the current element.
+   */
   props(): Props {
     return this.element.props as Props;
   }
 
   /**
-   * Search through the current children tree using a custom predicate, which is passed the
+   * Search through the current child tree using a custom predicate, which is passed the
    * React TestRenderer node and internal React fiber node. If any are found,
    * a list of `Element`s is returned.
    */
-  query<P = UnknownProps>(
+  query<P = {}>(
     predicate: (node: TestNode, fiber: FiberNode) => boolean,
     options?: { deep?: boolean },
   ): Element<P>[] {

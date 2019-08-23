@@ -5,7 +5,11 @@ import { MatchResult } from '../types';
 /**
  * Check that an element has a prop by name defined, with optional value matching support.
  */
-export default function toHaveProp(element: Element, name: string, value?: unknown): MatchResult {
+export default function toHaveProp<P>(
+  element: Element<P>,
+  name: keyof P,
+  value?: unknown,
+): MatchResult {
   checkIsRutElement(element);
 
   const prop = element.prop(name);

@@ -63,20 +63,20 @@ export function isReactComponent(value: unknown): value is React.ComponentType {
 }
 
 /**
+ * Return true if the value is a React class component instance.
+ */
+export function isReactComponentInstance(value: unknown): value is Function {
+  return (
+    typeof value === 'object' && !!value && 'isReactComponent' in value && 'constructor' in value
+  );
+}
+
+/**
  * Return true if the value is structurally similar to a React element or node,
  * by checking for the existance of `$$typeof`.
  */
 export function isReactNodeLike(value: unknown): value is NodeLike {
   return typeof value === 'object' && !!value && '$$typeof' in value;
-}
-
-/**
- * Return true if the value is a React class component instance.
- */
-export function isReactClassInstance(value: unknown): value is Function {
-  return (
-    typeof value === 'object' && !!value && 'isReactComponent' in value && 'constructor' in value
-  );
 }
 
 /**
@@ -104,7 +104,7 @@ export function getTypeName(type: unknown): string {
     return type.displayName || type.name;
   }
 
-  if (isReactClassInstance(type)) {
+  if (isReactComponentInstance(type)) {
     return getTypeName(type.constructor);
   }
 

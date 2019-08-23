@@ -35,18 +35,28 @@ describe('Element', () => {
   describe('emit()', () => {
     it('errors if prop does not exist', () => {
       expect(() => {
-        const { root } = render(<FuncComp />);
+        const { root } = render(
+          <div>
+            <span />
+          </div>,
+        );
 
-        root.emit('onFake');
+        // @ts-ignore
+        root.findOne('span').emit('onFake');
       }).toThrowError('Prop `onFake` does not exist.');
     });
 
     it('errors if prop is not a function', () => {
       expect(() => {
-        const { root } = render(<FuncComp name="func" />);
+        const { root } = render(
+          <div>
+            <span id="foo" />
+          </div>,
+        );
 
-        root.emit('name');
-      }).toThrowError('Prop `name` is not a function.');
+        // @ts-ignore
+        root.findOne('span').emit('id');
+      }).toThrowError('Prop `id` is not a function.');
     });
 
     it('errors if emitting on a non-host component', () => {
@@ -74,7 +84,7 @@ describe('Element', () => {
 
       const { root } = render(<EmitComp />);
 
-      root.findOne('button').emit('onClick', 1, 2, 3);
+      root.findOne('button').emit('onClick', ({} as any) as React.MouseEvent<HTMLButtonElement>);
 
       expect(spy).toHaveBeenCalledWith(1, 2, 3);
     });

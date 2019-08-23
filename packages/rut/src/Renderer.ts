@@ -4,9 +4,9 @@ import Element from './Element';
 import wrapAndCaptureAsync from './internals/async';
 import debugToJsx from './internals/debug';
 import { getTypeName, shallowEqual } from './helpers';
-import { UnknownProps, RendererOptions } from './types';
+import { RendererOptions } from './types';
 
-export default class Renderer<Props = UnknownProps> {
+export default class Renderer<Props = {}> {
   readonly isRutRenderer = true;
 
   private element: React.ReactElement<Props>;
