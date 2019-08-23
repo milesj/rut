@@ -217,16 +217,12 @@ describe('Renderer', () => {
       });
 
       it('supports async `componentDidMount`', async () => {
-        jest.useRealTimers();
-
         const spy = jest.fn();
 
         const { root } = await renderAndWait(<AsyncCdmComp onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(root.name()).toBe('AsyncCdmComp');
-
-        jest.useFakeTimers();
       });
     });
 
@@ -260,16 +256,12 @@ describe('Renderer', () => {
       });
 
       it('supports async `useEffect`', async () => {
-        jest.useRealTimers();
-
         const spy = jest.fn();
 
         const { root } = await renderAndWait(<AsyncHookComp onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(root.name()).toBe('AsyncHookComp');
-
-        jest.useFakeTimers();
       });
     });
   });
@@ -480,8 +472,6 @@ describe('Renderer', () => {
       });
 
       it('supports async `componentDidUpdate`', async () => {
-        jest.useRealTimers();
-
         const spy = jest.fn();
 
         const wrapper = render(<AsyncCduComp id="first" onLoad={spy} />);
@@ -492,8 +482,6 @@ describe('Renderer', () => {
         await wrapper.updateAndWait({ id: 'second' });
 
         expect(spy).toHaveBeenCalledTimes(1);
-
-        jest.useFakeTimers();
       });
     });
 
@@ -591,8 +579,6 @@ describe('Renderer', () => {
       });
 
       it('supports async `useEffect`', async () => {
-        jest.useRealTimers();
-
         const spy = jest.fn();
 
         const wrapper = render(<AsyncHookComp id="first" onLoad={spy} />);
@@ -603,8 +589,6 @@ describe('Renderer', () => {
         await wrapper.updateAndWait({ id: 'second' });
 
         expect(spy).toHaveBeenCalledTimes(2);
-
-        jest.useFakeTimers();
       });
     });
   });
