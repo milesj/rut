@@ -17,13 +17,13 @@ describe('Refs', () => {
 
     it('resolves the ref from the inner component', () => {
       const ref = React.createRef<HTMLButtonElement>();
-      const wrapper = render(<Button ref={ref}>Child</Button>, {
+      const result = render(<Button ref={ref}>Child</Button>, {
         refs: { button: mock },
       });
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root.ref()).toBe(ref);
-      expect(wrapper.root.ref<typeof ref>()!.current).toBe(mock);
+      expect(result).toMatchSnapshot();
+      expect(result.root.ref()).toBe(ref);
+      expect(result.root.ref<typeof ref>()!.current).toBe(mock);
     });
 
     function withRef(WrappedComponent: React.ComponentType<{ children: React.ReactNode }>): any {
@@ -54,9 +54,9 @@ describe('Refs', () => {
 
       expect(ref.current).toBeNull();
 
-      const wrapper = render(<HocButton ref={ref}>Child</HocButton>);
+      const result = render(<HocButton ref={ref}>Child</HocButton>);
 
-      expect(wrapper).toMatchSnapshot();
+      expect(result).toMatchSnapshot();
       expect(ref.current!.constructor.name).toBe('InnerButton');
     });
   });
@@ -72,12 +72,12 @@ describe('Refs', () => {
 
     it('resolves the ref', () => {
       const div = { tagName: 'DIV' };
-      const wrapper = render(<Section>Child</Section>, {
+      const result = render(<Section>Child</Section>, {
         refs: { div },
       });
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root.ref('ref')).toEqual({ current: div });
+      expect(result).toMatchSnapshot();
+      expect(result.root.ref('ref')).toEqual({ current: div });
     });
   });
 
@@ -99,12 +99,12 @@ describe('Refs', () => {
 
     it('resolves the callback ref', () => {
       const input = { tagName: 'INPUT' };
-      const wrapper = render(<Input value="foo" />, {
+      const result = render(<Input value="foo" />, {
         refs: { input },
       });
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root.ref('inputRef')).toBe(input);
+      expect(result).toMatchSnapshot();
+      expect(result.root.ref('inputRef')).toBe(input);
     });
   });
 
@@ -122,12 +122,12 @@ describe('Refs', () => {
 
     it('resolves the string ref', () => {
       const a = { tagName: 'A' };
-      const wrapper = render(<Link href="/">Child</Link>, {
+      const result = render(<Link href="/">Child</Link>, {
         refs: { a },
       });
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root.ref('link')).toBe(a);
+      expect(result).toMatchSnapshot();
+      expect(result.root.ref('link')).toBe(a);
     });
   });
 });

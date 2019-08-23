@@ -8,10 +8,10 @@ describe('Children', () => {
     }
 
     const spy = jest.fn(() => <span>Child</span>);
-    const wrapper = render(<FuncChildComp>{spy}</FuncChildComp>);
+    const result = render(<FuncChildComp>{spy}</FuncChildComp>);
 
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.root).toContainNode('Child');
+    expect(result).toMatchSnapshot();
+    expect(result.root).toContainNode('Child');
     expect(spy).toHaveBeenCalled();
   });
 
@@ -21,10 +21,10 @@ describe('Children', () => {
     }
 
     const node = <span>Child</span>;
-    const wrapper = render(<OnlyChildComp>{node}</OnlyChildComp>);
+    const result = render(<OnlyChildComp>{node}</OnlyChildComp>);
 
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.root).toContainNode(node);
+    expect(result).toMatchSnapshot();
+    expect(result.root).toContainNode(node);
   });
 
   it('renders mapped children', () => {
@@ -38,7 +38,7 @@ describe('Children', () => {
       );
     }
 
-    const wrapper = render(
+    const result = render(
       <MapChildComp>
         <div>1</div>
         <div>2</div>
@@ -46,7 +46,7 @@ describe('Children', () => {
       </MapChildComp>,
     );
 
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.root.find('li')).toHaveLength(3);
+    expect(result).toMatchSnapshot();
+    expect(result.root.find('li')).toHaveLength(3);
   });
 });

@@ -30,12 +30,12 @@ describe('HOCs', () => {
 
   it('can render the wrapped component + hoc', () => {
     const StyledComp = withStyles()(Wrapped);
-    const wrapper = render(<StyledComp id={1} />);
+    const result = render(<StyledComp id={1} />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
   });
 
-  it('returns the wrapper HOC as the root', () => {
+  it('returns the result HOC as the root', () => {
     const StyledComp = withStyles()(Wrapped);
     const { root } = render(<StyledComp id={2} />);
 
@@ -74,8 +74,8 @@ describe('HOCs', () => {
 
   it('supports multiple layers of HOCs', () => {
     const DeepComp = connect(withStyles()(DeepWrapped));
-    const wrapper = render(<DeepComp id={4} />);
+    const result = render(<DeepComp id={4} />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
   });
 });

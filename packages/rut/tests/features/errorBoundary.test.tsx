@@ -45,14 +45,14 @@ describe('ErrorBoundary', () => {
 
   it('renders the child if no error', () => {
     const spy = jest.fn();
-    const wrapper = render(
+    const result = render(
       <ErrorBoundary spy={spy}>
         <div>Content</div>
       </ErrorBoundary>,
     );
 
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.root).toContainNode('Content');
+    expect(result).toMatchSnapshot();
+    expect(result.root).toContainNode('Content');
   });
 
   it('renders and logs a caught error', () => {
@@ -61,15 +61,15 @@ describe('ErrorBoundary', () => {
     }
 
     const spy = jest.fn();
-    const wrapper = render(
+    const result = render(
       <ErrorBoundary spy={spy}>
         // @ts-ignore
         <BrokenComponent />
       </ErrorBoundary>,
     );
 
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.root).toContainNode('Oops!');
+    expect(result).toMatchSnapshot();
+    expect(result.root).toContainNode('Oops!');
     expect(spy).toHaveBeenCalledWith(new Error('Oops!'), { componentStack: expect.any(String) });
   });
 });

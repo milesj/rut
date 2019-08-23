@@ -27,15 +27,15 @@ describe('State', () => {
     }
 
     it('re-renders when state changes', () => {
-      const wrapper = render(<StatefulComp />);
+      const result = render(<StatefulComp />);
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root).toContainNode('Inactive');
+      expect(result).toMatchSnapshot();
+      expect(result.root).toContainNode('Inactive');
 
-      wrapper.root.findOne('button').emit('onClick');
+      result.root.findOne('button').emit('onClick');
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root).toContainNode('Active');
+      expect(result).toMatchSnapshot();
+      expect(result.root).toContainNode('Active');
     });
   });
 
@@ -57,15 +57,15 @@ describe('State', () => {
     }
 
     it('re-renders when state changes', () => {
-      const wrapper = render(<StatefulComp />);
+      const result = render(<StatefulComp />);
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root).toContainNode('Inactive');
+      expect(result).toMatchSnapshot();
+      expect(result.root).toContainNode('Inactive');
 
-      wrapper.root.findOne('button').emit('onClick');
+      result.root.findOne('button').emit('onClick');
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root).toContainNode('Active');
+      expect(result).toMatchSnapshot();
+      expect(result.root).toContainNode('Active');
     });
   });
 });

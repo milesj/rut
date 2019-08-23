@@ -41,9 +41,9 @@ describe('Renderer', () => {
       }
     }
 
-    const wrapper = render(<StrictComp />, { strict: true });
+    const result = render(<StrictComp />, { strict: true });
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('componentWillMount has been renamed'),
     );
@@ -56,11 +56,11 @@ describe('Renderer', () => {
       return <div>{value}</div>;
     }
 
-    const wrapper = render(<ContextComp />, { wrapper: <Wrapper /> });
+    const result = render(<ContextComp />, { wrapper: <Wrapper /> });
 
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.debug()).toContain('<Wrapper>');
-    expect(wrapper.root).toContainNode('wrapped');
+    expect(result).toMatchSnapshot();
+    expect(result.debug()).toContain('<Wrapper>');
+    expect(result.root).toContainNode('wrapped');
   });
 
   it('wraps with both `strict` and `wrapper`', () => {
@@ -82,10 +82,10 @@ describe('Renderer', () => {
       );
     }
 
-    const wrapper = render(<Wrapped />, { strict: true, wrapper: <Wrapper /> });
+    const result = render(<Wrapped />, { strict: true, wrapper: <Wrapper /> });
 
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.debug()).toContain('<Wrapper>');
+    expect(result).toMatchSnapshot();
+    expect(result.debug()).toContain('<Wrapper>');
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('componentWillReceiveProps has been renamed'),
     );
@@ -302,9 +302,9 @@ describe('Renderer', () => {
           }
         }
 
-        const wrapper = render(<UnmountTest />);
+        const result = render(<UnmountTest />);
 
-        wrapper.unmount();
+        result.unmount();
 
         expect(spy).toHaveBeenCalledTimes(1);
       });
@@ -322,9 +322,9 @@ describe('Renderer', () => {
           return null;
         }
 
-        const wrapper = render(<UnmountTest />);
+        const result = render(<UnmountTest />);
 
-        wrapper.unmount();
+        result.unmount();
 
         expect(spy).toHaveBeenCalledTimes(1);
       });
@@ -372,87 +372,87 @@ describe('Renderer', () => {
     });
 
     it('when using `strict`, re-renders the passed element', () => {
-      const wrapper = render(<FuncComp name="mount" />, { strict: true });
+      const result = render(<FuncComp name="mount" />, { strict: true });
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root.prop('name')).toBe('mount');
+      expect(result).toMatchSnapshot();
+      expect(result.root.prop('name')).toBe('mount');
 
-      wrapper.update({ name: 'update' });
+      result.update({ name: 'update' });
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root.prop('name')).toBe('update');
+      expect(result).toMatchSnapshot();
+      expect(result.root.prop('name')).toBe('update');
     });
 
     it('when using `wrapper`, re-renders the passed element', () => {
-      const wrapper = render(<FuncComp name="mount" />, { wrapper: <Wrapper /> });
+      const result = render(<FuncComp name="mount" />, { wrapper: <Wrapper /> });
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root.prop('name')).toBe('mount');
+      expect(result).toMatchSnapshot();
+      expect(result.root.prop('name')).toBe('mount');
 
-      wrapper.update({ name: 'update' });
+      result.update({ name: 'update' });
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root.prop('name')).toBe('update');
+      expect(result).toMatchSnapshot();
+      expect(result.root.prop('name')).toBe('update');
     });
 
     it('when using `strict` and `wrapper`, re-renders the passed element', () => {
-      const wrapper = render(<FuncComp name="mount" />, { strict: true, wrapper: <Wrapper /> });
+      const result = render(<FuncComp name="mount" />, { strict: true, wrapper: <Wrapper /> });
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root.prop('name')).toBe('mount');
+      expect(result).toMatchSnapshot();
+      expect(result.root.prop('name')).toBe('mount');
 
-      wrapper.update({ name: 'update' });
+      result.update({ name: 'update' });
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root.prop('name')).toBe('update');
+      expect(result).toMatchSnapshot();
+      expect(result.root.prop('name')).toBe('update');
     });
 
     describe('class component', () => {
       it('re-renders if props dont change', () => {
-        const wrapper = render(<ClassUpdateTest />);
+        const result = render(<ClassUpdateTest />);
 
-        wrapper.update();
-        wrapper.update();
+        result.update();
+        result.update();
 
         expect(count).toBe(3);
       });
 
       it('re-renders if props change', () => {
-        const wrapper = render(<ClassUpdateTest index={0} />);
+        const result = render(<ClassUpdateTest index={0} />);
 
-        expect(wrapper.root.prop('index')).toBe(0);
+        expect(result.root.prop('index')).toBe(0);
 
-        wrapper.update({ index: 1 });
+        result.update({ index: 1 });
 
-        expect(wrapper.root.prop('index')).toBe(1);
+        expect(result.root.prop('index')).toBe(1);
 
-        wrapper.update({ index: 2 });
+        result.update({ index: 2 });
 
-        expect(wrapper.root.prop('index')).toBe(2);
+        expect(result.root.prop('index')).toBe(2);
 
         expect(count).toBe(3);
       });
 
       it('re-renders with a different child', () => {
-        const wrapper = render(<ClassUpdateTest>Foo</ClassUpdateTest>);
+        const result = render(<ClassUpdateTest>Foo</ClassUpdateTest>);
 
-        expect(wrapper.root).toContainNode('Foo');
+        expect(result.root).toContainNode('Foo');
 
         const child = <div>Bar</div>;
 
-        wrapper.update({}, child);
+        result.update({}, child);
 
-        expect(wrapper.root).toContainNode(child);
+        expect(result.root).toContainNode(child);
       });
 
       it('doesnt re-render if pure and props dont change', () => {
-        const wrapper = render(<PureClassUpdateTest />);
+        const result = render(<PureClassUpdateTest />);
 
-        wrapper.update();
-        wrapper.update();
-        wrapper.update();
-        wrapper.update();
-        wrapper.update();
+        result.update();
+        result.update();
+        result.update();
+        result.update();
+        result.update();
 
         expect(count).toBe(2);
       });
@@ -485,9 +485,9 @@ describe('Renderer', () => {
           }
         }
 
-        const wrapper = render(<UpdateTest test="mount" />);
+        const result = render(<UpdateTest test="mount" />);
 
-        wrapper.update({ test: 'update' });
+        result.update({ test: 'update' });
 
         expect(spy).toHaveBeenCalledTimes(3);
       });
@@ -495,78 +495,78 @@ describe('Renderer', () => {
       it('supports async `componentDidUpdate`', async () => {
         const spy = jest.fn();
 
-        const wrapper = render(<AsyncCduComp id="first" onLoad={spy} />);
+        const result = render(<AsyncCduComp id="first" onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(0);
-        expect(wrapper.root).toContainNode('Loading...');
+        expect(result.root).toContainNode('Loading...');
 
-        await wrapper.updateAndWait({ id: 'second' });
+        await result.updateAndWait({ id: 'second' });
 
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(wrapper.root).toContainNode('Loaded');
+        expect(result.root).toContainNode('Loaded');
       });
 
       it('supports `componentDidUpdate` with timers', async () => {
         const spy = jest.fn();
 
-        const wrapper = render(<TimerCduComp id="first" onLoad={spy} />);
+        const result = render(<TimerCduComp id="first" onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(0);
-        expect(wrapper.root).toContainNode('Loading...');
+        expect(result.root).toContainNode('Loading...');
 
-        await wrapper.updateAndWait({ id: 'second' });
+        await result.updateAndWait({ id: 'second' });
 
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(wrapper.root).toContainNode('Loaded');
+        expect(result.root).toContainNode('Loaded');
       });
     });
 
     describe('function component', () => {
       it('re-renders if props dont change', () => {
-        const wrapper = render(<FuncUpdateTest />);
+        const result = render(<FuncUpdateTest />);
 
-        wrapper.update();
-        wrapper.update();
+        result.update();
+        result.update();
 
         expect(count).toBe(3);
       });
 
       it('re-renders if props change', () => {
-        const wrapper = render(<FuncUpdateTest index={0} />);
+        const result = render(<FuncUpdateTest index={0} />);
 
-        expect(wrapper.root.prop('index')).toBe(0);
+        expect(result.root.prop('index')).toBe(0);
 
-        wrapper.update({ index: 1 });
+        result.update({ index: 1 });
 
-        expect(wrapper.root.prop('index')).toBe(1);
+        expect(result.root.prop('index')).toBe(1);
 
-        wrapper.update({ index: 2 });
+        result.update({ index: 2 });
 
-        expect(wrapper.root.prop('index')).toBe(2);
+        expect(result.root.prop('index')).toBe(2);
 
         expect(count).toBe(3);
       });
 
       it('re-renders with a different child', () => {
-        const wrapper = render(<FuncUpdateTest>Foo</FuncUpdateTest>);
+        const result = render(<FuncUpdateTest>Foo</FuncUpdateTest>);
 
-        expect(wrapper.root).toContainNode('Foo');
+        expect(result.root).toContainNode('Foo');
 
         const child = <div>Bar</div>;
 
-        wrapper.update({}, child);
+        result.update({}, child);
 
-        expect(wrapper.root).toContainNode(child);
+        expect(result.root).toContainNode(child);
       });
 
       it('doesnt re-render if memoized and props dont change', () => {
-        const wrapper = render(<MemoFuncUpdateTest />);
+        const result = render(<MemoFuncUpdateTest />);
 
-        wrapper.update();
-        wrapper.update();
-        wrapper.update();
-        wrapper.update();
-        wrapper.update();
+        result.update();
+        result.update();
+        result.update();
+        result.update();
+        result.update();
 
         expect(count).toBe(2);
       });
@@ -584,10 +584,10 @@ describe('Renderer', () => {
           return null;
         }
 
-        const wrapper = render(<UpdateTest test="update" />);
+        const result = render(<UpdateTest test="update" />);
 
-        wrapper.update({ test: 'update' });
-        wrapper.update({ test: 'update' });
+        result.update({ test: 'update' });
+        result.update({ test: 'update' });
 
         expect(spy).toHaveBeenCalledTimes(3);
       });
@@ -605,11 +605,11 @@ describe('Renderer', () => {
           return null;
         }
 
-        const wrapper = render(<UpdateTest test="mount" />);
+        const result = render(<UpdateTest test="mount" />);
 
-        wrapper.update({ test: 'mount' });
-        wrapper.update({ test: 'update' });
-        wrapper.update({ test: 'update' });
+        result.update({ test: 'mount' });
+        result.update({ test: 'update' });
+        result.update({ test: 'update' });
 
         expect(spy).toHaveBeenCalledTimes(2);
       });
@@ -617,29 +617,29 @@ describe('Renderer', () => {
       it('supports async `useEffect`', async () => {
         const spy = jest.fn();
 
-        const wrapper = render(<AsyncHookComp id="first" onLoad={spy} />);
+        const result = render(<AsyncHookComp id="first" onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(0);
-        expect(wrapper.root).toContainNode('Loading...');
+        expect(result.root).toContainNode('Loading...');
 
-        await wrapper.updateAndWait({ id: 'second' });
+        await result.updateAndWait({ id: 'second' });
 
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(wrapper.root).toContainNode('Loaded');
+        expect(result.root).toContainNode('Loaded');
       });
 
       it('supports `useEffect` with timers', async () => {
         const spy = jest.fn();
 
-        const wrapper = render(<AsyncHookComp id="first" onLoad={spy} />);
+        const result = render(<AsyncHookComp id="first" onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(0);
-        expect(wrapper.root).toContainNode('Loading...');
+        expect(result.root).toContainNode('Loading...');
 
-        await wrapper.updateAndWait({ id: 'second' });
+        await result.updateAndWait({ id: 'second' });
 
         expect(spy).toHaveBeenCalledTimes(1);
-        expect(wrapper.root).toContainNode('Loaded');
+        expect(result.root).toContainNode('Loaded');
       });
     });
   });

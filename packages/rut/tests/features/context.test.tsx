@@ -44,10 +44,10 @@ describe('Context', () => {
 
   describe('Provider', () => {
     it('renders a provider without consumer, and its children', () => {
-      const wrapper = render(<Provider>Child</Provider>);
+      const result = render(<Provider>Child</Provider>);
 
-      expect(wrapper).toMatchSnapshot();
-      expect(wrapper.root).toContainNode('Child');
+      expect(result).toMatchSnapshot();
+      expect(result.root).toContainNode('Child');
     });
   });
 
@@ -62,7 +62,7 @@ describe('Context', () => {
 
     it('renders within provider and inherits the defined value', () => {
       const spy = jest.fn();
-      const wrapper = render(
+      const result = render(
         <Provider theme="dark">
           <div>
             <Consumer spy={spy} />
@@ -70,13 +70,13 @@ describe('Context', () => {
         </Provider>,
       );
 
-      expect(wrapper).toMatchSnapshot();
+      expect(result).toMatchSnapshot();
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
     it('updates with new value when provider changes', () => {
       const spy = jest.fn();
-      const wrapper = render(
+      const result = render(
         <Provider theme="dark">
           <div>
             <Consumer spy={spy} />
@@ -86,7 +86,7 @@ describe('Context', () => {
 
       expect(spy).toHaveBeenCalledWith('dark');
 
-      wrapper.update({ theme: 'light' });
+      result.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledWith('light');
     });
@@ -94,13 +94,13 @@ describe('Context', () => {
     it('updates consumer that has been memoized', () => {
       const spy = jest.fn();
       const MemoConsumer = React.memo(Consumer);
-      const wrapper = render(
+      const result = render(
         <Provider theme="dark">
           <MemoConsumer spy={spy} />
         </Provider>,
       );
 
-      wrapper.update({ theme: 'light' });
+      result.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith('light');
@@ -118,7 +118,7 @@ describe('Context', () => {
 
     it('renders within provider and inherits the defined value', () => {
       const spy = jest.fn();
-      const wrapper = render(
+      const result = render(
         <Provider theme="dark">
           <div>
             <HookConsumer spy={spy} />
@@ -126,13 +126,13 @@ describe('Context', () => {
         </Provider>,
       );
 
-      expect(wrapper).toMatchSnapshot();
+      expect(result).toMatchSnapshot();
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
     it('updates with new value when provider changes', () => {
       const spy = jest.fn();
-      const wrapper = render(
+      const result = render(
         <Provider theme="dark">
           <div>
             <HookConsumer spy={spy} />
@@ -142,7 +142,7 @@ describe('Context', () => {
 
       expect(spy).toHaveBeenCalledWith('dark');
 
-      wrapper.update({ theme: 'light' });
+      result.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledWith('light');
     });
@@ -150,13 +150,13 @@ describe('Context', () => {
     it('updates consumer that has been memoized', () => {
       const spy = jest.fn();
       const MemoConsumer = React.memo(HookConsumer);
-      const wrapper = render(
+      const result = render(
         <Provider theme="dark">
           <MemoConsumer spy={spy} />
         </Provider>,
       );
 
-      wrapper.update({ theme: 'light' });
+      result.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith('light');
@@ -174,7 +174,7 @@ describe('Context', () => {
 
     it('renders within provider and inherits the defined value', () => {
       const spy = jest.fn();
-      const wrapper = render(
+      const result = render(
         <Provider theme="dark">
           <div>
             <StaticConsumer spy={spy} />
@@ -182,13 +182,13 @@ describe('Context', () => {
         </Provider>,
       );
 
-      expect(wrapper).toMatchSnapshot();
+      expect(result).toMatchSnapshot();
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
     it('updates with new value when provider changes', () => {
       const spy = jest.fn();
-      const wrapper = render(
+      const result = render(
         <Provider theme="dark">
           <div>
             <StaticConsumer spy={spy} />
@@ -198,7 +198,7 @@ describe('Context', () => {
 
       expect(spy).toHaveBeenCalledWith('dark');
 
-      wrapper.update({ theme: 'light' });
+      result.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledWith('light');
     });
@@ -215,13 +215,13 @@ describe('Context', () => {
       }
 
       const spy = jest.fn();
-      const wrapper = render(
+      const result = render(
         <Provider theme="dark">
           <PureStaticConsumer spy={spy} />
         </Provider>,
       );
 
-      wrapper.update({ theme: 'light' });
+      result.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledTimes(2);
       expect(spy).toHaveBeenCalledWith('light');

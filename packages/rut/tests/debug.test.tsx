@@ -5,9 +5,9 @@ import { ClassComp } from './fixtures';
 describe('debug()', () => {
   it('adds key and ref props first', () => {
     const ref = React.createRef<ClassComp>();
-    const wrapper = render(<ClassComp key={123} ref={ref} name="test" />);
+    const result = render(<ClassComp key={123} ref={ref} name="test" />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
   });
 
   it('sorts props, and groups into: true first, everything else, event handlers last', () => {
@@ -23,7 +23,7 @@ describe('debug()', () => {
       return <div />;
     }
 
-    const wrapper = render(
+    const result = render(
       <SortProps
         // Wont show up since its a function component
         key="key"
@@ -36,7 +36,7 @@ describe('debug()', () => {
       />,
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
   });
 
   it('formats array props', () => {
@@ -44,12 +44,12 @@ describe('debug()', () => {
       return <ul />;
     }
 
-    const wrapper = render(<ArrayProp list={['string', 123, true, null, {}, []]} />);
+    const result = render(<ArrayProp list={['string', 123, true, null, {}, []]} />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
 
     // Test long and complex arrays + objects
-    wrapper.update({
+    result.update({
       list: [
         { id: 1, name: 'Bruce Wayne' },
         { id: 2, name: 'Clark Kent' },
@@ -60,7 +60,7 @@ describe('debug()', () => {
       ],
     });
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
   });
 
   it('formats object props', () => {
@@ -68,11 +68,11 @@ describe('debug()', () => {
       return <div />;
     }
 
-    const wrapper = render(
+    const result = render(
       <ObjectProp data={{ id: 1, name: 'Bruce Wayne', alias: 'Batman', age: 40 }} />,
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
   });
 
   it('formats regex props', () => {
@@ -80,9 +80,9 @@ describe('debug()', () => {
       return <div />;
     }
 
-    const wrapper = render(<RegexProp pattern={/foo|bar|baz/u} />);
+    const result = render(<RegexProp pattern={/foo|bar|baz/u} />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
   });
 
   it('formats map props', () => {
@@ -90,9 +90,9 @@ describe('debug()', () => {
       return <div />;
     }
 
-    const wrapper = render(<MapProp map={new Map([['foo', 123], ['bar', 456], ['baz', 789]])} />);
+    const result = render(<MapProp map={new Map([['foo', 123], ['bar', 456], ['baz', 789]])} />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
   });
 
   it('formats set props', () => {
@@ -100,8 +100,8 @@ describe('debug()', () => {
       return <div />;
     }
 
-    const wrapper = render(<SetProp set={new Set(['foo', 'bar', 'foo', 'baz'])} />);
+    const result = render(<SetProp set={new Set(['foo', 'bar', 'foo', 'baz'])} />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
   });
 });

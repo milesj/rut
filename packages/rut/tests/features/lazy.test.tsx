@@ -7,7 +7,7 @@ describe.skip('Lazy', () => {
   const Comp = React.lazy(() => import('./__mocks__/Lazy'));
 
   it('renders an imported lazy component', () => {
-    const wrapper = render(
+    const result = render(
       <React.Suspense fallback="Loading...">
         <main>
           <Comp />
@@ -15,6 +15,6 @@ describe.skip('Lazy', () => {
       </React.Suspense>,
     );
 
-    expect(wrapper.root).toContainNode('Lazy loaded!');
+    expect(result.root).toContainNode('Lazy loaded!');
   });
 });

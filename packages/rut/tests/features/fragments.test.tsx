@@ -13,15 +13,15 @@ describe('Fragment', () => {
       );
     }
 
-    const wrapper = render(
+    const result = render(
       <ul>
         <Items />
       </ul>,
     );
 
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.root).toContainNode('Two');
-    expect(wrapper.root.find('li')).toHaveLength(3);
+    expect(result).toMatchSnapshot();
+    expect(result.root).toContainNode('Two');
+    expect(result.root.find('li')).toHaveLength(3);
   });
 
   it('renders long form', () => {
@@ -36,14 +36,14 @@ describe('Fragment', () => {
       );
     }
 
-    const wrapper = render(
+    const result = render(
       <ul>
         <Items />
       </ul>,
     );
 
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.root).toContainNode('Three');
-    expect(wrapper.root.find('li')).toHaveLength(3);
+    expect(result).toMatchSnapshot();
+    expect(result.root).toContainNode('Three');
+    expect(result.root.find('li')).toHaveLength(3);
   });
 });

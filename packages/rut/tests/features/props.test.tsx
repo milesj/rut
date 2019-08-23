@@ -21,7 +21,7 @@ describe('Props', () => {
       );
     }
 
-    const wrapper = render(
+    const result = render(
       <PrimitiveComp
         count={123456}
         node={<div>This is a sidebar!</div>}
@@ -29,7 +29,7 @@ describe('Props', () => {
       />,
     );
 
-    expect(wrapper).toMatchSnapshot();
+    expect(result).toMatchSnapshot();
   });
 
   it('supports render props', () => {
@@ -37,9 +37,9 @@ describe('Props', () => {
       return <div>{renderItem(123)}</div>;
     }
 
-    const wrapper = render(<RenderPropComp renderItem={value => <b>{value * 2}</b>} />);
+    const result = render(<RenderPropComp renderItem={value => <b>{value * 2}</b>} />);
 
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.root).toContainNode(246);
+    expect(result).toMatchSnapshot();
+    expect(result.root).toContainNode(246);
   });
 });

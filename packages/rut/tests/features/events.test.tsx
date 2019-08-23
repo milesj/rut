@@ -35,12 +35,12 @@ describe('Events', () => {
   }
 
   it('can await the result of an emit', async () => {
-    const wrapper = render(<AsyncComp onClick={() => Promise.resolve('Updated!')} />);
+    const result = render(<AsyncComp onClick={() => Promise.resolve('Updated!')} />);
 
-    const value = await wrapper.root.findOne('button').emit('onClick');
+    const value = await result.root.findOne('button').emit('onClick');
 
     expect(value).toBe('Updated!');
-    expect(wrapper.root).toContainNode('Updated!');
+    expect(result.root).toContainNode('Updated!');
   });
 
   function EventComp() {
@@ -59,9 +59,9 @@ describe('Events', () => {
 
   it('can call methods on the event object', () => {
     const event = { preventDefault: jest.fn() };
-    const wrapper = render(<EventComp />);
+    const result = render(<EventComp />);
 
-    wrapper.root.findOne('button').emit('onClick', event);
+    result.root.findOne('button').emit('onClick', event);
 
     expect(event.preventDefault).toHaveBeenCalled();
   });
