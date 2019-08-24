@@ -18,7 +18,7 @@ describe('Refs', () => {
     it('resolves the ref from the inner component', () => {
       const ref = React.createRef<HTMLButtonElement>();
       const result = render(<Button ref={ref}>Child</Button>, {
-        refs: { button: mock },
+        mockRef: () => mock,
       });
 
       expect(result).toMatchSnapshot();
@@ -73,7 +73,7 @@ describe('Refs', () => {
     it('resolves the ref', () => {
       const div = { tagName: 'DIV' };
       const result = render(<Section>Child</Section>, {
-        refs: { div },
+        mockRef: () => div,
       });
 
       expect(result).toMatchSnapshot();
@@ -100,7 +100,7 @@ describe('Refs', () => {
     it('resolves the callback ref', () => {
       const input = { tagName: 'INPUT' };
       const result = render(<Input value="foo" />, {
-        refs: { input },
+        mockRef: () => input,
       });
 
       expect(result).toMatchSnapshot();
@@ -123,7 +123,7 @@ describe('Refs', () => {
     it('resolves the string ref', () => {
       const a = { tagName: 'A' };
       const result = render(<Link href="/">Child</Link>, {
-        refs: { a },
+        mockRef: () => a,
       });
 
       expect(result).toMatchSnapshot();

@@ -3,7 +3,7 @@
 import React from 'react';
 
 export interface RendererOptions {
-  refs?: { [name: string]: unknown };
+  mockRef?: (element: React.ReactElement) => unknown;
   strict?: boolean;
   wrapper?: React.ReactElement;
 }

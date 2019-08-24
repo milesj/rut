@@ -107,9 +107,7 @@ describe('Hooks', () => {
     it('sets and handles refs', () => {
       const spy = jest.fn();
       const { root } = render(<RefComp />, {
-        refs: {
-          input: { focus: spy },
-        },
+        mockRef: () => ({ focus: spy }),
       });
 
       root.findOne('button').emit('onClick', mockSyntheticEvent('click'));

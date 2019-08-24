@@ -4,7 +4,7 @@ import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
 import wrapAndCaptureAsync from './internals/async';
 import debugToJsx from './internals/debug';
-import { getTypeName, shallowEqual, isReactNodeLike } from './helpers';
+import { shallowEqual, isReactNodeLike } from './helpers';
 import { RendererOptions } from './types';
 
 export default class Renderer<Props = {}> {
@@ -19,9 +19,14 @@ export default class Renderer<Props = {}> {
   constructor(element: React.ReactElement<Props>, options: RendererOptions = {}) {
     this.element = element;
     this.options = options;
-    this.renderer = create(this.wrapElement(element), {
-      createNodeMock: node => (options.refs && options.refs[getTypeName(node.type)]) || null,
-    });
+    this.renderer = create(
+      this.wrapElement(element),
+      options.mockRef
+        ? {
+            createNodeMock: options.mockRef,
+          }
+        : undefined,
+    );
   }
 
   /**
