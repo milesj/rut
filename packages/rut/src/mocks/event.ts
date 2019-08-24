@@ -15,7 +15,12 @@
  * structure is close enough for most, if not all of test cases.
  */
 
-class BaseEvent {
+interface EventOptions {
+  currentTarget?: HTMLElement;
+  target?: Element;
+}
+
+export class BaseEvent {
   bubbles: boolean = true;
 
   cancelable: boolean = true;
@@ -56,73 +61,94 @@ class BaseEvent {
   }
 }
 
-export function mockEvent<T = Event>(type: string): T {
+export function mockEvent<T = Event>(type: string, options: EventOptions = {}): T {
+  let event: Event;
+
   // JSDOM environment does not exist, which means we do not have events.
   // Return a very custom low-level event object for the time being.
   if (typeof window === 'undefined') {
     // @ts-ignore Ignore legacy fields
-    return new BaseEvent(type);
+    event = new BaseEvent(type);
+  } else {
+    // istanbul ignore next
+    switch (type) {
+      case 'animationstart':
+      case 'animationend':
+      case 'animationiteration':
+        event = new AnimationEvent(type);
+        break;
+      case 'blur':
+      case 'focus':
+        event = new FocusEvent(type);
+        break;
+      case 'copy':
+      case 'cut':
+      case 'paste':
+        event = new ClipboardEvent(type);
+        break;
+      case 'compositionend':
+      case 'compositionstart':
+      case 'compositionupdate':
+        event = new CompositionEvent(type);
+        break;
+      case 'keydown':
+      case 'keypress':
+      case 'keyup':
+        event = new KeyboardEvent(type);
+        break;
+      case 'gotpointercapture':
+      case 'lostpointercapture':
+      case 'pointercancel':
+      case 'pointerdown':
+      case 'pointerenter':
+      case 'pointerleave':
+      case 'pointerover':
+      case 'pointermove':
+      case 'pointerout':
+      case 'pointerup':
+        event = new PointerEvent(type);
+        break;
+      case 'touchcancel':
+      case 'touchend':
+      case 'touchmove':
+      case 'touchstart':
+        event = new TouchEvent(type);
+        break;
+      case 'transitionend':
+        event = new TransitionEvent(type);
+        break;
+      case 'scroll':
+        event = new UIEvent(type);
+        break;
+      case 'wheel':
+        event = new WheelEvent(type);
+        break;
+      default:
+        event = new MouseEvent(type);
+        break;
+    }
   }
 
-  switch (type) {
-    case 'animationstart':
-    case 'animationend':
-    case 'animationiteration':
-      // @ts-ignore
-      return new AnimationEvent(type);
-    case 'blur':
-    case 'focus':
-      // @ts-ignore
-      return new FocusEvent(type);
-    case 'copy':
-    case 'cut':
-    case 'paste':
-      // @ts-ignore
-      return new ClipboardEvent(type);
-    case 'compositionend':
-    case 'compositionstart':
-    case 'compositionupdate':
-      // @ts-ignore
-      return new CompositionEvent(type);
-    case 'keydown':
-    case 'keypress':
-    case 'keyup':
-      // @ts-ignore
-      return new KeyboardEvent(type);
-    case 'gotpointercapture':
-    case 'lostpointercapture':
-    case 'pointercancel':
-    case 'pointerdown':
-    case 'pointerenter':
-    case 'pointerleave':
-    case 'pointerover':
-    case 'pointermove':
-    case 'pointerout':
-    case 'pointerup':
-      // @ts-ignore
-      return new PointerEvent(type);
-    case 'touchcancel':
-    case 'touchend':
-    case 'touchmove':
-    case 'touchstart':
-      // @ts-ignore
-      return new TouchEvent(type);
-    case 'transitionend':
-      // @ts-ignore
-      return new TransitionEvent(type);
-    case 'scroll':
-      // @ts-ignore
-      return new UIEvent(type);
-    case 'wheel':
-      // @ts-ignore
-      return new WheelEvent(type);
-    default:
-      // @ts-ignore
-      return new MouseEvent(type);
+  if (options.currentTarget) {
+    // @ts-ignore
+    event.currentTarget = options.currentTarget;
   }
+
+  if (options.target) {
+    // @ts-ignore
+    event.target = options.target;
+
+    if (!options.currentTarget) {
+      // @ts-ignore
+      event.currentTarget = options.target;
+    }
+  }
+
+  // @ts-ignore
+  return event;
 }
 
-class SyntheticEvent extends BaseEvent {
+export class SyntheticEvent extends BaseEvent {
   nativeEvent: Event;
 
   persisted: boolean = false;
@@ -133,10 +159,12 @@ class SyntheticEvent extends BaseEvent {
     this.nativeEvent = nativeEvent;
     this.bubbles = nativeEvent.bubbles;
     this.cancelable = nativeEvent.cancelable;
+    this.currentTarget = nativeEvent.currentTarget;
     this.defaultPrevented = nativeEvent.defaultPrevented;
     this.eventPhase = nativeEvent.eventPhase;
     this.isTrusted = nativeEvent.isTrusted;
-    this.timeStamp = nativeEvent.timeStamp || Date.now();
+    this.target = nativeEvent.target;
+    this.timeStamp = nativeEvent.timeStamp;
   }
 
   isDefaultPrevented(): boolean {
@@ -166,7 +194,10 @@ class SyntheticEvent extends BaseEvent {
   }
 }
 
-export function mockSyntheticEvent<T = React.SyntheticEvent>(type: string): T {
+export function mockSyntheticEvent<T = React.SyntheticEvent>(
+  type: string,
+  options: EventOptions = {},
+): T {
   // @ts-ignore
-  return new SyntheticEvent(type, mockEvent(type));
+  return new SyntheticEvent(type, mockEvent(type, options));
 }
