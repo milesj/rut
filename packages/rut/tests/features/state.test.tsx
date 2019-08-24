@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { render } from '../../src/render';
+import mockSyntheticEvent from '../../src/mocks/event';
 
 describe('State', () => {
   describe('class components', () => {
@@ -32,7 +33,7 @@ describe('State', () => {
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Inactive');
 
-      result.root.findOne('button').emit('onClick');
+      result.root.findOne('button').emit('onClick', mockSyntheticEvent('click'));
 
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Active');
@@ -62,7 +63,7 @@ describe('State', () => {
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Inactive');
 
-      result.root.findOne('button').emit('onClick');
+      result.root.findOne('button').emit('onClick', mockSyntheticEvent('click'));
 
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Active');

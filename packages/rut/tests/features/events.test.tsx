@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '../../src/render';
+import mockSyntheticEvent from '../../src/mocks/event';
 
 describe('Events', () => {
   class AsyncComp extends React.Component<{ onClick: () => Promise<unknown> }, { value: unknown }> {
@@ -37,7 +38,7 @@ describe('Events', () => {
   it('can await the result of an emit', async () => {
     const result = render(<AsyncComp onClick={() => Promise.resolve('Updated!')} />);
 
-    const value = await result.root.findOne('button').emit('onClick');
+    const value = await result.root.findOne('button').emit('onClick', mockSyntheticEvent('click'));
 
     expect(value).toBe('Updated!');
     expect(result.root).toContainNode('Updated!');
@@ -58,11 +59,12 @@ describe('Events', () => {
   }
 
   it('can call methods on the event object', () => {
-    const event = { preventDefault: jest.fn() };
     const result = render(<EventComp />);
+    const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('click');
+    const spy = jest.spyOn(event, 'preventDefault');
 
     result.root.findOne('button').emit('onClick', event);
 
-    expect(event.preventDefault).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
   });
 });

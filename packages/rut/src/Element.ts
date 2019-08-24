@@ -119,6 +119,11 @@ export default class Element<Props = {}> {
       .map(node => new Element(node));
   }
 
+  /**
+   * Return a ref associated with the current component.
+   * If a ref is stored on the internal fiber node, it will be returned.
+   * Otherwise an instance, callback, or string ref may be referenced by name.
+   */
   ref<T>(name?: string): T | null {
     const inst = this.element.instance;
     const fiber = this.element._fiber;
@@ -147,6 +152,9 @@ export default class Element<Props = {}> {
     return this.name();
   }
 
+  /**
+   * Return the React element type.
+   */
   type(): React.ElementType {
     return this.element.type;
   }

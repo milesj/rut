@@ -1,5 +1,6 @@
 import React, { useReducer, useCallback, useMemo, useRef } from 'react';
 import { render } from '../../src/render';
+import mockSyntheticEvent from '../../src/mocks/event';
 
 // useState, useContext, useEffect covered in other tests
 describe('Hooks', () => {
@@ -36,11 +37,11 @@ describe('Hooks', () => {
 
       expect(root.findOne('span')).toContainNode(0);
 
-      root.find('button')[0].emit('onClick');
+      root.find('button')[0].emit('onClick', mockSyntheticEvent('click'));
 
       expect(root.findOne('span')).toContainNode(1);
 
-      root.find('button')[1].emit('onClick');
+      root.find('button')[1].emit('onClick', mockSyntheticEvent('click'));
 
       expect(root.findOne('span')).toContainNode(0);
     });
@@ -111,7 +112,7 @@ describe('Hooks', () => {
         },
       });
 
-      root.findOne('button').emit('onClick');
+      root.findOne('button').emit('onClick', mockSyntheticEvent('click'));
 
       expect(spy).toHaveBeenCalled();
     });

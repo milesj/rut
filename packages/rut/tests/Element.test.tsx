@@ -1,7 +1,7 @@
 import React from 'react';
 import Element from '../src/Element';
 import { render } from '../src/render';
-import { FuncComp } from './fixtures';
+import mockSyntheticEvent from '../src/mocks/event';
 
 describe('Element', () => {
   describe('children()', () => {
@@ -84,9 +84,9 @@ describe('Element', () => {
 
       const { root } = render(<EmitComp />);
 
-      root.findOne('button').emit('onClick', ({} as any) as React.MouseEvent<HTMLButtonElement>);
+      root.findOne('button').emit('onClick', mockSyntheticEvent('click'));
 
-      expect(spy).toHaveBeenCalledWith(1, 2, 3);
+      expect(spy).toHaveBeenCalledWith(expect.any(Object));
     });
   });
 });
