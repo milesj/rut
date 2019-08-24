@@ -1,8 +1,8 @@
 import React from 'react';
-import { render } from '../src/render';
-import { ClassComp } from './fixtures';
+import { render } from '../../src/render';
+import { ClassComp } from '../fixtures';
 
-describe('debug()', () => {
+describe('debug', () => {
   it('adds key and ref props first', () => {
     const ref = React.createRef<ClassComp>();
     const result = render(<ClassComp key={123} ref={ref} name="test" />);

@@ -6,7 +6,9 @@ import { checkIsRutElement } from '../helpers';
 /**
  * Check that an element has a truthy `checked` or `defaultChecked` prop.
  */
-export default function toBeChecked(element: Element): MatchResult {
+export default function toBeChecked(
+  element: Element<{ checked?: boolean; defaultChecked?: boolean }>,
+): MatchResult {
   checkIsRutElement(element);
 
   const defaultChecked = element.prop('defaultChecked');
@@ -21,5 +23,5 @@ export default function toBeChecked(element: Element): MatchResult {
     name = 'checked';
   }
 
-  return toHaveProp(element, name, true);
+  return toHaveProp(element, name as 'checked', true);
 }

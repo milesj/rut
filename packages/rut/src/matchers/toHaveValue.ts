@@ -7,7 +7,10 @@ import { checkIsRutElement } from '../helpers';
  * Check that an element has a `value` or `defaultValue` prop that
  * matches the provided value.
  */
-export default function toHaveValue(element: Element, value: unknown): MatchResult {
+export default function toHaveValue(
+  element: Element<{ defaultValue?: string; value?: string }>,
+  value: unknown,
+): MatchResult {
   checkIsRutElement(element);
 
   const defaultValue = element.prop('defaultValue');
@@ -22,5 +25,5 @@ export default function toHaveValue(element: Element, value: unknown): MatchResu
     name = 'value';
   }
 
-  return toHaveProp(element, name, value);
+  return toHaveProp(element, name as 'value', value);
 }
