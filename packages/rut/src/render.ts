@@ -1,7 +1,7 @@
 import React from 'react';
 import { act } from 'react-test-renderer';
 import Renderer from './Renderer';
-import { wrapAndCaptureAsync, waitForAsyncQueue } from './async';
+import wrapAndCaptureAsync from './internals/async';
 import { RendererOptions } from './types';
 
 const globalOptions: RendererOptions = {};
@@ -26,7 +26,7 @@ export async function renderAndWait<Props>(
   element: React.ReactElement<Props>,
   options?: RendererOptions,
 ): Promise<Renderer<Props>> {
-  const queue = wrapAndCaptureAsync();
+  const waitForQueue = wrapAndCaptureAsync();
   let renderer: Renderer<Props>;
 
   await act(async () => {
@@ -38,7 +38,7 @@ export async function renderAndWait<Props>(
 
   // We need an additional act as async results may cause re-renders
   await act(async () => {
-    await waitForAsyncQueue(queue);
+    await waitForQueue();
   });
 
   return renderer!;

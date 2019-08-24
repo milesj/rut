@@ -2,7 +2,7 @@ import React from 'react';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
 import debug from './debug';
-import { wrapAndCaptureAsync, waitForAsyncQueue } from './async';
+import wrapAndCaptureAsync from './internals/async';
 import { getTypeName, shallowEqual } from './helpers';
 import { UnknownProps, RendererOptions } from './types';
 
@@ -104,7 +104,7 @@ export default class Renderer<Props = UnknownProps> {
    * Like `update` but also awaits the re-render so that async calls have time to finish.
    */
   updateAndWait = async (newProps?: Partial<Props>, newChildren?: React.ReactNode) => {
-    const queue = wrapAndCaptureAsync();
+    const waitForQueue = wrapAndCaptureAsync();
 
     await act(async () => {
       await this.renderer.update(this.updateElement(newProps, newChildren));
@@ -112,7 +112,7 @@ export default class Renderer<Props = UnknownProps> {
 
     // We need an additional act as async results may cause re-renders
     await act(async () => {
-      await waitForAsyncQueue(queue);
+      await waitForQueue();
     });
   };
 
