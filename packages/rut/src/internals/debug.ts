@@ -1,7 +1,7 @@
 import util from 'util';
 import React from 'react';
 import { ReactTestRendererTree as Node } from 'react-test-renderer';
-import { getTypeName, getNodeName } from './helpers';
+import { getTypeName, getNodeName } from '../helpers';
 
 type Props = Node['props'];
 
@@ -138,7 +138,7 @@ function indentAllLines(value: string, indent: string): string {
 }
 
 // eslint-disable-next-line complexity
-export default function debug(node: Node | string | null, depth: number = 0): string {
+export default function debugToJsx(node: Node | string | null, depth: number = 0): string {
   if (!node) {
     return '';
   }
@@ -202,7 +202,7 @@ export default function debug(node: Node | string | null, depth: number = 0): st
     // Otherwise continue nested indentation
   } else {
     output += '\n';
-    output += nodes.map(child => debug(child, depth + 1)).join('\n');
+    output += nodes.map(child => debugToJsx(child, depth + 1)).join('\n');
     output += `\n${indent}`;
   }
 

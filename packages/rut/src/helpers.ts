@@ -216,6 +216,10 @@ export function shallowEqual(objA: unknown, objB: unknown): boolean {
   return true;
 }
 
+/**
+ * Wait for async tasks to complete by awaiting this function
+ * for a period of time.
+ */
 export function wait(delay: number = 10): Promise<void> {
   return new Promise(resolve => {
     setTimeout(resolve, delay);

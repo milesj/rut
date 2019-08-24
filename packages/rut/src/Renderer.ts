@@ -1,8 +1,8 @@
 import React from 'react';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
-import debug from './debug';
 import wrapAndCaptureAsync from './internals/async';
+import debugToJsx from './internals/debug';
 import { getTypeName, shallowEqual } from './helpers';
 import { UnknownProps, RendererOptions } from './types';
 
@@ -33,7 +33,16 @@ export default class Renderer<Props = UnknownProps> {
    *  - Profiler, Suspense
    *  - Fragments
    */
-  debug = () => debug(this.toTree());
+  debug = (log: boolean = false) => {
+    const output = debugToJsx(this.toTree());
+
+    if (log) {
+      // eslint-disable-next-line no-console
+      console.log(output);
+    }
+
+    return output;
+  };
 
   /**
    * Return the root component as an `Element`.

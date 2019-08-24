@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-type AsyncQueue = Set<Promise<any>>;
+type AsyncQueue = Set<Promise<unknown>>;
 type Timer = typeof global.setTimeout;
 
 const nativeSetInterval = global.setInterval.bind(global);
@@ -29,7 +27,7 @@ function wrapPromise(queue: AsyncQueue): void {
   function FacadePromise<T>(
     executor: (
       resolve: (value?: T | PromiseLike<T>) => void,
-      reject: (reason?: any) => void,
+      reject: (reason?: unknown) => void,
     ) => void,
   ): Promise<T> {
     const promise = new NativePromise(executor);
@@ -69,7 +67,7 @@ function unwrapTimers(): void {
   global.setTimeout = nativeSetTimeout;
 }
 
-export default function wrapAndCaptureAsync(): () => Promise<any[]> {
+export default function wrapAndCaptureAsync(): () => Promise<void> {
   const queue: AsyncQueue = new Set();
 
   wrapPromise(queue);
@@ -79,6 +77,8 @@ export default function wrapAndCaptureAsync(): () => Promise<any[]> {
     unwrapPromise();
     unwrapTimers();
 
-    return NativePromise.all(Array.from(queue));
+    return NativePromise.all(Array.from(queue)).then(() => {
+      return undefined;
+    });
   };
 }
