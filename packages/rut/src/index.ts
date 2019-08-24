@@ -6,9 +6,9 @@
 import { act } from 'react-test-renderer';
 import matchers from './matchers';
 import { render, renderAndWait } from './render';
-import mockSyntheticEvent from './mocks/event';
 
 export * from './helpers';
+export * from './mocks';
 export * from './types';
 
-export { act, matchers, mockSyntheticEvent, render, renderAndWait };
+export { act, matchers, render, renderAndWait };
