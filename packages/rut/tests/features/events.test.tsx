@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '../../src/render';
-import mockSyntheticEvent from '../../src/mocks/event';
+import { mockSyntheticEvent } from '../../src/mocks/event';
 
 describe('Events', () => {
   class AsyncComp extends React.Component<{ onClick: () => Promise<unknown> }, { value: unknown }> {

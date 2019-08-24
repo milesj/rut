@@ -1,3 +1,3 @@
-import mockSyntheticEvent from './event';
+import { mockEvent, mockSyntheticEvent } from './event';
 
-export { mockSyntheticEvent };
+export { mockEvent, mockSyntheticEvent };

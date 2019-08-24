@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { render } from '../../src/render';
-import mockSyntheticEvent from '../../src/mocks/event';
+import { mockSyntheticEvent } from '../../src/mocks/event';
 
 describe('State', () => {
   describe('class components', () => {

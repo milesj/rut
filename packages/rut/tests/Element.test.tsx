@@ -1,7 +1,7 @@
 import React from 'react';
 import Element from '../src/Element';
 import { render } from '../src/render';
-import mockSyntheticEvent from '../src/mocks/event';
+import { mockSyntheticEvent } from '../src/mocks/event';
 
 describe('Element', () => {
   describe('children()', () => {
