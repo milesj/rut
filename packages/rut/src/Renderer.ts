@@ -99,24 +99,30 @@ export default class Renderer<Props = {}> {
   };
 
   /**
-   * Re-render the in-memory tree with optional new props or children. This simulates
-   * a React update at the root. If the new element has the same type and key as the
-   * previous element, the tree will be updated; otherwise, it will mount a new tree.
+   * Re-render the in-memory tree with optional new props, children, or element. This
+   * simulates a React update at the root. If the new element has the same type and key as
+   * the previous element, the tree will be updated; otherwise, it will mount a new tree.
    */
-  update = (newProps?: Partial<Props>, newChildren?: React.ReactNode) => {
+  update = (
+    newPropsOrElement?: Partial<Props> | React.ReactElement,
+    newChildren?: React.ReactNode,
+  ) => {
     act(() => {
-      this.renderer.update(this.updateElement(newProps, newChildren));
+      this.renderer.update(this.updateElement(newPropsOrElement, newChildren));
     });
   };
 
   /**
    * Like `update` but also awaits the re-render so that async calls have time to finish.
    */
-  updateAndWait = async (newProps?: Partial<Props>, newChildren?: React.ReactNode) => {
+  updateAndWait = async (
+    newPropsOrElement?: Partial<Props> | React.ReactElement,
+    newChildren?: React.ReactNode,
+  ) => {
     const waitForQueue = wrapAndCaptureAsync();
 
     await act(async () => {
-      await this.renderer.update(this.updateElement(newProps, newChildren));
+      await this.renderer.update(this.updateElement(newPropsOrElement, newChildren));
     });
 
     // We need an additional act as async results may cause re-renders
@@ -129,14 +135,16 @@ export default class Renderer<Props = {}> {
    * Replace the previous element with a new one. Return the new wrapped element.
    */
   protected updateElement(
-    newProps?: Partial<Props>,
+    newPropsOrElement?: Partial<Props> | React.ReactElement,
     newChildren?: React.ReactNode,
   ): React.ReactElement {
     const { children } = this.element.props as {
       children?: React.ReactNode;
     };
 
-    this.element = React.cloneElement(this.element, newProps, newChildren || children);
+    this.element = React.isValidElement(newPropsOrElement)
+      ? newPropsOrElement
+      : React.cloneElement(this.element, newPropsOrElement, newChildren || children);
 
     return this.wrapElement(this.element);
   }

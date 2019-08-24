@@ -407,6 +407,16 @@ describe('Renderer', () => {
       expect(result.root.prop('name')).toBe('update');
     });
 
+    it('can completely replace the root element', () => {
+      const result = render(<div />);
+
+      expect(result.root).toBeElementType('div');
+
+      result.update(<span />);
+
+      expect(result.root).toBeElementType('span');
+    });
+
     describe('class component', () => {
       it('re-renders if props dont change', () => {
         const result = render(<ClassUpdateTest />);
