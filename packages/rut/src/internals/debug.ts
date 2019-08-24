@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+
 import util from 'util';
 import React from 'react';
 import { ReactTestRendererTree as Node } from 'react-test-renderer';
@@ -7,6 +9,37 @@ type Props = Node['props'];
 
 const MAX_INLINE_PROPS = 6;
 const DEFAULT_TERM_WIDTH = 80;
+
+function isAllTextNodes(nodes: unknown[]): boolean {
+  return nodes.every(node => typeof node === 'string');
+}
+
+function isClassInstance(value: unknown): value is Function {
+  if (typeof value !== 'object' || !value) {
+    return false;
+  }
+
+  let ctor = value.constructor;
+
+  while (ctor) {
+    if (ctor === Function) {
+      return true;
+    } else if (ctor === Object) {
+      return false;
+    }
+
+    ctor = ctor.constructor;
+  }
+
+  return false;
+}
+
+function indentAllLines(value: string, indent: string): string {
+  return value
+    .split('\n')
+    .map(line => indent + line)
+    .join('\n');
+}
 
 function toArray<T>(value?: null | T | T[]): T[] {
   if (!value) {
@@ -52,11 +85,21 @@ function sortAndFormatProps(names: string[], props: Props): string[] {
         propValue = getTypeName(value.current);
 
         // Arrays, objects, maps, sets, etc
-      } else {
+      } else if (
+        Array.isArray(value) ||
+        value instanceof Map ||
+        value instanceof Set ||
+        value instanceof RegExp ||
+        !isClassInstance(value)
+      ) {
         propValue = util.inspect(value, {
           depth: 1,
           maxArrayLength: 5,
         });
+
+        // Class instance
+      } else {
+        propValue = `new ${value.constructor.name || 'Class'}()`;
       }
 
       // Everything else
@@ -126,18 +169,6 @@ function getProps(props: Props, internal: Props): string[] {
   ];
 }
 
-function isAllTextNodes(nodes: unknown[]): boolean {
-  return nodes.every(node => typeof node === 'string');
-}
-
-function indentAllLines(value: string, indent: string): string {
-  return value
-    .split('\n')
-    .map(line => indent + line)
-    .join('\n');
-}
-
-// eslint-disable-next-line complexity
 export default function debugToJsx(node: Node | string | null, depth: number = 0): string {
   if (!node) {
     return '';

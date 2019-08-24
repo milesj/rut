@@ -27,6 +27,12 @@ exports[`debug formats array props 2`] = `
 </ArrayProp>
 `;
 
+exports[`debug formats function and class instance props 1`] = `
+<FuncProp func={funcName()} inst={new ClassName()}>
+  <div />
+</FuncProp>
+`;
+
 exports[`debug formats map props 1`] = `
 <MapProp map={Map { 'foo' => 123, 'bar' => 456, 'baz' => 789 }}>
   <div />

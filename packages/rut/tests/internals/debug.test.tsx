@@ -104,4 +104,17 @@ describe('debug', () => {
 
     expect(result).toMatchSnapshot();
   });
+
+  it('formats function and class instance props', () => {
+    function funcName() {}
+    class ClassName {}
+
+    function FuncProp(props: { func: () => void; inst: ClassName }) {
+      return <div />;
+    }
+
+    const result = render(<FuncProp func={funcName} inst={new ClassName()} />);
+
+    expect(result).toMatchSnapshot();
+  });
 });
