@@ -30,7 +30,7 @@ export default class Renderer<Props = {}> {
   }
 
   /**
-   * Return a JSX representation of the *reconciled* React component tree.
+   * Log and return a JSX representation of the *reconciled* React component tree.
    * Does not include exotic components or nodes, such as:
    *
    *  - Context consumers and providers
@@ -39,10 +39,10 @@ export default class Renderer<Props = {}> {
    *  - Profiler, Suspense
    *  - Fragments
    */
-  debug = (log: boolean = false) => {
+  debug = (noLog: boolean = false) => {
     const output = debugToJsx(this.toTree());
 
-    if (log) {
+    if (!noLog) {
       // eslint-disable-next-line no-console
       console.log(output);
     }
