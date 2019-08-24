@@ -5,19 +5,19 @@ import * as ReactIs from 'react-is';
 import Element from './Element';
 import { UnknownProps } from './types';
 
-interface NodeLike {
+export interface NodeLike {
   $$typeof: symbol | number;
   type?: NodeLike;
   props?: UnknownProps;
 }
 
-interface ContextLike extends NodeLike {
+export interface ContextLike extends NodeLike {
   _context: {
     displayName?: string;
   };
 }
 
-interface PortalLike extends NodeLike {
+export interface PortalLike extends NodeLike {
   containerInfo: HTMLElement;
 }
 

@@ -127,6 +127,14 @@ describe('Renderer', () => {
       expect(root.type()).toBe(FuncComp);
     });
 
+    it('returns the passed memoized element when using `wrapper`', () => {
+      const Root = React.memo(FuncComp);
+      const { root } = render(<Root />, { wrapper: <Wrapper /> });
+
+      expect(root).toBeInstanceOf(Element);
+      expect(root.type()).toBe(FuncComp);
+    });
+
     it('returns the passed element when using `strict` and `wrapper`', () => {
       const { root } = render(<FuncComp />, { strict: true, wrapper: <Wrapper /> });
 

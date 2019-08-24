@@ -1,9 +1,10 @@
 import React from 'react';
+import * as ReactIs from 'react-is';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
 import wrapAndCaptureAsync from './internals/async';
 import debugToJsx from './internals/debug';
-import { getTypeName, shallowEqual } from './helpers';
+import { getTypeName, shallowEqual, isReactNodeLike } from './helpers';
 import { RendererOptions } from './types';
 
 export default class Renderer<Props = {}> {
@@ -50,12 +51,20 @@ export default class Renderer<Props = {}> {
   get root(): Element<Props> {
     const { element } = this;
     const root = new Element<Props>(this.renderer.root);
+    let rootType = element.type;
+
+    // Memo does not appear in the reconciled tree,
+    // so we need to remove it and dig deeper.
+    if (isReactNodeLike(rootType) && rootType.$$typeof === ReactIs.Memo) {
+      // @ts-ignore
+      rootType = rootType.type;
+    }
 
     // When being wrapped, we need to drill down and find the
     // element that matches the one initially passed in.
     if (this.options.wrapper) {
       const nodes = root.query<Props>(
-        node => node.type === element.type && shallowEqual(node.props, element.props),
+        node => node.type === rootType && shallowEqual(node.props, element.props),
       );
 
       if (nodes.length !== 1) {
