@@ -197,6 +197,10 @@ const { unmount } = render<ButtonProps>(<Button>Save</Button>);
 unmount();
 ```
 
+## `act()`
+
+Re-exports [act](https://reactjs.org/docs/test-renderer.html#testrendereract) from `react-test-renderer`.
+
 ## `renderAndWait()`
 
 > async renderAndWait<Props>(element: ReactElement, options?: RendererOptions): Result<Props>
