@@ -55,8 +55,8 @@ export default class Element<Props = {}> {
   }
 
   /**
-   * Search through the current child tree for all elements that match the defined React
-   * element type. If any are found, a list of `Element`s is returned.
+   * Search through the current tree for all elements that match the defined React
+   * component or HTML type. If any are found, a list of `Element`s is returned.
    */
   find<T extends HostComponentType>(type: T): Element<JSX.IntrinsicElements[T]>[];
   find<P>(type: React.ComponentType<P>): Element<P>[];
@@ -65,9 +65,9 @@ export default class Element<Props = {}> {
   }
 
   /**
-   * Search through the current child tree for a single element that matches the defined React
-   * element type. If exactly 1 is found, a `Element`s is returned, otherwise an error
-   * is thrown.
+   * Search through the current tree for all elements that match the defined React
+   * component or HTML type. If exactly 1 is found, a `Element`s is returned,
+   * otherwise an error is thrown.
    */
   findOne<T extends HostComponentType>(type: T): Element<JSX.IntrinsicElements[T]>;
   findOne<P>(type: React.ComponentType<P>): Element<P>;

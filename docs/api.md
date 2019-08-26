@@ -2,7 +2,7 @@
 
 ## `render()`
 
-> render\<Props\>(element: ReactElement, options?: RendererOptions): Result\<Props\>
+> render<Props>(element: ReactElement, options?: RendererOptions): Result<Props>
 
 Accepts a React element and returns a rendered result. This function is merely a wrapper around
 [react-test-renderer](https://reactjs.org/docs/test-renderer.html), providing additional
@@ -25,7 +25,7 @@ The following options can be passed to the second argument.
 > (element: ReactElement) => unknown
 
 Mock any ref found within the current render tree. The function is passed the React element being
-referenced for use in determining which mock to return. For example:
+referenced, for use in determining which mock to return. For example:
 
 ```tsx
 const spy = jest.fn();
@@ -85,7 +85,7 @@ The rendered result contains a handful of methods and properties for asserting a
 
 #### `root`
 
-> Element\<Props\>
+> Element<Props>
 
 The React element passed to `render`, represented as an [Element](#element) instance. This is the
 entry point into the entire rendered React tree.
@@ -128,7 +128,7 @@ The example above would log something similar to the following.
 
 #### `update()`
 
-> update(newPropsOrElement?: Partial\<Props\> | ReactElement, newChildren?: ReactNode): void
+> update(newPropsOrElement?: Partial<Props> | ReactElement, newChildren?: ReactNode): void
 
 Can be used to update the [root](#root) props, children, or element itself. Accepts any of the
 following patterns.
@@ -169,8 +169,8 @@ update(
 
 #### `updateAndWait()`
 
-> async updateAndWait(newPropsOrElement?: Partial\<Props\> | ReactElement, newChildren?: ReactNode):
-> Promise\<void\>
+> async updateAndWait( newPropsOrElement?: Partial<Props> | ReactElement, newChildren?: ReactNode ):
+> Promise<void>
 
 Like `update()` but waits for async calls within the updating phase to complete before returning the
 re-rendered result. Because of this, the function must be `await`ed.
@@ -199,7 +199,7 @@ unmount();
 
 ## `renderAndWait()`
 
-> async renderAndWait\<Props\>(element: ReactElement, options?: RendererOptions): Result\<Props\>
+> async renderAndWait<Props>(element: ReactElement, options?: RendererOptions): Result<Props>
 
 Works in a similar fashion to `render()` but also waits for async calls within the mounting phase to
 complete before returning the rendered result. Because of this, the function must be `await`ed.
@@ -214,4 +214,114 @@ test('renders a user profile', async () => {
 
 ## `Element`
 
+An `Element` is a wrapper around a React element (more specifically a
+[test instance](https://reactjs.org/docs/test-renderer.html)) that provides more utility and
+functionality (below). It can be accessed via the [root](#root) or when finding/querying.
+
+### `children()`
+
+> children(): (string | Element)[]
+
+Returns all direct children as a list of strings and `Element`s.
+
+```tsx
+const { root } = render<CardProps>(
+  <Card>
+    <h3>Title</h3>
+    Some description.
+  </Card>,
+);
+
+root.children(); // [<h3 />, #text]
+```
+
+### `emit()`
+
+> emit<K extends keyof Props>(name: K, ...args: ArgsOf<Props[K]>): ReturnOf<Props[K]>
+
 TODO
+
+### `find()`
+
+> find<Tag extends HostComponentType>(type: Tag): Element<JSX.IntrinsicElements[Tag]>[]
+
+> find<Props>(type: React.ComponentType<Props>): Element<Props>[]
+
+Search through the current tree for all elements that match the defined React component or HTML
+type. If any are found, a list of `Element`s is returned.
+
+```tsx
+const { root } = render<NewsReelProps>(<NewsReel />);
+
+// By component
+root.find(NewsArticle);
+
+// By HTML tag
+root.find('div');
+```
+
+### `findOne()`
+
+> findOne<Tag extends HostComponentType>(type: Tag): Element<JSX.IntrinsicElements[Tag]>
+
+> findOne<Props>(type: React.ComponentType<Props>): Element<Props>
+
+Like `find()` but only returns a single instance. If no elements are found, or too many elements are
+found, an error is thrown.
+
+### `name()`
+
+> name(): string
+
+Returns the name of the component (most commonly from `displayName`). If a component has been
+wrapped with an HOC, it will attempt to preserve the name.
+
+```tsx
+const { root } = render<ButtonProps>(<Button />);
+
+expect(root.name()).toBe('Button');
+```
+
+### `prop()`
+
+> prop<K extends keyof Props>(name: K): Props[K] | undefined
+
+TODO
+
+### `props()`
+
+> props(): Props
+
+TODO
+
+### `query()`
+
+> query<Props>(predicate: (node: TestNode, fiber: FiberNode) => boolean, options?: QueryOptions):
+> Element<Props>[]
+
+TODO
+
+### `ref()`
+
+> ref<T>(name?: string): T | null
+
+TODO
+
+### `type()`
+
+> type(): ElementType
+
+Returns the type of element. If a React component, returns the component constructor. If a DOM node,
+returns the HTML tag name.
+
+```tsx
+const { root } = render<ButtonProps>(<Button />);
+
+expect(root.type()).toBe(Button);
+```
+
+```tsx
+const { root } = render(<div />);
+
+expect(root.type()).toBe('div');
+```
