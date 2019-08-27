@@ -1,33 +1,29 @@
 # API
 
-## `render()`
+## `configure()`
 
-> render<Props>(element: ReactElement, options?: RendererOptions): Result<Props>
+> configure(options: RendererOptions): void
 
-Accepts a React element and returns a rendered result. This function is merely a wrapper around
-[react-test-renderer](https://reactjs.org/docs/test-renderer.html), providing additional
-functionality, and an improved API.
+Define global options that will be used across all render based tests.
 
-```tsx
-import { render } from 'rut';
+```ts
+import { configure } from 'rut';
 
-test('renders a button', () => {
-  const result = render<ButtonProps>(<Button>Save</Button>);
+configure({
+  strict: true,
 });
 ```
 
-### Options
+### `mockRef()`
 
-The following options can be passed to the second argument.
+> (element: React.ReactElement) => unknown
 
-#### `mockRef()`
-
-> (element: ReactElement) => unknown
-
-Mock any ref found within the current render tree. The function is passed the React element being
-referenced, for use in determining which mock to return. For example:
+Mock a ref found within the current render tree. This mock function is passed the React element
+being referenced, for use in determining and providing a custom mock. For example:
 
 ```tsx
+import { render, mockSyntheticEvent } from 'rut';
+
 const spy = jest.fn();
 const { root } = render<LoginFormProps>(<LoginForm />, {
   mockRef(element) {
@@ -42,7 +38,7 @@ root.findOne('input').emit('onChange', mockSyntheticEvent('change'));
 expect(spy).toHaveBeenCalled();
 ```
 
-#### `strict`
+### `strict`
 
 > boolean
 
@@ -55,9 +51,9 @@ render<ButtonProps>(<Button>Save</Button>, {
 });
 ```
 
-#### `wrapper`
+### `wrapper`
 
-> ReactElement
+> React.ReactElement
 
 Wraps the [root](#root) element in the provided React element. Useful for wrapping shared
 functionality across multiple test suites, like contexts. Can be used in unison with the `strict`
@@ -79,13 +75,32 @@ render<ButtonProps>(<Button>Save</Button>, {
 
 > The wrapping component must render `children`.
 
-### Result
+## `render()`
 
-The rendered result contains a handful of methods and properties for asserting against.
+> render\<Props>(element: React.ReactElement, options?: RendererOptions): Result\<Props>
 
-#### `root`
+Accepts a React element and an optional [options](#configure) object, and returns a rendered result.
+This function is merely a wrapper around
+[react-test-renderer](https://reactjs.org/docs/test-renderer.html), providing additional
+functionality, and an improved API.
 
-> Element<Props>
+```tsx
+import { render } from 'rut';
+
+test('renders a button', () => {
+  const result = render<ButtonProps>(<Button>Save</Button>);
+});
+```
+
+> If using TypeScript, it's highly encouraged to pass the props interface as a generic to `render`,
+> so that props, children, and other features can be typed correctly. This information is currently
+> not inferrable as `JSX.Element` does not persist types.
+
+The rendered result contains a handful of methods and properties for asserting against, they are:
+
+### `root`
+
+> Element\<Props>
 
 The React element passed to `render`, represented as an [Element](#element) instance. This is the
 entry point into the entire rendered React tree.
@@ -93,13 +108,13 @@ entry point into the entire rendered React tree.
 ```tsx
 const { root } = render<ButtonProps>(<Button>Save</Button>);
 
-expect(root).toContainNode('Save');
+expect(root).toContainNode('Save'); // true
 ```
 
 > If either `strict` or `wrapper` options are defined, the `root` will still point to the element
 > initially passed in.
 
-#### `debug()`
+### `debug()`
 
 > debug(noLog?: boolean): string
 
@@ -126,11 +141,12 @@ The example above would log something similar to the following.
 > consumers and providers, memo, fragments, and more, will not be shown. Only the "result" of the
 > render.
 
-#### `update()`
+### `update()`
 
-> update(newPropsOrElement?: Partial<Props> | ReactElement, newChildren?: ReactNode): void
+> update(newPropsOrElement?: Partial\<Props> | React.ReactElement, newChildren?: React.ReactNode):
+> void
 
-Can be used to update the [root](#root) props, children, or element itself. Accepts any of the
+Can be used to update the [root](#root)'s props, children, or element itself. Accepts any of the
 following patterns.
 
 When passing no arguments, will re-render the element with current props and children (useful for
@@ -139,7 +155,7 @@ testing cache and conditionals).
 ```tsx
 const { update } = render<ButtonProps>(<Button>Save</Button>);
 
-update();
+update(); // Re-render
 ```
 
 Accepts an object of partial props as the first argument, or a new child as the second. Can be used
@@ -167,10 +183,10 @@ update(
 );
 ```
 
-#### `updateAndWait()`
+### `updateAndWait()`
 
-> async updateAndWait( newPropsOrElement?: Partial<Props> | ReactElement, newChildren?: ReactNode ):
-> Promise<void>
+> async updateAndWait(newPropsOrElement?: Partial\<Props> | React.ReactElement, newChildren?:
+> React.ReactNode): Promise\<void>
 
 Like `update()` but waits for async calls within the updating phase to complete before returning the
 re-rendered result. Because of this, the function must be `await`ed.
@@ -185,7 +201,7 @@ await updateAndWait({ filters: { location: 'USA' } });
 expect(root.find(User)).toHaveLength(3);
 ```
 
-#### `unmount()`
+### `unmount()`
 
 > unmount(): void
 
@@ -199,7 +215,8 @@ unmount();
 
 ## `renderAndWait()`
 
-> async renderAndWait<Props>(element: ReactElement, options?: RendererOptions): Result<Props>
+> async renderAndWait\<Props>(element: React.ReactElement, options?: RendererOptions):
+> Result\<Props>
 
 Works in a similar fashion to `render()` but also waits for async calls within the mounting phase to
 complete before returning the rendered result. Because of this, the function must be `await`ed.
@@ -237,15 +254,15 @@ root.children(); // [<h3 />, #text]
 
 ### `emit()`
 
-> emit<K extends keyof Props>(name: K, ...args: ArgsOf<Props[K]>): ReturnOf<Props[K]>
+> emit\<K extends keyof Props>(name: K, ...args: ArgsOf\<Props[K]>): ReturnOf\<Props[K]>
 
 TODO
 
 ### `find()`
 
-> find<Tag extends HostComponentType>(type: Tag): Element<JSX.IntrinsicElements[Tag]>[]
+> find\<Tag extends HostComponentType>(type: Tag): Element\<JSX.IntrinsicElements[Tag]>[]
 
-> find<Props>(type: React.ComponentType<Props>): Element<Props>[]
+> find\<Props>(type: React.ComponentType<Props>): Element\<Props>[]
 
 Search through the current tree for all elements that match the defined React component or HTML
 type. If any are found, a list of `Element`s is returned.
@@ -262,9 +279,9 @@ root.find('div');
 
 ### `findOne()`
 
-> findOne<Tag extends HostComponentType>(type: Tag): Element<JSX.IntrinsicElements[Tag]>
+> findOne\<Tag extends HostComponentType>(type: Tag): Element\<JSX.IntrinsicElements[Tag]>
 
-> findOne<Props>(type: React.ComponentType<Props>): Element<Props>
+> findOne\<Props>(type: React.ComponentType\<Props>): Element\<Props>
 
 Like `find()` but only returns a single instance. If no elements are found, or too many elements are
 found, an error is thrown.
@@ -284,7 +301,7 @@ expect(root.name()).toBe('Button');
 
 ### `prop()`
 
-> prop<K extends keyof Props>(name: K): Props[K] | undefined
+> prop\<K extends keyof Props>(name: K): Props[K] | undefined
 
 TODO
 
@@ -296,16 +313,39 @@ TODO
 
 ### `query()`
 
-> query<Props>(predicate: (node: TestNode, fiber: FiberNode) => boolean, options?: QueryOptions):
-> Element<Props>[]
+> query\<Props>(predicate: (node: TestNode, fiber: FiberNode) => boolean, options?: QueryOptions):
+> Element\<Props>[]
 
 TODO
 
 ### `ref()`
 
-> ref<T>(name?: string): T | null
+> ref\<T>(name?: string): T | null
 
-TODO
+Returns any ref associated with the current component. The renderer will attempt to find a valid ref
+using the following patterns, in order:
+
+- If a ref is found on the internal React fiber node, it will be used.
+- If defined as a class component instance property (either via `React.createRef()` or a callback
+  ref), will match against the `name` provided.
+- If defined as a string ref, will match against the `name` provided.
+- Otherwise `null` is returned.
+
+```tsx
+class Input extends React.Component<InputProps> {
+  inputRef = React.createRef<HTMLInputElement>();
+
+  render() {
+    return <input type="text" ref={this.inputRef} />;
+  }
+}
+
+const { root } = render<InputProps>(<Input />);
+
+root.ref('inputRef'); // <input />
+```
+
+> Be sure to mock your ref using the [mockRef()](#mockref) option.
 
 ### `type()`
 

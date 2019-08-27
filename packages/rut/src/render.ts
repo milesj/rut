@@ -2,9 +2,8 @@ import React from 'react';
 import { act } from 'react-test-renderer';
 import Renderer from './Renderer';
 import wrapAndCaptureAsync from './internals/async';
+import { globalOptions } from './configure';
 import { RendererOptions } from './types';
-
-const globalOptions: RendererOptions = {};
 
 export function render<Props>(
   element: React.ReactElement<Props>,
