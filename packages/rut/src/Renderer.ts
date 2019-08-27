@@ -1,11 +1,11 @@
 import React from 'react';
-import * as ReactIs from 'react-is';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
 import wrapAndCaptureAsync from './internals/async';
 import debugToJsx from './internals/debug';
-import { shallowEqual, isReactNodeLike } from './helpers';
+import { shallowEqual, unwrapExoticType } from './internals/helpers';
 import { RendererOptions } from './types';
+import { NodeLike } from './helpers';
 
 export default class Renderer<Props = {}> {
   readonly isRutRenderer = true;
@@ -56,14 +56,7 @@ export default class Renderer<Props = {}> {
   get root(): Element<Props> {
     const { element } = this;
     const root = new Element<Props>(this.renderer.root);
-    let rootType = element.type;
-
-    // Memo does not appear in the reconciled tree,
-    // so we need to remove it and dig deeper.
-    if (isReactNodeLike(rootType) && rootType.$$typeof === ReactIs.Memo) {
-      // @ts-ignore
-      rootType = rootType.type;
-    }
+    const rootType = unwrapExoticType((element as unknown) as NodeLike);
 
     // When being wrapped, we need to drill down and find the
     // element that matches the one initially passed in.

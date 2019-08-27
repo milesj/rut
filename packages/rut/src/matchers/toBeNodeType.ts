@@ -1,5 +1,5 @@
 import Element from '../Element';
-import { checkIsRutElement } from '../helpers';
+import { checkIsRutElement } from '../internals/helpers';
 import { MatchResult, NodeType } from '../types';
 
 // Keep in sync with React upstream!

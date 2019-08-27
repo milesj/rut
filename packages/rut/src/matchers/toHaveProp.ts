@@ -1,5 +1,6 @@
 import Element from '../Element';
-import { checkIsRutElement, formatValue } from '../helpers';
+import { checkIsRutElement } from '../internals/helpers';
+import { formatValue } from '../helpers';
 import { MatchResult } from '../types';
 
 /**

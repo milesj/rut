@@ -1,6 +1,7 @@
 import React from 'react';
 import Element from '../Element';
-import { checkIsRutElement, getNodeName, shallowEqual } from '../helpers';
+import { checkIsRutElement, shallowEqual } from '../internals/helpers';
+import { getNodeName } from '../helpers';
 import { MatchResult } from '../types';
 
 export default function toContainNode(

@@ -1,7 +1,7 @@
 import Element from '../Element';
 import toHaveProp from './toHaveProp';
 import { MatchResult } from '../types';
-import { checkIsRutElement } from '../helpers';
+import { checkIsRutElement } from '../internals/helpers';
 
 /**
  * Check that an element has a `value` or `defaultValue` prop that

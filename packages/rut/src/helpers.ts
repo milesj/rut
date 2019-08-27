@@ -2,7 +2,6 @@
 
 import React from 'react';
 import * as ReactIs from 'react-is';
-import Element from './Element';
 import { UnknownProps } from './types';
 
 export interface NodeLike {
@@ -19,25 +18,6 @@ export interface ContextLike extends NodeLike {
 
 export interface PortalLike extends NodeLike {
   containerInfo: HTMLElement;
-}
-
-/**
- * Check that a value is an instance of a Rut `Element`. Used primarily in matchers.
- */
-export function checkIsRutElement(value: unknown) {
-  if (value instanceof Element) {
-    return;
-  }
-
-  if (
-    typeof value === 'object' &&
-    value !== null &&
-    (value.constructor.name === 'Element' || (value as Element).isRutElement === true)
-  ) {
-    return;
-  }
-
-  throw new Error('Expected a Rut `Element`.');
 }
 
 /**
@@ -175,45 +155,6 @@ export function getNodeName(type: unknown): string {
 
   // Component or element nodes
   return `<${getTypeName(type)} />`;
-}
-
-// Keep shallow equal in sync with React core!
-// https://github.com/facebook/react/blob/master/packages/shared/shallowEqual.js
-
-/**
- * Performs equality by iterating through keys on an object and returning false
- * when any key has values which are not strictly equal between the arguments.
- * Returns true when the values of all keys are strictly equal.
- */
-export function shallowEqual(objA: unknown, objB: unknown): boolean {
-  if (Object.is(objA, objB)) {
-    return true;
-  }
-
-  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
-    return false;
-  }
-
-  const keysA = Object.keys(objA);
-  const keysB = Object.keys(objB);
-
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
-
-  // Test for A's keys different from B.
-  // eslint-disable-next-line unicorn/no-for-loop
-  for (let i = 0; i < keysA.length; i += 1) {
-    if (
-      !Object.prototype.hasOwnProperty.call(objB, keysA[i]) ||
-      // @ts-ignore
-      !Object.is(objA[keysA[i]], objB[keysA[i]])
-    ) {
-      return false;
-    }
-  }
-
-  return true;
 }
 
 /**
