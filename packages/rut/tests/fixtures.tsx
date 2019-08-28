@@ -4,11 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { runAsyncCall } from './helpers';
 
 export interface TestProps {
+  children?: React.ReactNode;
   name?: string;
 }
 
-export function FuncComp(props: TestProps) {
-  return <span />;
+export function FuncComp({ children }: TestProps) {
+  return <span>{children}</span>;
 }
 
 export function FuncCompWithDisplayName() {

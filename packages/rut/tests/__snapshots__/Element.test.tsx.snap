@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Element debug() debugs based on element depth 1`] = `
+"<div>
+  <section>
+    <article>
+      <h1>Title</h1>
+    </article>
+  </section>
+</div>"
+`;
+
+exports[`Element debug() debugs based on element depth 2`] = `
+"<section>
+  <article>
+    <h1>Title</h1>
+  </article>
+</section>"
+`;
+
+exports[`Element debug() debugs based on element depth 3`] = `"<h1>Title</h1>"`;

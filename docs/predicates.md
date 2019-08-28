@@ -22,7 +22,7 @@ const { root } = render(
 
 root.query(whereKey(123));
 // Or
-root.query(whereKey([123, 45]));
+root.query(whereKey([123, 456]));
 ```
 
 ## `whereProps()`
