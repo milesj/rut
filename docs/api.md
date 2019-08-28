@@ -315,7 +315,16 @@ TODO
 
 > props(): Props
 
-TODO
+Returns an object of all props on the current element.
+
+```tsx
+const { root } = render<ButtonProps>(<Button type="submit" onClick={handleClick} />);
+
+expect(root.props()).toEqual({
+  type: 'submit',
+  onClick: handleClick,
+});
+```
 
 ### `query()`
 

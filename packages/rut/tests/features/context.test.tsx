@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { render } from '../../src/render';
 
 describe('Context', () => {
@@ -224,6 +225,73 @@ describe('Context', () => {
       result.update({ theme: 'light' });
 
       expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledWith('light');
+    });
+  });
+
+  describe('legacy', () => {
+    class ParentContext extends React.Component<{ children: React.ReactNode; theme?: string }> {
+      static childContextTypes = {
+        theme: PropTypes.string,
+      };
+
+      getChildContext() {
+        return { theme: this.props.theme || 'light' };
+      }
+
+      render() {
+        return <>{this.props.children}</>;
+      }
+    }
+
+    class ChildContext extends React.Component<SpyProps> {
+      static contextTypes = {
+        theme: PropTypes.string,
+      };
+
+      render() {
+        this.props.spy(this.context.theme);
+
+        return <div>Consumed!</div>;
+      }
+    }
+
+    it('renders without provider', () => {
+      const spy = jest.fn();
+
+      render(<ChildContext spy={spy} />);
+
+      expect(spy).toHaveBeenCalledWith(undefined);
+    });
+
+    it('renders within parent and inherits the defined value', () => {
+      const spy = jest.fn();
+      const result = render(
+        <ParentContext theme="dark">
+          <div>
+            <ChildContext spy={spy} />
+          </div>
+        </ParentContext>,
+      );
+
+      expect(result).toMatchSnapshot();
+      expect(spy).toHaveBeenCalledWith('dark');
+    });
+
+    it('updates with new value when provider changes', () => {
+      const spy = jest.fn();
+      const result = render(
+        <ParentContext theme="dark">
+          <div>
+            <ChildContext spy={spy} />
+          </div>
+        </ParentContext>,
+      );
+
+      expect(spy).toHaveBeenCalledWith('dark');
+
+      result.update({ theme: 'light' });
+
       expect(spy).toHaveBeenCalledWith('light');
     });
   });

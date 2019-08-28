@@ -22,6 +22,16 @@ exports[`Context contextType renders within provider and inherits the defined va
 </Provider>
 `;
 
+exports[`Context legacy renders within parent and inherits the defined value 1`] = `
+<ParentContext theme="dark">
+  <div>
+    <ChildContext spy={mockConstructor()}>
+      <div>Consumed!</div>
+    </ChildContext>
+  </div>
+</ParentContext>
+`;
+
 exports[`Context useContext renders within provider and inherits the defined value 1`] = `
 <Provider theme="dark">
   <div>

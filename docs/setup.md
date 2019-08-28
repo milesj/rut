@@ -12,9 +12,9 @@ And that's it! Head over to the [API](./api.md) for more information on how to u
 
 ## Framework Integrations
 
-Rut provides a handful of matchers and snapshot serializers (framework dependent) for expecting and
-asserting common patterns. To make use of these, follow the instructions for your current testing
-framework.
+Rut provides a handful of [matchers](./matchers.md) and snapshot serializers (framework dependent)
+for expecting and asserting common patterns. To make use of these, follow the instructions for your
+chosen testing framework.
 
 ### Jest
 

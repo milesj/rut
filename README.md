@@ -38,7 +38,7 @@ SUPPORTED
 - [x] Function components.
   - [x] Hooks.
   - [x] Memo.
-- [x] Context: `Provider`, `Consumer`, `useContext`, `contextType`.
+- [x] Context: `Provider`, `Consumer`, `useContext`, `contextType`, legacy.
 - [x] Refs: `createRef`, `forwardRef`, callback and string refs.
 - [x] Error boundaries.
 - [x] Fragments.
