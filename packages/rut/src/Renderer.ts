@@ -30,17 +30,16 @@ export default class Renderer<Props = {}> {
   }
 
   /**
-   * Log and return a JSX representation of the *reconciled* React component tree.
+   * Log and return a JSX representation of the entire *reconciled* React component tree.
    * Does not include exotic components or nodes, such as:
    *
    *  - Context consumers and providers
-   *  - Memo and forwardRef components
    *  - Roots, portals, modes
    *  - Profiler, Suspense
    *  - Fragments
    */
   debug = (noLog: boolean = false) => {
-    const output = debugToJsx(this.toTree());
+    const output = debugToJsx(this.renderer.root);
 
     if (!noLog) {
       // eslint-disable-next-line no-console

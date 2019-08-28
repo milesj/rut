@@ -252,6 +252,12 @@ const { root } = render<CardProps>(
 root.children(); // [<h3 />, #text]
 ```
 
+### `debug()`
+
+> debug(noLog?: boolean): string
+
+Like the renderer's [debug()](#debug), but only represents the current elements tree.
+
 ### `emit()`
 
 > emit\<K extends keyof Props>(name: K, ...args: ArgsOf\<Props[K]>): ReturnOf\<Props[K]>

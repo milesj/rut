@@ -4,6 +4,7 @@ import React from 'react';
 import { act, ReactTestInstance } from 'react-test-renderer';
 import { ArgsOf, ReturnOf, TestNode, FiberNode, HostComponentType } from './types';
 import { getTypeName } from './helpers';
+import debugToJsx from './internals/debug';
 
 export default class Element<Props = {}> {
   readonly isRutElement = true;
@@ -22,6 +23,26 @@ export default class Element<Props = {}> {
       typeof child === 'string' ? child : new Element(child),
     );
   }
+
+  /**
+   * Log and return a JSX representation of the current *reconciled* React component tree.
+   * Does not include exotic components or nodes, such as:
+   *
+   *  - Context consumers and providers
+   *  - Roots, portals, modes
+   *  - Profiler, Suspense
+   *  - Fragments
+   */
+  debug = (noLog: boolean = false) => {
+    const output = debugToJsx(this.element);
+
+    if (!noLog) {
+      // eslint-disable-next-line no-console
+      console.log(output);
+    }
+
+    return output;
+  };
 
   /**
    * Find and execute an event handler (a function prop for the defined name).

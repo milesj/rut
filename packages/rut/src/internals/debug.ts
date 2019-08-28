@@ -2,7 +2,7 @@
 
 import util from 'util';
 import React from 'react';
-import { ReactTestRendererTree as Node } from 'react-test-renderer';
+import { ReactTestInstance as Node } from 'react-test-renderer';
 import { getTypeName, getNodeName } from '../helpers';
 
 type Props = Node['props'];
@@ -49,6 +49,37 @@ function toArray<T>(value?: null | T | T[]): T[] {
   return Array.isArray(value) ? value : [value];
 }
 
+function formatObject(value: object): string {
+  // Element
+  if (React.isValidElement(value)) {
+    return getNodeName(value);
+
+    // DOM element
+  } else if ('tagName' in value) {
+    return `<${(value as HTMLElement).tagName.toLowerCase()} />`;
+
+    // Ref
+  } else if ('current' in value) {
+    return formatObject((value as React.RefObject<object>).current!);
+
+    // Arrays, objects, maps, sets, etc
+  } else if (
+    Array.isArray(value) ||
+    value instanceof Map ||
+    value instanceof Set ||
+    value instanceof RegExp ||
+    !isClassInstance(value)
+  ) {
+    return util.inspect(value, {
+      depth: 1,
+      maxArrayLength: 5,
+    });
+  }
+
+  // Class instance
+  return `new ${value.constructor.name || 'Class'}()`;
+}
+
 function sortAndFormatProps(names: string[], props: Props): string[] {
   const output: string[] = [];
 
@@ -76,31 +107,7 @@ function sortAndFormatProps(names: string[], props: Props): string[] {
 
       // Objects
     } else if (typeOf === 'object' && !!value) {
-      // Element
-      if (React.isValidElement(value)) {
-        propValue = getNodeName(value);
-
-        // Ref
-      } else if ('current' in value) {
-        propValue = getTypeName(value.current);
-
-        // Arrays, objects, maps, sets, etc
-      } else if (
-        Array.isArray(value) ||
-        value instanceof Map ||
-        value instanceof Set ||
-        value instanceof RegExp ||
-        !isClassInstance(value)
-      ) {
-        propValue = util.inspect(value, {
-          depth: 1,
-          maxArrayLength: 5,
-        });
-
-        // Class instance
-      } else {
-        propValue = `new ${value.constructor.name || 'Class'}()`;
-      }
+      propValue = formatObject(value);
 
       // Everything else
     } else {
@@ -125,7 +132,7 @@ function getKeyAndRef(node: Node): Props {
   }
 
   // @ts-ignore Allow internal access
-  const { key, ref } = node.instance._reactInternalFiber;
+  const { key, ref } = node._fiber || node.instance._reactInternalFiber;
 
   if (key) {
     props.key = key;
@@ -182,7 +189,7 @@ export default function debugToJsx(node: Node | string | null, depth: number = 0
     return `${indent}${node}`;
   }
 
-  const nodes = toArray(node.rendered);
+  const nodes = toArray(node.children);
   const name = getTypeName(node.type);
   const props = getProps(node.props, getKeyAndRef(node));
   const inlineProps = props.join(' ');
