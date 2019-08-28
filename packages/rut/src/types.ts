@@ -42,6 +42,8 @@ export interface FiberNode {
   type: React.ElementType;
 }
 
+export type Predicate = (node: TestNode, fiber: FiberNode) => boolean;
+
 export interface MatchResult {
   context?: string;
   message: string;

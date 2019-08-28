@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { act, ReactTestInstance } from 'react-test-renderer';
-import { ArgsOf, ReturnOf, TestNode, FiberNode, HostComponentType } from './types';
+import { ArgsOf, ReturnOf, HostComponentType, Predicate } from './types';
 import { getTypeName } from './helpers';
 import debugToJsx from './internals/debug';
 
@@ -45,10 +45,10 @@ export default class Element<Props = {}> {
   };
 
   /**
-   * Find and execute an event handler (a function prop for the defined name).
-   * Accepts a list of arguments, and returns the result of the execution.
+   * Emit an event listener for the defined prop name. Requires a list of arguments
+   * that match the original type, and returns the result of the emit.
    *
-   * Note: This may only be executed on host components (HTML elements).
+   * Note: This may only be executed on host components (DOM elements).
    */
   emit<K extends keyof Props>(name: K, ...args: ArgsOf<Props[K]>): ReturnOf<Props[K]> {
     const prop = this.prop(name);
@@ -58,7 +58,7 @@ export default class Element<Props = {}> {
     } else if (typeof prop !== 'function') {
       throw new TypeError(`Prop \`${name}\` is not a function.`);
     } else if (typeof this.type() !== 'string') {
-      throw new TypeError('Emitting events is only allowed on host components (HTML elements).');
+      throw new TypeError('Emitting events is only allowed on host components (DOM elements).');
     }
 
     let value: ReturnOf<Props[K]>;
@@ -124,13 +124,10 @@ export default class Element<Props = {}> {
 
   /**
    * Search through the current child tree using a custom predicate, which is passed the
-   * React TestRenderer node and internal React fiber node. If any are found,
+   * ReactTestRenderer node and internal React fiber node. If any are found,
    * a list of `Element`s is returned.
    */
-  query<P = {}>(
-    predicate: (node: TestNode, fiber: FiberNode) => boolean,
-    options?: { deep?: boolean },
-  ): Element<P>[] {
+  query<P = {}>(predicate: Predicate, options?: { deep?: boolean }): Element<P>[] {
     return this.element
       .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
       .map(node => new Element(node));

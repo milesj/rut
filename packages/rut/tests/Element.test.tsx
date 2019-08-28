@@ -68,7 +68,7 @@ describe('Element', () => {
         const { root } = render(<EmitComp onSomething={() => {}} />);
 
         root.emit('onSomething');
-      }).toThrowError('Emitting events is only allowed on host components (HTML elements).');
+      }).toThrowError('Emitting events is only allowed on host components (DOM elements).');
     });
 
     it('executes the function prop', () => {

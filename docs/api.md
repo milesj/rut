@@ -256,13 +256,29 @@ root.children(); // [<h3 />, #text]
 
 > debug(noLog?: boolean): string
 
-Like the renderer's [debug()](#debug), but only represents the current elements tree.
+Like the renderer's [`debug()`](#debug), but only represents the current elements tree.
 
 ### `emit()`
 
 > emit\<K extends keyof Props>(name: K, ...args: ArgsOf\<Props[K]>): ReturnOf\<Props[K]>
 
-TODO
+Emit an event listener for the defined prop name. Requires a list of arguments, and returns the
+result of the emit.
+
+To ease the interaction and testing flow of `Event` objects, Rut provides a
+[`mockSyntheticEvent()`](./mocks.md) function.
+
+```tsx
+import { render, mockSyntheticEvent } from 'rut';
+
+const { root } = render<LoginFormProps>(<LoginForm />);
+
+root.findOne('input').emit('onChange', mockSyntheticEvent('change'));
+```
+
+> This may only be executed on host components (DOM elements). Why? Because it's an abstraction that
+> forces testing on what the consumer will ultimately interact with. Executing listeners on a React
+> component is a code smell.
 
 ### `find()`
 
@@ -270,17 +286,17 @@ TODO
 
 > find\<Props>(type: React.ComponentType<Props>): Element\<Props>[]
 
-Search through the current tree for all elements that match the defined React component or HTML
-type. If any are found, a list of `Element`s is returned.
+Search through the current tree for all elements that match the defined React component or HTML tag.
+If any are found, a list of `Element`s is returned.
 
 ```tsx
 const { root } = render<NewsReelProps>(<NewsReel />);
 
 // By component
-root.find(NewsArticle);
+const articles = root.find(NewsArticle);
 
 // By HTML tag
-root.find('div');
+const articles = root.find('article');
 ```
 
 ### `findOne()`
@@ -289,8 +305,8 @@ root.find('div');
 
 > findOne\<Props>(type: React.ComponentType\<Props>): Element\<Props>
 
-Like `find()` but only returns a single instance. If no elements are found, or too many elements are
-found, an error is thrown.
+Like [`find()`](#find) but only returns a single instance. If no elements are found, or too many
+elements are found, an error is thrown.
 
 ### `name()`
 
@@ -309,7 +325,13 @@ expect(root.name()).toBe('Button');
 
 > prop\<K extends keyof Props>(name: K): Props[K] | undefined
 
-TODO
+Returns the value of a prop by name, or undefined if not found.
+
+```tsx
+const { root } = render<ButtonProps>(<Button type="submit" onClick={handleClick} />);
+
+expect(root.prop('type')).toBe('submit');
+```
 
 ### `props()`
 
@@ -328,10 +350,23 @@ expect(root.props()).toEqual({
 
 ### `query()`
 
-> query\<Props>(predicate: (node: TestNode, fiber: FiberNode) => boolean, options?: QueryOptions):
-> Element\<Props>[]
+> query\<Props>(predicate: Predicate | ((node: TestNode, fiber: FiberNode) => boolean), options?:
+> QueryOptions): Element\<Props>[]
 
-TODO
+A low-level abstraction for querying and finding components in the current tree using a predicate
+function. This predicate is passed the `react-rest-renderer` test instance and a `react` fiber node,
+for use in comparisons. To simplify this process, a [predicate](./predicates.md) can be used.
+
+```tsx
+const { root } = render<NewsReelProps>(<NewsReel />);
+
+const articles = root.query(node => node.type === NewsArticle);
+```
+
+#### Options
+
+- `deep` (`boolean`) - Continue searching through the entire tree when a match is found, otherwise
+  return the found result immediately. Defaults to `true`.
 
 ### `ref()`
 
@@ -360,14 +395,14 @@ const { root } = render<InputProps>(<Input />);
 root.ref('inputRef'); // <input />
 ```
 
-> Be sure to mock your ref using the [mockRef()](#mockref) option.
+> Be sure to mock your ref using the [`mockRef()`](#mockref) option.
 
 ### `type()`
 
 > type(): ElementType
 
 Returns the type of element. If a React component, returns the component constructor. If a DOM node,
-returns the HTML tag name.
+returns the tag name.
 
 ```tsx
 const { root } = render<ButtonProps>(<Button />);
