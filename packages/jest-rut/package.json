@@ -24,6 +24,6 @@
   },
   "peerDependencies": {
     "jest": "*",
-    "rut": "^0.4.0"
+    "rut": "*"
   }
 }

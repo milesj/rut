@@ -1,6 +1,7 @@
 # Summary
 
 - [Setup](./setup.md)
+- [FAQ](./faq.md)
 - [API](./api.md)
 - [Matchers](./matchers.md)
 - [Mocks](./mocks.md)

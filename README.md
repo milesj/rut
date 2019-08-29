@@ -1,54 +1,34 @@
-# ⚛️ Rut
+# Rut
 
-React unit testing made easy. DOM not included.
+[![Build Status](https://travis-ci.org/milesj/rut.svg?branch=master)](https://travis-ci.org/milesj/rut)
+[![npm version](https://badge.fury.io/js/rut.svg)](https://www.npmjs.com/package/rut)
+[![npm deps](https://david-dm.org/milesj/rut.svg?path=packages/rut)](https://www.npmjs.com/package/rut)
 
-## Checklist
+Rut is a DOM-less **R**eact **u**nit **t**esting library that aims to be lightweight and simple,
+encourage great testing practices, and reduce code smells and flakiness. It is a wrapper and
+abstraction around [react-test-renderer](https://reactjs.org/docs/test-renderer.html) that
+simplifies the test writing process, while doing all the hard work behind the scenes.
 
-RENDERER
+## Features
 
-- [x] Render a component, including hooks, lifecycles, context, refs, and more.
-- [x] Re-render the component without prop changes.
-- [x] Re-render the component with updated props.
-- [x] Unmount the component.
-- [x] Query elements by name/type.
-- [x] Debug JSX output of the React tree.
-- [ ] Test rendering to the DOM (`rut-dom`).
-- [x] Wrapping component option.
-- [x] Strict mode option.
+- Type safe by design. Test with confidence.
+- First-class async support. Wait for async calls to complete before returning a rendered result,
+  and asserting against it.
+- Deep [`act()`](https://reactjs.org/docs/testing-recipes.html#act) integration. Let Rut do the
+  heavy lifting. You simply worry about asserting.
+- Update a component with new props, children, or a completely new element.
+- Unmount a component to verify cleanup and destructor based logic.
+- Emit DOM level events with a mocked synthetic event (and propagation coming soon!).
+- Wrap all renders with a defined wrapping component and or `React.StrictMode`.
+- Apply pre-built mocks for robust and accurate testing.
+- Utilize an array of pre-built matchers for easily querying, expecting, and asserting common test
+  patterns.
 
-ELEMENTS
+## Requirements
 
-- [x] Query elements by name/type.
-- [x] Emit event handler props.
-- [x] Access props, type, and children.
+- React 16.9+
+- Jest or another testing framework
 
-MATCHERS
+## Documentation
 
-- [x] Check if an empty (null) render or not.
-- [x] Check element is found within a node or its children.
-- [x] Check element is of a specific type.
-- [x] Check common props, like `checked`, `disabled`, `className`, and `value`.
-
-SUPPORTED
-
-- [x] Class components.
-  - [x] Life-cycles.
-  - [x] State changes.
-  - [x] Pure.
-- [x] Function components.
-  - [x] Hooks.
-  - [x] Memo.
-- [x] Context: `Provider`, `Consumer`, `useContext`, `contextType`, legacy.
-- [x] Refs: `createRef`, `forwardRef`, callback and string refs.
-- [x] Error boundaries.
-- [x] Fragments.
-- [x] Function children.
-- [x] Render props.
-- [x] HOCs and composition.
-- [x] Event emitting.
-
-NOT SUPPORTED
-
-- [`React.lazy, React.Suspense`](https://github.com/facebook/react/issues/14170) - Not supported by
-  `react-test-renderer`.
-- `ReactDOM.createPortal` - Requires the DOM (duh).
+[https://milesj.gitbook.io/emojibase](https://milesj.gitbook.io/emojibase)

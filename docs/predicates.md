@@ -29,7 +29,7 @@ root.query(whereKey([123, 456]));
 
 > whereProps(props: { [name: string]: unknown }): Predicate
 
-Find all elements in common with the provided props using shallow equality.
+Find all elements in common with the provided props.
 
 ```tsx
 import { render, whereProps } from 'rut';

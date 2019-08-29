@@ -9,7 +9,7 @@ export function whereKey(value: React.Key | React.Key[]): Predicate {
 }
 
 /**
- * Find all elements in common with the provided props using shallow equality.
+ * Find all elements in common with the provided props.
  */
 export function whereProps(props: UnknownProps): Predicate {
   return node => Object.keys(props).every(prop => node.props[prop] === props[prop]);
