@@ -4,6 +4,9 @@ import { checkIsRutElement, shallowEqual } from '../internals/helpers';
 import { getNodeName } from '../helpers';
 import { MatchResult } from '../types';
 
+/**
+ * Check that an element contains a node (string, element, etc) within its children, at any depth.
+ */
 export default function toContainNode(
   element: Element,
   node: NonNullable<React.ReactNode>,

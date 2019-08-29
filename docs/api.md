@@ -4,7 +4,7 @@
 
 > configure(options: RendererOptions): void
 
-Define global options that will be used across all render based tests.
+Define global options that will be used across all tests.
 
 ```ts
 import { configure } from 'rut';

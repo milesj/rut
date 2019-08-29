@@ -16,6 +16,6 @@ export default function toHaveClassName(
   return {
     message: `expected \`${element}\` to have a "${name}" class name`,
     notMessage: `expected \`${element}\` not to have a "${name}" class name`,
-    passed: typeof className === 'string' && (className === name || className.includes(name)),
+    passed: typeof className === 'string' && className.split(' ').includes(name),
   };
 }

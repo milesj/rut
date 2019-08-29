@@ -264,4 +264,24 @@ describe('Element', () => {
       expect(root.name()).toBe('connect(ClassComp)');
     });
   });
+
+  describe('type()', () => {
+    it('returns HTML tag', () => {
+      const { root } = render(<div />);
+
+      expect(root.type()).toBe('div');
+    });
+
+    it('returns function component', () => {
+      const { root } = render(<FuncComp />);
+
+      expect(root.type()).toBe(FuncComp);
+    });
+
+    it('returns class component', () => {
+      const { root } = render(<ClassComp />);
+
+      expect(root.type()).toBe(ClassComp);
+    });
+  });
 });

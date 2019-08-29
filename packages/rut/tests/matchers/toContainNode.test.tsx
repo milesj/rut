@@ -25,6 +25,22 @@ describe('toContainNode()', () => {
     runMatcher(toContainNode(render(<TestComp />).root, <span id="foo">Foo</span>));
   });
 
+  it('doesnt support partial matching props', () => {
+    function TestComp() {
+      return (
+        <div>
+          <span id="foo" className="foo">
+            Foo
+          </span>
+        </div>
+      );
+    }
+
+    expect(() => {
+      runMatcher(toContainNode(render(<TestComp />).root, <span id="foo">Foo</span>));
+    }).toThrowError('expected `TestComp` to contain node `<span />`');
+  });
+
   it('supports nodes passed through props', () => {
     function TestComp({ children, after }: { children: React.ReactNode; after: React.ReactNode }) {
       return (

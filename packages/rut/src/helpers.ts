@@ -160,9 +160,16 @@ export function getNodeName(type: unknown): string {
 /**
  * Wait for async tasks to complete by awaiting this function
  * for a period of time.
+ *
+ * If Jest fake timers are being used, it will advance them and resolve.
  */
 export function wait(delay: number = 10): Promise<void> {
   return new Promise(resolve => {
-    setTimeout(resolve, delay);
+    if (typeof jest !== 'undefined' && jest.getTimerCount() > 0) {
+      jest.advanceTimersByTime(delay);
+      resolve();
+    } else {
+      setTimeout(resolve, delay);
+    }
   });
 }

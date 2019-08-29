@@ -10,7 +10,7 @@ yarn add --dev rut
 And that's it! Head over to the [API](./api.md) for more information on how to use `render()`,
 `renderAndWait()`, and others -- or continue reading for testing framework specific functionality.
 
-## Framework Integrations
+## Test Integrations
 
 Rut provides a handful of [matchers](./matchers.md) and snapshot serializers (framework dependent)
 for expecting and asserting common patterns. To make use of these, follow the instructions for your

@@ -4,7 +4,7 @@ import { formatValue } from '../helpers';
 import { MatchResult } from '../types';
 
 /**
- * Check that an element has a prop by name defined, with optional value matching support.
+ * Check that an element has a prop that matches the provided name, with optional matching value.
  */
 export default function toHaveProp<P>(
   element: Element<P>,
