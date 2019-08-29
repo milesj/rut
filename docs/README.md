@@ -8,8 +8,8 @@ simplifies the test writing process, while doing all the hard work behind the sc
 ## Features
 
 - Type safe by design. Test with confidence.
-- First-class async support. Wait for async calls to complete before returning a rendered result,
-  and asserting against it.
+- First-class async support. Wait for async calls to finish before returning a rendered result, and
+  testing against it.
 - Deep [`act()`](https://reactjs.org/docs/testing-recipes.html#act) integration. Let Rut do the
   heavy lifting. You simply worry about asserting.
 - Update a component with new props, children, or a completely new element.
