@@ -31,7 +31,8 @@ tree.
 
 ## `emit()`
 
-> emit\<K extends keyof Props>(name: K, ...args: ArgsOf\<Props[K]>): ReturnOf\<Props[K]>
+> emit\<K extends keyof Props>(name: K, options?: EmitOptions, ...args: ArgsOf\<Props[K]>):
+> ReturnOf\<Props[K]>
 
 Emit an event listener for the defined prop name. Requires a list of arguments, and returns the
 result of the emit.
@@ -44,12 +45,35 @@ import { render, mockSyntheticEvent } from 'rut';
 
 const { root } = render<LoginFormProps>(<LoginForm />);
 
-root.findOne('input').emit('onChange', mockSyntheticEvent('change'));
+root.findOne('input').emit('onChange', {}, mockSyntheticEvent('change'));
 ```
 
 > This may only be executed on host components (DOM elements). Why? Because it's an abstraction that
 > forces testing on what the consumer will ultimately interact with. Executing listeners on a React
 > component is a code smell.
+
+### Options
+
+- `propagate` (`boolean`) - Propagate the event up the tree by executing the same listener on every
+  parent until hitting the root or the event has been stopped. _(Experimental)_
+
+## `emitAndWait()`
+
+> async emitAndWait\<K extends keyof Props>(name: K, options?: EmitOptions, ...args:
+> ArgsOf\<Props[K]>): Promise\<ReturnOf\<Props[K]>>
+
+Like [`emit()`](#emit) but waits for async calls within the dispatch and updating phase to complete
+before returning the re-rendered result. Because of this, the function must be `await`ed.
+
+```tsx
+import { render, mockSyntheticEvent } from 'rut';
+
+it('waits for update call to finish', async () => {
+  const { root } = render<EditProfileProps>(<EditProfile id={1} />);
+
+  await root.findOne('form').emitAndWait('onSubmit', {}, mockSyntheticEvent('submit'));
+});
+```
 
 ## `find()`
 

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Element from '../src/Element';
 import { render } from '../src/render';
 import { mockSyntheticEvent } from '../src/mocks/event';
 import { FuncComp, FuncCompWithDisplayName, ClassComp, ClassCompWithDisplayName } from './fixtures';
+import { runAsyncCall } from './helpers';
 
 describe('Element', () => {
   describe('children()', () => {
@@ -103,9 +104,38 @@ describe('Element', () => {
 
       const { root } = render(<EmitComp />);
 
-      root.findOne('button').emit('onClick', mockSyntheticEvent('click'));
+      root.findOne('button').emit('onClick', {}, mockSyntheticEvent('click'));
 
       expect(spy).toHaveBeenCalledWith(expect.any(Object));
+    });
+  });
+
+  describe('emitAndWait()', () => {
+    function EmitTest() {
+      const [count, setCount] = useState(0);
+      const onClick = () =>
+        runAsyncCall(() => {
+          setCount(count + 1);
+        });
+
+      return (
+        <div>
+          <span>{count}</span>
+          <button type="button" onClick={onClick}>
+            Increment
+          </button>
+        </div>
+      );
+    }
+
+    it('waits for the async and re-render', async () => {
+      const { root } = render(<EmitTest />);
+
+      expect(root).toContainNode(0);
+
+      await root.findOne('button').emitAndWait('onClick', {}, mockSyntheticEvent('click'));
+
+      expect(root).toContainNode(1);
     });
   });
 

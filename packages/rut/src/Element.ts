@@ -2,9 +2,11 @@
 
 import React from 'react';
 import { act, ReactTestInstance } from 'react-test-renderer';
-import { ArgsOf, ReturnOf, HostComponentType, Predicate } from './types';
+import { ArgsOf, ReturnOf, HostComponentType, Predicate, EmitOptions } from './types';
 import { getTypeName } from './helpers';
+import wrapAndCaptureAsync from './internals/async';
 import debugToJsx from './internals/debug';
+import { getPropForEmitting } from './internals/helpers';
 
 export default class Element<Props = {}> {
   readonly isRutElement = true;
@@ -50,24 +52,58 @@ export default class Element<Props = {}> {
    *
    * Note: This may only be executed on host components (DOM elements).
    */
-  emit<K extends keyof Props>(name: K, ...args: ArgsOf<Props[K]>): ReturnOf<Props[K]> {
-    const prop = (this.element.props as Props)[name];
-
-    if (!prop) {
-      throw new Error(`Prop \`${name}\` does not exist.`);
-    } else if (typeof prop !== 'function') {
-      throw new TypeError(`Prop \`${name}\` is not a function.`);
-    } else if (typeof this.element.type !== 'string') {
-      throw new TypeError('Emitting events is only allowed on host components (DOM elements).');
-    }
-
+  emit<K extends keyof Props>(
+    name: K,
+    options: EmitOptions = {},
+    ...args: ArgsOf<Props[K]>
+  ): ReturnOf<Props[K]> {
+    const prop = getPropForEmitting(this, name);
     let value: ReturnOf<Props[K]>;
 
+    if (options.propagate) {
+      // eslint-disable-next-line no-console
+      console.warn('Event propagation is experimental and is not fully implemented yet.');
+    }
+
     act(() => {
-      value = prop(...args);
+      if (typeof prop === 'function') {
+        value = prop(...args);
+      }
     });
 
-    // @ts-ignore Is assigned
+    // @ts-ignore Value is assigned
+    return value;
+  }
+
+  /**
+   * Like `emit` but also awaits the event so that async calls have time to finish.
+   */
+  async emitAndWait<K extends keyof Props>(
+    name: K,
+    options: EmitOptions = {},
+    ...args: ArgsOf<Props[K]>
+  ): Promise<ReturnOf<Props[K]>> {
+    const waitForQueue = wrapAndCaptureAsync();
+    const prop = getPropForEmitting(this, name);
+    let value: ReturnOf<Props[K]>;
+
+    if (options.propagate) {
+      // eslint-disable-next-line no-console
+      console.warn('Event propagation is experimental and is not fully implemented yet.');
+    }
+
+    await act(async () => {
+      if (typeof prop === 'function') {
+        value = await prop(...args);
+      }
+    });
+
+    // We need an additional act as async results may cause re-renders
+    await act(async () => {
+      await waitForQueue();
+    });
+
+    // @ts-ignore Value is assigned
     return value;
   }
 

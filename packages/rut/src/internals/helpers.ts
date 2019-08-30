@@ -26,6 +26,21 @@ export function getPropFromElement<P, K extends keyof P>(
   return element.element.props[name];
 }
 
+export function getPropForEmitting<P, K extends keyof P>(element: Element<P>, name: K): P[K] {
+  const prop = getPropFromElement(element, name);
+
+  if (!prop) {
+    throw new Error(`Prop \`${name}\` does not exist.`);
+  } else if (typeof prop !== 'function') {
+    throw new TypeError(`Prop \`${name}\` is not a function.`);
+    // @ts-ignore Allow internal access
+  } else if (typeof element.element.type !== 'string') {
+    throw new TypeError('Emitting events is only allowed on host components (DOM elements).');
+  }
+
+  return prop;
+}
+
 // Keep shallow equal in sync with React core!
 // https://github.com/facebook/react/blob/master/packages/shared/shallowEqual.js
 export function shallowEqual(objA: unknown, objB: unknown): boolean {

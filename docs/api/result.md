@@ -92,8 +92,8 @@ update(
 > async updateAndWait(newPropsOrElement?: Partial\<Props> | React.ReactElement, newChildren?:
 > React.ReactNode): Promise\<void>
 
-Like `update()` but waits for async calls within the updating phase to complete before returning the
-re-rendered result. Because of this, the function must be `await`ed.
+Like [`update()`](#update) but waits for async calls within the updating phase to complete before
+returning the re-rendered result. Because of this, the function must be `await`ed.
 
 ```tsx
 const { root, updateAndWait } = render<UserListProps>(<UserList />);

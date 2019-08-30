@@ -9,7 +9,7 @@
  * For example, if a test is emitting `findOne('button').emit('onClick`)`,
  * the first argument is typed as `React.MouseEvent<HTMLButtonElement, MouseEvent>`.
  * We can take advantage of type inferrence by mocking the argument at
- * the call site, like so: `findOne('button').emit('onClick`, mockSyntheticEvent('click'))`.
+ * the call site, like so: `findOne('button').emit('onClick`, {}, mockSyntheticEvent('click'))`.
  *
  * With this pattern, mocks are easily typed, and the underlying event object
  * structure is close enough for most, if not all of test cases.

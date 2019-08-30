@@ -8,6 +8,10 @@ export interface RendererOptions {
   wrapper?: React.ReactElement;
 }
 
+export interface EmitOptions {
+  propagate?: boolean;
+}
+
 export type ArgsOf<T> = T extends (...args: infer A) => unknown ? A : never;
 
 export type ReturnOf<T> = T extends (...args: unknown[]) => infer R ? R : unknown;

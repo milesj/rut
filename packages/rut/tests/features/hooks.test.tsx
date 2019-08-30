@@ -37,11 +37,11 @@ describe('Hooks', () => {
 
       expect(root.findOne('span')).toContainNode(0);
 
-      root.find('button')[0].emit('onClick', mockSyntheticEvent('click'));
+      root.find('button')[0].emit('onClick', {}, mockSyntheticEvent('click'));
 
       expect(root.findOne('span')).toContainNode(1);
 
-      root.find('button')[1].emit('onClick', mockSyntheticEvent('click'));
+      root.find('button')[1].emit('onClick', {}, mockSyntheticEvent('click'));
 
       expect(root.findOne('span')).toContainNode(0);
     });
@@ -112,7 +112,7 @@ describe('Hooks', () => {
         mockRef: () => ({ focus: spy }),
       });
 
-      root.findOne('button').emit('onClick', mockSyntheticEvent('click'));
+      root.findOne('button').emit('onClick', {}, mockSyntheticEvent('click'));
 
       expect(spy).toHaveBeenCalled();
     });

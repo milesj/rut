@@ -33,7 +33,7 @@ describe('State', () => {
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Inactive');
 
-      result.root.findOne('button').emit('onClick', mockSyntheticEvent('click'));
+      result.root.findOne('button').emit('onClick', {}, mockSyntheticEvent('click'));
 
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Active');
@@ -63,7 +63,7 @@ describe('State', () => {
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Inactive');
 
-      result.root.findOne('button').emit('onClick', mockSyntheticEvent('click'));
+      result.root.findOne('button').emit('onClick', {}, mockSyntheticEvent('click'));
 
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Active');
