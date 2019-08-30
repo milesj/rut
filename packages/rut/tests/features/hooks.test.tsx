@@ -61,11 +61,13 @@ describe('Hooks', () => {
     it('persists reference between updates', () => {
       const { root, update } = render(<CallbackComp id="1" />);
 
-      const cb = root.findOne('button').prop('onClick');
+      // @ts-ignore
+      const cb = root.findOne('button').element.props.onClick;
 
       update({ id: '2' });
 
-      expect(root.findOne('button').prop('onClick')).toBe(cb);
+      // @ts-ignore
+      expect(root.findOne('button').element.props.onClick).toBe(cb);
     });
   });
 
@@ -79,11 +81,11 @@ describe('Hooks', () => {
     it('persists reference between updates', () => {
       const { root, update } = render(<MemoComp id="1" />);
 
-      const value = root.findOne('span').prop('children');
+      const value = root.findOne('span').children()[0];
 
       update({ id: '2' });
 
-      expect(root.findOne('span').prop('children')).toBe(value);
+      expect(root.findOne('span').children()[0]).toBe(value);
     });
   });
 

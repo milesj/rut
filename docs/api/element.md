@@ -1,9 +1,9 @@
 # `Element`
 
 An `Element` is a wrapper around a React element (more specifically a
-[test instance](https://reactjs.org/docs/test-renderer.html)) that provides more utility and
-functionality (below). It can be accessed via the [root](./result.md#root) or when finding/querying
-through another `Element` instance.
+[test instance](https://reactjs.org/docs/test-renderer.html)) that hides implementation details and
+is primarily used for traversing the React tree. It can be accessed via the [root](./result.md#root)
+or when finding/querying through another `Element` instance.
 
 ## `children()`
 
@@ -92,33 +92,6 @@ const { root } = render<ButtonProps>(<Button />);
 expect(root.name()).toBe('Button');
 ```
 
-## `prop()`
-
-> prop\<K extends keyof Props>(name: K): Props[K] | undefined
-
-Returns the value of a prop by name, or undefined if not found.
-
-```tsx
-const { root } = render<ButtonProps>(<Button type="submit" onClick={handleClick} />);
-
-expect(root.prop('type')).toBe('submit');
-```
-
-## `props()`
-
-> props(): Props
-
-Returns an object of all props on the current element.
-
-```tsx
-const { root } = render<ButtonProps>(<Button type="submit" onClick={handleClick} />);
-
-expect(root.props()).toEqual({
-  type: 'submit',
-  onClick: handleClick,
-});
-```
-
 ## `query()`
 
 > query\<Props>(predicate: Predicate | ((node: TestNode, fiber: FiberNode) => boolean), options?:
@@ -167,22 +140,3 @@ root.ref('inputRef'); // <input />
 ```
 
 > Be sure to mock your ref using the [`mockRef()`](../api.md#mockref) option.
-
-## `type()`
-
-> type(): ElementType
-
-Returns the type of element. If a React component, returns the component constructor. If a DOM node,
-returns the tag name.
-
-```tsx
-const { root } = render<ButtonProps>(<Button />);
-
-expect(root.type()).toBe(Button);
-```
-
-```tsx
-const { root } = render(<div />);
-
-expect(root.type()).toBe('div');
-```

@@ -51,13 +51,13 @@ export default class Element<Props = {}> {
    * Note: This may only be executed on host components (DOM elements).
    */
   emit<K extends keyof Props>(name: K, ...args: ArgsOf<Props[K]>): ReturnOf<Props[K]> {
-    const prop = this.prop(name);
+    const prop = (this.element.props as Props)[name];
 
     if (!prop) {
       throw new Error(`Prop \`${name}\` does not exist.`);
     } else if (typeof prop !== 'function') {
       throw new TypeError(`Prop \`${name}\` is not a function.`);
-    } else if (typeof this.type() !== 'string') {
+    } else if (typeof this.element.type !== 'string') {
       throw new TypeError('Emitting events is only allowed on host components (DOM elements).');
     }
 
@@ -109,20 +109,6 @@ export default class Element<Props = {}> {
   }
 
   /**
-   * Return the value of a prop by name, or undefined if not found.
-   */
-  prop<K extends keyof Props>(name: K): Props[K] | undefined {
-    return this.element.props[name as string];
-  }
-
-  /**
-   * Return an object of all props on the current element.
-   */
-  props(): Props {
-    return this.element.props as Props;
-  }
-
-  /**
    * Search through the current child tree using a custom predicate, which is passed the
    * ReactTestRenderer node and internal React fiber node. If any are found,
    * a list of `Element`s is returned.
@@ -164,12 +150,5 @@ export default class Element<Props = {}> {
    */
   toString(): string {
     return this.name();
-  }
-
-  /**
-   * Return the React element type.
-   */
-  type(): React.ElementType {
-    return this.element.type;
   }
 }

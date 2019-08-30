@@ -15,6 +15,7 @@ export default function toBeElementType(element: Element, type: React.ElementTyp
   return {
     message: `expected \`${element}\` to be a \`${typeName}\``,
     notMessage: `expected \`${element}\` not to be a \`${typeName}\``,
-    passed: element.type() === type,
+    // @ts-ignore Allow internal access
+    passed: element.element.type === type,
   };
 }

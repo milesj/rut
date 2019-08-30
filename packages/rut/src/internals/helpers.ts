@@ -18,6 +18,14 @@ export function checkIsRutElement(value: unknown) {
   throw new Error('Expected a Rut `Element`.');
 }
 
+export function getPropFromElement<P, K extends keyof P>(
+  element: Element<P>,
+  name: K,
+): P[K] | undefined {
+  // @ts-ignore Allow internal access
+  return element.element.props[name];
+}
+
 // Keep shallow equal in sync with React core!
 // https://github.com/facebook/react/blob/master/packages/shared/shallowEqual.js
 export function shallowEqual(objA: unknown, objB: unknown): boolean {

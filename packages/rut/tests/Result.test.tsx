@@ -96,35 +96,35 @@ describe('Result', () => {
       const { root } = render(<main />);
 
       expect(root).toBeInstanceOf(Element);
-      expect(root.type()).toBe('main');
+      expect(root).toBeElementType('main');
     });
 
     it('returns an element for a class component', () => {
       const { root } = render(<ClassComp />);
 
       expect(root).toBeInstanceOf(Element);
-      expect(root.type()).toBe(ClassComp);
+      expect(root).toBeElementType(ClassComp);
     });
 
     it('returns an element for a function component', () => {
       const { root } = render(<FuncComp />);
 
       expect(root).toBeInstanceOf(Element);
-      expect(root.type()).toBe(FuncComp);
+      expect(root).toBeElementType(FuncComp);
     });
 
     it('returns the passed element when using `strict`', () => {
       const { root } = render(<FuncComp />, { strict: true });
 
       expect(root).toBeInstanceOf(Element);
-      expect(root.type()).toBe(FuncComp);
+      expect(root).toBeElementType(FuncComp);
     });
 
     it('returns the passed element when using `wrapper`', () => {
       const { root } = render(<FuncComp />, { wrapper: <Wrapper /> });
 
       expect(root).toBeInstanceOf(Element);
-      expect(root.type()).toBe(FuncComp);
+      expect(root).toBeElementType(FuncComp);
     });
 
     it('returns the passed memoized element when using `wrapper`', () => {
@@ -132,14 +132,14 @@ describe('Result', () => {
       const { root } = render(<Root />, { wrapper: <Wrapper /> });
 
       expect(root).toBeInstanceOf(Element);
-      expect(root.type()).toBe(FuncComp);
+      expect(root).toBeElementType(FuncComp);
     });
 
     it('returns the passed element when using `strict` and `wrapper`', () => {
       const { root } = render(<FuncComp />, { strict: true, wrapper: <Wrapper /> });
 
       expect(root).toBeInstanceOf(Element);
-      expect(root.type()).toBe(FuncComp);
+      expect(root).toBeElementType(FuncComp);
     });
   });
 
@@ -383,36 +383,36 @@ describe('Result', () => {
       const result = render(<FuncComp name="mount" />, { strict: true });
 
       expect(result).toMatchSnapshot();
-      expect(result.root.prop('name')).toBe('mount');
+      expect(result.root).toHaveProp('name', 'mount');
 
       result.update({ name: 'update' });
 
       expect(result).toMatchSnapshot();
-      expect(result.root.prop('name')).toBe('update');
+      expect(result.root).toHaveProp('name', 'update');
     });
 
     it('when using `wrapper`, re-renders the passed element', () => {
       const result = render(<FuncComp name="mount" />, { wrapper: <Wrapper /> });
 
       expect(result).toMatchSnapshot();
-      expect(result.root.prop('name')).toBe('mount');
+      expect(result.root).toHaveProp('name', 'mount');
 
       result.update({ name: 'update' });
 
       expect(result).toMatchSnapshot();
-      expect(result.root.prop('name')).toBe('update');
+      expect(result.root).toHaveProp('name', 'update');
     });
 
     it('when using `strict` and `wrapper`, re-renders the passed element', () => {
       const result = render(<FuncComp name="mount" />, { strict: true, wrapper: <Wrapper /> });
 
       expect(result).toMatchSnapshot();
-      expect(result.root.prop('name')).toBe('mount');
+      expect(result.root).toHaveProp('name', 'mount');
 
       result.update({ name: 'update' });
 
       expect(result).toMatchSnapshot();
-      expect(result.root.prop('name')).toBe('update');
+      expect(result.root).toHaveProp('name', 'update');
     });
 
     it('can completely replace the root element', () => {
@@ -438,15 +438,15 @@ describe('Result', () => {
       it('re-renders if props change', () => {
         const result = render(<ClassUpdateTest index={0} />);
 
-        expect(result.root.prop('index')).toBe(0);
+        expect(result.root).toHaveProp('index', 0);
 
         result.update({ index: 1 });
 
-        expect(result.root.prop('index')).toBe(1);
+        expect(result.root).toHaveProp('index', 1);
 
         result.update({ index: 2 });
 
-        expect(result.root.prop('index')).toBe(2);
+        expect(result.root).toHaveProp('index', 2);
 
         expect(count).toBe(3);
       });
@@ -552,15 +552,15 @@ describe('Result', () => {
       it('re-renders if props change', () => {
         const result = render(<FuncUpdateTest index={0} />);
 
-        expect(result.root.prop('index')).toBe(0);
+        expect(result.root).toHaveProp('index', 0);
 
         result.update({ index: 1 });
 
-        expect(result.root.prop('index')).toBe(1);
+        expect(result.root).toHaveProp('index', 1);
 
         result.update({ index: 2 });
 
-        expect(result.root.prop('index')).toBe(2);
+        expect(result.root).toHaveProp('index', 2);
 
         expect(count).toBe(3);
       });

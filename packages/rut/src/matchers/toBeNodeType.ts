@@ -19,7 +19,7 @@ const nodeTypeMap: { [K in NodeType]: number | number[] } = {
 export default function toBeNodeType(element: Element, type: NodeType): MatchResult {
   checkIsRutElement(element);
 
-  // @ts-ignore Allow access for matcher
+  // @ts-ignore Allow internal access
   const fiberTag = element.element._fiber.tag;
   const nodeToTag = nodeTypeMap[type];
 

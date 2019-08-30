@@ -40,7 +40,7 @@ describe('HOCs', () => {
     const { root } = render(<StyledComp id={2} />);
 
     expect(root.name()).toBe('withStyles(Wrapped)');
-    expect(root.props()).toEqual({ id: 2 });
+    expect(root).toHaveProps({ id: 2 });
   });
 
   it('can find the wrapped component', () => {
@@ -48,7 +48,7 @@ describe('HOCs', () => {
     const { root } = render(<StyledComp id={3} />);
 
     expect(root.find(Wrapped)).toHaveLength(1);
-    expect(root.findOne(Wrapped).props()).toEqual({ id: 3, styles: { color: 'green' } });
+    expect(root.findOne(Wrapped)).toHaveProps({ id: 3, styles: { color: 'green' } });
   });
 
   interface ConnectProps {

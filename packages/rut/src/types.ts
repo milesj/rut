@@ -77,6 +77,7 @@ declare global {
       toHaveClassName(name: string): R;
       toHaveKey(value: string | number): R;
       toHaveProp(name: string, value?: unknown): R;
+      toHaveProps(props: { [key: string]: unknown }): R;
       toHaveRendered(): R;
       toHaveValue(value: unknown): R;
     }

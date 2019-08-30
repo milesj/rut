@@ -118,12 +118,26 @@ expect(root).toHaveKey(123); // true
 > toHaveProp(name: string, value?: unknown): boolean
 
 Check that an element has a prop that matches the provided name, with optional matching value.
+Arrays and objects will be matched using shallow equality.
 
 ```tsx
 const { root } = render(<div id="foo" />);
 
 expect(root).toHaveProp('id'); // true
 expect(root).toHaveProp('id', 'bar'); // false
+```
+
+## `toHaveProps()`
+
+> toHaveProps(props: { [key: string]: unknown }): boolean
+
+Check that an element's props matches all the provided props and their values. Arrays and objects
+will be matched using shallow equality.
+
+```tsx
+const { root } = render(<div id="foo" role="main" />);
+
+expect(root).toHaveProps({ id: 'foo', role: 'main' }); // true
 ```
 
 ## `toHaveRendered()`
