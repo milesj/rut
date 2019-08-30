@@ -13,7 +13,7 @@ import {
   TimerCduComp,
 } from './fixtures';
 
-describe('Renderer', () => {
+describe('Result', () => {
   const oldWarn = console.warn;
   let warnSpy: jest.Mock;
 

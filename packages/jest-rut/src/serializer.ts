@@ -7,8 +7,8 @@ const serializer: jest.SnapshotSerializerPlugin = {
     return (
       typeof value === 'object' &&
       !!value &&
-      value.isRutRenderer === true &&
-      value.constructor.name === 'Renderer'
+      value.isRutResult === true &&
+      value.constructor.name === 'Result'
     );
   },
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { act } from 'react-test-renderer';
-import Renderer from './Renderer';
+import Result from './Result';
 import wrapAndCaptureAsync from './internals/async';
 import { globalOptions } from './configure';
 import { RendererOptions } from './types';
@@ -8,28 +8,28 @@ import { RendererOptions } from './types';
 export function render<Props>(
   element: React.ReactElement<Props>,
   options?: RendererOptions,
-): Renderer<Props> {
-  let renderer: Renderer<Props>;
+): Result<Props> {
+  let result: Result<Props>;
 
   act(() => {
-    renderer = new Renderer(element, {
+    result = new Result(element, {
       ...globalOptions,
       ...options,
     });
   });
 
-  return renderer!;
+  return result!;
 }
 
 export async function renderAndWait<Props>(
   element: React.ReactElement<Props>,
   options?: RendererOptions,
-): Promise<Renderer<Props>> {
+): Promise<Result<Props>> {
   const waitForQueue = wrapAndCaptureAsync();
-  let renderer: Renderer<Props>;
+  let result: Result<Props>;
 
   await act(async () => {
-    renderer = await new Renderer(element, {
+    result = await new Result(element, {
       ...globalOptions,
       ...options,
     });
@@ -40,5 +40,5 @@ export async function renderAndWait<Props>(
     await waitForQueue();
   });
 
-  return renderer!;
+  return result!;
 }

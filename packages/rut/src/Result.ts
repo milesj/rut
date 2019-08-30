@@ -7,8 +7,8 @@ import { shallowEqual, unwrapExoticType } from './internals/helpers';
 import { RendererOptions } from './types';
 import { NodeLike } from './helpers';
 
-export default class Renderer<Props = {}> {
-  readonly isRutRenderer = true;
+export default class Result<Props = {}> {
+  readonly isRutResult = true;
 
   private element: React.ReactElement<Props>;
 

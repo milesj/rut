@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Result updating when using \`strict\` and \`wrapper\`, re-renders the passed element 1`] = `
+<Wrapper>
+  <FuncComp name="mount">
+    <span />
+  </FuncComp>
+</Wrapper>
+`;
+
+exports[`Result updating when using \`strict\` and \`wrapper\`, re-renders the passed element 2`] = `
+<Wrapper>
+  <FuncComp name="update">
+    <span />
+  </FuncComp>
+</Wrapper>
+`;
+
+exports[`Result updating when using \`strict\`, re-renders the passed element 1`] = `
+<FuncComp name="mount">
+  <span />
+</FuncComp>
+`;
+
+exports[`Result updating when using \`strict\`, re-renders the passed element 2`] = `
+<FuncComp name="update">
+  <span />
+</FuncComp>
+`;
+
+exports[`Result updating when using \`wrapper\`, re-renders the passed element 1`] = `
+<Wrapper>
+  <FuncComp name="mount">
+    <span />
+  </FuncComp>
+</Wrapper>
+`;
+
+exports[`Result updating when using \`wrapper\`, re-renders the passed element 2`] = `
+<Wrapper>
+  <FuncComp name="update">
+    <span />
+  </FuncComp>
+</Wrapper>
+`;
+
+exports[`Result wraps with \`StrictMode\` when using \`strict\` 1`] = `<StrictComp />`;
+
+exports[`Result wraps with another element when using \`wrapper\` 1`] = `
+<Wrapper>
+  <ContextComp>
+    <div>wrapped</div>
+  </ContextComp>
+</Wrapper>
+`;
+
+exports[`Result wraps with both \`strict\` and \`wrapper\` 1`] = `
+<Wrapper>
+  <Wrapped>
+    <div>
+      <StrictComp />
+    </div>
+  </Wrapped>
+</Wrapper>
+`;
