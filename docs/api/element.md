@@ -26,7 +26,7 @@ root.children(); // [<h3 />, #text]
 
 > debug(noLog?: boolean): string
 
-Like the rendered result [`debug()`](./result.md#debug), but only represents the current elements
+Like the rendered result [`debug()`](./result.md#debug) but only represents the current element
 tree.
 
 ## `emit()`
@@ -131,7 +131,7 @@ const { root } = render<NewsReelProps>(<NewsReel />);
 const articles = root.query(node => node.type === NewsArticle);
 ```
 
-## Options
+### Options
 
 - `deep` (`boolean`) - Continue searching through the entire tree when a match is found, otherwise
   return the found result immediately. Defaults to `true`.

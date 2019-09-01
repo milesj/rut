@@ -131,8 +131,8 @@ expect(root).toHaveProp('id', 'bar'); // false
 
 > toHaveProps(props: { [key: string]: unknown }): boolean
 
-Check that an element's props matches all the provided props and their values. Arrays and objects
-will be matched using shallow equality.
+Check that an element's props match all the provided props and their values. Arrays and objects will
+be matched using shallow equality.
 
 ```tsx
 const { root } = render(<div id="foo" role="main" />);

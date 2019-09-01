@@ -4,7 +4,7 @@ import { formatValue } from '../helpers';
 import { MatchResult } from '../types';
 
 /**
- * Check that an element's props matches all the provided props and their values.
+ * Check that an element's props match all the provided props and their values.
  * Arrays and objects will be matched using shallow equality.
  */
 export default function toHaveProps<P>(
