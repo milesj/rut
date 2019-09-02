@@ -1,5 +1,5 @@
 import Element from '../Element';
-import { checkIsRutElement } from '../internals/helpers';
+import { checkIsRutElement, getTestInstanceFromElement } from '../internals/helpers';
 import { MatchResult, NodeType } from '../types';
 
 // Keep in sync with React upstream!
@@ -19,8 +19,7 @@ const nodeTypeMap: { [K in NodeType]: number | number[] } = {
 export default function toBeNodeType(element: Element, type: NodeType): MatchResult {
   checkIsRutElement(element);
 
-  // @ts-ignore Allow internal access
-  const fiberTag = element.element._fiber.tag;
+  const fiberTag = getTestInstanceFromElement(element)._fiber.tag;
   const nodeToTag = nodeTypeMap[type];
 
   if (nodeToTag === undefined) {

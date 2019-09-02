@@ -1,5 +1,5 @@
 import Element from '../Element';
-import { checkIsRutElement } from '../internals/helpers';
+import { checkIsRutElement, getTestInstanceFromElement } from '../internals/helpers';
 import { getTypeName } from '../helpers';
 import { MatchResult } from '../types';
 
@@ -15,7 +15,6 @@ export default function toBeElementType(element: Element, type: React.ElementTyp
   return {
     message: `expected \`${element}\` to be a \`${typeName}\``,
     notMessage: `expected \`${element}\` not to be a \`${typeName}\``,
-    // @ts-ignore Allow internal access
-    passed: element.element.type === type,
+    passed: getTestInstanceFromElement(element).type === type,
   };
 }

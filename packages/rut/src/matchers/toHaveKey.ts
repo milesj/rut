@@ -1,6 +1,6 @@
 import React from 'react';
 import Element from '../Element';
-import { checkIsRutElement } from '../internals/helpers';
+import { checkIsRutElement, getTestInstanceFromElement } from '../internals/helpers';
 import { formatValue } from '../helpers';
 import { MatchResult } from '../types';
 
@@ -10,8 +10,7 @@ import { MatchResult } from '../types';
 export default function toHaveKey(element: Element, value: React.Key): MatchResult {
   checkIsRutElement(element);
 
-  // @ts-ignore Allow access for matcher
-  const { key } = element.element._fiber;
+  const { key } = getTestInstanceFromElement(element)._fiber;
   const formattedValue = formatValue(value);
 
   return {

@@ -1,5 +1,6 @@
 import React from 'react';
-import Element from '../Element';
+import { ReactTestInstance } from 'react-test-renderer';
+import Element, { INSTANCE } from '../Element';
 import { isReactNodeLike, NodeLike } from '../helpers';
 
 export function checkIsRutElement(value: unknown) {
@@ -18,12 +19,19 @@ export function checkIsRutElement(value: unknown) {
   throw new Error('Expected a Rut `Element`.');
 }
 
+export function getTestInstanceFromElement(element: Element<unknown>): ReactTestInstance {
+  console.log('element', element);
+  console.log('symbol', INSTANCE);
+  console.log('instance', typeof element[INSTANCE]);
+
+  return element[INSTANCE] || {};
+}
+
 export function getPropFromElement<P, K extends keyof P>(
   element: Element<P>,
   name: K,
 ): P[K] | undefined {
-  // @ts-ignore Allow internal access
-  return element.element.props[name];
+  return (getTestInstanceFromElement(element).props as P)[name];
 }
 
 export function getPropForEmitting<P, K extends keyof P>(element: Element<P>, name: K): P[K] {
@@ -33,8 +41,7 @@ export function getPropForEmitting<P, K extends keyof P>(element: Element<P>, na
     throw new Error(`Prop \`${name}\` does not exist.`);
   } else if (typeof prop !== 'function') {
     throw new TypeError(`Prop \`${name}\` is not a function.`);
-    // @ts-ignore Allow internal access
-  } else if (typeof element.element.type !== 'string') {
+  } else if (typeof getTestInstanceFromElement(element).type !== 'string') {
     throw new TypeError('Emitting events is only allowed on host components (DOM elements).');
   }
 

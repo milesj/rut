@@ -1,6 +1,7 @@
 import React, { useReducer, useCallback, useMemo, useRef } from 'react';
 import { render } from '../../src/render';
 import { mockSyntheticEvent } from '../../src/mocks/event';
+import { getTestInstanceFromElement } from '../../src/internals/helpers';
 
 // useState, useContext, useEffect covered in other tests
 describe('Hooks', () => {
@@ -61,13 +62,11 @@ describe('Hooks', () => {
     it('persists reference between updates', () => {
       const { root, update } = render(<CallbackComp id="1" />);
 
-      // @ts-ignore
-      const cb = root.findOne('button').element.props.onClick;
+      const cb = getTestInstanceFromElement(root.findOne('button')).props.onClick;
 
       update({ id: '2' });
 
-      // @ts-ignore
-      expect(root.findOne('button').element.props.onClick).toBe(cb);
+      expect(getTestInstanceFromElement(root.findOne('button')).props.onClick).toBe(cb);
     });
   });
 

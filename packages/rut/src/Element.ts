@@ -8,20 +8,22 @@ import wrapAndCaptureAsync from './internals/async';
 import debug from './internals/debug';
 import { getPropForEmitting } from './internals/helpers';
 
+export const INSTANCE = Symbol('react-test-instance');
+
 export default class Element<Props = {}> {
   readonly isRutElement = true;
 
-  private element: ReactTestInstance;
+  private [INSTANCE]: ReactTestInstance;
 
-  constructor(element: ReactTestInstance) {
-    this.element = element;
+  constructor(instance: ReactTestInstance) {
+    this[INSTANCE] = instance;
   }
 
   /**
    * Return all children as a list of strings and `Element`s.
    */
   children(): (string | Element)[] {
-    return this.element.children.map(child =>
+    return this[INSTANCE].children.map(child =>
       typeof child === 'string' ? child : new Element(child),
     );
   }
@@ -35,8 +37,8 @@ export default class Element<Props = {}> {
    *  - Profiler, Suspense
    *  - Fragments
    */
-  debug = (options: DebugOptions = {}) => {
-    const output = debug(this.element, options);
+  debug(options: DebugOptions = {}) {
+    const output = debug(this[INSTANCE], options);
 
     // istanbul ignore next
     if (!options.return) {
@@ -45,7 +47,7 @@ export default class Element<Props = {}> {
     }
 
     return output;
-  };
+  }
 
   /**
    * Emit an event listener for the defined prop name. Requires a list of arguments
@@ -117,7 +119,7 @@ export default class Element<Props = {}> {
   find<T extends HostComponentType>(type: T): Element<JSX.IntrinsicElements[T]>[];
   find<P>(type: React.ComponentType<P>): Element<P>[];
   find(type: React.ElementType<unknown>): Element<unknown>[] {
-    return this.element.findAllByType(type).map(node => new Element(node));
+    return this[INSTANCE].findAllByType(type).map(node => new Element(node));
   }
 
   /**
@@ -144,7 +146,7 @@ export default class Element<Props = {}> {
    */
   name(): string {
     // Use the raw fiber types for names, as they preserve the internal node structures
-    return getTypeName(this.element._fiber.elementType || this.element._fiber.type);
+    return getTypeName(this[INSTANCE]._fiber.elementType || this[INSTANCE]._fiber.type);
   }
 
   /**
@@ -153,9 +155,10 @@ export default class Element<Props = {}> {
    * a list of `Element`s is returned.
    */
   query<P = {}>(predicate: Predicate, options?: { deep?: boolean }): Element<P>[] {
-    return this.element
-      .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
-      .map(node => new Element(node));
+    return this[INSTANCE].findAll(node => predicate(node, node._fiber), {
+      deep: true,
+      ...options,
+    }).map(node => new Element(node));
   }
 
   /**
@@ -164,8 +167,8 @@ export default class Element<Props = {}> {
    * Otherwise an instance, callback, or string ref may be referenced by name.
    */
   ref<T>(name?: string): T | null {
-    const inst = this.element.instance;
-    const fiber = this.element._fiber;
+    const inst = this[INSTANCE].instance;
+    const fiber = this[INSTANCE]._fiber;
 
     if (!name || fiber.ref) {
       return fiber.ref;
