@@ -7,19 +7,22 @@ import { shallowEqual, unwrapExoticType } from './internals/helpers';
 import { RendererOptions, DebugOptions } from './types';
 import { NodeLike } from './helpers';
 
+const ELEMENT = Symbol('react-element');
+const RENDERER = Symbol('react-test-renderer');
+
 export default class Result<Props = {}> {
   readonly isRutResult = true;
 
-  private element: React.ReactElement<Props>;
+  private [ELEMENT]: React.ReactElement<Props>;
 
-  private renderer: ReactTestRenderer;
+  private [RENDERER]: ReactTestRenderer;
 
   private options: RendererOptions;
 
   constructor(element: React.ReactElement<Props>, options: RendererOptions = {}) {
-    this.element = element;
     this.options = options;
-    this.renderer = create(
+    this[ELEMENT] = element;
+    this[RENDERER] = create(
       this.wrapElement(element),
       options.mockRef
         ? {
@@ -39,7 +42,7 @@ export default class Result<Props = {}> {
    *  - Fragments
    */
   debug = (options: DebugOptions = {}) => {
-    const output = debug(this.renderer.root, options);
+    const output = debug(this[RENDERER].root, options);
 
     // istanbul ignore next
     if (!options.return) {
@@ -54,8 +57,8 @@ export default class Result<Props = {}> {
    * Return the root component as an `Element`.
    */
   get root(): Element<Props> {
-    const { element } = this;
-    const root = new Element<Props>(this.renderer.root);
+    const element = this[ELEMENT];
+    const root = new Element<Props>(this[RENDERER].root);
     const rootType = unwrapExoticType((element as unknown) as NodeLike);
 
     // When being wrapped, we need to drill down and find the
@@ -83,7 +86,7 @@ export default class Result<Props = {}> {
    * the platform-specific nodes and their props, but doesn’t contain any user-written
    * components. This is handy for snapshot testing.
    */
-  toJSON = () => this.renderer.toJSON();
+  toJSON = () => this[RENDERER].toJSON();
 
   /**
    * Return root element name.
@@ -95,14 +98,14 @@ export default class Result<Props = {}> {
    * the representation is more detailed than the one provided by `toJSON()`,
    * and includes the user-written components.
    */
-  toTree = () => this.renderer.toTree();
+  toTree = () => this[RENDERER].toTree();
 
   /**
    * Unmount the in-memory tree, triggering the appropriate lifecycle events.
    */
   unmount = () => {
     act(() => {
-      this.renderer.unmount();
+      this[RENDERER].unmount();
     });
   };
 
@@ -116,7 +119,7 @@ export default class Result<Props = {}> {
     newChildren?: React.ReactNode,
   ) => {
     act(() => {
-      this.renderer.update(this.updateElement(newPropsOrElement, newChildren));
+      this[RENDERER].update(this.updateElement(newPropsOrElement, newChildren));
     });
   };
 
@@ -130,7 +133,7 @@ export default class Result<Props = {}> {
     const waitForQueue = wrapAndCaptureAsync();
 
     await act(async () => {
-      await this.renderer.update(this.updateElement(newPropsOrElement, newChildren));
+      await this[RENDERER].update(this.updateElement(newPropsOrElement, newChildren));
     });
 
     // We need an additional act as async results may cause re-renders
@@ -146,15 +149,15 @@ export default class Result<Props = {}> {
     newPropsOrElement?: Partial<Props> | React.ReactElement,
     newChildren?: React.ReactNode,
   ): React.ReactElement {
-    const { children } = this.element.props as {
+    const { children } = this[ELEMENT].props as {
       children?: React.ReactNode;
     };
 
-    this.element = React.isValidElement(newPropsOrElement)
+    this[ELEMENT] = React.isValidElement(newPropsOrElement)
       ? newPropsOrElement
-      : React.cloneElement(this.element, newPropsOrElement, newChildren || children);
+      : React.cloneElement(this[ELEMENT], newPropsOrElement, newChildren || children);
 
-    return this.wrapElement(this.element);
+    return this.wrapElement(this[ELEMENT]);
   }
 
   /**
