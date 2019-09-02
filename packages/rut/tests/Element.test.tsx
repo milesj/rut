@@ -46,9 +46,9 @@ describe('Element', () => {
         </div>,
       );
 
-      expect(root.debug(true)).toMatchSnapshot();
-      expect(root.findOne('section').debug(true)).toMatchSnapshot();
-      expect(root.findOne('h1').debug(true)).toMatchSnapshot();
+      expect(root.debug({ return: true })).toMatchSnapshot();
+      expect(root.findOne('section').debug({ return: true })).toMatchSnapshot();
+      expect(root.findOne('h1').debug({ return: true })).toMatchSnapshot();
     });
   });
 

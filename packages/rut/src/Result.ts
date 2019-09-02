@@ -2,9 +2,9 @@ import React from 'react';
 import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
 import wrapAndCaptureAsync from './internals/async';
-import debugToJsx from './internals/debug';
+import debug from './internals/debug';
 import { shallowEqual, unwrapExoticType } from './internals/helpers';
-import { RendererOptions } from './types';
+import { RendererOptions, DebugOptions } from './types';
 import { NodeLike } from './helpers';
 
 export default class Result<Props = {}> {
@@ -38,10 +38,10 @@ export default class Result<Props = {}> {
    *  - Profiler, Suspense
    *  - Fragments
    */
-  debug = (noLog: boolean = false) => {
-    const output = debugToJsx(this.renderer.root);
+  debug = (options: DebugOptions = {}) => {
+    const output = debug(this.renderer.root, options);
 
-    if (!noLog) {
+    if (!options.return) {
       // eslint-disable-next-line no-console
       console.log(output);
     }

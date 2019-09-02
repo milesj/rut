@@ -6,6 +6,56 @@ exports[`debug adds key and ref props first 1`] = `
 </ClassComp>
 `;
 
+exports[`debug adds key and ref props first 2`] = `
+"<ClassComp name=\\"test\\">
+  <div />
+</ClassComp>"
+`;
+
+exports[`debug element output hides DOM output 1`] = `
+"<Outer>
+  <Header>TitleDescription!</Header>
+  Description.
+  <FuncComp />
+</Outer>"
+`;
+
+exports[`debug element output hides React output 1`] = `
+"<main role=\\"main\\">
+  <div>
+    <header id=\\"header\\">
+      <h1>Title</h1>
+      <p>Description!</p>
+    </header>
+  </div>
+  <section>
+    Description.
+    <span />
+  </section>
+</main>"
+`;
+
+exports[`debug element output renders normal 1`] = `
+"<Outer>
+  <main role=\\"main\\">
+    <Header>
+      <div>
+        <header id=\\"header\\">
+          <h1>Title</h1>
+          <p>Description!</p>
+        </header>
+      </div>
+    </Header>
+    <section>
+      Description.
+      <FuncComp>
+        <span />
+      </FuncComp>
+    </section>
+  </main>
+</Outer>"
+`;
+
 exports[`debug formats array props 1`] = `
 <ArrayProp list={[ 'string', 123, true, null, {}, ... 1 more item ]}>
   <ul />
@@ -66,4 +116,43 @@ exports[`debug sorts props, and groups into: true first, everything else, event 
 >
   <div />
 </SortProps>
+`;
+
+exports[`debug sorts props, and groups into: true first, everything else, event handlers last 2`] = `
+"<SortProps
+  content={<div />}
+  enabled
+  name=\\"Rut\\"
+  onClick={mockConstructor()}
+  onUpdate={mockConstructor()}
+  selected={false}
+>
+  <div />
+</SortProps>"
+`;
+
+exports[`debug sorts props, and groups into: true first, everything else, event handlers last 3`] = `
+"<SortProps
+  enabled
+  selected={false}
+  name=\\"Rut\\"
+  content={<div />}
+  onClick={mockConstructor()}
+  onUpdate={mockConstructor()}
+>
+  <div />
+</SortProps>"
+`;
+
+exports[`debug sorts props, and groups into: true first, everything else, event handlers last 4`] = `
+"<SortProps
+  onClick={mockConstructor()}
+  selected={false}
+  name=\\"Rut\\"
+  content={<div />}
+  enabled
+  onUpdate={mockConstructor()}
+>
+  <div />
+</SortProps>"
 `;

@@ -1,6 +1,6 @@
 const serializer: jest.SnapshotSerializerPlugin = {
   print(value) {
-    return value.debug(true);
+    return value.debug({ return: true });
   },
 
   test(value) {

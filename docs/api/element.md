@@ -24,7 +24,7 @@ root.children(); // [<h3 />, #text]
 
 ## `debug()`
 
-> debug(noLog?: boolean): string
+> debug(options?: DebugOptions): string
 
 Like the rendered result [`debug()`](./result.md#debug) but only represents the current element
 tree.

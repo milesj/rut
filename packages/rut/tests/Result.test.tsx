@@ -59,7 +59,7 @@ describe('Result', () => {
     const result = render(<ContextComp />, { wrapper: <Wrapper /> });
 
     expect(result).toMatchSnapshot();
-    expect(result.debug(true)).toContain('<Wrapper>');
+    expect(result.debug({ return: true })).toContain('<Wrapper>');
     expect(result.root).toContainNode('wrapped');
   });
 
@@ -85,7 +85,7 @@ describe('Result', () => {
     const result = render(<Wrapped />, { strict: true, wrapper: <Wrapper /> });
 
     expect(result).toMatchSnapshot();
-    expect(result.debug(true)).toContain('<Wrapper>');
+    expect(result.debug({ return: true })).toContain('<Wrapper>');
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('componentWillReceiveProps has been renamed'),
     );

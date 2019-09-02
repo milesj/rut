@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '../../src/render';
-import { ClassComp } from '../fixtures';
+import { ClassComp, FuncComp } from '../fixtures';
 
 describe('debug', () => {
   it('adds key and ref props first', () => {
@@ -8,6 +8,9 @@ describe('debug', () => {
     const result = render(<ClassComp key={123} ref={ref} name="test" />);
 
     expect(result).toMatchSnapshot();
+
+    // Without
+    expect(result.debug({ keyAndRef: false, return: true })).toMatchSnapshot();
   });
 
   it('sorts props, and groups into: true first, everything else, event handlers last', () => {
@@ -27,16 +30,25 @@ describe('debug', () => {
       <SortProps
         // Wont show up since its a function component
         key="key"
-        enabled
+        onClick={jest.fn()}
         selected={false}
         name="Rut"
         content={<div>Content</div>}
+        enabled
         onUpdate={jest.fn()}
-        onClick={jest.fn()}
       />,
     );
 
     expect(result).toMatchSnapshot();
+
+    // Not grouped
+    expect(result.debug({ groupProps: false, return: true })).toMatchSnapshot();
+
+    // Not sorted
+    expect(result.debug({ return: true, sortProps: false })).toMatchSnapshot();
+
+    // Not both
+    expect(result.debug({ groupProps: false, return: true, sortProps: false })).toMatchSnapshot();
   });
 
   it('formats array props', () => {
@@ -116,5 +128,48 @@ describe('debug', () => {
     const result = render(<FuncProp func={funcName} inst={new ClassName()} />);
 
     expect(result).toMatchSnapshot();
+  });
+
+  describe('element output', () => {
+    function Header() {
+      return (
+        <div>
+          <header id="header">
+            <h1>Title</h1>
+            <p>Description!</p>
+          </header>
+        </div>
+      );
+    }
+
+    function Outer() {
+      return (
+        <main role="main">
+          <Header />
+          <section>
+            Description.
+            <FuncComp />
+          </section>
+        </main>
+      );
+    }
+
+    it('renders normal', () => {
+      const { debug } = render(<Outer />);
+
+      expect(debug({ return: true })).toMatchSnapshot();
+    });
+
+    it('hides DOM output', () => {
+      const { debug } = render(<Outer />);
+
+      expect(debug({ hostElements: false, return: true })).toMatchSnapshot();
+    });
+
+    it('hides React output', () => {
+      const { debug } = render(<Outer />);
+
+      expect(debug({ reactElements: false, return: true })).toMatchSnapshot();
+    });
   });
 });

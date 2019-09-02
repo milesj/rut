@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { act, ReactTestInstance } from 'react-test-renderer';
-import { ArgsOf, ReturnOf, HostComponentType, Predicate, EmitOptions } from './types';
+import { ArgsOf, ReturnOf, HostComponentType, Predicate, EmitOptions, DebugOptions } from './types';
 import { getTypeName } from './helpers';
 import wrapAndCaptureAsync from './internals/async';
-import debugToJsx from './internals/debug';
+import debug from './internals/debug';
 import { getPropForEmitting } from './internals/helpers';
 
 export default class Element<Props = {}> {
@@ -35,10 +35,10 @@ export default class Element<Props = {}> {
    *  - Profiler, Suspense
    *  - Fragments
    */
-  debug = (noLog: boolean = false) => {
-    const output = debugToJsx(this.element);
+  debug = (options: DebugOptions = {}) => {
+    const output = debug(this.element, options);
 
-    if (!noLog) {
+    if (!options.return) {
       // eslint-disable-next-line no-console
       console.log(output);
     }

@@ -20,17 +20,17 @@ expect(root).toContainNode('Save'); // true
 
 ## `debug()`
 
-> debug(noLog?: boolean): string
+> debug(options?: DebugOptions): string
 
 Logs or returns a JSX representation of the _reconciled_ React component tree. By default this will
-log to the console. Pass `true` as an only argument to disable this functionality.
+log to the console.
 
 ```tsx
 const { debug } = render<ButtonProps>(<Button>Save</Button>);
 
 debug();
 
-const out = debug(true);
+const out = debug({ return: true });
 ```
 
 The example above would log something similar to the following.
@@ -44,6 +44,17 @@ The example above would log something similar to the following.
 > This function logs the reconciled tree. What this means is that exotic components, like context
 > consumers and providers, memo, fragments, and more, will not be shown. Only the "result" of the
 > render.
+
+### Options
+
+- `groupProps` (`boolean`) - Group props into the following: key & ref, truthy booleans, everything
+  else, event handlers. Defaults to `true`.
+- `hostElements` (`boolean`) - Include host elements (DOM) in the output. Defaults to `true`.
+- `keyAndRef` (`boolean`) - Include `key` and `ref` props in the output. Defaults to `true`.
+- `reactElements` (`boolean`) - Include React elements in the output. Defaults to `true`.
+- `return` (`boolean`) - Do not log to the console and instead return the output. Defaults to
+  `false`.
+- `sortProps` (`boolean`) - Sort the props within each grouping from A-Z. Defaults to `true`.
 
 ## `update()`
 

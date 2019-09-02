@@ -8,6 +8,15 @@ export interface RendererOptions {
   wrapper?: React.ReactElement;
 }
 
+export interface DebugOptions {
+  groupProps?: boolean;
+  hostElements?: boolean;
+  keyAndRef?: boolean;
+  reactElements?: boolean;
+  return?: boolean;
+  sortProps?: boolean;
+}
+
 export interface EmitOptions {
   propagate?: boolean;
 }
