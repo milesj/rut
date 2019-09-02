@@ -5,6 +5,24 @@ great testing practices, and reduce flakiness and code smells. It is a wrapper a
 around [react-test-renderer](https://reactjs.org/docs/test-renderer.html) that simplifies the test
 writing process, while doing all the hard work behind the scenes.
 
+```tsx
+import { render } from 'rut';
+
+describe('<Input />', () => {
+  it('renders an input field', () => {
+    const { root, update } = render(<Input name="rut" value="foo" />);
+
+    expect(root).toHaveProp('name', 'rut');
+    expect(root).toHaveValue('foo');
+    expect(root).not.toBeDisabled();
+
+    update({ disabled: true });
+
+    expect(root).toBeDisabled();
+  });
+});
+```
+
 ## Features
 
 - Type safe by design. Test with confidence.

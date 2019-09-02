@@ -14,4 +14,78 @@ TODO
 
 ## How to check the props on an element?
 
-TODO
+Rut does not provide an API for directly accessing the props of an element as it encourages bad
+testing practices. Instead, you can use the [`toHaveProp()`](./matchers.md#toHaveProp) or
+[`toHaveProps()`](./matchers.md#toHaveProps) matchers for checking props on an element.
+
+```tsx
+function PropsExample({ children, id }: { children: React.ReactNode; id?: string }) {
+  return <div id={id}>{children}</div>;
+}
+
+// BAD
+it('passes id down', () => {
+  const wrapper = shallow(<PropsExample id="foo">Content</PropsExample>);
+
+  expect(wrapper.prop('id')).toBe('foo');
+});
+
+// GOOD
+it('passes id down', () => {
+  const { root } = render(<PropsExample id="foo">Content</PropsExample>);
+
+  expect(root).toHaveProp('id', 'foo');
+});
+```
+
+## How to access component state?
+
+You don't! Accessing state is a code smell as it's an implementation detail. Instead, you should
+test the result of the state change, and not the state itself.
+
+```tsx
+class StateExample extends React.Component<{}, { active: boolean }> {
+  state = {
+    active: false,
+  };
+
+  handleToggle = () => {
+    this.setState(prevState => ({
+      active: !prevState.active,
+    }));
+  };
+
+  render() {
+    return (
+      <div>
+        <span>{this.state.active ? 'Active' : 'Inactive'}</span>
+        <button type="button" onClick={this.handleToggle}>
+          Toggle
+        </button>
+      </div>
+    );
+  }
+}
+
+// BAD
+it('renders active state', () => {
+  const wrapper = shallow(<StateExample />);
+
+  expect(wrapper.state('active')).toBe(false);
+
+  wrapper.find('button').simulate('click');
+
+  expect(wrapper.state('active')).toBe(true);
+});
+
+// GOOD
+it('renders active state', () => {
+  const { root } = render(<StateExample />);
+
+  expect(root).toContainNode('Inactive');
+
+  root.findOne('button').emit('onClick', mockSyntheticEvent('click'));
+
+  expect(root).toContainNode('Active');
+});
+```

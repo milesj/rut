@@ -41,6 +41,7 @@ export default class Result<Props = {}> {
   debug = (options: DebugOptions = {}) => {
     const output = debug(this.renderer.root, options);
 
+    // istanbul ignore next
     if (!options.return) {
       // eslint-disable-next-line no-console
       console.log(output);
@@ -64,6 +65,7 @@ export default class Result<Props = {}> {
         node => node.type === rootType && shallowEqual(node.props, element.props),
       );
 
+      // istanbul ignore next
       if (nodes.length !== 1) {
         throw new Error('Unable to find root node. Wrapping elements may be obfuscating it.');
       }

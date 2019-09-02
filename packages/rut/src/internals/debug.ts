@@ -232,10 +232,6 @@ function getKeyAndRef(node: TestNode): Props {
 }
 
 function getProps(props: Props, internal: Props, options: Required<DebugOptions>): string[] {
-  if (!props || typeof props !== 'object') {
-    return [];
-  }
-
   const all: string[] = [];
   const truthies: string[] = [];
   const handlers: string[] = [];

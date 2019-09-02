@@ -38,6 +38,7 @@ export default class Element<Props = {}> {
   debug = (options: DebugOptions = {}) => {
     const output = debug(this.element, options);
 
+    // istanbul ignore next
     if (!options.return) {
       // eslint-disable-next-line no-console
       console.log(output);
@@ -60,6 +61,7 @@ export default class Element<Props = {}> {
     const prop = getPropForEmitting(this, name);
     let value: ReturnOf<Props[K]>;
 
+    // istanbul ignore next
     if (options.propagate) {
       // eslint-disable-next-line no-console
       console.warn('Event propagation is experimental and is not fully implemented yet.');
@@ -87,6 +89,7 @@ export default class Element<Props = {}> {
     const prop = getPropForEmitting(this, name);
     let value: ReturnOf<Props[K]>;
 
+    // istanbul ignore next
     if (options.propagate) {
       // eslint-disable-next-line no-console
       console.warn('Event propagation is experimental and is not fully implemented yet.');
