@@ -28,12 +28,18 @@ export function getPropFromElement<P, K extends keyof P>(
 }
 
 export function getPropForEmitting<P, K extends keyof P>(element: Element<P>, name: K): P[K] {
-  const prop = getPropFromElement(element, name);
+  let eventName = String(name);
+
+  if (!eventName.startsWith('on')) {
+    eventName = `on${eventName.charAt(0).toUpperCase()}${eventName.slice(1)}`;
+  }
+
+  const prop = getPropFromElement(element, eventName as K);
 
   if (!prop) {
-    throw new Error(`Prop \`${name}\` does not exist.`);
+    throw new Error(`Prop \`${eventName}\` does not exist.`);
   } else if (typeof prop !== 'function') {
-    throw new TypeError(`Prop \`${name}\` is not a function.`);
+    throw new TypeError(`Prop \`${eventName}\` is not a function.`);
     // @ts-ignore Allow internal access
   } else if (typeof element.element.type !== 'string') {
     throw new TypeError('Emitting events is only allowed on host components (DOM elements).');

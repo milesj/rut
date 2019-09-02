@@ -40,7 +40,7 @@ describe('Events', () => {
 
     const value = await result.root
       .findOne('button')
-      .emit('onClick', {}, mockSyntheticEvent('click'));
+      .emit('click', {}, mockSyntheticEvent('click'));
 
     expect(value).toBe('Updated!');
     expect(result.root).toContainNode('Updated!');
@@ -65,7 +65,7 @@ describe('Events', () => {
     const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('click');
     const spy = jest.spyOn(event, 'preventDefault');
 
-    result.root.findOne('button').emit('onClick', {}, event);
+    result.root.findOne('button').emit('click', {}, event);
 
     expect(spy).toHaveBeenCalled();
   });
