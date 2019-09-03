@@ -1,7 +1,6 @@
 import { Rule } from 'eslint';
 
 const rule: Rule.RuleModule = {
-  // name: 'no-act',
   meta: {
     type: 'suggestion',
     docs: {

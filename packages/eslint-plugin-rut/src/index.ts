@@ -12,6 +12,7 @@ export = {
       plugins: ['rut'],
       rules: {
         'rut/no-act': 'error',
+        'rut/no-internals': 'error',
       },
     },
   },
