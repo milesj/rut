@@ -1,6 +1,6 @@
 {
   "name": "rut",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "React unit testing made easy. DOM not included.",
   "keywords": [
     "react",
