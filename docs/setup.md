@@ -34,3 +34,32 @@ module.exports = {
 
 This will automatically register the snapshot serializer and all matchers. No need to import within
 your test files.
+
+## Lint Integrations
+
+Rut also provides custom linting rules to enforce best testing practices.
+
+### ESLint
+
+Install the `eslint-plugin-rut` package as a dev dependency.
+
+```bash
+yarn add --dev eslint-plugin-rut
+```
+
+Once installed, add the recommended config to your `.eslintrc.js` file. It's highly encouraged to
+only apply these rules to test files, otherwise your source files may trigger false positives, so
+use overrides!
+
+```js
+module.exports = {
+  overrides: [
+    {
+      files: ['*.test.ts', '*.test.js'],
+      extends: ['plugin:rut/recommended'],
+    },
+  ],
+};
+```
+
+[View list of available rules!](./setup/rules.md)

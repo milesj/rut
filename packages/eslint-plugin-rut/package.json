@@ -1,0 +1,32 @@
+{
+  "name": "eslint-plugin-rut",
+  "version": "0.0.0",
+  "description": "ESLint plugin for enforcing Rut (React unit testing) best practices.",
+  "keywords": [
+    "react",
+    "test",
+    "unit",
+    "eslint",
+    "lint",
+    "plugin",
+    "rule"
+  ],
+  "repository": "https://github.com/milesj/rut/tree/master/packages/eslint-plugin-rut",
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "peerDependencies": {
+    "eslint": "^5.0.0 || ^6.0.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^6.1.1",
+    "@types/estree": "^0.0.39"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "sort-keys": "off",
+    "import/no-unresolved": "off"
+  }
+}

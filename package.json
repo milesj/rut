@@ -43,12 +43,6 @@
       "node": true,
       "react": true
     },
-    "eslint": {
-      "rules": {
-        "no-magic-numbers": "off",
-        "no-underscore-dangle": "off"
-      }
-    },
     "jest": {
       "setupFilesAfterEnv": [
         "jest-rut"
