@@ -199,6 +199,18 @@ describe('Element', () => {
 
       expect(root.find(FuncComp)).toHaveLength(3);
     });
+
+    it('filters found elements based on defined props', () => {
+      const { root } = render(
+        <form>
+          <input type="text" name="name" />
+          <input type="email" name="email" />
+          <input type="password" name="password" />
+        </form>,
+      );
+
+      expect(root.find('input', { name: 'email' })).toHaveLength(1);
+    });
   });
 
   describe('findOne()', () => {

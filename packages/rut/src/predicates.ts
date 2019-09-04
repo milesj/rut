@@ -1,5 +1,6 @@
 import React from 'react';
 import { Predicate, UnknownProps } from './types';
+import { containsProps } from './internals/helpers';
 
 /**
  * Find all elements where the `key` matches the provided name or names.
@@ -9,8 +10,16 @@ export function whereKey(value: React.Key | React.Key[]): Predicate {
 }
 
 /**
- * Find all elements in common with the provided props.
+ * Find all elements in common with the provided props, regardless of component `type`.
  */
 export function whereProps(props: UnknownProps): Predicate {
-  return node => Object.keys(props).every(prop => node.props[prop] === props[prop]);
+  return node => containsProps(node.props, props);
+}
+
+/**
+ * Find all elements where the `type` matches the provided type and
+ * have in common the provided props.
+ */
+export function whereTypeAndProps(type: React.ElementType, props?: UnknownProps): Predicate {
+  return node => node.type === type && (props ? containsProps(node.props, props) : true);
 }

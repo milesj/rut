@@ -29,7 +29,7 @@ root.query(whereKey([123, 456]));
 
 > whereProps(props: { [name: string]: unknown }): Predicate
 
-Find all elements in common with the provided props.
+Find all elements in common with the provided props, regardless of component `type`.
 
 ```tsx
 import { render, whereProps } from 'rut';

@@ -1,6 +1,7 @@
 import React from 'react';
 import Element from '../Element';
 import { isReactNodeLike, NodeLike } from '../helpers';
+import { UnknownProps } from '../types';
 
 export function checkIsRutElement(value: unknown) {
   if (value instanceof Element) {
@@ -72,6 +73,10 @@ export function shallowEqual(objA: unknown, objB: unknown): boolean {
   }
 
   return true;
+}
+
+export function containsProps(props: UnknownProps, contains: UnknownProps): boolean {
+  return Object.keys(contains).every(prop => props[prop] === contains[prop]);
 }
 
 /**

@@ -77,9 +77,10 @@ it('waits for update call to finish', async () => {
 
 ## `find()`
 
-> find\<Tag extends HostComponentType>(type: Tag): Element\<JSX.IntrinsicElements[Tag]>[]
+> find\<Tag extends HostComponentType, Props = JSX.IntrinsicElements[Tag]>(type: Tag, props?:
+> Partial\<Props>): Element\<Props>[]
 
-> find\<Props>(type: React.ComponentType<Props>): Element\<Props>[]
+> find\<Props>(type: React.ComponentType\<Props>, props?: Partial\<Props>): Element\<Props>[]
 
 Search through the current tree for all elements that match the defined React component or HTML tag.
 If any are found, a list of `Element`s is returned.
@@ -94,11 +95,27 @@ const articles = root.find(NewsArticle);
 const articles = root.find('article');
 ```
 
+Also accepts a partial props object as a 2nd argument. When defined, will further filter elements
+and only return those that have the defined props in common.
+
+```tsx
+const { root } = render(
+  <form>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="password" name="password" />
+  </form>,
+);
+
+const input = root.find('input', { name: 'email' }); // 1
+```
+
 ## `findOne()`
 
-> findOne\<Tag extends HostComponentType>(type: Tag): Element\<JSX.IntrinsicElements[Tag]>
+> findOne\<Tag extends HostComponentType, Props = JSX.IntrinsicElements[Tag]>(type: Tag, props?:
+> Partial\<Props>): Element\<Props>
 
-> findOne\<Props>(type: React.ComponentType\<Props>): Element\<Props>
+> findOne\<Props>(type: React.ComponentType\<Props>, props?: Partial\<Props>): Element\<Props>
 
 Like [`find()`](#find) but only returns a single instance. If no elements are found, or too many
 elements are found, an error is thrown.

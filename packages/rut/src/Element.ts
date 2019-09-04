@@ -2,11 +2,20 @@
 
 import React from 'react';
 import { act, ReactTestInstance } from 'react-test-renderer';
-import { ArgsOf, ReturnOf, HostComponentType, Predicate, EmitOptions, DebugOptions } from './types';
+import {
+  ArgsOf,
+  ReturnOf,
+  HostComponentType,
+  Predicate,
+  EmitOptions,
+  DebugOptions,
+  UnknownProps,
+} from './types';
 import { getTypeName } from './helpers';
 import wrapAndCaptureAsync from './internals/async';
 import debug from './internals/debug';
 import { getPropForEmitting } from './internals/helpers';
+import { whereTypeAndProps } from './predicates';
 
 export default class Element<Props = {}> {
   readonly isRutElement = true;
@@ -64,7 +73,7 @@ export default class Element<Props = {}> {
     // istanbul ignore next
     if (options.propagate) {
       // eslint-disable-next-line no-console
-      console.warn('Event propagation is experimental and is not fully implemented yet.');
+      console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
     act(() => {
@@ -92,7 +101,7 @@ export default class Element<Props = {}> {
     // istanbul ignore next
     if (options.propagate) {
       // eslint-disable-next-line no-console
-      console.warn('Event propagation is experimental and is not fully implemented yet.');
+      console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
     await act(async () => {
@@ -114,10 +123,13 @@ export default class Element<Props = {}> {
    * Search through the current tree for all elements that match the defined React
    * component or HTML type. If any are found, a list of `Element`s is returned.
    */
-  find<T extends HostComponentType>(type: T): Element<JSX.IntrinsicElements[T]>[];
-  find<P>(type: React.ComponentType<P>): Element<P>[];
-  find(type: React.ElementType<unknown>): Element<unknown>[] {
-    return this.element.findAllByType(type).map(node => new Element(node));
+  find<T extends HostComponentType, P = JSX.IntrinsicElements[T]>(
+    type: T,
+    props?: Partial<P>,
+  ): Element<P>[];
+  find<P>(type: React.ComponentType<P>, props?: Partial<P>): Element<P>[];
+  find(type: React.ElementType<unknown>, props?: UnknownProps): Element<unknown>[] {
+    return this.query(whereTypeAndProps(type, props));
   }
 
   /**
@@ -125,10 +137,13 @@ export default class Element<Props = {}> {
    * component or HTML type. If exactly 1 is found, a `Element`s is returned,
    * otherwise an error is thrown.
    */
-  findOne<T extends HostComponentType>(type: T): Element<JSX.IntrinsicElements[T]>;
-  findOne<P>(type: React.ComponentType<P>): Element<P>;
-  findOne(type: React.ElementType<unknown>): Element<unknown> {
-    const results = this.find(type);
+  findOne<T extends HostComponentType, P = JSX.IntrinsicElements[T]>(
+    type: T,
+    props?: Partial<P>,
+  ): Element<P>;
+  findOne<P>(type: React.ComponentType<P>, props?: Partial<P>): Element<P>;
+  findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element<unknown> {
+    const results = this.find(type, props);
 
     if (results.length !== 1) {
       throw new Error(
