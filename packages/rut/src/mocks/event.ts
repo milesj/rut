@@ -69,6 +69,8 @@ export function mockEvent<T = Event>(type: string, options: EventOptions = {}): 
   if (typeof window === 'undefined') {
     // @ts-ignore Ignore legacy fields
     event = new BaseEvent(type);
+
+    // https://developer.mozilla.org/en-US/docs/Web/Events
   } else {
     // istanbul ignore next
     switch (type) {
@@ -129,19 +131,16 @@ export function mockEvent<T = Event>(type: string, options: EventOptions = {}): 
     }
   }
 
-  if (options.currentTarget) {
-    // @ts-ignore
-    event.currentTarget = options.currentTarget;
+  if (options.target) {
+    Object.defineProperty(event, 'target', {
+      value: options.target,
+    });
   }
 
-  if (options.target) {
-    // @ts-ignore
-    event.target = options.target;
-
-    if (!options.currentTarget) {
-      // @ts-ignore
-      event.currentTarget = options.target;
-    }
+  if (options.currentTarget || options.target) {
+    Object.defineProperty(event, 'currentTarget', {
+      value: options.currentTarget || options.target,
+    });
   }
 
   // @ts-ignore
