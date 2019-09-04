@@ -31,8 +31,6 @@ export default class Element<Props = {}> {
    * Return all children as a list of strings and `Element`s.
    */
   children(): (string | Element)[] {
-    window.addEventListener();
-
     return this.element.children.map(child =>
       typeof child === 'string' ? child : new Element(child),
     );

@@ -63,7 +63,7 @@ describe('Element', () => {
         );
 
         // @ts-ignore
-        root.findOne('span').emit('fake');
+        root.findOne('span').emit('onFake');
       }).toThrowError('Prop `onFake` does not exist.');
     });
 
@@ -92,7 +92,7 @@ describe('Element', () => {
       expect(() => {
         const { root } = render<EmitProps>(<EmitComp onSomething={() => {}} />);
 
-        root.emit('something');
+        root.emit('onSomething');
       }).toThrowError('Emitting events is only allowed on host components (DOM elements).');
     });
 
@@ -109,7 +109,7 @@ describe('Element', () => {
 
       const { root } = render(<EmitComp />);
 
-      root.findOne('button').emit('click', {}, mockSyntheticEvent('click'));
+      root.findOne('button').emit('onClick', {}, mockSyntheticEvent('onClick'));
 
       expect(spy).toHaveBeenCalledWith(expect.any(Object));
     });
@@ -138,7 +138,7 @@ describe('Element', () => {
 
       expect(root).toContainNode(0);
 
-      await root.findOne('button').emitAndWait('click', {}, mockSyntheticEvent('click'));
+      await root.findOne('button').emitAndWait('onClick', {}, mockSyntheticEvent('onClick'));
 
       expect(root).toContainNode(1);
     });

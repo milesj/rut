@@ -40,7 +40,7 @@ describe('Events', () => {
 
     const value = await result.root
       .findOne('button')
-      .emit('click', {}, mockSyntheticEvent('click'));
+      .emit('onClick', {}, mockSyntheticEvent('onClick'));
 
     expect(value).toBe('Updated!');
     expect(result.root).toContainNode('Updated!');
@@ -62,10 +62,10 @@ describe('Events', () => {
 
   it('can call methods on the event object', () => {
     const result = render(<EventComp />);
-    const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('click');
+    const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('onClick');
     const spy = jest.spyOn(event, 'preventDefault');
 
-    result.root.findOne('button').emit('click', {}, event);
+    result.root.findOne('button').emit('onClick', {}, event);
 
     expect(spy).toHaveBeenCalled();
   });

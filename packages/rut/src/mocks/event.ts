@@ -1,15 +1,17 @@
 /* eslint-disable complexity, max-classes-per-file */
 
+import React from 'react';
+
 /**
  * In both the `mockEvent` and `mockSyntheticEvent` functions below,
  * you'll notice that every return is being type ignored.
  * We are doing this so that the generic type takes precendence,
  * as we want inferrence to be predominantly used.
  *
- * For example, if a test is emitting `findOne('button').emit('click`)`,
+ * For example, if a test is emitting `findOne('button').emit('onClick`)`,
  * the first argument is typed as `React.MouseEvent<HTMLButtonElement, MouseEvent>`.
  * We can take advantage of type inferrence by mocking the argument at
- * the call site, like so: `findOne('button').emit('click', {}, mockSyntheticEvent('click'))`.
+ * the call site, like so: `findOne('button').emit('onClick', {}, mockSyntheticEvent('onClick'))`.
  *
  * With this pattern, mocks are easily typed, and the underlying event object
  * structure is close enough for most, if not all of test cases.
@@ -19,6 +21,11 @@ interface EventOptions {
   currentTarget?: HTMLElement;
   target?: Element;
 }
+
+type EventType = Exclude<
+  keyof React.DOMAttributes<unknown>,
+  'children' | 'dangerouslySetInnerHTML'
+>;
 
 export class BaseEvent {
   bubbles: boolean = true;
@@ -242,9 +249,15 @@ export class SyntheticEvent extends BaseEvent {
 }
 
 export function mockSyntheticEvent<T = React.SyntheticEvent>(
-  type: string,
+  type: EventType,
   options: EventOptions = {},
 ): T {
+  let eventType = type.toLowerCase();
+
+  if (eventType.startsWith('on')) {
+    eventType = eventType.slice(2);
+  }
+
   // @ts-ignore
-  return new SyntheticEvent(type, mockEvent(type, options));
+  return new SyntheticEvent(eventType, mockEvent(eventType, options));
 }

@@ -84,7 +84,7 @@ it('renders active state', () => {
 
   expect(root).toContainNode('Inactive');
 
-  root.findOne('button').emit('click', mockSyntheticEvent('click'));
+  root.findOne('button').emit('onClick', {}, mockSyntheticEvent('onClick'));
 
   expect(root).toContainNode('Active');
 });
