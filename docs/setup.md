@@ -56,9 +56,20 @@ module.exports = {
   overrides: [
     {
       files: ['*.test.ts', '*.test.js'],
-      extends: ['plugin:rut/recommended'],
+      plugins: ['rut'],
+      rules: {
+        'rut/no-act': 'error',
+      },
     },
   ],
+};
+```
+
+If you don't mind targeting everything, you can extend the recommended preset.
+
+```js
+module.exports = {
+  extends: ['plugin:rut/recommended'],
 };
 ```
 
