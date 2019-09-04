@@ -11,7 +11,7 @@
     "prettier": "beemo prettier",
     "release": "lerna publish",
     "type": "beemo typescript --build --reference-workspaces",
-    "prerelease": "yarn test && yarn run build",
+    "prerelease": "yarn run clean && yarn test",
     "pretest": "yarn run type",
     "test": "yarn run jest",
     "posttest": "yarn run eslint"
