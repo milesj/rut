@@ -11,10 +11,11 @@ writing process, while doing all the hard work behind the scenes.
 
 ```tsx
 import { render } from 'rut';
+import Input, { InputProps } from '../src/Input';
 
 describe('<Input />', () => {
   it('renders an input field', () => {
-    const { root, update } = render(<Input name="rut" value="foo" />);
+    const { root, update } = render<InputProps>(<Input name="rut" value="foo" />);
 
     expect(root).toHaveProp('name', 'rut');
     expect(root).toHaveValue('foo');
