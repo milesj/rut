@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Element from '../src/Element';
 import { render } from '../src/render';
 import { mockSyntheticEvent } from '../src/mocks/event';
+import { HostProps } from '../src/types';
 import { FuncComp, FuncCompWithDisplayName, ClassComp, ClassCompWithDisplayName } from './fixtures';
 import { runAsyncCall } from './helpers';
 
@@ -36,7 +37,7 @@ describe('Element', () => {
 
   describe('debug()', () => {
     it('debugs based on element depth', () => {
-      const { root } = render(
+      const { root } = render<HostProps<'div'>>(
         <div>
           <section>
             <article>
@@ -80,12 +81,16 @@ describe('Element', () => {
     });
 
     it('errors if emitting on a non-host component', () => {
-      function EmitComp(props: { onSomething: () => void }) {
+      interface EmitProps {
+        onSomething: () => void;
+      }
+
+      function EmitComp(props: EmitProps) {
         return <div />;
       }
 
       expect(() => {
-        const { root } = render(<EmitComp onSomething={() => {}} />);
+        const { root } = render<EmitProps>(<EmitComp onSomething={() => {}} />);
 
         root.emit('onSomething');
       }).toThrowError('Emitting events is only allowed on host components (DOM elements).');

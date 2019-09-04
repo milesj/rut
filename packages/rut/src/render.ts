@@ -5,8 +5,8 @@ import wrapAndCaptureAsync from './internals/async';
 import { globalOptions } from './configure';
 import { RendererOptions } from './types';
 
-export function render<Props>(
-  element: React.ReactElement<Props>,
+export function render<Props = unknown>(
+  element: React.ReactElement,
   options?: RendererOptions,
 ): Result<Props> {
   let result: Result<Props>;
@@ -21,8 +21,8 @@ export function render<Props>(
   return result!;
 }
 
-export async function renderAndWait<Props>(
-  element: React.ReactElement<Props>,
+export async function renderAndWait<Props = unknown>(
+  element: React.ReactElement,
   options?: RendererOptions,
 ): Promise<Result<Props>> {
   const waitForQueue = wrapAndCaptureAsync();

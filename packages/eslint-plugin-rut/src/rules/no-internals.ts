@@ -10,7 +10,7 @@ const RESULT_INTERNALS = [
   'wrapElement',
 ];
 
-// const ELEMENT_INTERNALS = ['isRutElement', 'element'];
+// const ELEMENT_INTERNALS = ['isRutElement', 'element', 'props'];
 
 const rule: Rule.RuleModule = {
   meta: {

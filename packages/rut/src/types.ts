@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-namespace */
 
 import React from 'react';
+import Element from './Element';
 
 export interface RendererOptions {
   mockRef?: (element: React.ReactElement) => unknown;
@@ -73,6 +74,10 @@ export type NodeType =
 
 export type HostComponentType = keyof JSX.IntrinsicElements;
 
+export type HostProps<T extends HostComponentType> = JSX.IntrinsicElements[T];
+
+export type InferElementProps<T> = T extends Element<infer U> ? U : {};
+
 declare module 'react-test-renderer' {
   interface ReactTestInstance {
     _fiber: FiberNode;
@@ -89,8 +94,8 @@ declare global {
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;
       toHaveKey(value: string | number): R;
-      toHaveProp(name: string, value?: unknown): R;
-      toHaveProps(props: { [key: string]: unknown }): R;
+      toHaveProp<K extends keyof InferElementProps<R>>(name: K, value?: unknown): R;
+      toHaveProps(props: Partial<InferElementProps<R>>): R;
       toHaveRendered(): R;
       toHaveValue(value: unknown): R;
     }

@@ -94,9 +94,20 @@ test('renders a button', () => {
 });
 ```
 
-> If using TypeScript, it's highly encouraged to pass the props interface as a generic to `render`,
-> so that props, children, and other features can be typed correctly. This information is currently
-> not inferrable as `JSX.Element` does not persist types.
+If using TypeScript, it's highly encouraged to pass the props interface as a generic to `render`, so
+that props, children, and other features can be typed correctly. This information is currently not
+inferrable as `JSX.Element` does not persist types.
+
+Furthermore, if the `root` is a host component (DOM element), you can apply props using the
+`HostProps` utility type.
+
+```tsx
+import { render, HostProps } from 'rut';
+
+test('renders a native button', () => {
+  const result = render<HostProps<'button'>>(<button type="submit">Save</button>);
+});
+```
 
 ## `renderAndWait()`
 

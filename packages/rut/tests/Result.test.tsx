@@ -11,6 +11,8 @@ import {
   TimerCdmComp,
   TimerHookComp,
   TimerCduComp,
+  TestProps,
+  AsyncProps,
 } from './fixtures';
 
 describe('Result', () => {
@@ -380,7 +382,7 @@ describe('Result', () => {
     });
 
     it('when using `strict`, re-renders the passed element', () => {
-      const result = render(<FuncComp name="mount" />, { strict: true });
+      const result = render<TestProps>(<FuncComp name="mount" />, { strict: true });
 
       expect(result).toMatchSnapshot();
       expect(result.root).toHaveProp('name', 'mount');
@@ -392,7 +394,7 @@ describe('Result', () => {
     });
 
     it('when using `wrapper`, re-renders the passed element', () => {
-      const result = render(<FuncComp name="mount" />, { wrapper: <Wrapper /> });
+      const result = render<TestProps>(<FuncComp name="mount" />, { wrapper: <Wrapper /> });
 
       expect(result).toMatchSnapshot();
       expect(result.root).toHaveProp('name', 'mount');
@@ -404,7 +406,10 @@ describe('Result', () => {
     });
 
     it('when using `strict` and `wrapper`, re-renders the passed element', () => {
-      const result = render(<FuncComp name="mount" />, { strict: true, wrapper: <Wrapper /> });
+      const result = render<TestProps>(<FuncComp name="mount" />, {
+        strict: true,
+        wrapper: <Wrapper />,
+      });
 
       expect(result).toMatchSnapshot();
       expect(result.root).toHaveProp('name', 'mount');
@@ -427,7 +432,7 @@ describe('Result', () => {
 
     describe('class component', () => {
       it('re-renders if props dont change', () => {
-        const result = render(<ClassUpdateTest />);
+        const result = render<UpdateProps>(<ClassUpdateTest />);
 
         result.update();
         result.update();
@@ -436,7 +441,7 @@ describe('Result', () => {
       });
 
       it('re-renders if props change', () => {
-        const result = render(<ClassUpdateTest index={0} />);
+        const result = render<UpdateProps>(<ClassUpdateTest index={0} />);
 
         expect(result.root).toHaveProp('index', 0);
 
@@ -452,7 +457,7 @@ describe('Result', () => {
       });
 
       it('re-renders with a different child', () => {
-        const result = render(<ClassUpdateTest>Foo</ClassUpdateTest>);
+        const result = render<UpdateProps>(<ClassUpdateTest>Foo</ClassUpdateTest>);
 
         expect(result.root).toContainNode('Foo');
 
@@ -464,7 +469,7 @@ describe('Result', () => {
       });
 
       it('doesnt re-render if pure and props dont change', () => {
-        const result = render(<PureClassUpdateTest />);
+        const result = render<UpdateProps>(<PureClassUpdateTest />);
 
         result.update();
         result.update();
@@ -503,7 +508,7 @@ describe('Result', () => {
           }
         }
 
-        const result = render(<UpdateTest test="mount" />);
+        const result = render<Props>(<UpdateTest test="mount" />);
 
         result.update({ test: 'update' });
 
@@ -513,7 +518,7 @@ describe('Result', () => {
       it('supports async `componentDidUpdate`', async () => {
         const spy = jest.fn();
 
-        const result = render(<AsyncCduComp id="first" onLoad={spy} />);
+        const result = render<AsyncProps>(<AsyncCduComp id="first" onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(0);
         expect(result.root).toContainNode('Loading...');
@@ -527,7 +532,7 @@ describe('Result', () => {
       it('supports `componentDidUpdate` with timers', async () => {
         const spy = jest.fn();
 
-        const result = render(<TimerCduComp id="first" onLoad={spy} />);
+        const result = render<AsyncProps>(<TimerCduComp id="first" onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(0);
         expect(result.root).toContainNode('Loading...');
@@ -541,7 +546,7 @@ describe('Result', () => {
 
     describe('function component', () => {
       it('re-renders if props dont change', () => {
-        const result = render(<FuncUpdateTest />);
+        const result = render<UpdateProps>(<FuncUpdateTest />);
 
         result.update();
         result.update();
@@ -550,7 +555,7 @@ describe('Result', () => {
       });
 
       it('re-renders if props change', () => {
-        const result = render(<FuncUpdateTest index={0} />);
+        const result = render<UpdateProps>(<FuncUpdateTest index={0} />);
 
         expect(result.root).toHaveProp('index', 0);
 
@@ -566,7 +571,7 @@ describe('Result', () => {
       });
 
       it('re-renders with a different child', () => {
-        const result = render(<FuncUpdateTest>Foo</FuncUpdateTest>);
+        const result = render<UpdateProps>(<FuncUpdateTest>Foo</FuncUpdateTest>);
 
         expect(result.root).toContainNode('Foo');
 
@@ -578,7 +583,7 @@ describe('Result', () => {
       });
 
       it('doesnt re-render if memoized and props dont change', () => {
-        const result = render(<MemoFuncUpdateTest />);
+        const result = render<UpdateProps>(<MemoFuncUpdateTest />);
 
         result.update();
         result.update();
@@ -602,7 +607,7 @@ describe('Result', () => {
           return null;
         }
 
-        const result = render(<UpdateTest test="update" />);
+        const result = render<Props>(<UpdateTest test="update" />);
 
         result.update({ test: 'update' });
         result.update({ test: 'update' });
@@ -623,7 +628,7 @@ describe('Result', () => {
           return null;
         }
 
-        const result = render(<UpdateTest test="mount" />);
+        const result = render<Props>(<UpdateTest test="mount" />);
 
         result.update({ test: 'mount' });
         result.update({ test: 'update' });
@@ -635,7 +640,7 @@ describe('Result', () => {
       it('supports async `useEffect`', async () => {
         const spy = jest.fn();
 
-        const result = render(<AsyncHookComp id="first" onLoad={spy} />);
+        const result = render<AsyncProps>(<AsyncHookComp id="first" onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(0);
         expect(result.root).toContainNode('Loading...');
@@ -649,7 +654,7 @@ describe('Result', () => {
       it('supports `useEffect` with timers', async () => {
         const spy = jest.fn();
 
-        const result = render(<AsyncHookComp id="first" onLoad={spy} />);
+        const result = render<AsyncProps>(<AsyncHookComp id="first" onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(0);
         expect(result.root).toContainNode('Loading...');
