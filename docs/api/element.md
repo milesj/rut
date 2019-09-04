@@ -45,7 +45,7 @@ import { render, mockSyntheticEvent } from 'rut';
 
 const { root } = render<LoginFormProps>(<LoginForm />);
 
-root.findOne('input').emit('onChange', {}, mockSyntheticEvent('change'));
+root.findOne('input').emit('onChange', {}, mockSyntheticEvent('onChange'));
 ```
 
 > This may only be executed on host components (DOM elements). Why? Because it's an abstraction that
@@ -71,7 +71,7 @@ import { render, mockSyntheticEvent } from 'rut';
 it('waits for update call to finish', async () => {
   const { root } = render<EditProfileProps>(<EditProfile id={1} />);
 
-  await root.findOne('form').emitAndWait('onSubmit', {}, mockSyntheticEvent('submit'));
+  await root.findOne('form').emitAndWait('onSubmit', {}, mockSyntheticEvent('onSubmit'));
 });
 ```
 

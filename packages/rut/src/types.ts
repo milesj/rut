@@ -26,6 +26,14 @@ export type ArgsOf<T> = T extends (...args: infer A) => unknown ? A : never;
 
 export type ReturnOf<T> = T extends (...args: unknown[]) => infer R ? R : unknown;
 
+export type PropsOf<T> = T extends Element<infer P>
+  ? P
+  : T extends React.ReactElement<infer P>
+  ? P
+  : T extends React.ComponentType<infer P>
+  ? P
+  : {};
+
 export interface UnknownProps {
   [name: string]: unknown;
 }
@@ -76,8 +84,6 @@ export type HostComponentType = keyof JSX.IntrinsicElements;
 
 export type HostProps<T extends HostComponentType> = JSX.IntrinsicElements[T];
 
-export type InferElementProps<T> = T extends Element<infer U> ? U : {};
-
 declare module 'react-test-renderer' {
   interface ReactTestInstance {
     _fiber: FiberNode;
@@ -94,8 +100,8 @@ declare global {
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;
       toHaveKey(value: string | number): R;
-      toHaveProp<K extends keyof InferElementProps<R>>(name: K, value?: unknown): R;
-      toHaveProps(props: Partial<InferElementProps<R>>): R;
+      toHaveProp<K extends keyof PropsOf<R>>(name: K, value?: unknown): R;
+      toHaveProps(props: Partial<PropsOf<R>>): R;
       toHaveRendered(): R;
       toHaveValue(value: unknown): R;
     }

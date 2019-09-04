@@ -15,7 +15,7 @@ import { render, mockSyntheticEvent } from 'rut';
 
 const { root } = render(<Form />);
 
-root.findOne('button').emit('onClick', {}, mockSyntheticEvent('click'));
+root.findOne('button').emit('onClick', {}, mockSyntheticEvent('onClick'));
 ```
 
 When using TypeScript, the `T` generic will infer the event type based on the `emit()` event being
@@ -25,7 +25,7 @@ within `emit()`s arguments. If the event is created outside of it, the type will
 explicitly defined.
 
 ```tsx
-const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('click');
+const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('onClick');
 const spy = jest.spyOn(event, 'preventDefault');
 
 root.findOne('button').emit('onClick', {}, event);

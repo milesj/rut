@@ -109,7 +109,7 @@ describe('Element', () => {
 
       const { root } = render(<EmitComp />);
 
-      root.findOne('button').emit('onClick', {}, mockSyntheticEvent('click'));
+      root.findOne('button').emit('onClick', {}, mockSyntheticEvent('onClick'));
 
       expect(spy).toHaveBeenCalledWith(expect.any(Object));
     });
@@ -138,7 +138,7 @@ describe('Element', () => {
 
       expect(root).toContainNode(0);
 
-      await root.findOne('button').emitAndWait('onClick', {}, mockSyntheticEvent('click'));
+      await root.findOne('button').emitAndWait('onClick', {}, mockSyntheticEvent('onClick'));
 
       expect(root).toContainNode(1);
     });

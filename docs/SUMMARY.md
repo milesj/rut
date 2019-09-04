@@ -1,6 +1,7 @@
 # Summary
 
 - [Setup](./setup.md)
+  - [ESLint Rules](./setup/rules.md)
 - [FAQ](./faq.md)
 - [API](./api.md)
   - [Result](./api/result.md)

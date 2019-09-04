@@ -6,6 +6,7 @@ describe('event', () => {
       const event = mockEvent('click');
 
       expect(event).toBeInstanceOf(BaseEvent);
+      expect(event.type).toBe('click');
     });
 
     it('sets current target and target via `target`', () => {
@@ -56,22 +57,23 @@ describe('event', () => {
 
   describe('mockSyntheticEvent()', () => {
     it('returns custom event objects', () => {
-      const event = mockSyntheticEvent('click');
+      const event = mockSyntheticEvent('onClick');
 
       expect(event).toBeInstanceOf(SyntheticEvent);
       expect(event.nativeEvent).toBeInstanceOf(BaseEvent);
+      expect(event.type).toBe('click');
     });
 
     it('inherits targets from native event', () => {
       const target = { tag: 'foo' };
       // @ts-ignore Not an HTMLElement
-      const event = mockSyntheticEvent('click', { target });
+      const event = mockSyntheticEvent('onClick', { target });
 
       expect(event.target).toBe(event.nativeEvent.target);
     });
 
     it('marks as persisted', () => {
-      const event = mockSyntheticEvent('click');
+      const event = mockSyntheticEvent('onClick');
 
       event.persist();
 
@@ -80,7 +82,7 @@ describe('event', () => {
     });
 
     it('calls `preventDefault` on both native and synthetic event', () => {
-      const event = mockSyntheticEvent('click');
+      const event = mockSyntheticEvent('onClick');
       const spy = jest.spyOn(event.nativeEvent, 'preventDefault');
 
       event.preventDefault();
@@ -90,7 +92,7 @@ describe('event', () => {
     });
 
     it('calls `stopPropagation` on both native and synthetic event', () => {
-      const event = mockSyntheticEvent('click');
+      const event = mockSyntheticEvent('onClick');
       const spy = jest.spyOn(event.nativeEvent, 'stopPropagation');
 
       event.stopPropagation();

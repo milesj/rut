@@ -1,5 +1,7 @@
 /* eslint-disable complexity, max-classes-per-file */
 
+import React from 'react';
+
 /**
  * In both the `mockEvent` and `mockSyntheticEvent` functions below,
  * you'll notice that every return is being type ignored.
@@ -9,7 +11,7 @@
  * For example, if a test is emitting `findOne('button').emit('onClick`)`,
  * the first argument is typed as `React.MouseEvent<HTMLButtonElement, MouseEvent>`.
  * We can take advantage of type inferrence by mocking the argument at
- * the call site, like so: `findOne('button').emit('onClick', {}, mockSyntheticEvent('click'))`.
+ * the call site, like so: `findOne('button').emit('onClick', {}, mockSyntheticEvent('onClick'))`.
  *
  * With this pattern, mocks are easily typed, and the underlying event object
  * structure is close enough for most, if not all of test cases.
@@ -19,6 +21,11 @@ interface EventOptions {
   currentTarget?: HTMLElement;
   target?: Element;
 }
+
+type EventType = Exclude<
+  keyof React.DOMAttributes<unknown>,
+  'children' | 'dangerouslySetInnerHTML'
+>;
 
 export class BaseEvent {
   bubbles: boolean = true;
@@ -61,6 +68,112 @@ export class BaseEvent {
   }
 }
 
+// https://developer.mozilla.org/en-US/docs/Web/Events
+// istanbul ignore next
+function createHostEvent(type: string): Event {
+  switch (type) {
+    case 'animationcancel':
+    case 'animationiteration':
+    case 'animationend':
+    case 'animationstart':
+      return new AnimationEvent(type);
+    case 'beforeunload':
+      return new BeforeUnloadEvent();
+    case 'auxclick':
+    case 'click':
+    case 'contextmenu':
+    case 'dblclick':
+    case 'mousedown':
+    case 'mouseenter':
+    case 'mouseleave':
+    case 'mousemove':
+    case 'mouseout':
+    case 'mouseover':
+    case 'mouseup':
+      return new MouseEvent(type);
+    case 'devicelight':
+    case 'devicemotion':
+    case 'deviceorientation':
+    case 'deviceorientationabsolute':
+      return new DeviceLightEvent(type);
+    case 'blur':
+    case 'focus':
+      return new FocusEvent(type);
+    case 'copy':
+    case 'cut':
+    case 'paste':
+      return new ClipboardEvent(type);
+    case 'compositionend':
+    case 'compositionstart':
+    case 'compositionupdate':
+      return new CompositionEvent(type);
+    case 'drag':
+    case 'dragend':
+    case 'dragenter':
+    case 'dragexit':
+    case 'dragleave':
+    case 'dragover':
+    case 'dragstart':
+    case 'drop':
+      return new DragEvent(type);
+    case 'error':
+      return new ErrorEvent(type);
+    case 'hashchange':
+      return new HashChangeEvent(type);
+    case 'keydown':
+    case 'keypress':
+    case 'keyup':
+      return new KeyboardEvent(type);
+    case 'loadend':
+    case 'progress':
+    case 'readystatechange':
+      return new ProgressEvent(type);
+    case 'message':
+    case 'messageerror':
+      return new MessageEvent(type);
+    case 'pagehide':
+    case 'pageshow':
+      return new PageTransitionEvent();
+    case 'gotpointercapture':
+    case 'lostpointercapture':
+    case 'pointercancel':
+    case 'pointerdown':
+    case 'pointerenter':
+    case 'pointerleave':
+    case 'pointerover':
+    case 'pointermove':
+    case 'pointerout':
+    case 'pointerup':
+      return new PointerEvent(type);
+    case 'popstate':
+      return new PopStateEvent(type);
+    case 'touchcancel':
+    case 'touchend':
+    case 'touchmove':
+    case 'touchstart':
+      return new TouchEvent(type);
+    case 'transitioncancel':
+    case 'transitionend':
+    case 'transitionrun':
+    case 'transitionstart':
+      return new TransitionEvent(type);
+    case 'abort':
+    case 'scroll':
+    case 'resize':
+      return new UIEvent(type);
+    case 'securitypolicyviolation':
+      return new SecurityPolicyViolationEvent(type);
+    case 'storage':
+      return new StorageEvent(type);
+    case 'unhandledrejection':
+      return new PromiseRejectionEvent(type, { promise: Promise.resolve() });
+    case 'wheel':
+      return new WheelEvent(type);
+    default:
+      return new Event(type);
+  }
+}
+
 export function mockEvent<T = Event>(type: string, options: EventOptions = {}): T {
   let event: Event;
 
@@ -69,66 +182,8 @@ export function mockEvent<T = Event>(type: string, options: EventOptions = {}): 
   if (typeof window === 'undefined') {
     // @ts-ignore Ignore legacy fields
     event = new BaseEvent(type);
-
-    // https://developer.mozilla.org/en-US/docs/Web/Events
   } else {
-    // istanbul ignore next
-    switch (type) {
-      case 'animationstart':
-      case 'animationend':
-      case 'animationiteration':
-        event = new AnimationEvent(type);
-        break;
-      case 'blur':
-      case 'focus':
-        event = new FocusEvent(type);
-        break;
-      case 'copy':
-      case 'cut':
-      case 'paste':
-        event = new ClipboardEvent(type);
-        break;
-      case 'compositionend':
-      case 'compositionstart':
-      case 'compositionupdate':
-        event = new CompositionEvent(type);
-        break;
-      case 'keydown':
-      case 'keypress':
-      case 'keyup':
-        event = new KeyboardEvent(type);
-        break;
-      case 'gotpointercapture':
-      case 'lostpointercapture':
-      case 'pointercancel':
-      case 'pointerdown':
-      case 'pointerenter':
-      case 'pointerleave':
-      case 'pointerover':
-      case 'pointermove':
-      case 'pointerout':
-      case 'pointerup':
-        event = new PointerEvent(type);
-        break;
-      case 'touchcancel':
-      case 'touchend':
-      case 'touchmove':
-      case 'touchstart':
-        event = new TouchEvent(type);
-        break;
-      case 'transitionend':
-        event = new TransitionEvent(type);
-        break;
-      case 'scroll':
-        event = new UIEvent(type);
-        break;
-      case 'wheel':
-        event = new WheelEvent(type);
-        break;
-      default:
-        event = new MouseEvent(type);
-        break;
-    }
+    event = createHostEvent(type);
   }
 
   if (options.target) {
@@ -194,9 +249,15 @@ export class SyntheticEvent extends BaseEvent {
 }
 
 export function mockSyntheticEvent<T = React.SyntheticEvent>(
-  type: string,
+  type: EventType,
   options: EventOptions = {},
 ): T {
+  let eventType = type.toLowerCase();
+
+  if (eventType.startsWith('on')) {
+    eventType = eventType.slice(2);
+  }
+
   // @ts-ignore
-  return new SyntheticEvent(type, mockEvent(type, options));
+  return new SyntheticEvent(eventType, mockEvent(eventType, options));
 }
