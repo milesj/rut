@@ -7,7 +7,7 @@ import {
   ReturnOf,
   HostComponentType,
   Predicate,
-  EmitOptions,
+  DispatchOptions,
   DebugOptions,
   UnknownProps,
   HostProps,
@@ -15,7 +15,7 @@ import {
 import { getTypeName } from './helpers';
 import wrapAndCaptureAsync from './internals/async';
 import debug from './internals/debug';
-import { getPropForEmitting } from './internals/helpers';
+import { getPropForDispatching } from './internals/helpers';
 import { whereTypeAndProps } from './predicates';
 
 export default class Element<Props = {}> {
@@ -58,17 +58,17 @@ export default class Element<Props = {}> {
   };
 
   /**
-   * Emit an event listener for the defined prop name. Requires a list of arguments
-   * that match the original type, and returns the result of the emit.
+   * Dispatch an event listener for the defined prop name. Requires a list of arguments
+   * that match the original type, and returns the result of the dispatch.
    *
    * Note: This may only be executed on host components (DOM elements).
    */
-  emit<K extends keyof Props>(
+  dispatch<K extends keyof Props>(
     name: K,
-    options: EmitOptions = {},
+    options: DispatchOptions = {},
     ...args: ArgsOf<Props[K]>
   ): ReturnOf<Props[K]> {
-    const prop = getPropForEmitting(this, name);
+    const prop = getPropForDispatching(this, name);
     let value: ReturnOf<Props[K]>;
 
     // istanbul ignore next
@@ -88,15 +88,15 @@ export default class Element<Props = {}> {
   }
 
   /**
-   * Like `emit` but also awaits the event so that async calls have time to finish.
+   * Like `dispatch` but also awaits the event so that async calls have time to finish.
    */
-  async emitAndWait<K extends keyof Props>(
+  async dispatchAndWait<K extends keyof Props>(
     name: K,
-    options: EmitOptions = {},
+    options: DispatchOptions = {},
     ...args: ArgsOf<Props[K]>
   ): Promise<ReturnOf<Props[K]>> {
     const waitForQueue = wrapAndCaptureAsync();
-    const prop = getPropForEmitting(this, name);
+    const prop = getPropForDispatching(this, name);
     let value: ReturnOf<Props[K]>;
 
     // istanbul ignore next

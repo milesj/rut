@@ -95,9 +95,9 @@ afterEach(() => {
 
 > mockSyntheticEvent\<T = React.SyntheticEvent>(type: EventType, options?: EventOptions): T
 
-Generates `React.SyntheticEvent` and native `Event` mocks for use within event emitting. Based on
-the defined event type, an appropriate sub-class will be used. For example, if the `type` is
-`onClick`, then a `React.MouseEvent` (with a native `MouseEvent` of type `click`) will be used.
+Generates `React.SyntheticEvent` and native `Event` mocks for use within event ting. Based on the
+defined event type, an appropriate sub-class will be used. For example, if the `type` is `onClick`,
+then a `React.MouseEvent` (with a native `MouseEvent` of type `click`) will be used.
 
 ```tsx
 import { render, mockSyntheticEvent } from 'rut';
@@ -108,24 +108,24 @@ describe('<Form />', () => {
     const spy = jest.fn();
     const { root } = render<FormProps>(<Form onClick={spy} />);
 
-    root.findOne('button').emit('onClick', {}, mockSyntheticEvent('onClick'));
+    root.findOne('button').dispatch('onClick', {}, mockSyntheticEvent('onClick'));
 
     expect(spy).toHaveBeenCalled();
   });
 });
 ```
 
-When using TypeScript, the `T` generic will infer the event type based on the `emit()` event being
-dispatched. In the above example, the `T` would resolve to
+When using TypeScript, the `T` generic will infer the event type based on the `dispatch()` event
+being dispatched. In the above example, the `T` would resolve to
 `React.MouseEvent<HTMLButtonElement, MouseEvent>`. However, this only works when the mock is created
-within `emit()`s arguments. If the event is created outside of it, the type will need to be
+within `dispatch()`s arguments. If the event is created outside of it, the type will need to be
 explicitly defined.
 
 ```tsx
 const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('onClick');
 const spy = jest.spyOn(event, 'preventDefault');
 
-root.findOne('button').emit('onClick', {}, event);
+root.findOne('button').dispatch('onClick', {}, event);
 ```
 
 Supports the same [options](#options) as [`mockEvent()`](#mockevent).

@@ -18,7 +18,7 @@ export interface DebugOptions {
   sortProps?: boolean;
 }
 
-export interface EmitOptions {
+export interface DispatchOptions {
   propagate?: boolean;
 }
 

@@ -9,9 +9,9 @@ const rule: Rule.RuleModule = {
       recommended: true,
     },
     messages: {
-      noActSync: 'Use `render()`, `update()`, or `emit()` instead of `act()`.',
+      noActSync: 'Use `render()`, `update()`, or `dispatch()` instead of `act()`.',
       noActAsync:
-        'Use `await renderAndWait()`, `await updateAndWait()`, or `await emitAndWait()` instead of `await act()`.',
+        'Use `await renderAndWait()`, `await updateAndWait()`, or `await dispatchAndWait()` instead of `await act()`.',
     },
   },
   create(context) {

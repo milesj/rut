@@ -35,7 +35,7 @@ const { root } = render<LoginFormProps>(<LoginForm />, {
   },
 });
 
-root.findOne('input').emit('onChange', {}, mockSyntheticEvent('onChange'));
+root.findOne('input').dispatch('onChange', {}, mockSyntheticEvent('onChange'));
 
 expect(spy).toHaveBeenCalled();
 ```

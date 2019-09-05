@@ -53,7 +53,7 @@ describe('Element', () => {
     });
   });
 
-  describe('emit()', () => {
+  describe('dispatch()', () => {
     it('errors if prop does not exist', () => {
       expect(() => {
         const { root } = render(
@@ -63,7 +63,7 @@ describe('Element', () => {
         );
 
         // @ts-ignore
-        root.findOne('span').emit('onFake');
+        root.findOne('span').dispatch('onFake');
       }).toThrowError('Prop `onFake` does not exist.');
     });
 
@@ -76,30 +76,30 @@ describe('Element', () => {
         );
 
         // @ts-ignore
-        root.findOne('span').emit('id');
+        root.findOne('span').dispatch('id');
       }).toThrowError('Prop `id` is not a function.');
     });
 
-    it('errors if emitting on a non-host component', () => {
-      interface EmitProps {
+    it('errors if dispatching on a non-host component', () => {
+      interface DispatchProps {
         onSomething: () => void;
       }
 
-      function EmitComp(props: EmitProps) {
+      function DispatchComp(props: DispatchProps) {
         return <div />;
       }
 
       expect(() => {
-        const { root } = render<EmitProps>(<EmitComp onSomething={() => {}} />);
+        const { root } = render<DispatchProps>(<DispatchComp onSomething={() => {}} />);
 
-        root.emit('onSomething');
-      }).toThrowError('Emitting events is only allowed on host components (DOM elements).');
+        root.dispatch('onSomething');
+      }).toThrowError('Dispatching events is only allowed on host components (DOM elements).');
     });
 
     it('executes the function prop', () => {
       const spy = jest.fn();
 
-      function EmitComp() {
+      function DispatchComp() {
         return (
           <button type="button" onClick={spy}>
             Click
@@ -107,16 +107,16 @@ describe('Element', () => {
         );
       }
 
-      const { root } = render(<EmitComp />);
+      const { root } = render(<DispatchComp />);
 
-      root.findOne('button').emit('onClick', {}, mockSyntheticEvent('onClick'));
+      root.findOne('button').dispatch('onClick', {}, mockSyntheticEvent('onClick'));
 
       expect(spy).toHaveBeenCalledWith(expect.any(Object));
     });
   });
 
-  describe('emitAndWait()', () => {
-    function EmitTest() {
+  describe('dispatchAndWait()', () => {
+    function DispatchTest() {
       const [count, setCount] = useState(0);
       const onClick = () =>
         runAsyncCall(() => {
@@ -134,11 +134,11 @@ describe('Element', () => {
     }
 
     it('waits for the async and re-render', async () => {
-      const { root } = render(<EmitTest />);
+      const { root } = render(<DispatchTest />);
 
       expect(root).toContainNode(0);
 
-      await root.findOne('button').emitAndWait('onClick', {}, mockSyntheticEvent('onClick'));
+      await root.findOne('button').dispatchAndWait('onClick', {}, mockSyntheticEvent('onClick'));
 
       expect(root).toContainNode(1);
     });

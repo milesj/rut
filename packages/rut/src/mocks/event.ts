@@ -8,10 +8,10 @@ import React from 'react';
  * We are doing this so that the generic type takes precendence,
  * as we want inferrence to be predominantly used.
  *
- * For example, if a test is emitting `findOne('button').emit('onClick`)`,
+ * For example, if a test is dispatching `findOne('button').dispatch('onClick`)`,
  * the first argument is typed as `React.MouseEvent<HTMLButtonElement, MouseEvent>`.
  * We can take advantage of type inferrence by mocking the argument at
- * the call site, like so: `findOne('button').emit('onClick', {}, mockSyntheticEvent('onClick'))`.
+ * the call site, like so: `findOne('button').dispatch('onClick', {}, mockSyntheticEvent('onClick'))`.
  *
  * With this pattern, mocks are easily typed, and the underlying event object
  * structure is close enough for most, if not all of test cases.

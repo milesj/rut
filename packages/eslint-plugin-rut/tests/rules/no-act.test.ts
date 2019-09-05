@@ -12,7 +12,7 @@ createRule().run('no-act', rule, {
       errors: [
         {
           type: 'CallExpression',
-          message: 'Use `render()`, `update()`, or `emit()` instead of `act()`.',
+          message: 'Use `render()`, `update()`, or `dispatch()` instead of `act()`.',
         },
       ],
     },
@@ -22,7 +22,7 @@ createRule().run('no-act', rule, {
         {
           type: 'CallExpression',
           message:
-            'Use `await renderAndWait()`, `await updateAndWait()`, or `await emitAndWait()` instead of `await act()`.',
+            'Use `await renderAndWait()`, `await updateAndWait()`, or `await dispatchAndWait()` instead of `await act()`.',
         },
       ],
     },

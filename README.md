@@ -36,7 +36,7 @@ describe('<Input />', () => {
   heavy lifting.
 - Update a component with new props, children, or a completely new element.
 - Unmount a component to verify cleanup and destructor based logic.
-- Emit DOM level events with a mocked synthetic event (and propagation coming soon!).
+- Dispatch DOM level events with a mocked synthetic event (and propagation coming soon!).
 - Wrap all renders with a defined wrapping component and or `React.StrictMode`.
 - Apply pre-built mocks for robust and accurate testing.
 - Utilize an array of pre-built matchers for easily querying, expecting, and asserting.

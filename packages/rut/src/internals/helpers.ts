@@ -27,7 +27,7 @@ export function getPropFromElement<P, K extends keyof P>(
   return element.element.props[name];
 }
 
-export function getPropForEmitting<P, K extends keyof P>(element: Element<P>, name: K): P[K] {
+export function getPropForDispatching<P, K extends keyof P>(element: Element<P>, name: K): P[K] {
   const prop = getPropFromElement(element, name);
 
   if (!prop) {
@@ -36,7 +36,7 @@ export function getPropForEmitting<P, K extends keyof P>(element: Element<P>, na
     throw new TypeError(`Prop \`${name}\` is not a function.`);
     // @ts-ignore Allow internal access
   } else if (typeof element.element.type !== 'string') {
-    throw new TypeError('Emitting events is only allowed on host components (DOM elements).');
+    throw new TypeError('Dispatching events is only allowed on host components (DOM elements).');
   }
 
   return prop;
