@@ -12,14 +12,19 @@ DOM. An alternative would be to mock these APIs, but that might be more trouble 
 
 TODO
 
-## How to check the props on an element?
+## How to check the props of an element?
 
-Rut does not provide an API for directly accessing the props of an element as it encourages bad
+Rut does not provide an API for directly accessing the props of an element, as it encourages bad
 testing practices. Instead, you can use the [`toHaveProp()`](./matchers.md#toHaveProp) or
-[`toHaveProps()`](./matchers.md#toHaveProps) matchers for checking props on an element.
+[`toHaveProps()`](./matchers.md#toHaveProps) matchers for checking props.
 
 ```tsx
-function PropsExample({ children, id }: { children: React.ReactNode; id?: string }) {
+interface Props {
+  children: React.ReactNode;
+  id?: string;
+}
+
+function PropsExample({ children, id }: Props) {
   return <div id={id}>{children}</div>;
 }
 
@@ -32,7 +37,7 @@ it('passes id down', () => {
 
 // GOOD
 it('passes id down', () => {
-  const { root } = render(<PropsExample id="foo">Content</PropsExample>);
+  const { root } = render<Props>(<PropsExample id="foo">Content</PropsExample>);
 
   expect(root).toHaveProp('id', 'foo');
 });

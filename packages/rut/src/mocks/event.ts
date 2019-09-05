@@ -17,17 +17,17 @@ import React from 'react';
  * structure is close enough for most, if not all of test cases.
  */
 
-interface EventOptions {
+export interface EventOptions {
   currentTarget?: HTMLElement;
   target?: Element;
 }
 
-type EventType = Exclude<
+export type EventType = Exclude<
   keyof React.DOMAttributes<unknown>,
   'children' | 'dangerouslySetInnerHTML'
 >;
 
-export class BaseEvent {
+class BaseEvent {
   bubbles: boolean = true;
 
   cancelable: boolean = true;
@@ -174,6 +174,9 @@ function createHostEvent(type: string): Event {
   }
 }
 
+/**
+ * Mock a DOM `Event` based on type.
+ */
 export function mockEvent<T = Event>(type: string, options: EventOptions = {}): T {
   let event: Event;
 
@@ -202,7 +205,7 @@ export function mockEvent<T = Event>(type: string, options: EventOptions = {}): 
   return event;
 }
 
-export class SyntheticEvent extends BaseEvent {
+class SyntheticEvent extends BaseEvent {
   nativeEvent: Event;
 
   persisted: boolean = false;
@@ -248,6 +251,9 @@ export class SyntheticEvent extends BaseEvent {
   }
 }
 
+/**
+ * Mock a React `SyntheticEvent` based on type.
+ */
 export function mockSyntheticEvent<T = React.SyntheticEvent>(
   type: EventType,
   options: EventOptions = {},

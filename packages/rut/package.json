@@ -25,9 +25,11 @@
     "react": "^16.9.0"
   },
   "dependencies": {
+    "@types/fetch-mock": "*",
     "@types/react": "*",
     "@types/react-is": "*",
     "@types/react-test-renderer": "*",
+    "fetch-mock": "^7.3.9",
     "react-is": "^16.9.0",
     "react-test-renderer": "^16.9.0"
   },

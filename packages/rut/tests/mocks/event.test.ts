@@ -1,11 +1,11 @@
-import { mockEvent, mockSyntheticEvent, BaseEvent, SyntheticEvent } from '../../src/mocks/event';
+import { mockEvent, mockSyntheticEvent } from '../../src/mocks/event';
 
 describe('event', () => {
   describe('mockEvent()', () => {
     it('returns a custom event object', () => {
       const event = mockEvent('click');
 
-      expect(event).toBeInstanceOf(BaseEvent);
+      expect(event.constructor.name).toBe('BaseEvent');
       expect(event.type).toBe('click');
     });
 
@@ -59,8 +59,8 @@ describe('event', () => {
     it('returns custom event objects', () => {
       const event = mockSyntheticEvent('onClick');
 
-      expect(event).toBeInstanceOf(SyntheticEvent);
-      expect(event.nativeEvent).toBeInstanceOf(BaseEvent);
+      expect(event.constructor.name).toBe('SyntheticEvent');
+      expect(event.nativeEvent.constructor.name).toBe('BaseEvent');
       expect(event.type).toBe('click');
     });
 

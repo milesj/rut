@@ -3,7 +3,7 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import { matchers } from 'rut';
+import { matchers, unmockFetches } from 'rut';
 import serializer from './serializer';
 
 const jestMatchers: jest.ExpectExtendMap = {};
@@ -22,5 +22,7 @@ Object.entries(matchers).forEach(([name, matcher]) => {
 
 expect.extend(jestMatchers);
 expect.addSnapshotSerializer(serializer);
+
+afterEach(unmockFetches);
 
 export default jestMatchers;
