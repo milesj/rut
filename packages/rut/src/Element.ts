@@ -124,8 +124,11 @@ export default class Element<Props = {}> {
    * Search through the current tree for all elements that match the defined React
    * component or HTML type. If any are found, a list of `Element`s is returned.
    */
-  find<T extends HostComponentType, P = HostProps<T>>(type: T, props?: Partial<P>): Element<P>[];
-  find<P>(type: React.ComponentType<P>, props?: Partial<P>): Element<P>[];
+  find<T extends HostComponentType, P = HostProps<T>, PP = Partial<P>>(
+    type: T,
+    props?: PP,
+  ): Element<P>[];
+  find<P, PP = Partial<P>>(type: React.ComponentType<P>, props?: PP): Element<P>[];
   find(type: React.ElementType<unknown>, props?: UnknownProps): Element<unknown>[] {
     return this.query(whereTypeAndProps(type, props));
   }
@@ -135,8 +138,11 @@ export default class Element<Props = {}> {
    * component or HTML type. If exactly 1 is found, a `Element`s is returned,
    * otherwise an error is thrown.
    */
-  findOne<T extends HostComponentType, P = HostProps<T>>(type: T, props?: Partial<P>): Element<P>;
-  findOne<P>(type: React.ComponentType<P>, props?: Partial<P>): Element<P>;
+  findOne<T extends HostComponentType, P = HostProps<T>, PP = Partial<P>>(
+    type: T,
+    props?: PP,
+  ): Element<P>;
+  findOne<P, PP = Partial<P>>(type: React.ComponentType<P>, props?: PP): Element<P>;
   findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element<unknown> {
     const results = this.find(type, props);
 
