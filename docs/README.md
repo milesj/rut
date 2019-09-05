@@ -27,17 +27,30 @@ describe('<Input />', () => {
 ## Features
 
 - Type safe by design. Test with confidence.
-- First-class async support. Wait for async calls to finish before returning a rendered result, and
-  testing against it.
+- First-class async support. Wait for async calls to finish before returning a rendered result.
 - Deep [`act()`](https://reactjs.org/docs/testing-recipes.html#act) integration. Let Rut do the
-  heavy lifting. You simply worry about asserting.
+  heavy lifting.
 - Update a component with new props, children, or a completely new element.
 - Unmount a component to verify cleanup and destructor based logic.
 - Emit DOM level events with a mocked synthetic event (and propagation coming soon!).
 - Wrap all renders with a defined wrapping component and or `React.StrictMode`.
 - Apply pre-built mocks for robust and accurate testing.
-- Utilize an array of pre-built matchers for easily querying, expecting, and asserting common test
-  patterns.
+- Utilize an array of pre-built matchers for easily querying, expecting, and asserting.
+
+## Best Practices
+
+Encourages the [Arrange-Act-Assert](http://wiki.c2.com/?ArrangeActAssert) testing pattern.
+
+_Arrange:_ Renders the entire component tree (instead of shallow) for a more accurate representation
+of your component. Requires fetches, events, contexts, and more, to be properly mocked or setup
+before hand.
+
+_Act:_ With no direct access to state or internals, it forces you to interact with your tree in the
+same manner your user would. Dispatch events to toggle states or execute handlers, like a form
+submission.
+
+_Assert:_ Test your expectations using pre-built matchers for common testing scenarios and patterns
+while avoiding implementation details.
 
 ## Supported
 
