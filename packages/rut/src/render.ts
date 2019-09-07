@@ -8,7 +8,7 @@ import { RendererOptions } from './types';
 export function render<Props = unknown>(
   element: React.ReactElement,
   options?: RendererOptions,
-): Result<Props> {
+): Omit<Result<Props>, 'rerenderAndWait'> {
   let result: Result<Props>;
 
   act(() => {
@@ -24,7 +24,7 @@ export function render<Props = unknown>(
 export async function renderAndWait<Props = unknown>(
   element: React.ReactElement,
   options?: RendererOptions,
-): Promise<Result<Props>> {
+): Promise<Omit<Result<Props>, 'rerender'>> {
   const waitForQueue = wrapAndCaptureAsync();
   let result: Result<Props>;
 

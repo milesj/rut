@@ -420,16 +420,6 @@ describe('Result', () => {
       expect(result.root).toHaveProp('name', 'update');
     });
 
-    it('can completely replace the root element', () => {
-      const result = render(<div />);
-
-      expect(result.root).toBeElementType('div');
-
-      result.update(<span />);
-
-      expect(result.root).toBeElementType('span');
-    });
-
     describe('class component', () => {
       it('re-renders if props dont change', () => {
         const result = render<UpdateProps>(<ClassUpdateTest />);
@@ -663,6 +653,52 @@ describe('Result', () => {
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(result.root).toContainNode('Loaded');
+      });
+    });
+  });
+
+  describe('re-rendering', () => {
+    describe('sync', () => {
+      it('can replace the root element', () => {
+        const { root, rerender } = render(<div />);
+
+        expect(root).toBeElementType('div');
+
+        const newRoot = rerender(<span />);
+
+        expect(newRoot).toBeElementType('span');
+      });
+
+      it('can reuse the root on the result', () => {
+        const result = render(<div />);
+
+        expect(result.root).toBeElementType('div');
+
+        result.rerender(<span />);
+
+        expect(result.root).toBeElementType('span');
+      });
+    });
+
+    describe('async', () => {
+      it('can replace the root element', async () => {
+        const { root, rerenderAndWait } = await renderAndWait(<div />);
+
+        expect(root).toBeElementType('div');
+
+        const newRoot = await rerenderAndWait(<span />);
+
+        expect(newRoot).toBeElementType('span');
+      });
+
+      it('can reuse the root on the result', async () => {
+        const result = await renderAndWait(<div />);
+
+        expect(result.root).toBeElementType('div');
+
+        await result.rerenderAndWait(<span />);
+
+        expect(result.root).toBeElementType('span');
       });
     });
   });

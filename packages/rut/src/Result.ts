@@ -9,6 +9,7 @@ import { NodeLike } from './helpers';
 
 const ELEMENT = Symbol('react-element');
 const RENDERER = Symbol('react-test-renderer');
+const OPTIONS = Symbol('result-options');
 
 export default class Result<Props = {}> {
   readonly isRutResult = true;
@@ -17,10 +18,10 @@ export default class Result<Props = {}> {
 
   private [RENDERER]: ReactTestRenderer;
 
-  private options: RendererOptions;
+  private [OPTIONS]: RendererOptions;
 
   constructor(element: React.ReactElement<Props>, options: RendererOptions = {}) {
-    this.options = options;
+    this[OPTIONS] = options;
     this[ELEMENT] = element;
     this[RENDERER] = create(
       this.wrapElement(element),
@@ -63,7 +64,7 @@ export default class Result<Props = {}> {
 
     // When being wrapped, we need to drill down and find the
     // element that matches the one initially passed in.
-    if (this.options.wrapper) {
+    if (this[OPTIONS].wrapper) {
       const nodes = root.query<Props>(
         node => node.type === rootType && deepEqual(node.props, element.props),
       );
@@ -101,6 +102,43 @@ export default class Result<Props = {}> {
   toTree = () => this[RENDERER].toTree();
 
   /**
+   * Re-render the in-memory tree with a new element and optional options. This
+   * simulates a React update at the root. If the new element has the same type and key as
+   * the previous element, the tree will be updated; otherwise, it will mount a new tree.
+   *
+   * Returns the new root as an `Element`.
+   */
+  rerender = (element: React.ReactElement<Props>, options?: RendererOptions) => {
+    Object.assign(this[OPTIONS], options);
+
+    act(() => {
+      this[RENDERER].update(this.updateElement(element));
+    });
+
+    return this.root;
+  };
+
+  /**
+   * Like `rerender` but also awaits the re-render so that async calls have time to finish.
+   */
+  rerenderAndWait = async (element: React.ReactElement<Props>, options?: RendererOptions) => {
+    Object.assign(this[OPTIONS], options);
+
+    const waitForQueue = wrapAndCaptureAsync();
+
+    await act(async () => {
+      await this[RENDERER].update(this.updateElement(element));
+    });
+
+    // We need an additional act as async results may cause re-renders
+    await act(async () => {
+      await waitForQueue();
+    });
+
+    return this.root;
+  };
+
+  /**
    * Unmount the in-memory tree, triggering the appropriate lifecycle events.
    */
   unmount = () => {
@@ -110,26 +148,19 @@ export default class Result<Props = {}> {
   };
 
   /**
-   * Re-render the in-memory tree with optional new props, children, or element. This
-   * simulates a React update at the root. If the new element has the same type and key as
-   * the previous element, the tree will be updated; otherwise, it will mount a new tree.
+   * Update the in-memory tree with new props or children. If no props are passed,
+   * it will force an update of the current element.
    */
-  update = (
-    newPropsOrElement?: Partial<Props> | React.ReactElement,
-    newChildren?: React.ReactNode,
-  ) => {
+  update = (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
     act(() => {
       this[RENDERER].update(this.updateElement(newPropsOrElement, newChildren));
     });
   };
 
   /**
-   * Like `update` but also awaits the re-render so that async calls have time to finish.
+   * Like `update` but also awaits the update so that async calls have time to finish.
    */
-  updateAndWait = async (
-    newPropsOrElement?: Partial<Props> | React.ReactElement,
-    newChildren?: React.ReactNode,
-  ) => {
+  updateAndWait = async (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
     const waitForQueue = wrapAndCaptureAsync();
 
     await act(async () => {
@@ -164,15 +195,16 @@ export default class Result<Props = {}> {
    * Wrap the root element with additional elements for convenient composition.
    */
   protected wrapElement(root: React.ReactElement): React.ReactElement {
+    const options = this[OPTIONS];
     let element: React.ReactElement = root;
 
     // Wrap with another elemnt
-    if (this.options.wrapper) {
-      element = React.cloneElement(this.options.wrapper, {}, element);
+    if (options.wrapper) {
+      element = React.cloneElement(options.wrapper, {}, element);
     }
 
     // Wrap with strict mode
-    if (this.options.strict) {
+    if (options.strict) {
       element = React.createElement(React.StrictMode, {}, element);
     }
 
