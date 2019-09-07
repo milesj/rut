@@ -7,8 +7,15 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.test.ts'],
-      extends: ['plugin:rut/recommended'],
+      files: ['*.test.ts', '*.test.tsx'],
+      plugins: ['rut'],
+      rules: {
+        'rut/no-act': 'error',
+        'rut/no-internals': 'error',
+
+        // Lots of test cases dont use props
+        'rut/require-render-generics': 'off',
+      },
     },
   ],
 };

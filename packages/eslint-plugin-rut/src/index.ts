@@ -13,6 +13,7 @@ export = {
       rules: {
         'rut/no-act': 'error',
         'rut/no-internals': 'error',
+        'rut/require-render-generics': 'error',
       },
     },
   },

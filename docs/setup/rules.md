@@ -4,3 +4,5 @@
   and shouldn't be necessary.
 - `no-internals` - Disallow import and usage of Rut's internal APIs. Accessing these directly is a
   code smell.
+- `require-render-generics` - Require generics for `render()` and `renderAndWait()` functions. Does
+  not apply to host elements.
