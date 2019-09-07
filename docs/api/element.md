@@ -110,6 +110,31 @@ const { root } = render(
 const input = root.find('input', { name: 'email' }); // 1
 ```
 
+## `findAt()`
+
+> findAt\<Tag extends HostComponentType, Props = JSX.IntrinsicElements[Tag]>(type: Tag, at: 'first'
+> | 'last' | number, props?: Partial\<Props>): Element\<Props>
+
+> findAt\<Props>(type: React.ComponentType\<Props>, at: 'first' | 'last' | number, props?:
+> Partial\<Props>): Element\<Props>
+
+Like [`find()`](#find) but returns the element at the defined index. Accepts shorthand `first` and
+`last` indices, or a numerical index. If no element is found, an error is thrown.
+
+```tsx
+const { root } = render(
+  <form>
+    <input type="text" name="name" />
+    <input type="text" name="email" />
+    <input type="text" name="password" />
+  </form>,
+);
+
+const name = root.findAt('input', 'first');
+const email = root.findAt('input', 1);
+const password = root.findAt('input', 'last');
+```
+
 ## `findOne()`
 
 > findOne\<Tag extends HostComponentType, Props = JSX.IntrinsicElements[Tag]>(type: Tag, props?:

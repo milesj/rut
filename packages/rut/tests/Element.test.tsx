@@ -218,6 +218,58 @@ describe('Element', () => {
     });
   });
 
+  describe('findAt()', () => {
+    it('returns the element at each index', () => {
+      const { root } = render(
+        <div>
+          <span>1</span>
+          <span>2</span>
+          <span>3</span>
+        </div>,
+      );
+
+      const one = root.findAt('span', 'first');
+      const two = root.findAt('span', 1);
+      const three = root.findAt('span', 'last');
+
+      expect(one).toContainNode('1');
+      expect(two).toContainNode('2');
+      expect(three).toContainNode('3');
+    });
+
+    it('errors if unknown type passed', () => {
+      const { root } = render(<div />);
+
+      expect(() => {
+        root.findAt('span', 'middle');
+      }).toThrowError('Invalid index type "middle".');
+    });
+
+    it('errors if first not found', () => {
+      const { root } = render(<div />);
+
+      expect(() => {
+        root.findAt('span', 'first');
+      }).toThrowError('Expected to find an element at index 0 for `span`.');
+    });
+
+    it('errors if last not found', () => {
+      const { root } = render(<div />);
+
+      expect(() => {
+        root.findAt('span', 'last');
+      }).toThrowError('Expected to find an element at index -1 for `span`.');
+    });
+
+    it('errors if index not found', () => {
+      const { root } = render(<div />);
+
+      expect(() => {
+        root.findAt('span', 3);
+      }).toThrowError('Expected to find an element at index 3 for `span`.');
+    });
+  });
+
   describe('findOne()', () => {
     it('errors if no result found', () => {
       const { root } = render(<div />);

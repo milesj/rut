@@ -64,6 +64,8 @@ export interface FiberNode {
   type: React.ElementType;
 }
 
+export type AtIndexType = 'first' | 'last' | number;
+
 export type Predicate = (node: TestNode, fiber: FiberNode) => boolean;
 
 export interface MatchResult {

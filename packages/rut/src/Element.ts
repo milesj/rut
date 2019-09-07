@@ -11,6 +11,7 @@ import {
   DebugOptions,
   UnknownProps,
   HostProps,
+  AtIndexType,
 } from './types';
 import { getTypeName } from './helpers';
 import wrapAndCaptureAsync from './internals/async';
@@ -131,6 +132,46 @@ export default class Element<Props = {}> {
   find<P, PP = Partial<P>>(type: React.ComponentType<P>, props?: PP): Element<P>[];
   find(type: React.ElementType<unknown>, props?: UnknownProps): Element<unknown>[] {
     return this.query(whereTypeAndProps(type, props));
+  }
+
+  /**
+   * Search through the current tree for all elements that match the defined React
+   * component or HTML type. If any are found, return the `Element` at the defined
+   * index. Accepts shorthand `first` and `last` indices.
+   */
+  findAt<T extends HostComponentType, P = HostProps<T>, PP = Partial<P>>(
+    type: T,
+    at: AtIndexType,
+    props?: PP,
+  ): Element<P>;
+  findAt<P, PP = Partial<P>>(type: React.ComponentType<P>, at: AtIndexType, props?: PP): Element<P>;
+  findAt(
+    type: React.ElementType<unknown>,
+    at: AtIndexType,
+    props?: UnknownProps,
+  ): Element<unknown> {
+    const results = this.query(whereTypeAndProps(type, props));
+    let index: number;
+
+    if (at === 'first') {
+      index = 0;
+    } else if (at === 'last') {
+      index = results.length - 1;
+    } else if (typeof at === 'number') {
+      index = at;
+    } else {
+      throw new TypeError(`Invalid index type "${at}".`);
+    }
+
+    const value = results[index];
+
+    if (!value) {
+      throw new Error(
+        `Expected to find an element at index ${index} for \`${getTypeName(type)}\`.`,
+      );
+    }
+
+    return value;
   }
 
   /**
