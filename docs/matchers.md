@@ -104,7 +104,7 @@ function User({ firstName, lastName }: { firstName: string; lastName: string }) 
   );
 }
 
-const { root } = render(<User firstName="Bruce" lastName="Bruce" />);
+const { root } = render(<User firstName="Bruce" lastName="Wayne" />);
 
 // Works
 expect(root).toContainNode('Bruce Wayne');
@@ -114,18 +114,20 @@ expect(root).toContainNode(<h1>Bruce Wayne</h1>);
 ```
 
 The reason the latter doesn't work is because of how React's internals work. When interpolation is
-used, the `children` prop becomes an array, resulting in the rendered example's children to be
+used, the `children` prop becomes an array, resulting in the rendered children to be
 `['Bruce', ' ', 'Wayne']`, while the expectation's children is simply `'Bruce Wayne'`. These do not
 match! To fix this, the expectation must also use matching interpolations.
 
 ```tsx
-// Works!!!
+// Works
 expect(root).toContainNode(
   <h1>
     {'Bruce'} {'Wayne'}
   </h1>,
 );
 ```
+
+> When in doubt, just use strings!
 
 ## `toHaveClassName()`
 
