@@ -1,11 +1,11 @@
 import Element from '../Element';
-import { checkIsRutElement, getPropFromElement, shallowEqual } from '../internals/helpers';
+import { checkIsRutElement, getPropFromElement, deepEqual } from '../internals/helpers';
 import { formatValue } from '../helpers';
 import { MatchResult } from '../types';
 
 /**
  * Check that an element has a prop that matches the provided name, with optional matching value.
- * * Arrays and objects will be matched using shallow equality.
+ * Arrays and objects will be matched using deep equality.
  */
 export default function toHaveProp<P>(
   element: Element<P>,
@@ -22,7 +22,7 @@ export default function toHaveProp<P>(
     return {
       message: `expected \`${element}\` to have a ${formattedName} prop with a value of ${formattedValue}`,
       notMessage: `expected \`${element}\` not to have a ${formattedName} prop with a value of ${formattedValue}`,
-      passed: shallowEqual(prop, value),
+      passed: deepEqual(prop, value),
     };
   }
 

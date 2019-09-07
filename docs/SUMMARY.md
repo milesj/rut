@@ -9,4 +9,6 @@
 - [Matchers](./matchers.md)
 - [Mocks](./mocks.md)
 - [Predicates](./predicates.md)
+- [Examples](https://github.com/milesj/rut/blob/master/packages/rut/tests/examples/)
+  - [Async](https://github.com/milesj/rut/blob/master/packages/rut/tests/examples/async.test.tsx)
 - [Changelog](https://github.com/milesj/rut/blob/master/CHANGELOG.md)

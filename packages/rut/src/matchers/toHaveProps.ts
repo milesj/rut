@@ -1,11 +1,11 @@
 import Element from '../Element';
-import { checkIsRutElement, getPropFromElement, shallowEqual } from '../internals/helpers';
+import { checkIsRutElement, getPropFromElement, deepEqual } from '../internals/helpers';
 import { formatValue } from '../helpers';
 import { MatchResult } from '../types';
 
 /**
  * Check that an element's props match all the provided props and their values.
- * Arrays and objects will be matched using shallow equality.
+ * Arrays and objects will be matched using deep equality.
  */
 export default function toHaveProps<P>(
   element: Element<P>,
@@ -18,7 +18,7 @@ export default function toHaveProps<P>(
   Object.entries(props).forEach(([key, value]) => {
     const prop = getPropFromElement(element, key as keyof P);
 
-    if (!shallowEqual(prop, value)) {
+    if (!deepEqual(prop, value)) {
       invalid.push(formatValue(key));
     }
   });

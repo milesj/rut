@@ -5,9 +5,9 @@ import fetchMock, {
   MockOptions,
 } from 'fetch-mock';
 
-export type FetchMockResult = fetchMock.FetchMockStatic;
+export type MockFetchResult = fetchMock.FetchMockStatic;
 
-const instances = new Set<FetchMockResult>();
+const instances = new Set<MockFetchResult>();
 
 /**
  * Mock the native `fetch()` with pre-defined responses.
@@ -17,7 +17,7 @@ export function mockFetch(
   matcher: MockMatcher,
   response: MockResponse | MockResponseFunction,
   options?: MockOptions,
-): FetchMockResult {
+): MockFetchResult {
   const instance = fetchMock.mock(matcher, response, options);
 
   instances.add(instance);

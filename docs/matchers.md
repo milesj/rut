@@ -75,7 +75,7 @@ const { root } = render(
 expect(root).toContainNode('Rut'); // true
 ```
 
-And when checking elements, it will compare the component type and props for shallow equality.
+And when checking elements, it will compare the component type and props for deep equality.
 
 ```tsx
 const { root } = render(
@@ -86,7 +86,45 @@ const { root } = render(
   </div>,
 );
 
-expect(root).toContainNode(<Title level={1}>Rut</Title>'); // true
+expect(root).toContainNode(<Title level={1}>Rut</Title>); // true
+```
+
+### Caveats
+
+When an element uses interpolation within its children, and you're attempting to find a node using
+an element (and not a string), the expectation must also use interpolation. For example, take this
+component that renders a user's name, and some assertions checking for a node.
+
+```tsx
+function User({ firstName, lastName }: { firstName: string; lastName: string }) {
+  return (
+    <h1>
+      {user.firstName} {user.lastName}
+    </h1>
+  );
+}
+
+const { root } = render(<User firstName="Bruce" lastName="Bruce" />);
+
+// Works
+expect(root).toContainNode('Bruce Wayne');
+
+// Does not work???
+expect(root).toContainNode(<h1>Bruce Wayne</h1>);
+```
+
+The reason the latter doesn't work is because of how React's internals work. When interpolation is
+used, the `children` prop becomes an array, resulting in the rendered example's children to be
+`['Bruce', ' ', 'Wayne']`, while the expectation's children is simply `'Bruce Wayne'`. These do not
+match! To fix this, the expectation must also use matching interpolations.
+
+```tsx
+// Works!!!
+expect(root).toContainNode(
+  <h1>
+    {'Bruce'} {'Wayne'}
+  </h1>,
+);
 ```
 
 ## `toHaveClassName()`
@@ -118,7 +156,7 @@ expect(root).toHaveKey(123); // true
 > toHaveProp(name: string, value?: unknown): boolean
 
 Check that an element has a prop that matches the provided name, with optional matching value.
-Arrays and objects will be matched using shallow equality.
+Arrays and objects will be matched using deep equality.
 
 ```tsx
 const { root } = render(<div id="foo" />);
@@ -132,7 +170,7 @@ expect(root).toHaveProp('id', 'bar'); // false
 > toHaveProps(props: { [key: string]: unknown }): boolean
 
 Check that an element's props match all the provided props and their values. Arrays and objects will
-be matched using shallow equality.
+be matched using deep equality.
 
 ```tsx
 const { root } = render(<div id="foo" role="main" />);

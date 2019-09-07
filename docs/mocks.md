@@ -76,7 +76,7 @@ Lastly, if _not_ using [Jest](./setup.md#jest), you'll need to unmock the fetch 
 using `restore()`.
 
 ```ts
-let mock: FetchMockResult;
+let mock: MockFetchResult;
 
 beforeEach(() => {
   mock = mockFetch('/users/1', {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Element from '../Element';
-import { checkIsRutElement, shallowEqual } from '../internals/helpers';
+import { checkIsRutElement, isAllTextNodes, deepEqual } from '../internals/helpers';
 import { getNodeName } from '../helpers';
 import { MatchResult } from '../types';
 
@@ -20,14 +20,27 @@ export default function toContainNode(
         return (
           testNode.type === node.type &&
           fiberNode.key === node.key &&
-          (testNode.props === node.props || shallowEqual(testNode.props, node.props))
+          deepEqual(testNode.props, node.props)
         );
       }
+
+      const expected = String(node);
 
       // RTR doesn't run the predicate on non-element nodes (like strings and numbers),
       // so we need to query the parent by traversing the children.
       // https://github.com/facebook/react/blob/master/packages/react-test-renderer/src/ReactTestRenderer.js#L388
-      return testNode.children.includes(String(node));
+      if (testNode.children.includes(expected)) {
+        return true;
+      }
+
+      // When interpolation is used within JSX, it causes `children` to be
+      // an array of strings, instead of a string. So if all nodes are strings,
+      // lets join and compare, to make it easier on the consumer.
+      if (isAllTextNodes(testNode.children) && testNode.children.join('') === expected) {
+        return true;
+      }
+
+      return false;
     },
     { deep: false },
   );

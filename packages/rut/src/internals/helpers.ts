@@ -1,3 +1,4 @@
+import util from 'util';
 import React from 'react';
 import Element from '../Element';
 import { isReactNodeLike, NodeLike } from '../helpers';
@@ -17,6 +18,10 @@ export function checkIsRutElement(value: unknown) {
   }
 
   throw new Error('Expected a Rut `Element`.');
+}
+
+export function deepEqual(a: unknown, b: unknown): boolean {
+  return util.isDeepStrictEqual(a, b);
 }
 
 export function getPropFromElement<P, K extends keyof P>(
@@ -42,41 +47,12 @@ export function getPropForDispatching<P, K extends keyof P>(element: Element<P>,
   return prop;
 }
 
-// Keep shallow equal in sync with React core!
-// https://github.com/facebook/react/blob/master/packages/shared/shallowEqual.js
-export function shallowEqual(objA: unknown, objB: unknown): boolean {
-  if (Object.is(objA, objB)) {
-    return true;
-  }
-
-  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
-    return false;
-  }
-
-  const keysA = Object.keys(objA);
-  const keysB = Object.keys(objB);
-
-  if (keysA.length !== keysB.length) {
-    return false;
-  }
-
-  // Test for A's keys different from B.
-  // eslint-disable-next-line unicorn/no-for-loop
-  for (let i = 0; i < keysA.length; i += 1) {
-    if (
-      !Object.prototype.hasOwnProperty.call(objB, keysA[i]) ||
-      // @ts-ignore
-      !Object.is(objA[keysA[i]], objB[keysA[i]])
-    ) {
-      return false;
-    }
-  }
-
-  return true;
+export function isAllTextNodes(nodes: unknown[]): boolean {
+  return nodes.every(node => typeof node === 'string');
 }
 
 export function containsProps(props: UnknownProps, contains: UnknownProps): boolean {
-  return Object.keys(contains).every(prop => props[prop] === contains[prop]);
+  return Object.keys(contains).every(prop => deepEqual(props[prop], contains[prop]));
 }
 
 /**

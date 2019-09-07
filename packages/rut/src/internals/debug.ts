@@ -2,6 +2,7 @@
 
 import util from 'util';
 import React from 'react';
+import { isAllTextNodes } from './helpers';
 import { getTypeName, getNodeName } from '../helpers';
 import { DebugOptions, TestNode } from '../types';
 
@@ -23,10 +24,6 @@ const DEFAULT_OPTIONS: Required<DebugOptions> = {
   return: false,
   sortProps: true,
 };
-
-function isAllTextNodes(nodes: unknown[]): boolean {
-  return nodes.every(node => typeof node === 'string');
-}
 
 function isClassInstance(value: unknown): value is Function {
   if (typeof value !== 'object' || !value) {

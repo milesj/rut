@@ -3,7 +3,7 @@ import { act, create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
 import wrapAndCaptureAsync from './internals/async';
 import debug from './internals/debug';
-import { shallowEqual, unwrapExoticType } from './internals/helpers';
+import { deepEqual, unwrapExoticType } from './internals/helpers';
 import { RendererOptions, DebugOptions } from './types';
 import { NodeLike } from './helpers';
 
@@ -65,7 +65,7 @@ export default class Result<Props = {}> {
     // element that matches the one initially passed in.
     if (this.options.wrapper) {
       const nodes = root.query<Props>(
-        node => node.type === rootType && shallowEqual(node.props, element.props),
+        node => node.type === rootType && deepEqual(node.props, element.props),
       );
 
       // istanbul ignore next
