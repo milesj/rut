@@ -60,8 +60,8 @@ The example above would log something similar to the following.
 
 > rerender(element: React.ReactElement\<Props>, options?: RendererOptions): Element\<Props>
 
-Re-render the in-memory tree with an update [root](#root) element and optional options, and return
-the new root element. This is a perfect opportunity to change or replace the `wrapper` element.
+Re-render the in-memory tree with an updated [root](#root) element and optional options, and return
+the new root element. This is a perfect opportunity to update or replace the `wrapper` element.
 
 ```tsx
 const { root, rerender } = render<InputProps>(<Input name="email" />, {
@@ -74,8 +74,8 @@ const newRoot = rerender(<Input name="email" id="email" />, {
 });
 ```
 
-If you don't destructure the result, you may use the `root` on the returned result, instead of using
-the new root, as the instance is preserved.
+If you don't destructure the result, you may use the `root` on the initial returned result, instead
+of using the new root, as the instance is preserved.
 
 ```tsx
 const result = render<InputProps>(<Input name="email" />, {
@@ -89,7 +89,7 @@ result.rerender(<Input name="email" id="email" />, {
 result.root; // Latest
 ```
 
-> This is not available when using `renderAndWait()`.
+> This method is not available when using `renderAndWait()`.
 
 ## `rerenderAndWait()`
 
@@ -110,7 +110,7 @@ const newRoot = await rerenderAndWait(<Input name="email" id="email" />, {
 });
 ```
 
-> This is not available when using `render()`.
+> This method is not available when using `render()`.
 
 ## `update()`
 

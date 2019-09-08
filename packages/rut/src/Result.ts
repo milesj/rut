@@ -1,7 +1,7 @@
 import React from 'react';
-import { act, create, ReactTestRenderer } from 'react-test-renderer';
+import { create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
-import wrapAndCaptureAsync from './internals/async';
+import { doAct, doAsyncAct } from './internals/act';
 import debug from './internals/debug';
 import { deepEqual, unwrapExoticType } from './internals/helpers';
 import { RendererOptions, DebugOptions } from './types';
@@ -111,9 +111,7 @@ export default class Result<Props = {}> {
   rerender = (element: React.ReactElement<Props>, options?: RendererOptions) => {
     Object.assign(this[OPTIONS], options);
 
-    act(() => {
-      this[RENDERER].update(this.updateElement(element));
-    });
+    doAct(() => this[RENDERER].update(this.updateElement(element)));
 
     return this.root;
   };
@@ -124,16 +122,7 @@ export default class Result<Props = {}> {
   rerenderAndWait = async (element: React.ReactElement<Props>, options?: RendererOptions) => {
     Object.assign(this[OPTIONS], options);
 
-    const waitForQueue = wrapAndCaptureAsync();
-
-    await act(async () => {
-      await this[RENDERER].update(this.updateElement(element));
-    });
-
-    // We need an additional act as async results may cause re-renders
-    await act(async () => {
-      await waitForQueue();
-    });
+    await doAsyncAct(() => this[RENDERER].update(this.updateElement(element)));
 
     return this.root;
   };
@@ -142,7 +131,7 @@ export default class Result<Props = {}> {
    * Unmount the in-memory tree, triggering the appropriate lifecycle events.
    */
   unmount = () => {
-    act(() => {
+    doAct(() => {
       this[RENDERER].unmount();
     });
   };
@@ -152,25 +141,16 @@ export default class Result<Props = {}> {
    * it will force an update of the current element.
    */
   update = (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
-    act(() => {
-      this[RENDERER].update(this.updateElement(newPropsOrElement, newChildren));
-    });
+    doAct(() => this[RENDERER].update(this.updateElement(newPropsOrElement, newChildren)));
   };
 
   /**
    * Like `update` but also awaits the update so that async calls have time to finish.
    */
   updateAndWait = async (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
-    const waitForQueue = wrapAndCaptureAsync();
-
-    await act(async () => {
-      await this[RENDERER].update(this.updateElement(newPropsOrElement, newChildren));
-    });
-
-    // We need an additional act as async results may cause re-renders
-    await act(async () => {
-      await waitForQueue();
-    });
+    await doAsyncAct(() =>
+      this[RENDERER].update(this.updateElement(newPropsOrElement, newChildren)),
+    );
   };
 
   /**
