@@ -13,7 +13,7 @@
     "type": "beemo typescript --build --reference-workspaces",
     "prerelease": "yarn run clean && yarn test",
     "pretest": "yarn run type",
-    "test": "yarn run jest",
+    "test": "yarn run coverage",
     "posttest": "yarn run eslint"
   },
   "devDependencies": {
