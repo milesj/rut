@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Result re-rendering can update the wrapper 1`] = `
+"<div id=\\"first\\">
+  <div />
+</div>"
+`;
+
+exports[`Result re-rendering can update the wrapper 2`] = `
+"<section id=\\"second\\">
+  <span />
+</section>"
+`;
+
 exports[`Result updating when using \`strict\` and \`wrapper\`, re-renders the passed element 1`] = `
 <Wrapper>
   <FuncComp name="mount">

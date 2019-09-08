@@ -658,6 +658,35 @@ describe('Result', () => {
   });
 
   describe('re-rendering', () => {
+    it('can create multiple root elements (assigned to different vars)', () => {
+      const { root, rerender } = render(<div />);
+      const spanRoot = rerender(<span />);
+      const sectionRoot = rerender(<section />);
+
+      expect(spanRoot).not.toBe(root);
+      expect(sectionRoot).not.toBe(root);
+      expect(sectionRoot).toBeElementType('section');
+    });
+
+    it('can update the wrapper', () => {
+      const result = render(<div />, {
+        wrapper: <div id="first" />,
+      });
+
+      const out1 = result.debug({ return: true });
+
+      expect(out1).toMatchSnapshot();
+
+      result.rerender(<span />, {
+        wrapper: <section id="second" />,
+      });
+
+      const out2 = result.debug({ return: true });
+
+      expect(out2).toMatchSnapshot();
+      expect(out1).not.toBe(out2);
+    });
+
     describe('sync', () => {
       it('can replace the root element', () => {
         const { root, rerender } = render(<div />);
