@@ -1,7 +1,7 @@
 import Element from '../Element';
 import toHaveProp from './toHaveProp';
 import { MatchResult } from '../types';
-import { checkIsRutElement, getPropFromElement } from '../internals/helpers';
+import { checkIsRutElement, getProp } from '../internals/helpers';
 
 /**
  * Check that an element has a `value` or `defaultValue` prop that
@@ -13,8 +13,8 @@ export default function toHaveValue(
 ): MatchResult {
   checkIsRutElement(element);
 
-  const defaultValue = getPropFromElement(element, 'defaultValue');
-  const propValue = getPropFromElement(element, 'value');
+  const defaultValue = getProp(element, 'defaultValue');
+  const propValue = getProp(element, 'value');
   let name = '';
 
   if (defaultValue !== undefined) {

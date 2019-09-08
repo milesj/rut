@@ -1,7 +1,7 @@
 /* eslint-disable lines-between-class-members, no-dupe-class-members */
 
 import React from 'react';
-import { act, ReactTestInstance } from 'react-test-renderer';
+import { ReactTestInstance } from 'react-test-renderer';
 import {
   ArgsOf,
   ReturnOf,
@@ -14,7 +14,7 @@ import {
   AtIndexType,
 } from './types';
 import { getTypeName } from './helpers';
-import wrapAndCaptureAsync from './internals/async';
+import { doAct, doAsyncAct } from './internals/act';
 import debug from './internals/debug';
 import { getPropForDispatching } from './internals/helpers';
 import { whereTypeAndProps } from './predicates';
@@ -70,7 +70,6 @@ export default class Element<Props = {}> {
     ...args: ArgsOf<Props[K]>
   ): ReturnOf<Props[K]> {
     const prop = getPropForDispatching(this, name);
-    let value: ReturnOf<Props[K]>;
 
     // istanbul ignore next
     if (options.propagate) {
@@ -78,14 +77,8 @@ export default class Element<Props = {}> {
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    act(() => {
-      if (typeof prop === 'function') {
-        value = prop(...args);
-      }
-    });
-
-    // @ts-ignore Value is assigned
-    return value;
+    // @ts-ignore We know its a function
+    return doAct(() => prop(...args));
   }
 
   /**
@@ -96,9 +89,7 @@ export default class Element<Props = {}> {
     options: DispatchOptions = {},
     ...args: ArgsOf<Props[K]>
   ): Promise<ReturnOf<Props[K]>> {
-    const waitForQueue = wrapAndCaptureAsync();
     const prop = getPropForDispatching(this, name);
-    let value: ReturnOf<Props[K]>;
 
     // istanbul ignore next
     if (options.propagate) {
@@ -106,19 +97,8 @@ export default class Element<Props = {}> {
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    await act(async () => {
-      if (typeof prop === 'function') {
-        value = await prop(...args);
-      }
-    });
-
-    // We need an additional act as async results may cause re-renders
-    await act(async () => {
-      await waitForQueue();
-    });
-
-    // @ts-ignore Value is assigned
-    return value;
+    // @ts-ignore We know its a function
+    return doAsyncAct(() => prop(...args));
   }
 
   /**

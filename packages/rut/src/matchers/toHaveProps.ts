@@ -1,5 +1,5 @@
 import Element from '../Element';
-import { checkIsRutElement, getPropFromElement, deepEqual } from '../internals/helpers';
+import { checkIsRutElement, getProp, deepEqual } from '../internals/helpers';
 import { formatValue } from '../helpers';
 import { MatchResult } from '../types';
 
@@ -16,7 +16,7 @@ export default function toHaveProps<P>(
   const invalid: string[] = [];
 
   Object.entries(props).forEach(([key, value]) => {
-    const prop = getPropFromElement(element, key as keyof P);
+    const prop = getProp(element, key as keyof P);
 
     if (!deepEqual(prop, value)) {
       invalid.push(formatValue(key));

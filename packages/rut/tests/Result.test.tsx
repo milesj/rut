@@ -420,16 +420,6 @@ describe('Result', () => {
       expect(result.root).toHaveProp('name', 'update');
     });
 
-    it('can completely replace the root element', () => {
-      const result = render(<div />);
-
-      expect(result.root).toBeElementType('div');
-
-      result.update(<span />);
-
-      expect(result.root).toBeElementType('span');
-    });
-
     describe('class component', () => {
       it('re-renders if props dont change', () => {
         const result = render<UpdateProps>(<ClassUpdateTest />);
@@ -663,6 +653,81 @@ describe('Result', () => {
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(result.root).toContainNode('Loaded');
+      });
+    });
+  });
+
+  describe('re-rendering', () => {
+    it('can create multiple root elements (assigned to different vars)', () => {
+      const { root, rerender } = render(<div />);
+      const spanRoot = rerender(<span />);
+      const sectionRoot = rerender(<section />);
+
+      expect(spanRoot).not.toBe(root);
+      expect(sectionRoot).not.toBe(root);
+      expect(sectionRoot).toBeElementType('section');
+    });
+
+    it('can update the wrapper', () => {
+      const result = render(<div />, {
+        wrapper: <div id="first" />,
+      });
+
+      const out1 = result.debug({ return: true });
+
+      expect(out1).toMatchSnapshot();
+
+      result.rerender(<span />, {
+        wrapper: <section id="second" />,
+      });
+
+      const out2 = result.debug({ return: true });
+
+      expect(out2).toMatchSnapshot();
+      expect(out1).not.toBe(out2);
+    });
+
+    describe('sync', () => {
+      it('can replace the root element', () => {
+        const { root, rerender } = render(<div />);
+
+        expect(root).toBeElementType('div');
+
+        const newRoot = rerender(<span />);
+
+        expect(newRoot).toBeElementType('span');
+      });
+
+      it('can reuse the root on the result', () => {
+        const result = render(<div />);
+
+        expect(result.root).toBeElementType('div');
+
+        result.rerender(<span />);
+
+        expect(result.root).toBeElementType('span');
+      });
+    });
+
+    describe('async', () => {
+      it('can replace the root element', async () => {
+        const { root, rerenderAndWait } = await renderAndWait(<div />);
+
+        expect(root).toBeElementType('div');
+
+        const newRoot = await rerenderAndWait(<span />);
+
+        expect(newRoot).toBeElementType('span');
+      });
+
+      it('can reuse the root on the result', async () => {
+        const result = await renderAndWait(<div />);
+
+        expect(result.root).toBeElementType('div');
+
+        await result.rerenderAndWait(<span />);
+
+        expect(result.root).toBeElementType('span');
       });
     });
   });

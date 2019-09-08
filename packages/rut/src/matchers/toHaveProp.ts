@@ -1,5 +1,5 @@
 import Element from '../Element';
-import { checkIsRutElement, getPropFromElement, deepEqual } from '../internals/helpers';
+import { checkIsRutElement, getProp, deepEqual } from '../internals/helpers';
 import { formatValue } from '../helpers';
 import { MatchResult } from '../types';
 
@@ -14,7 +14,7 @@ export default function toHaveProp<P>(
 ): MatchResult {
   checkIsRutElement(element);
 
-  const prop = getPropFromElement(element, name);
+  const prop = getProp(element, name);
   const formattedName = formatValue(name);
   const formattedValue = formatValue(value);
 
