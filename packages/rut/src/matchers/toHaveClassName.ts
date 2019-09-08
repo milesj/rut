@@ -1,5 +1,5 @@
 import Element from '../Element';
-import { checkIsRutElement, getPropFromElement } from '../internals/helpers';
+import { checkIsRutElement, getProp } from '../internals/helpers';
 import { MatchResult } from '../types';
 
 /**
@@ -11,7 +11,7 @@ export default function toHaveClassName(
 ): MatchResult {
   checkIsRutElement(element);
 
-  const className = getPropFromElement(element, 'className');
+  const className = getProp(element, 'className');
 
   return {
     message: `expected \`${element}\` to have a "${name}" class name`,

@@ -4,6 +4,7 @@ import React from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
 import {
   ArgsOf,
+  ReturnOf,
   HostComponentType,
   Predicate,
   DispatchOptions,
@@ -67,7 +68,7 @@ export default class Element<Props = {}> {
     name: K,
     options: DispatchOptions = {},
     ...args: ArgsOf<Props[K]>
-  ): void {
+  ): ReturnOf<Props[K]> {
     const prop = getPropForDispatching(this, name);
 
     // istanbul ignore next
@@ -87,7 +88,7 @@ export default class Element<Props = {}> {
     name: K,
     options: DispatchOptions = {},
     ...args: ArgsOf<Props[K]>
-  ): Promise<void> {
+  ): Promise<ReturnOf<Props[K]>> {
     const prop = getPropForDispatching(this, name);
 
     // istanbul ignore next
