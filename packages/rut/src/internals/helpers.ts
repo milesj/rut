@@ -1,4 +1,4 @@
-import util from 'util';
+import assert from 'assert';
 import React from 'react';
 import Element from '../Element';
 import { isReactNodeLike, NodeLike } from '../helpers';
@@ -21,7 +21,13 @@ export function checkIsRutElement(value: unknown) {
 }
 
 export function deepEqual(a: unknown, b: unknown): boolean {
-  return util.isDeepStrictEqual(a, b);
+  try {
+    assert.deepStrictEqual(a, b);
+
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function getProp<P, K extends keyof P>(element: Element<P>, name: K): P[K] | undefined {
