@@ -241,6 +241,7 @@ describe('Element', () => {
       const { root } = render(<div />);
 
       expect(() => {
+        // @ts-ignore Allow invalid
         root.findAt('span', 'middle');
       }).toThrowError('Invalid index type "middle".');
     });
