@@ -23,9 +23,24 @@ const event = mockEvent<MouseEvent>('click');
 
 ### Options
 
-- `currentTarget` (`HTMLElement`) - The element in which the event was bound to. _(Optional)_
-- `target` (`HTMLElement`) - The element that triggered the event. If `currentTarget` is not
-  defined, this will be used for both fields. _(Optional)_
+All options are _optional_.
+
+- `currentTarget` (`HTMLElement`) - Partial element in which the event was bound to.
+- `target` (`HTMLElement`) - Partial element that triggered the event. If `currentTarget` is not
+  defined, this will be used for both fields.
+- **AnimationEvent**
+  - `animationName` (`string`) - Name of the animation being triggered.
+- **MouseEvent, KeyboardEvent, TouchEvent**
+  - `altKey` ( `boolean`) - The alt key was pressed.
+  - `ctrlKey` (`boolean`) - The control key was pressed.
+  - `key` (`string`) - The key that was pressed.
+  - `keyCode` (`number`) - The key that was pressed, as a numerical code.
+  - `metaKey` (`boolean`) - The command key was pressed (Mac only).
+  - `shiftKey` (`boolean`) - The shift key was pressed.
+- **MessageEvent**
+  - `data` (`unknown`) - Data being sent within a message.
+- **TransitionEvent**
+  - `propertyName` (`string`) - Name of the property that triggered the transition.
 
 ## `mockFetch()`
 

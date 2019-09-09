@@ -10,8 +10,7 @@ describe('event', () => {
     });
 
     it('sets current target and target via `target`', () => {
-      const target = { tag: 'foo' };
-      // @ts-ignore Not an HTMLElement
+      const target = { tagName: 'foo' };
       const event = mockEvent('click', { target });
 
       expect(event.target).toBe(target);
@@ -19,13 +18,24 @@ describe('event', () => {
     });
 
     it('sets current target via `currentTarget` and target via `target`', () => {
-      const target = { tag: 'foo' };
-      const currentTarget = { tag: 'bar' };
-      // @ts-ignore Not an HTMLElement
+      const target = { tagName: 'foo' };
+      const currentTarget = { tagName: 'bar' };
       const event = mockEvent('click', { currentTarget, target });
 
       expect(event.target).toBe(target);
       expect(event.currentTarget).toBe(currentTarget);
+    });
+
+    it('sets additional options based on type of event', () => {
+      const event = mockEvent<KeyboardEvent>('keydown', {
+        ctrlKey: true,
+        metaKey: true,
+        key: 'Esc',
+      });
+
+      expect(event.ctrlKey).toBe(true);
+      expect(event.metaKey).toBe(true);
+      expect(event.key).toBe('Esc');
     });
 
     it('marks as prevented', () => {
@@ -65,8 +75,7 @@ describe('event', () => {
     });
 
     it('inherits targets from native event', () => {
-      const target = { tag: 'foo' };
-      // @ts-ignore Not an HTMLElement
+      const target = { tagName: 'foo' };
       const event = mockSyntheticEvent('onClick', { target });
 
       expect(event.target).toBe(event.nativeEvent.target);
@@ -99,6 +108,16 @@ describe('event', () => {
 
       expect(event.isPropagationStopped()).toBe(true);
       expect(spy).toHaveBeenCalled();
+    });
+
+    it('sets keyboard and mouse options', () => {
+      const event = mockSyntheticEvent<React.KeyboardEvent>('onKeyDown', {
+        ctrlKey: true,
+        key: 'Enter',
+      });
+
+      expect(event.ctrlKey).toBe(true);
+      expect(event.key).toBe('Enter');
     });
   });
 });

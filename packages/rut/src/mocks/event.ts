@@ -19,15 +19,34 @@ import React from 'react';
 
 export type InferElement<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
 
+export type InferEvent<T> = T extends React.SyntheticEvent<unknown, infer E> ? E : Event;
+
+export type InferEventOptions<T> = T extends AnimationEvent
+  ? { animationName?: string }
+  : T extends MouseEvent | KeyboardEvent | TouchEvent
+  ? {
+      altKey?: boolean;
+      ctrlKey?: boolean;
+      key?: string;
+      keyCode?: number;
+      metaKey?: boolean;
+      shiftKey?: boolean;
+    }
+  : T extends MessageEvent
+  ? { data?: unknown }
+  : T extends TransitionEvent
+  ? { propertyName?: string }
+  : {};
+
 export type EventType = Exclude<
   keyof React.DOMAttributes<unknown>,
   'children' | 'dangerouslySetInnerHTML'
 >;
 
-export interface EventOptions<T> {
+export type EventOptions<T, E> = {
   currentTarget?: Partial<T>;
   target?: Partial<T>;
-}
+} & InferEventOptions<E>;
 
 class BaseEvent {
   bubbles: boolean = true;
@@ -179,7 +198,8 @@ function createHostEvent(type: string): Event {
 /**
  * Mock a DOM `Event` based on type.
  */
-export function mockEvent<T = Event>(type: string, options: EventOptions<InferElement<T>> = {}): T {
+export function mockEvent<T = Event>(type: string, options?: EventOptions<InferElement<T>, T>): T {
+  const { currentTarget, target, ...props } = options || {};
   let event: Event;
 
   // JSDOM environment does not exist, which means we do not have events.
@@ -191,17 +211,26 @@ export function mockEvent<T = Event>(type: string, options: EventOptions<InferEl
     event = createHostEvent(type);
   }
 
-  if (options.target) {
+  if (target) {
     Object.defineProperty(event, 'target', {
-      value: options.target,
+      enumerable: true,
+      value: target,
     });
   }
 
-  if (options.currentTarget || options.target) {
+  if (currentTarget || target) {
     Object.defineProperty(event, 'currentTarget', {
-      value: options.currentTarget || options.target,
+      enumerable: true,
+      value: currentTarget || target,
     });
   }
+
+  Object.entries(props).forEach(([prop, value]) => {
+    Object.defineProperty(event, prop, {
+      enumerable: true,
+      value,
+    });
+  });
 
   // @ts-ignore
   return event;
@@ -216,14 +245,16 @@ class SyntheticEvent extends BaseEvent {
     super(type);
 
     this.nativeEvent = nativeEvent;
-    this.bubbles = nativeEvent.bubbles;
-    this.cancelable = nativeEvent.cancelable;
-    this.currentTarget = nativeEvent.currentTarget;
-    this.defaultPrevented = nativeEvent.defaultPrevented;
-    this.eventPhase = nativeEvent.eventPhase;
-    this.isTrusted = nativeEvent.isTrusted;
-    this.target = nativeEvent.target;
-    this.timeStamp = nativeEvent.timeStamp;
+
+    // Copy over non-function properties
+    Object.entries(nativeEvent).forEach(([key, value]) => {
+      if (typeof value !== 'function') {
+        Object.defineProperty(this, key, {
+          enumerable: true,
+          value,
+        });
+      }
+    });
   }
 
   isDefaultPrevented(): boolean {
@@ -258,7 +289,7 @@ class SyntheticEvent extends BaseEvent {
  */
 export function mockSyntheticEvent<T = React.SyntheticEvent>(
   type: EventType,
-  options: EventOptions<InferElement<T>> = {},
+  options?: EventOptions<InferElement<T>, InferEvent<T>>,
 ): T {
   let eventType = type.toLowerCase();
 
