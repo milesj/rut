@@ -47,6 +47,8 @@ export type PropsOf<T> = T extends Element<infer P>
   ? P
   : {};
 
+export type StructureOf<T> = { [K in keyof T]: T[K] };
+
 export interface UnknownProps {
   [name: string]: unknown;
 }

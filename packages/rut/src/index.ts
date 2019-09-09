@@ -8,6 +8,7 @@ import matchers from './matchers';
 import { render, renderAndWait } from './render';
 import BaseElement from './Element';
 import BaseResult from './Result';
+import { StructureOf } from './types';
 
 export * from './helpers';
 export * from './mocks';
@@ -17,5 +18,5 @@ export * from './types';
 export { configure, matchers, render, renderAndWait };
 
 // We don't want to export the classes, only the types
-export type Element = typeof BaseElement;
-export type Result = typeof BaseResult;
+export type Element<T> = StructureOf<BaseElement<T>>;
+export type Result<T> = StructureOf<BaseResult<T>>;
