@@ -67,7 +67,7 @@ function unwrapTimers(): void {
   global.setTimeout = nativeSetTimeout;
 }
 
-export default function wrapAndCaptureAsync(): () => Promise<void> {
+export function wrapAndCaptureAsync(): () => Promise<void> {
   const queue: AsyncQueue = new Set();
 
   wrapPromise(queue);

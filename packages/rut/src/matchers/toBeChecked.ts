@@ -1,7 +1,8 @@
 import Element from '../Element';
 import toHaveProp from './toHaveProp';
 import { MatchResult } from '../types';
-import { checkIsRutElement, getProp } from '../internals/helpers';
+import { getProp } from '../internals/element';
+import { isRutElement } from '../internals/utils';
 
 /**
  * Check that an element has a truthy `checked` or `defaultChecked` prop.
@@ -9,7 +10,7 @@ import { checkIsRutElement, getProp } from '../internals/helpers';
 export default function toBeChecked(
   element: Element<{ checked?: boolean; defaultChecked?: boolean }>,
 ): MatchResult {
-  checkIsRutElement(element);
+  isRutElement(element);
 
   const defaultChecked = getProp(element, 'defaultChecked');
   const propChecked = getProp(element, 'checked');

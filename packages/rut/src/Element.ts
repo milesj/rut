@@ -15,8 +15,8 @@ import {
 } from './types';
 import { getTypeName } from './helpers';
 import { doAct, doAsyncAct } from './internals/act';
-import debug from './internals/debug';
-import { getPropForDispatching } from './internals/helpers';
+import { debug } from './internals/debug';
+import { getPropForDispatching } from './internals/element';
 import { whereTypeAndProps } from './predicates';
 
 export default class Element<Props = {}> {

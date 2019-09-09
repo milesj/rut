@@ -1,5 +1,5 @@
 import { act } from 'react-test-renderer';
-import wrapAndCaptureAsync from './async';
+import { wrapAndCaptureAsync } from './async';
 
 type Actable<T> = () => T;
 

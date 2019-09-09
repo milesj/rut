@@ -1,7 +1,8 @@
 import Element from '../Element';
-import { checkIsRutElement, getProp, deepEqual } from '../internals/helpers';
+import { getProp } from '../internals/element';
 import { formatValue } from '../helpers';
 import { MatchResult } from '../types';
+import { isRutElement, deepEqual } from '../internals/utils';
 
 /**
  * Check that an element's props match all the provided props and their values.
@@ -11,7 +12,7 @@ export default function toHaveProps<P>(
   element: Element<P>,
   props: { [K in keyof P]?: P[K] },
 ): MatchResult {
-  checkIsRutElement(element);
+  isRutElement(element);
 
   const invalid: string[] = [];
 

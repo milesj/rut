@@ -1,6 +1,6 @@
 import React from 'react';
 import { Predicate, UnknownProps } from './types';
-import { containsProps } from './internals/helpers';
+import { containsProps } from './internals/element';
 
 /**
  * Find all elements where the `key` matches the provided name or names.

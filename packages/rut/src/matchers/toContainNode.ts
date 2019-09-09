@@ -1,6 +1,6 @@
 import React from 'react';
 import Element from '../Element';
-import { checkIsRutElement, isAllTextNodes, deepEqual } from '../internals/helpers';
+import { isAllTextNodes, isRutElement, deepEqual } from '../internals/utils';
 import { getNodeName } from '../helpers';
 import { MatchResult } from '../types';
 
@@ -11,7 +11,7 @@ export default function toContainNode(
   element: Element,
   node: NonNullable<React.ReactNode>,
 ): MatchResult {
-  checkIsRutElement(element);
+  isRutElement(element);
 
   const nodeName = getNodeName(node);
   const results = element.query(

@@ -2,7 +2,7 @@
 
 import util from 'util';
 import React from 'react';
-import { isAllTextNodes } from './helpers';
+import { isAllTextNodes, isClassInstance, toArray } from './utils';
 import { getTypeName, getNodeName } from '../helpers';
 import { DebugOptions, TestNode } from '../types';
 
@@ -25,39 +25,11 @@ const DEFAULT_OPTIONS: Required<DebugOptions> = {
   sortProps: true,
 };
 
-function isClassInstance(value: unknown): value is Function {
-  if (typeof value !== 'object' || !value) {
-    return false;
-  }
-
-  let ctor = value.constructor;
-
-  while (ctor) {
-    if (ctor === Function) {
-      return true;
-    } else if (ctor === Object) {
-      return false;
-    }
-
-    ctor = ctor.constructor;
-  }
-
-  return false;
-}
-
 function indentAllLines(value: string, indent: string): string {
   return value
     .split('\n')
     .map(line => indent + line)
     .join('\n');
-}
-
-function toArray<T>(value?: null | T | T[]): T[] {
-  if (!value) {
-    return [];
-  }
-
-  return Array.isArray(value) ? value : [value];
 }
 
 function formatObject(value: object): string {
@@ -295,7 +267,7 @@ function buildTree(node: TestNode | string, parent: TreeNode, options: Required<
   parent.children.push(tree);
 }
 
-export default function debug(node: TestNode, baseOptions?: DebugOptions): string {
+export function debug(node: TestNode, baseOptions?: DebugOptions): string {
   const options = { ...DEFAULT_OPTIONS, ...baseOptions };
   const tree = {
     children: [],

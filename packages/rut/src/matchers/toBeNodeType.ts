@@ -1,6 +1,6 @@
 import Element from '../Element';
-import { checkIsRutElement } from '../internals/helpers';
 import { MatchResult, NodeType } from '../types';
+import { isRutElement } from '../internals/utils';
 
 // Keep in sync with React upstream!
 // https://github.com/facebook/react/blob/master/packages/shared/ReactWorkTags.js
@@ -17,7 +17,7 @@ const nodeTypeMap: { [K in NodeType]: number | number[] } = {
  * React nodes are based on React fiber work tags.
  */
 export default function toBeNodeType(element: Element, type: NodeType): MatchResult {
-  checkIsRutElement(element);
+  isRutElement(element);
 
   // @ts-ignore Allow internal access
   const fiberTag = element.element._fiber.tag;

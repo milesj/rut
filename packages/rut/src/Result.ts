@@ -2,8 +2,9 @@ import React from 'react';
 import { create, ReactTestRenderer } from 'react-test-renderer';
 import Element from './Element';
 import { doAct, doAsyncAct } from './internals/act';
-import debug from './internals/debug';
-import { deepEqual, unwrapExoticType } from './internals/helpers';
+import { debug } from './internals/debug';
+import { unwrapExoticType } from './internals/element';
+import { deepEqual } from './internals/utils';
 import { RendererOptions, DebugOptions } from './types';
 import { NodeLike } from './helpers';
 

@@ -4,17 +4,28 @@ import React from 'react';
 import Element from './Element';
 
 export interface RendererOptions {
+  /** Mock a ref found within the current render tree. */
   mockRef?: (element: React.ReactElement) => unknown;
+  /** Wraps the root element in `React.StrictMode`. */
   strict?: boolean;
+  /** Wraps the root element in the provided React element. */
   wrapper?: React.ReactElement;
 }
 
 export interface DebugOptions {
+  /** Group props into the following: key & ref, truthy booleans, everything
+  else, event handlers. Defaults to `true`. */
   groupProps?: boolean;
+  /** Include host elements (DOM) in the output. Defaults to `true`. */
   hostElements?: boolean;
+  /** Include `key` and `ref` props in the output. Defaults to `true`. */
   keyAndRef?: boolean;
+  /** Include React elements in the output. Defaults to `true`. */
   reactElements?: boolean;
+  /** Do not log to the console and instead return the output. Defaults to
+  `false`. */
   return?: boolean;
+  /** Sort the props within each grouping from A-Z. Defaults to `true`. */
   sortProps?: boolean;
 }
 

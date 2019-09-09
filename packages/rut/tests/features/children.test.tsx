@@ -3,16 +3,12 @@ import { render } from '../../src/render';
 
 describe('Children', () => {
   it('renders a function child', () => {
-    interface Props {
-      children: () => React.ReactNode;
-    }
-
-    function FuncChildComp({ children }: Props) {
+    function FuncChildComp({ children }: { children: () => React.ReactNode }) {
       return <div>{children()}</div>;
     }
 
     const spy = jest.fn(() => <span>Child</span>);
-    const result = render<Props>(<FuncChildComp>{spy}</FuncChildComp>);
+    const result = render<{}>(<FuncChildComp>{spy}</FuncChildComp>);
 
     expect(result).toMatchSnapshot();
     expect(result.root).toContainNode('Child');

@@ -1,5 +1,6 @@
 import Element from '../Element';
-import { checkIsRutElement, getProp } from '../internals/helpers';
+import { getProp } from '../internals/element';
+import { isRutElement } from '../internals/utils';
 import { MatchResult } from '../types';
 
 /**
@@ -9,7 +10,7 @@ export default function toHaveClassName(
   element: Element<{ className?: string }>,
   name: string,
 ): MatchResult {
-  checkIsRutElement(element);
+  isRutElement(element);
 
   const className = getProp(element, 'className');
 

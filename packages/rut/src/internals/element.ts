@@ -1,34 +1,8 @@
-import assert from 'assert';
 import React from 'react';
 import Element from '../Element';
 import { isReactNodeLike, NodeLike } from '../helpers';
 import { UnknownProps } from '../types';
-
-export function checkIsRutElement(value: unknown) {
-  if (value instanceof Element) {
-    return;
-  }
-
-  if (
-    typeof value === 'object' &&
-    value !== null &&
-    (value.constructor.name === 'Element' || (value as Element).isRutElement === true)
-  ) {
-    return;
-  }
-
-  throw new Error('Expected a Rut `Element`.');
-}
-
-export function deepEqual(a: unknown, b: unknown): boolean {
-  try {
-    assert.deepStrictEqual(a, b);
-
-    return true;
-  } catch {
-    return false;
-  }
-}
+import { deepEqual } from './utils';
 
 export function getProp<P, K extends keyof P>(element: Element<P>, name: K): P[K] | undefined {
   // @ts-ignore Allow internal access
@@ -48,10 +22,6 @@ export function getPropForDispatching<P, K extends keyof P>(element: Element<P>,
   }
 
   return prop;
-}
-
-export function isAllTextNodes(nodes: unknown[]): boolean {
-  return nodes.every(node => typeof node === 'string');
 }
 
 export function containsProps(props: UnknownProps, contains: UnknownProps): boolean {
