@@ -1,9 +1,9 @@
-/* eslint-disable complexity */
+/* eslint-disable complexity, no-use-before-define, @typescript-eslint/no-use-before-define */
 
 import util from 'util';
 import React from 'react';
 import { isAllTextNodes, isClassInstance, toArray } from './utils';
-import { getTypeName, getNodeName } from '../helpers';
+import { getTypeName } from '../helpers';
 import { DebugOptions, TestNode } from '../types';
 
 type Props = TestNode['props'];
@@ -20,6 +20,7 @@ const DEFAULT_OPTIONS: Required<DebugOptions> = {
   groupProps: true,
   hostElements: true,
   keyAndRef: true,
+  noChildren: false,
   reactElements: true,
   return: false,
   sortProps: true,
@@ -33,12 +34,8 @@ function indentAllLines(value: string, indent: string): string {
 }
 
 function formatObject(value: object): string {
-  // Element
-  if (React.isValidElement(value)) {
-    return getNodeName(value);
-
-    // DOM element
-  } else if ('tagName' in value) {
+  // DOM element
+  if ('tagName' in value) {
     return `<${(value as HTMLElement).tagName.toLowerCase()} />`;
 
     // Ref
@@ -63,10 +60,10 @@ function formatObject(value: object): string {
   return `new ${value.constructor.name || 'Class'}()`;
 }
 
-function formatProps(names: string[], props: Props, sort: boolean): string[] {
+function formatProps(names: string[], props: Props, options: Required<DebugOptions>): string[] {
   const output: string[] = [];
 
-  if (sort) {
+  if (options.sortProps) {
     names.sort();
   }
 
@@ -93,7 +90,9 @@ function formatProps(names: string[], props: Props, sort: boolean): string[] {
 
       // Objects
     } else if (typeof value === 'object' && !!value) {
-      propValue = formatObject(value);
+      propValue = React.isValidElement(value)
+        ? debugFromElement(value, { ...options, noChildren: true })
+        : formatObject(value);
 
       // Everything else
     } else {
@@ -224,14 +223,18 @@ function getProps(props: Props, internal: Props, options: Required<DebugOptions>
   });
 
   return [
-    ...formatProps(['key', 'ref'], internal, options.sortProps),
-    ...formatProps(truthies, props, options.sortProps),
-    ...formatProps(all, props, options.sortProps),
-    ...formatProps(handlers, props, options.sortProps),
+    ...formatProps(['key', 'ref'], internal, options),
+    ...formatProps(truthies, props, options),
+    ...formatProps(all, props, options),
+    ...formatProps(handlers, props, options),
   ];
 }
 
 function buildTree(node: TestNode | string, parent: TreeNode, options: Required<DebugOptions>) {
+  if (options.noChildren && parent.name !== 'ROOT') {
+    return;
+  }
+
   // Text node, immediately add to parent
   if (typeof node === 'string') {
     parent.children.push(node);
@@ -267,15 +270,29 @@ function buildTree(node: TestNode | string, parent: TreeNode, options: Required<
   parent.children.push(tree);
 }
 
-export function debug(node: TestNode, baseOptions?: DebugOptions): string {
-  const options = { ...DEFAULT_OPTIONS, ...baseOptions };
+export function debug(node: TestNode, options?: DebugOptions): string {
   const tree = {
     children: [],
     name: 'ROOT',
     props: [],
   };
 
-  buildTree(node, tree, options);
+  buildTree(node, tree, { ...DEFAULT_OPTIONS, ...options });
 
   return formatTree(tree);
+}
+
+export function debugFromElement(element: React.ReactElement, options?: DebugOptions): string {
+  const { children, ...props } = element.props;
+
+  return debug(
+    {
+      children,
+      instance: null,
+      parent: null,
+      props,
+      type: element.type as React.ElementType,
+    },
+    options,
+  );
 }

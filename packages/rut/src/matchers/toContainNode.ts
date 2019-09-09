@@ -1,7 +1,8 @@
 import React from 'react';
 import Element from '../Element';
+import { debugFromElement } from '../internals/debug';
 import { isAllTextNodes, isRutElement, deepEqual } from '../internals/utils';
-import { getNodeName } from '../helpers';
+import { formatValue } from '../helpers';
 import { MatchResult } from '../types';
 
 /**
@@ -45,11 +46,13 @@ export default function toContainNode(
     { deep: false },
   );
 
-  const nodeName = getNodeName(node);
+  const expectedNode = React.isValidElement(node)
+    ? debugFromElement(node, { noChildren: true })
+    : formatValue(node);
 
   return {
-    message: `expected \`${element}\` to contain node ${nodeName}`,
-    notMessage: `expected \`${element}\` not to contain node ${nodeName}`,
+    message: `expected \`${element}\` to contain node ${expectedNode}`,
+    notMessage: `expected \`${element}\` not to contain node ${expectedNode}`,
     passed: results.length > 0,
   };
 }

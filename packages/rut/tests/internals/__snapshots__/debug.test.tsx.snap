@@ -12,6 +12,8 @@ exports[`debug adds key and ref props first 2`] = `
 </ClassComp>"
 `;
 
+exports[`debug doesnt render children 1`] = `"<ChildComp baz bar={123} foo=\\"abc\\" />"`;
+
 exports[`debug element output hides DOM output 1`] = `
 "<Outer>
   <Header>TitleDescription!</Header>

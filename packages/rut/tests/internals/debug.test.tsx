@@ -139,6 +139,27 @@ describe('debug', () => {
     expect(result).toMatchSnapshot();
   });
 
+  it('doesnt render children', () => {
+    interface ChildCompProps {
+      children: React.ReactNode;
+      foo?: string;
+      bar?: number;
+      baz?: boolean;
+    }
+
+    function ChildComp({ children }: ChildCompProps) {
+      return <div>{children}</div>;
+    }
+
+    const { debug } = render<ChildCompProps>(
+      <ChildComp foo="abc" bar={123} baz>
+        <div>Child should not be rendered.</div>
+      </ChildComp>,
+    );
+
+    expect(debug({ noChildren: true, return: true })).toMatchSnapshot();
+  });
+
   describe('element output', () => {
     function Header() {
       return (

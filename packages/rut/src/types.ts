@@ -20,6 +20,8 @@ export interface DebugOptions {
   hostElements?: boolean;
   /** Include `key` and `ref` props in the output. Defaults to `true`. */
   keyAndRef?: boolean;
+  /** Do not render children. Defaults to `false`. */
+  noChildren?: boolean;
   /** Include React elements in the output. Defaults to `true`. */
   reactElements?: boolean;
   /** Do not log to the console and instead return the output. Defaults to
