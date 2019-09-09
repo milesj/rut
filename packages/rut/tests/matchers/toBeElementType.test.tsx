@@ -27,7 +27,7 @@ describe('toBeElementType()', () => {
     it('errors when types dont match', () => {
       expect(() => {
         runMatcher(toBeElementType(render(<div />).root, 'span'));
-      }).toThrowError('expected `div` to be a `span`');
+      }).toThrowError('expected `div` to be a "span"');
     });
 
     it('passes when types match (not negation)', () => {
@@ -39,7 +39,7 @@ describe('toBeElementType()', () => {
     it('errors when types dont match (not negation)', () => {
       expect(() => {
         runMatcher(toBeElementType(render(<div />).root, 'div'), true);
-      }).toThrowError('expected `div` not to be a `div`');
+      }).toThrowError('expected `div` not to be a "div"');
     });
   });
 

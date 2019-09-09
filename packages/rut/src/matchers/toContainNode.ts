@@ -13,7 +13,6 @@ export default function toContainNode(
 ): MatchResult {
   isRutElement(element);
 
-  const nodeName = getNodeName(node);
   const results = element.query(
     (testNode, fiberNode) => {
       if (React.isValidElement(node)) {
@@ -25,18 +24,19 @@ export default function toContainNode(
       }
 
       const expected = String(node);
+      const { children } = testNode;
 
       // RTR doesn't run the predicate on non-element nodes (like strings and numbers),
       // so we need to query the parent by traversing the children.
       // https://github.com/facebook/react/blob/master/packages/react-test-renderer/src/ReactTestRenderer.js#L388
-      if (testNode.children.includes(expected)) {
+      if (children === expected || children.includes(expected)) {
         return true;
       }
 
       // When interpolation is used within JSX, it causes `children` to be
       // an array of strings, instead of a string. So if all nodes are strings,
       // lets join and compare, to make it easier on the consumer.
-      if (isAllTextNodes(testNode.children) && testNode.children.join('') === expected) {
+      if (Array.isArray(children) && isAllTextNodes(children) && children.join('') === expected) {
         return true;
       }
 
@@ -45,9 +45,11 @@ export default function toContainNode(
     { deep: false },
   );
 
+  const nodeName = getNodeName(node);
+
   return {
-    message: `expected \`${element}\` to contain node \`${nodeName}\``,
-    notMessage: `expected \`${element}\` not to contain node \`${nodeName}\``,
+    message: `expected \`${element}\` to contain node ${nodeName}`,
+    notMessage: `expected \`${element}\` not to contain node ${nodeName}`,
     passed: results.length > 0,
   };
 }

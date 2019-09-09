@@ -38,7 +38,7 @@ describe('toContainNode()', () => {
 
     expect(() => {
       runMatcher(toContainNode(render<{}>(<TestComp />).root, <span id="foo">Foo</span>));
-    }).toThrowError('expected `TestComp` to contain node `<span />`');
+    }).toThrowError('expected `TestComp` to contain node <span />');
   });
 
   it('supports nodes passed through props', () => {

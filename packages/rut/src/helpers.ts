@@ -21,21 +21,6 @@ export interface PortalLike extends NodeLike {
 }
 
 /**
- * Format a value for use within error messages.
- */
-export function formatValue(value: unknown): string {
-  const typeOf = typeof value;
-
-  if (typeOf === 'string') {
-    return `"${value}"`;
-  } else if (typeOf === 'number' || typeOf === 'boolean' || value === null) {
-    return String(value);
-  }
-
-  return `\`${String(value)}\``;
-}
-
-/**
  * Return true if the value is either a React class or component declaration.
  */
 export function isReactComponent(value: unknown): value is React.ComponentType {
@@ -155,4 +140,19 @@ export function getNodeName(type: unknown): string {
 
   // Component or element nodes
   return `<${getTypeName(type)} />`;
+}
+
+/**
+ * Format a value for use within error messages.
+ */
+export function formatValue(value: unknown): string {
+  const typeOf = typeof value;
+
+  if (typeOf === 'string') {
+    return `"${value}"`;
+  } else if (typeOf === 'number' || typeOf === 'boolean' || value === null || value === undefined) {
+    return String(value);
+  }
+
+  return `\`${getTypeName(value)}\``;
 }

@@ -50,7 +50,7 @@ export interface UnknownProps {
 }
 
 export interface TestNode {
-  children: (TestNode | string)[];
+  children: string | (TestNode | string)[];
   instance: {
     context: object;
     props: UnknownProps;

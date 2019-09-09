@@ -12,11 +12,12 @@ export default function toHaveKey(element: Element, value: React.Key): MatchResu
 
   // @ts-ignore Allow access for matcher
   const { key } = element.element._fiber;
-  const formattedValue = formatValue(value);
+  const actualValue = formatValue(key);
+  const expectedValue = formatValue(value);
 
   return {
-    message: `expected \`${element}\` to have a ${formattedValue} key`,
-    notMessage: `expected \`${element}\` not to have a ${formattedValue} key`,
+    message: `expected \`${element}\` to have a ${expectedValue} key, has ${actualValue}`,
+    notMessage: `expected \`${element}\` not to have a ${expectedValue} key, has ${actualValue}`,
     passed: key !== null && key === value,
   };
 }

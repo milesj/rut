@@ -1,6 +1,7 @@
 import Element from '../Element';
 import { MatchResult, NodeType } from '../types';
 import { isRutElement } from '../internals/utils';
+import { formatValue } from '../helpers';
 
 // Keep in sync with React upstream!
 // https://github.com/facebook/react/blob/master/packages/shared/ReactWorkTags.js
@@ -29,9 +30,12 @@ export default function toBeNodeType(element: Element, type: NodeType): MatchRes
     );
   }
 
+  const actualTypeName = formatValue(fiberTag);
+  const typeName = formatValue(type);
+
   return {
-    message: `expected \`${element}\` to be a "${type}"`,
-    notMessage: `expected \`${element}\` not to be a "${type}"`,
+    message: `expected \`${element}\` to be a ${typeName}, found ${actualTypeName}`,
+    notMessage: `expected \`${element}\` not to be a ${typeName}, found ${actualTypeName}`,
     passed: Array.isArray(nodeToTag) ? nodeToTag.includes(fiberTag) : nodeToTag === fiberTag,
   };
 }

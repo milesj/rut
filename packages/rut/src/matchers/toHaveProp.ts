@@ -18,11 +18,12 @@ export default function toHaveProp<P>(
   const prop = getProp(element, name);
   const formattedName = formatValue(name);
   const formattedValue = formatValue(value);
+  const actualValue = formatValue(prop);
 
   if (value !== undefined) {
     return {
-      message: `expected \`${element}\` to have a ${formattedName} prop with a value of ${formattedValue}`,
-      notMessage: `expected \`${element}\` not to have a ${formattedName} prop with a value of ${formattedValue}`,
+      message: `expected \`${element}\` to have a ${formattedName} prop with a value of ${formattedValue}, instead has a value of ${actualValue}`,
+      notMessage: `expected \`${element}\` not to have a ${formattedName} prop with a value of ${formattedValue}, instead has a value of ${actualValue}`,
       passed: deepEqual(prop, value),
     };
   }
