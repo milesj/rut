@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '../../src/render';
-import { ClassComp, FuncComp } from '../fixtures';
+import { ClassComp, FuncComp, TestProps } from '../fixtures';
 
 describe('debug', () => {
   it('adds key and ref props first', () => {
     const ref = React.createRef<ClassComp>();
-    const result = render(<ClassComp key={123} ref={ref} name="test" />);
+    const result = render<TestProps>(<ClassComp key={123} ref={ref} name="test" />);
 
     expect(result).toMatchSnapshot();
 
@@ -14,7 +14,7 @@ describe('debug', () => {
   });
 
   it('sorts props, and groups into: true first, everything else, event handlers last', () => {
-    function SortProps(props: {
+    interface SortOrderProps {
       enabled: boolean;
       selected: boolean;
       name: string;
@@ -22,12 +22,14 @@ describe('debug', () => {
       onClick?: () => void;
       onDelete?: () => void;
       onUpdate?: () => void;
-    }) {
+    }
+
+    function SortOrder(props: SortOrderProps) {
       return <div />;
     }
 
-    const result = render(
-      <SortProps
+    const result = render<SortOrderProps>(
+      <SortOrder
         // Wont show up since its a function component
         key="key"
         onClick={jest.fn()}
@@ -56,7 +58,7 @@ describe('debug', () => {
       return <ul />;
     }
 
-    const result = render(<ArrayProp list={['string', 123, true, null, {}, []]} />);
+    const result = render<{}>(<ArrayProp list={['string', 123, true, null, {}, []]} />);
 
     expect(result).toMatchSnapshot();
 
@@ -80,7 +82,7 @@ describe('debug', () => {
       return <div />;
     }
 
-    const result = render(
+    const result = render<{}>(
       <ObjectProp data={{ id: 1, name: 'Bruce Wayne', alias: 'Batman', age: 40 }} />,
     );
 
@@ -92,7 +94,7 @@ describe('debug', () => {
       return <div />;
     }
 
-    const result = render(<RegexProp pattern={/foo|bar|baz/u} />);
+    const result = render<{}>(<RegexProp pattern={/foo|bar|baz/u} />);
 
     expect(result).toMatchSnapshot();
   });
@@ -102,7 +104,9 @@ describe('debug', () => {
       return <div />;
     }
 
-    const result = render(<MapProp map={new Map([['foo', 123], ['bar', 456], ['baz', 789]])} />);
+    const result = render<{}>(
+      <MapProp map={new Map([['foo', 123], ['bar', 456], ['baz', 789]])} />,
+    );
 
     expect(result).toMatchSnapshot();
   });
@@ -112,7 +116,7 @@ describe('debug', () => {
       return <div />;
     }
 
-    const result = render(<SetProp set={new Set(['foo', 'bar', 'foo', 'baz'])} />);
+    const result = render<{}>(<SetProp set={new Set(['foo', 'bar', 'foo', 'baz'])} />);
 
     expect(result).toMatchSnapshot();
   });
@@ -121,11 +125,16 @@ describe('debug', () => {
     function funcName() {}
     class ClassName {}
 
-    function FuncProp(props: { func: () => void; inst: ClassName }) {
+    interface FuncPropProps {
+      func: () => void;
+      inst: ClassName;
+    }
+
+    function FuncProp(props: FuncPropProps) {
       return <div />;
     }
 
-    const result = render(<FuncProp func={funcName} inst={new ClassName()} />);
+    const result = render<FuncPropProps>(<FuncProp func={funcName} inst={new ClassName()} />);
 
     expect(result).toMatchSnapshot();
   });
@@ -155,19 +164,19 @@ describe('debug', () => {
     }
 
     it('renders normal', () => {
-      const { debug } = render(<Outer />);
+      const { debug } = render<{}>(<Outer />);
 
       expect(debug({ return: true })).toMatchSnapshot();
     });
 
     it('hides DOM output', () => {
-      const { debug } = render(<Outer />);
+      const { debug } = render<{}>(<Outer />);
 
       expect(debug({ hostElements: false, return: true })).toMatchSnapshot();
     });
 
     it('hides React output', () => {
-      const { debug } = render(<Outer />);
+      const { debug } = render<{}>(<Outer />);
 
       expect(debug({ reactElements: false, return: true })).toMatchSnapshot();
     });

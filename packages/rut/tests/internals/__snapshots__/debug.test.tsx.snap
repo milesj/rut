@@ -106,7 +106,7 @@ exports[`debug formats set props 1`] = `
 `;
 
 exports[`debug sorts props, and groups into: true first, everything else, event handlers last 1`] = `
-<SortProps
+<SortOrder
   enabled
   content={<div />}
   name="Rut"
@@ -115,11 +115,11 @@ exports[`debug sorts props, and groups into: true first, everything else, event 
   onUpdate={mockConstructor()}
 >
   <div />
-</SortProps>
+</SortOrder>
 `;
 
 exports[`debug sorts props, and groups into: true first, everything else, event handlers last 2`] = `
-"<SortProps
+"<SortOrder
   content={<div />}
   enabled
   name=\\"Rut\\"
@@ -128,11 +128,11 @@ exports[`debug sorts props, and groups into: true first, everything else, event 
   selected={false}
 >
   <div />
-</SortProps>"
+</SortOrder>"
 `;
 
 exports[`debug sorts props, and groups into: true first, everything else, event handlers last 3`] = `
-"<SortProps
+"<SortOrder
   enabled
   selected={false}
   name=\\"Rut\\"
@@ -141,11 +141,11 @@ exports[`debug sorts props, and groups into: true first, everything else, event 
   onUpdate={mockConstructor()}
 >
   <div />
-</SortProps>"
+</SortOrder>"
 `;
 
 exports[`debug sorts props, and groups into: true first, everything else, event handlers last 4`] = `
-"<SortProps
+"<SortOrder
   onClick={mockConstructor()}
   selected={false}
   name=\\"Rut\\"
@@ -154,5 +154,5 @@ exports[`debug sorts props, and groups into: true first, everything else, event 
   onUpdate={mockConstructor()}
 >
   <div />
-</SortProps>"
+</SortOrder>"
 `;

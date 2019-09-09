@@ -15,7 +15,7 @@ createRule().run('require-render-generics', rule, {
       errors: [
         {
           type: 'CallExpression',
-          message: 'Render is missing the `Foo` props type generic.',
+          message: 'Render is missing the props generic type.',
         },
       ],
     },
@@ -24,7 +24,7 @@ createRule().run('require-render-generics', rule, {
       errors: [
         {
           type: 'CallExpression',
-          message: 'Render is missing the `Foo` props type generic.',
+          message: 'Render is missing the props generic type.',
         },
       ],
     },

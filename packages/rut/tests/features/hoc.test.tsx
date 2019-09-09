@@ -22,7 +22,11 @@ describe('HOCs', () => {
     };
   }
 
-  class Wrapped extends React.Component<{ id: number } & WithStylesProps> {
+  interface WrappedProps {
+    id: number;
+  }
+
+  class Wrapped extends React.Component<WrappedProps & WithStylesProps> {
     render() {
       return <div>Styled!</div>;
     }
@@ -30,14 +34,14 @@ describe('HOCs', () => {
 
   it('can render the wrapped component + hoc', () => {
     const StyledComp = withStyles()(Wrapped);
-    const result = render(<StyledComp id={1} />);
+    const result = render<WrappedProps>(<StyledComp id={1} />);
 
     expect(result).toMatchSnapshot();
   });
 
   it('returns the result HOC as the root', () => {
     const StyledComp = withStyles()(Wrapped);
-    const { root } = render(<StyledComp id={2} />);
+    const { root } = render<WrappedProps>(<StyledComp id={2} />);
 
     expect(root.name()).toBe('withStyles(Wrapped)');
     expect(root).toHaveProps({ id: 2 });
@@ -45,7 +49,7 @@ describe('HOCs', () => {
 
   it('can find the wrapped component', () => {
     const StyledComp = withStyles()(Wrapped);
-    const { root } = render(<StyledComp id={3} />);
+    const { root } = render<WrappedProps>(<StyledComp id={3} />);
 
     expect(root.find(Wrapped)).toHaveLength(1);
     expect(root.findOne(Wrapped)).toHaveProps({ id: 3, styles: { color: 'green' } });
@@ -74,7 +78,7 @@ describe('HOCs', () => {
 
   it('supports multiple layers of HOCs', () => {
     const DeepComp = connect(withStyles()(DeepWrapped));
-    const result = render(<DeepComp id={4} />);
+    const result = render<WrappedProps>(<DeepComp id={4} />);
 
     expect(result).toMatchSnapshot();
   });

@@ -12,7 +12,7 @@ const rule: Rule.RuleModule = {
       recommended: true,
     },
     messages: {
-      missingGeneric: 'Render is missing the `{{name}}` props type generic.',
+      missingGeneric: 'Render is missing the props generic type.',
     },
   },
   create(context) {
@@ -39,10 +39,8 @@ const rule: Rule.RuleModule = {
             return;
           }
 
-          const { name } = element.openingElement.name;
-
           // Don't need generics for host elements
-          if (name.match(/^[a-z]/u)) {
+          if (element.openingElement.name.name.match(/^[a-z]/u)) {
             return;
           }
 
@@ -50,7 +48,6 @@ const rule: Rule.RuleModule = {
             context.report({
               node,
               messageId: 'missingGeneric',
-              data: { name },
             });
           }
         }

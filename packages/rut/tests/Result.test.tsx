@@ -43,7 +43,7 @@ describe('Result', () => {
       }
     }
 
-    const result = render(<StrictComp />, { strict: true });
+    const result = render<{}>(<StrictComp />, { strict: true });
 
     expect(result).toMatchSnapshot();
     expect(warnSpy).toHaveBeenCalledWith(
@@ -58,7 +58,7 @@ describe('Result', () => {
       return <div>{value}</div>;
     }
 
-    const result = render(<ContextComp />, { wrapper: <Wrapper /> });
+    const result = render<{}>(<ContextComp />, { wrapper: <Wrapper /> });
 
     expect(result).toMatchSnapshot();
     expect(result.debug({ return: true })).toContain('<Wrapper>');
@@ -84,7 +84,7 @@ describe('Result', () => {
       );
     }
 
-    const result = render(<Wrapped />, { strict: true, wrapper: <Wrapper /> });
+    const result = render<{}>(<Wrapped />, { strict: true, wrapper: <Wrapper /> });
 
     expect(result).toMatchSnapshot();
     expect(result.debug({ return: true })).toContain('<Wrapper>');
@@ -102,28 +102,28 @@ describe('Result', () => {
     });
 
     it('returns an element for a class component', () => {
-      const { root } = render(<ClassComp />);
+      const { root } = render<TestProps>(<ClassComp />);
 
       expect(root).toBeInstanceOf(Element);
       expect(root).toBeElementType(ClassComp);
     });
 
     it('returns an element for a function component', () => {
-      const { root } = render(<FuncComp />);
+      const { root } = render<TestProps>(<FuncComp />);
 
       expect(root).toBeInstanceOf(Element);
       expect(root).toBeElementType(FuncComp);
     });
 
     it('returns the passed element when using `strict`', () => {
-      const { root } = render(<FuncComp />, { strict: true });
+      const { root } = render<TestProps>(<FuncComp />, { strict: true });
 
       expect(root).toBeInstanceOf(Element);
       expect(root).toBeElementType(FuncComp);
     });
 
     it('returns the passed element when using `wrapper`', () => {
-      const { root } = render(<FuncComp />, { wrapper: <Wrapper /> });
+      const { root } = render<TestProps>(<FuncComp />, { wrapper: <Wrapper /> });
 
       expect(root).toBeInstanceOf(Element);
       expect(root).toBeElementType(FuncComp);
@@ -131,14 +131,14 @@ describe('Result', () => {
 
     it('returns the passed memoized element when using `wrapper`', () => {
       const Root = React.memo(FuncComp);
-      const { root } = render(<Root />, { wrapper: <Wrapper /> });
+      const { root } = render<TestProps>(<Root />, { wrapper: <Wrapper /> });
 
       expect(root).toBeInstanceOf(Element);
       expect(root).toBeElementType(FuncComp);
     });
 
     it('returns the passed element when using `strict` and `wrapper`', () => {
-      const { root } = render(<FuncComp />, { strict: true, wrapper: <Wrapper /> });
+      const { root } = render<TestProps>(<FuncComp />, { strict: true, wrapper: <Wrapper /> });
 
       expect(root).toBeInstanceOf(Element);
       expect(root).toBeElementType(FuncComp);
@@ -153,13 +153,13 @@ describe('Result', () => {
     });
 
     it('returns JSON for a class component', () => {
-      const json = render(<ClassComp />).toJSON();
+      const json = render<TestProps>(<ClassComp />).toJSON();
 
       expect(json).toEqual(expect.objectContaining({ type: 'div' }));
     });
 
     it('returns JSON for a function component', () => {
-      const json = render(<FuncComp />).toJSON();
+      const json = render<TestProps>(<FuncComp />).toJSON();
 
       expect(json).toEqual(expect.objectContaining({ type: 'span' }));
     });
@@ -173,13 +173,13 @@ describe('Result', () => {
     });
 
     it('returns a tree for a class component', () => {
-      const tree = render(<ClassComp />).toTree();
+      const tree = render<TestProps>(<ClassComp />).toTree();
 
       expect(tree).toEqual(expect.objectContaining({ nodeType: 'component', type: ClassComp }));
     });
 
     it('returns a tree for a function component', () => {
-      const tree = render(<FuncComp />).toTree();
+      const tree = render<TestProps>(<FuncComp />).toTree();
 
       expect(tree).toEqual(expect.objectContaining({ nodeType: 'component', type: FuncComp }));
     });
@@ -193,13 +193,13 @@ describe('Result', () => {
     });
 
     it('returns name of class component', () => {
-      const name = render(<ClassComp />).toString();
+      const name = render<TestProps>(<ClassComp />).toString();
 
       expect(name).toBe('ClassComp');
     });
 
     it('returns name of function component', () => {
-      const name = render(<FuncComp />).toString();
+      const name = render<TestProps>(<FuncComp />).toString();
 
       expect(name).toBe('FuncComp');
     });
@@ -224,7 +224,7 @@ describe('Result', () => {
           }
         }
 
-        render(<MountTest />);
+        render<{}>(<MountTest />);
 
         expect(spy).toHaveBeenCalledTimes(2);
       });
@@ -232,7 +232,7 @@ describe('Result', () => {
       it('supports async `componentDidMount`', async () => {
         const spy = jest.fn();
 
-        const { root } = await renderAndWait(<AsyncCdmComp onLoad={spy} />);
+        const { root } = await renderAndWait<AsyncProps>(<AsyncCdmComp onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(root).toContainNode('Loaded');
@@ -241,7 +241,7 @@ describe('Result', () => {
       it('supports `componentDidMount` with timers', async () => {
         const spy = jest.fn();
 
-        const { root } = await renderAndWait(<TimerCdmComp onLoad={spy} />);
+        const { root } = await renderAndWait<AsyncProps>(<TimerCdmComp onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(root).toContainNode('Loaded');
@@ -258,7 +258,7 @@ describe('Result', () => {
           return null;
         }
 
-        render(<MountTest />);
+        render<{}>(<MountTest />);
 
         expect(spy).toHaveBeenCalledTimes(1);
       });
@@ -272,7 +272,7 @@ describe('Result', () => {
           return null;
         }
 
-        render(<MountTest />);
+        render<{}>(<MountTest />);
 
         expect(spy).toHaveBeenCalledTimes(1);
       });
@@ -280,7 +280,7 @@ describe('Result', () => {
       it('supports async `useEffect`', async () => {
         const spy = jest.fn();
 
-        const { root } = await renderAndWait(<AsyncHookComp onLoad={spy} />);
+        const { root } = await renderAndWait<AsyncProps>(<AsyncHookComp onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(root).toContainNode('Loaded');
@@ -289,7 +289,7 @@ describe('Result', () => {
       it('supports `useEffect` with timers', async () => {
         const spy = jest.fn();
 
-        const { root } = await renderAndWait(<TimerHookComp onLoad={spy} />);
+        const { root } = await renderAndWait<AsyncProps>(<TimerHookComp onLoad={spy} />);
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(root).toContainNode('Loaded');
@@ -312,7 +312,7 @@ describe('Result', () => {
           }
         }
 
-        const result = render(<UnmountTest />);
+        const result = render<{}>(<UnmountTest />);
 
         result.unmount();
 
@@ -332,7 +332,7 @@ describe('Result', () => {
           return null;
         }
 
-        const result = render(<UnmountTest />);
+        const result = render<{}>(<UnmountTest />);
 
         result.unmount();
 

@@ -3,15 +3,13 @@ import { render } from '../../src/render';
 
 describe('Props', () => {
   it('supports primitives and scalars', () => {
-    function PrimitiveComp({
-      count,
-      node,
-      text,
-    }: {
+    interface PrimitiveCompProps {
       count: number;
       node: React.ReactNode;
       text: string;
-    }) {
+    }
+
+    function PrimitiveComp({ count, node, text }: PrimitiveCompProps) {
       return (
         <div>
           <h1>{text}</h1>
@@ -21,7 +19,7 @@ describe('Props', () => {
       );
     }
 
-    const result = render(
+    const result = render<PrimitiveCompProps>(
       <PrimitiveComp
         count={123456}
         node={<div>This is a sidebar!</div>}
@@ -33,11 +31,17 @@ describe('Props', () => {
   });
 
   it('supports render props', () => {
-    function RenderPropComp({ renderItem }: { renderItem: (value: number) => React.ReactNode }) {
+    interface RenderPropCompProps {
+      renderItem: (value: number) => React.ReactNode;
+    }
+
+    function RenderPropComp({ renderItem }: RenderPropCompProps) {
       return <div>{renderItem(123)}</div>;
     }
 
-    const result = render(<RenderPropComp renderItem={value => <b>{value * 2}</b>} />);
+    const result = render<RenderPropCompProps>(
+      <RenderPropComp renderItem={value => <b>{value * 2}</b>} />,
+    );
 
     expect(result).toMatchSnapshot();
     expect(result.root).toContainNode(246);

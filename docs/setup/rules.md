@@ -9,6 +9,7 @@ be necessary.
 // Bad
 import { render } from 'rut';
 import { act } from 'react-test-renderer';
+import Example from '../src/Example';
 
 const { update } = render(<Example id={1} />);
 
@@ -20,6 +21,7 @@ act(() => {
 ```tsx
 // Good
 import { render } from 'rut';
+import Example from '../src/Example';
 
 const { update } = render(<Example id={1} />);
 
@@ -34,6 +36,7 @@ Disallow import and usage of Rut's internal APIs. Accessing these directly is a 
 // Bad
 import { render } from 'rut';
 import debug from 'rut/lib/internals/debug';
+import Example from '../src/Example';
 
 const { root } = render(<Example id={1} />);
 
@@ -43,6 +46,7 @@ debug(root);
 ```tsx
 // Good
 import { render } from 'rut';
+import Example from '../src/Example';
 
 const { debug, root } = render(<Example id={1} />);
 
@@ -58,6 +62,7 @@ Require generics for `render()` and `renderAndWait()` functions.
 ```tsx
 // Bad
 import { render } from 'rut';
+import Example from '../src/Example';
 
 const { root } = render(<Example id={1} />);
 ```
@@ -65,6 +70,7 @@ const { root } = render(<Example id={1} />);
 ```tsx
 // Good
 import { render } from 'rut';
+import Example, { ExampleProps } from '../src/Example';
 
 const { root } = render<ExampleProps>(<Example id={1} />);
 ```

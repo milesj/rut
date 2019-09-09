@@ -5,8 +5,12 @@ describe('Refs', () => {
   const mock = { tagName: 'BUTTON' };
 
   describe('forwardRef', () => {
+    interface ButtonProps {
+      children: React.ReactNode;
+    }
+
     const Button = React.forwardRef(
-      ({ children }: { children: React.ReactNode }, ref: React.Ref<HTMLButtonElement>) => {
+      ({ children }: ButtonProps, ref: React.Ref<HTMLButtonElement>) => {
         return (
           <button type="button" ref={ref}>
             {children}
@@ -17,7 +21,7 @@ describe('Refs', () => {
 
     it('resolves the ref from the inner component', () => {
       const ref = React.createRef<HTMLButtonElement>();
-      const result = render(<Button ref={ref}>Child</Button>, {
+      const result = render<ButtonProps>(<Button ref={ref}>Child</Button>, {
         mockRef: () => mock,
       });
 
@@ -54,7 +58,7 @@ describe('Refs', () => {
 
       expect(ref.current).toBeNull();
 
-      const result = render(<HocButton ref={ref}>Child</HocButton>);
+      const result = render<ButtonProps>(<HocButton ref={ref}>Child</HocButton>);
 
       expect(result).toMatchSnapshot();
       expect(ref.current!.constructor.name).toBe('InnerButton');
@@ -72,7 +76,7 @@ describe('Refs', () => {
 
     it('resolves the ref', () => {
       const div = { tagName: 'DIV' };
-      const result = render(<Section>Child</Section>, {
+      const result = render<{}>(<Section>Child</Section>, {
         mockRef: () => div,
       });
 
@@ -82,7 +86,11 @@ describe('Refs', () => {
   });
 
   describe('callback refs', () => {
-    class Input extends React.Component<{ value: string }> {
+    interface InputProps {
+      value: string;
+    }
+
+    class Input extends React.Component<InputProps> {
       inputRef: HTMLInputElement | null = null;
 
       render() {
@@ -99,7 +107,7 @@ describe('Refs', () => {
 
     it('resolves the callback ref', () => {
       const input = { tagName: 'INPUT' };
-      const result = render(<Input value="foo" />, {
+      const result = render<InputProps>(<Input value="foo" />, {
         mockRef: () => input,
       });
 
@@ -109,7 +117,12 @@ describe('Refs', () => {
   });
 
   describe('string refs', () => {
-    class Link extends React.Component<{ children: React.ReactNode; href: string }> {
+    interface LinkProps {
+      children: React.ReactNode;
+      href: string;
+    }
+
+    class Link extends React.Component<LinkProps> {
       render() {
         return (
           // eslint-disable-next-line react/no-string-refs
@@ -122,7 +135,7 @@ describe('Refs', () => {
 
     it('resolves the string ref', () => {
       const a = { tagName: 'A' };
-      const result = render(<Link href="/">Child</Link>, {
+      const result = render<LinkProps>(<Link href="/">Child</Link>, {
         mockRef: () => a,
       });
 

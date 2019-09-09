@@ -5,7 +5,7 @@ import { doAct, doAsyncAct } from './internals/act';
 import { RendererOptions } from './types';
 
 export function render<Props = unknown>(
-  element: React.ReactElement,
+  element: React.ReactElement<Props>,
   options?: RendererOptions,
 ): Omit<Result<Props>, 'rerenderAndWait'> {
   return doAct(
@@ -18,7 +18,7 @@ export function render<Props = unknown>(
 }
 
 export async function renderAndWait<Props = unknown>(
-  element: React.ReactElement,
+  element: React.ReactElement<Props>,
   options?: RendererOptions,
 ): Promise<Omit<Result<Props>, 'rerender'>> {
   return doAsyncAct(

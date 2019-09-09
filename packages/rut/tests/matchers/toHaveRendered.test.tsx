@@ -1,4 +1,4 @@
-/* eslint-disable jest/expect-expect */
+/* eslint-disable jest/expect-expect, rut/require-render-generics */
 
 import React from 'react';
 import { render } from '../../src/render';

@@ -3,7 +3,13 @@ import Element from '../src/Element';
 import { render } from '../src/render';
 import { mockSyntheticEvent } from '../src/mocks/event';
 import { HostProps } from '../src/types';
-import { FuncComp, FuncCompWithDisplayName, ClassComp, ClassCompWithDisplayName } from './fixtures';
+import {
+  FuncComp,
+  FuncCompWithDisplayName,
+  ClassComp,
+  ClassCompWithDisplayName,
+  TestProps,
+} from './fixtures';
 import { runAsyncCall } from './helpers';
 
 describe('Element', () => {
@@ -13,7 +19,7 @@ describe('Element', () => {
         return null;
       }
 
-      const { root } = render(<NullComp />);
+      const { root } = render<{}>(<NullComp />);
 
       expect(root.children()).toEqual([]);
     });
@@ -29,7 +35,7 @@ describe('Element', () => {
         );
       }
 
-      const { root } = render(<StringComp />);
+      const { root } = render<{}>(<StringComp />);
 
       expect(root.findOne('div').children()).toEqual(['Foo', expect.any(Element), 'Bar']);
     });
@@ -107,7 +113,7 @@ describe('Element', () => {
         );
       }
 
-      const { root } = render(<DispatchComp />);
+      const { root } = render<{}>(<DispatchComp />);
 
       root.findOne('button').dispatch('onClick', {}, mockSyntheticEvent('onClick'));
 
@@ -134,7 +140,7 @@ describe('Element', () => {
     }
 
     it('waits for the async and re-render', async () => {
-      const { root } = render(<DispatchTest />);
+      const { root } = render<{}>(<DispatchTest />);
 
       expect(root).toContainNode(0);
 
@@ -323,25 +329,25 @@ describe('Element', () => {
     });
 
     it('returns function component name', () => {
-      const { root } = render(<FuncComp />);
+      const { root } = render<TestProps>(<FuncComp />);
 
       expect(root.name()).toBe('FuncComp');
     });
 
     it('returns function component display name', () => {
-      const { root } = render(<FuncCompWithDisplayName />);
+      const { root } = render<TestProps>(<FuncCompWithDisplayName />);
 
       expect(root.name()).toBe('CustomFuncName');
     });
 
     it('returns class component name', () => {
-      const { root } = render(<ClassComp />);
+      const { root } = render<TestProps>(<ClassComp />);
 
       expect(root.name()).toBe('ClassComp');
     });
 
     it('returns class component display name', () => {
-      const { root } = render(<ClassCompWithDisplayName />);
+      const { root } = render<TestProps>(<ClassCompWithDisplayName />);
 
       expect(root.name()).toBe('CustomCompName');
     });
@@ -359,7 +365,7 @@ describe('Element', () => {
 
       const Connected = connect(ClassComp);
 
-      const { root } = render(<Connected />);
+      const { root } = render<{}>(<Connected />);
 
       expect(root.name()).toBe('connect(ClassComp)');
     });

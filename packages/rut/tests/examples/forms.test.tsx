@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+
 import React, { useState } from 'react';
 import { render, mockSyntheticEvent } from '../../src';
 
@@ -21,6 +23,7 @@ describe('Forms Example', () => {
           <label htmlFor="email">Email</label>
           <input
             required
+            id="email"
             name="email"
             type="email"
             value={email}
@@ -32,6 +35,7 @@ describe('Forms Example', () => {
           <label htmlFor="username">Username</label>
           <input
             required
+            id="username"
             name="username"
             type="text"
             value={username}
@@ -43,6 +47,7 @@ describe('Forms Example', () => {
           <label htmlFor="password">Password</label>
           <input
             required
+            id="password"
             name="password"
             type="password"
             value={password}

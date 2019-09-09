@@ -6,10 +6,12 @@ describe('ErrorBoundary', () => {
     error: Error | null;
   }
 
-  class ErrorBoundary extends React.Component<
-    { children: React.ReactNode; spy: (error: Error, info: object) => void },
-    State
-  > {
+  interface Props {
+    children: React.ReactNode;
+    spy: (error: Error, info: object) => void;
+  }
+
+  class ErrorBoundary extends React.Component<Props, State> {
     state: State = {
       error: null,
     };
@@ -45,7 +47,7 @@ describe('ErrorBoundary', () => {
 
   it('renders the child if no error', () => {
     const spy = jest.fn();
-    const result = render(
+    const result = render<Props>(
       <ErrorBoundary spy={spy}>
         <div>Content</div>
       </ErrorBoundary>,
@@ -61,7 +63,7 @@ describe('ErrorBoundary', () => {
     }
 
     const spy = jest.fn();
-    const result = render(
+    const result = render<Props>(
       <ErrorBoundary spy={spy}>
         // @ts-ignore
         <BrokenComponent />
