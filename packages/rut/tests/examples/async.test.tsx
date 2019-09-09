@@ -93,7 +93,7 @@ describe('Async Example', () => {
   // so that we can assert the loading state. Otherwise
   // the user card will be rendered in the result.
   it('renders the loading state while request is in flight', () => {
-    const { root } = render(<UserProfile id={1} />);
+    const { root } = render<UserProfileProps>(<UserProfile id={1} />);
 
     expect(root).toContainNode('Loading...');
   });
@@ -101,7 +101,7 @@ describe('Async Example', () => {
   // We now use `renderAndWait` here, coupled with async/await,
   // so that the rendered result waits for the fetch to complete.
   it('renders the error state when a request fails', async () => {
-    const { root } = await renderAndWait(<UserProfile id={2} />);
+    const { root } = await renderAndWait<UserProfileProps>(<UserProfile id={2} />);
 
     expect(root).toContainNode('Failed to load user 2!');
   });
@@ -109,7 +109,7 @@ describe('Async Example', () => {
   // Again we use `renderAndWait` so that the request completes.
   // This time to test the success state.
   it('renders the user card when a request succeeds', async () => {
-    const { root } = await renderAndWait(<UserProfile id={1} />);
+    const { root } = await renderAndWait<UserProfileProps>(<UserProfile id={1} />);
 
     // Since the names are interpolated in the component,
     // they also need to be here so that the `children`
@@ -125,7 +125,7 @@ describe('Async Example', () => {
   // Coupled with async/await, we can wait for the fetch in the
   // update lifecycle to complete.
   it('re-fetches the user when IDs change', async () => {
-    const { root, updateAndWait } = await renderAndWait(<UserProfile id={1} />);
+    const { root, updateAndWait } = await renderAndWait<UserProfileProps>(<UserProfile id={1} />);
 
     // Can use a string directly here, instead of an element above.
     expect(root).toContainNode('Bruce Wayne');

@@ -17,15 +17,17 @@ import React from 'react';
  * structure is close enough for most, if not all of test cases.
  */
 
-export interface EventOptions {
-  currentTarget?: HTMLElement;
-  target?: Element;
-}
+export type InferElement<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
 
 export type EventType = Exclude<
   keyof React.DOMAttributes<unknown>,
   'children' | 'dangerouslySetInnerHTML'
 >;
+
+export interface EventOptions<T> {
+  currentTarget?: Partial<T>;
+  target?: Partial<T>;
+}
 
 class BaseEvent {
   bubbles: boolean = true;
@@ -177,7 +179,7 @@ function createHostEvent(type: string): Event {
 /**
  * Mock a DOM `Event` based on type.
  */
-export function mockEvent<T = Event>(type: string, options: EventOptions = {}): T {
+export function mockEvent<T = Event>(type: string, options: EventOptions<InferElement<T>> = {}): T {
   let event: Event;
 
   // JSDOM environment does not exist, which means we do not have events.
@@ -256,7 +258,7 @@ class SyntheticEvent extends BaseEvent {
  */
 export function mockSyntheticEvent<T = React.SyntheticEvent>(
   type: EventType,
-  options: EventOptions = {},
+  options: EventOptions<InferElement<T>> = {},
 ): T {
   let eventType = type.toLowerCase();
 

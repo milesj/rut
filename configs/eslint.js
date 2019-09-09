@@ -14,7 +14,7 @@ module.exports = {
         'rut/no-internals': 'error',
 
         // Lots of test cases dont use props
-        'rut/require-render-generics': 'off',
+        // 'rut/require-render-generics': 'off',
       },
     },
   ],
