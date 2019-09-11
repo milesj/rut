@@ -32,6 +32,16 @@ describe('Result', () => {
     return <TestContext.Provider value="wrapped">{children || null}</TestContext.Provider>;
   }
 
+  it('can serialize as a snapshot', () => {
+    const result = render<TestProps>(
+      <FuncComp>
+        <b>Child</b>
+      </FuncComp>,
+    );
+
+    expect(result).toMatchSnapshot();
+  });
+
   it('wraps with `StrictMode` when using `strict`', () => {
     class StrictComp extends React.Component {
       componentWillMount() {

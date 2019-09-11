@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Result can serialize as a snapshot 1`] = `
+<FuncComp>
+  <span>
+    <b>Child</b>
+  </span>
+</FuncComp>
+`;
+
 exports[`Result re-rendering can update the wrapper 1`] = `
 "<div id=\\"first\\">
   <div />

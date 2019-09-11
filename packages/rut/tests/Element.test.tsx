@@ -13,6 +13,16 @@ import {
 import { runAsyncCall } from './helpers';
 
 describe('Element', () => {
+  it('can serialize as a snapshot', () => {
+    const { root } = render<TestProps>(
+      <FuncComp>
+        <b>Child</b>
+      </FuncComp>,
+    );
+
+    expect(root).toMatchSnapshot();
+  });
+
   describe('children()', () => {
     it('returns an empty array when no children (null return)', () => {
       function NullComp() {
