@@ -4,6 +4,8 @@ import React from 'react';
 import Element from './Element';
 
 export interface RendererOptions {
+  /** Options to pass to the debugger. */
+  debugger?: DebugOptions;
   /** Mock a ref found within the current render tree. */
   mockRef?: (element: React.ReactElement) => unknown;
   /** Wraps the root element in `React.StrictMode`. */
@@ -20,6 +22,8 @@ export interface DebugOptions {
   hostElements?: boolean;
   /** Include `key` and `ref` props in the output. Defaults to `true`. */
   keyAndRef?: boolean;
+  /** Max length of arrays and objects before truncating. Defaults to 5. */
+  maxLength?: number;
   /** Do not render children. Defaults to `false`. */
   noChildren?: boolean;
   /** Include React elements in the output. Defaults to `true`. */

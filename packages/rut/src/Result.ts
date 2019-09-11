@@ -44,7 +44,10 @@ export default class Result<Props = {}> {
    *  - Fragments
    */
   debug = (options: DebugOptions = {}) => {
-    const output = debug(this[RENDERER].root, options);
+    const output = debug(this[RENDERER].root, {
+      ...this[OPTIONS].debugger,
+      ...options,
+    });
 
     // istanbul ignore next
     if (!options.return) {

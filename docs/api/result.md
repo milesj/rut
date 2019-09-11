@@ -51,6 +51,7 @@ The example above would log something similar to the following.
   else, event handlers. Defaults to `true`.
 - `hostElements` (`boolean`) - Include host elements (DOM) in the output. Defaults to `true`.
 - `keyAndRef` (`boolean`) - Include `key` and `ref` props in the output. Defaults to `true`.
+- `maxLength` (`number`) - Max length of arrays and objects before truncating. Defaults to 5.
 - `noChildren` (`boolean`) - Do not render children. Defaults to `false`.
 - `reactElements` (`boolean`) - Include React elements in the output. Defaults to `true`.
 - `return` (`boolean`) - Do not log to the console and instead return the output. Defaults to
