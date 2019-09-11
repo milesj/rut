@@ -33,18 +33,58 @@ function indentAllLines(value: string, indent: string): string {
     .join('\n');
 }
 
+function format(value: unknown): string {
+  // String
+  if (typeof value === 'string') {
+    return `"${value}"`;
+
+    // Function
+  } else if (typeof value === 'function') {
+    return `${value.name || 'func'}()`;
+
+    // Objects
+  } else if (typeof value === 'object' && value !== null) {
+    // Elements
+    if (React.isValidElement(value)) {
+      return debugFromElement(value, { ...options, noChildren: true });
+
+      // Arrays
+    } else if (Array.isArray(value)) {
+      return formatArray(value);
+    }
+
+    // Other
+    return formatObject(value);
+  }
+
+  // Everything else
+  return String(value);
+}
+
+function formatArray(values: unknown[]): string {
+  let maxLength = 0;
+  const items = values.map(value => {
+    const formattedValue = format(value);
+
+    if (formattedValue.length > maxLength) {
+      maxLength = formattedValue.length;
+    }
+
+    return formattedValue;
+  });
+}
+
 function formatObject(value: object): string {
   // DOM element
   if ('tagName' in value) {
     return `<${(value as HTMLElement).tagName.toLowerCase()} />`;
 
-    // Ref
+    // Refs
   } else if ('current' in value) {
     return formatObject((value as React.RefObject<object>).current!);
 
-    // Arrays, objects, maps, sets, etc
+    // Objects, maps, sets, etc
   } else if (
-    Array.isArray(value) ||
     value instanceof Map ||
     value instanceof Set ||
     value instanceof RegExp ||
@@ -78,26 +118,7 @@ function formatProps(names: string[], props: Props, options: Required<DebugOptio
       return;
     }
 
-    let propValue;
-
-    // String
-    if (typeof value === 'string') {
-      propValue = `"${value}"`;
-
-      // Function
-    } else if (typeof value === 'function') {
-      propValue = `${value.name || 'func'}()`;
-
-      // Objects
-    } else if (typeof value === 'object' && !!value) {
-      propValue = React.isValidElement(value)
-        ? debugFromElement(value, { ...options, noChildren: true })
-        : formatObject(value);
-
-      // Everything else
-    } else {
-      propValue = String(value);
-    }
+    const propValue = format(value);
 
     if (propValue.startsWith('"')) {
       output.push(`${name}=${propValue}`);
