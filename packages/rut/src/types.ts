@@ -4,6 +4,8 @@ import React from 'react';
 import Element from './Element';
 
 export interface RendererOptions {
+  /** Options to pass to the debugger. */
+  debugger?: DebugOptions;
   /** Mock a ref found within the current render tree. */
   mockRef?: (element: React.ReactElement) => unknown;
   /** Wraps the root element in `React.StrictMode`. */

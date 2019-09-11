@@ -4,6 +4,7 @@ import React from 'react';
 import { isAllTextNodes, isClassInstance, toArray } from './utils';
 import { getTypeName } from '../helpers';
 import { DebugOptions, TestNode } from '../types';
+import { globalOptions } from '../configure';
 
 type Props = TestNode['props'];
 type Formatter = (value: any) => string;
@@ -18,16 +19,6 @@ const { toString } = Object.prototype;
 const { columns: TERM_WIDTH = 80 } = process.stdout;
 const INDENT_CHARS = '  ';
 const MAX_INLINE_PROPS = 6;
-const DEFAULT_OPTIONS: Required<DebugOptions> = {
-  groupProps: true,
-  hostElements: true,
-  keyAndRef: true,
-  maxLength: 5,
-  noChildren: false,
-  reactElements: true,
-  return: false,
-  sortProps: true,
-};
 
 function getLongestItem(values: string[]): number {
   let longest = 0;
@@ -63,7 +54,15 @@ class Debugger {
     this.node = node;
 
     this.options = {
-      ...DEFAULT_OPTIONS,
+      groupProps: true,
+      hostElements: true,
+      keyAndRef: true,
+      maxLength: 5,
+      noChildren: false,
+      reactElements: true,
+      return: false,
+      sortProps: true,
+      ...globalOptions,
       ...options,
     };
 

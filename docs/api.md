@@ -16,6 +16,21 @@ configure({
 
 ### Options
 
+#### `debugger`
+
+> DebugOptions
+
+Debug options that will be applied to every [`debug()`](./api/result.md#options) call. Can override
+these options on a per-call basis.
+
+```tsx
+configure({
+  debugger: {
+    reactElements: false,
+  },
+});
+```
+
 #### `mockRef()`
 
 > (element: React.ReactElement) => unknown
