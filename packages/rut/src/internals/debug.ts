@@ -1,12 +1,12 @@
-/* eslint-disable complexity, no-use-before-define, @typescript-eslint/no-use-before-define */
+/* eslint-disable complexity, no-use-before-define, @typescript-eslint/no-use-before-define, @typescript-eslint/no-explicit-any */
 
-import util from 'util';
 import React from 'react';
 import { isAllTextNodes, isClassInstance, toArray } from './utils';
 import { getTypeName } from '../helpers';
 import { DebugOptions, TestNode } from '../types';
 
 type Props = TestNode['props'];
+type Formatter = (value: any) => string;
 
 interface TreeNode {
   children: (string | TreeNode)[];
@@ -14,17 +14,32 @@ interface TreeNode {
   props: string[];
 }
 
+const { toString } = Object.prototype;
 const { columns: TERM_WIDTH = 80 } = process.stdout;
+const INDENT_CHARS = '  ';
 const MAX_INLINE_PROPS = 6;
 const DEFAULT_OPTIONS: Required<DebugOptions> = {
   groupProps: true,
   hostElements: true,
   keyAndRef: true,
+  maxLength: 5,
   noChildren: false,
   reactElements: true,
   return: false,
   sortProps: true,
 };
+
+function getLongestItem(values: string[]): number {
+  let longest = 0;
+
+  values.forEach(value => {
+    if (value.length > longest) {
+      longest = value.length;
+    }
+  });
+
+  return longest;
+}
 
 function indentAllLines(value: string, indent: string): string {
   return value
@@ -33,274 +48,359 @@ function indentAllLines(value: string, indent: string): string {
     .join('\n');
 }
 
-function format(value: unknown): string {
-  // String
-  if (typeof value === 'string') {
-    return `"${value}"`;
+class Debugger {
+  currentDepth: number = 0;
 
-    // Function
-  } else if (typeof value === 'function') {
-    return `${value.name || 'func'}()`;
+  node: TestNode;
 
-    // Objects
-  } else if (typeof value === 'object' && value !== null) {
-    // Elements
-    if (React.isValidElement(value)) {
-      return debugFromElement(value, { ...options, noChildren: true });
+  options: Required<DebugOptions>;
 
-      // Arrays
-    } else if (Array.isArray(value)) {
-      return formatArray(value);
-    }
+  root: TreeNode;
 
-    // Other
-    return formatObject(value);
-  }
+  types: { [key: string]: Formatter };
 
-  // Everything else
-  return String(value);
-}
+  constructor(node: TestNode, options?: DebugOptions) {
+    this.node = node;
 
-function formatArray(values: unknown[]): string {
-  let maxLength = 0;
-  const items = values.map(value => {
-    const formattedValue = format(value);
+    this.options = {
+      ...DEFAULT_OPTIONS,
+      ...options,
+    };
 
-    if (formattedValue.length > maxLength) {
-      maxLength = formattedValue.length;
-    }
+    this.types = {
+      '[object Array]': this.formatArray,
+      '[object Boolean]': this.formatPrimitive,
+      '[object Date]': this.formatDate,
+      '[object Error]': this.formatError,
+      '[object Function]': this.formatFunction,
+      '[object Map]': this.formatMap,
+      '[object Null]': this.formatPrimitive,
+      '[object Number]': this.formatPrimitive,
+      '[object Object]': this.formatObject,
+      '[object RegExp]': this.formatRegExp,
+      '[object Set]': this.formatSet,
+      '[object String]': this.formatString,
+      '[object Symbol]': this.formatSymbol,
+      '[object Undefined]': this.formatPrimitive,
+    };
 
-    return formattedValue;
-  });
-}
-
-function formatObject(value: object): string {
-  // DOM element
-  if ('tagName' in value) {
-    return `<${(value as HTMLElement).tagName.toLowerCase()} />`;
-
-    // Refs
-  } else if ('current' in value) {
-    return formatObject((value as React.RefObject<object>).current!);
-
-    // Objects, maps, sets, etc
-  } else if (
-    value instanceof Map ||
-    value instanceof Set ||
-    value instanceof RegExp ||
-    !isClassInstance(value)
-  ) {
-    return util.inspect(value, {
-      depth: 1,
-      maxArrayLength: 5,
+    this.root = this.buildTree(node, {
+      children: [],
+      name: 'ROOT',
+      props: [],
     });
   }
 
-  // Class instance
-  return `new ${value.constructor.name || 'Class'}()`;
-}
+  buildTree(node: TestNode | string, parent: TreeNode): TreeNode {
+    const { hostElements, keyAndRef, noChildren, reactElements } = this.options;
 
-function formatProps(names: string[], props: Props, options: Required<DebugOptions>): string[] {
-  const output: string[] = [];
-
-  if (options.sortProps) {
-    names.sort();
-  }
-
-  names.forEach(name => {
-    const value = props[name];
-
-    if (value === undefined) {
-      return;
-    } else if (value === true) {
-      output.push(name);
-
-      return;
+    if (noChildren && parent.name !== 'ROOT') {
+      return parent;
     }
 
-    const propValue = format(value);
+    // Text node, immediately add to parent
+    if (typeof node === 'string') {
+      parent.children.push(node);
 
-    if (propValue.startsWith('"')) {
-      output.push(`${name}=${propValue}`);
-    } else {
-      output.push(`${name}={${propValue}}`);
+      return parent;
     }
-  });
 
-  return output;
-}
+    const children = toArray(node.children);
 
-function formatTree(node: TreeNode | string, depth: number = 0): string {
-  const indent = '  '.repeat(depth);
+    // Skip elements if option is disabled
+    if (
+      (typeof node.type === 'string' && !hostElements) ||
+      (typeof node.type === 'function' && !reactElements)
+    ) {
+      children.forEach(child => {
+        this.buildTree(child, parent);
+      });
 
-  if (typeof node === 'string') {
-    return `${indent}${node}`;
+      return parent;
+    }
+
+    // Build new parent and tree
+    const tree = {
+      children: [],
+      name: getTypeName(node.type),
+      props: this.getProps(node.props, keyAndRef ? this.getKeyAndRef(node) : {}),
+    };
+
+    children.forEach(child => {
+      this.buildTree(child, tree);
+    });
+
+    parent.children.push(tree);
+
+    return parent;
   }
 
-  if (node.name === 'ROOT') {
-    return node.children.map(child => formatTree(child)).join('\n');
+  format(value: any): string {
+    const type = toString.call(value);
+
+    // React element
+    if (React.isValidElement(value)) {
+      return debugFromElement(value, { ...this.options, noChildren: true });
+    }
+
+    // Built-in type
+    if (this.types[type]) {
+      return this.types[type](value);
+    }
+
+    // DOM element
+    if (type.endsWith('Element]')) {
+      return this.formatElement(value as HTMLElement);
+    }
+
+    // Custom class instance
+    if (isClassInstance(value)) {
+      return `new ${value.constructor.name || 'Class'}()`;
+    }
+
+    // Unknown, so cast to string
+    return String(value);
   }
 
-  const inlineProps = node.props.join(' ');
-  let output = `${indent}<${node.name}`;
+  formatArray = (value: any[]) => this.transformList(value.map(val => this.format(val)), '[', ']');
 
-  // Determine when to stack props vertically
-  const isStacked =
-    // Too many props inlined
-    node.props.length >= MAX_INLINE_PROPS ||
-    // A prop contains new lines (arrays, objects) which are hard to inline correctly
-    inlineProps.includes('\n') ||
-    // The inline props would wrap to the next line
-    inlineProps.length + output.length >= TERM_WIDTH;
+  formatDate = (value: Date) => `new Date('${value.toISOString()}')`;
 
-  // Stack props vertically
-  if (isStacked) {
-    output += '\n';
-    output += node.props.map(prop => indentAllLines(prop, `${indent}  `)).join('\n');
-    output += '\n';
+  formatElement = (value: Element) => `<${value.tagName.toLowerCase()} />`;
 
-    // Otherwise inline them
-  } else if (inlineProps) {
-    output += ` ${inlineProps}`;
+  formatError = (value: Error) => `new Error('${value.message}')`;
+
+  formatFunction = (value: Function) => `${value.name || 'func'}()`;
+
+  formatMap = (value: Map<any, any>) =>
+    this.transformList(
+      Array.from(value.entries()).map(([key, val]) => `${key}: ${this.format(val)}`),
+      'new Map({',
+      '})',
+    );
+
+  formatObject = (value: { [key: string]: any }) => {
+    // React refs
+    if ('current' in value) {
+      return this.format((value as React.RefObject<object>).current!);
+    }
+
+    // DOM elements
+    if ('tagName' in value) {
+      return this.formatElement(value as HTMLElement);
+    }
+
+    // Custom class instance
+    if (isClassInstance(value)) {
+      return `new ${value.constructor.name || 'Class'}()`;
+    }
+
+    // Plain objects
+    return this.transformList(
+      Object.entries(value).map(([key, val]) => `${key}: ${this.format(val)}`),
+      '{',
+      '}',
+    );
+  };
+
+  formatRegExp = (value: RegExp) => `/${value.source}/${value.flags}`;
+
+  formatSet = (value: Set<any>) =>
+    this.transformList(Array.from(value).map(val => this.format(val)), 'new Set([', '])');
+
+  formatString = (value: string) => `"${value}"`;
+
+  formatSymbol = () => `Symbol()`;
+
+  formatPrimitive = (value: unknown) => String(value);
+
+  getKeyAndRef(node: TestNode): Props {
+    const props: Props = {};
+
+    if (!node.instance) {
+      return props;
+    }
+
+    // @ts-ignore Allow internal access
+    const { key, ref } = node._fiber || node.instance._reactInternalFiber;
+
+    if (key) {
+      props.key = key;
+    }
+
+    if (ref) {
+      props.ref = ref;
+    }
+
+    return props;
   }
 
-  // If no children, self close and return
-  if (node.children.length === 0) {
+  getProps(props: Props, internal: Props): string[] {
+    const all: string[] = [];
+    const truthies: string[] = [];
+    const handlers: string[] = [];
+
+    Object.entries(props).forEach(([key, value]) => {
+      if (key === 'children') {
+        return;
+      }
+
+      if (this.options.groupProps) {
+        if (value === true) {
+          truthies.push(key);
+        } else if (key.startsWith('on') && typeof value === 'function') {
+          handlers.push(key);
+        } else {
+          all.push(key);
+        }
+      } else {
+        all.push(key);
+      }
+    });
+
+    return [
+      ...this.transformProps(['key', 'ref'], internal),
+      ...this.transformProps(truthies, props),
+      ...this.transformProps(all, props),
+      ...this.transformProps(handlers, props),
+    ];
+  }
+
+  transformList(values: string[], openChar: string, closeChar: string): string {
+    if (values.length === 0) {
+      return openChar + closeChar;
+    }
+
+    const { maxLength } = this.options;
+    const items = values.slice(0, maxLength);
+    const indentLength = INDENT_CHARS.repeat(this.currentDepth).length;
+
+    if (values.length > maxLength) {
+      items.push(`... ${values.length - maxLength} more`);
+    }
+
+    const stackedItems = items.map(item => INDENT_CHARS + item);
+    const inlineItems = items.join(', ');
+
+    // Items are too long, stack vertically
+    if (
+      indentLength + getLongestItem(stackedItems) > TERM_WIDTH ||
+      indentLength + inlineItems.length > TERM_WIDTH
+    ) {
+      return `${openChar}\n${stackedItems.join(',\n')},\n${closeChar}`;
+    }
+
+    return `${openChar} ${inlineItems} ${closeChar}`;
+  }
+
+  transformNode(node: TreeNode | string, depth: number = 0): string {
+    this.currentDepth = depth;
+
+    const indent = INDENT_CHARS.repeat(depth);
+
+    if (typeof node === 'string') {
+      return `${indent}${node}`;
+    }
+
+    if (node.name === 'ROOT') {
+      return node.children.map(child => this.transformNode(child)).join('\n');
+    }
+
+    const inlineProps = node.props.join(' ');
+    let output = `${indent}<${node.name}`;
+
+    // Determine when to stack props vertically
+    const isStacked =
+      // Too many props inlined
+      node.props.length >= MAX_INLINE_PROPS ||
+      // A prop contains new lines (arrays, objects) which are hard to inline correctly
+      inlineProps.includes('\n') ||
+      // The inline props would wrap to the next line
+      inlineProps.length + output.length >= TERM_WIDTH;
+
+    // Stack props vertically
     if (isStacked) {
-      output += `${indent}/>`;
-    } else {
-      output += ' />';
+      output += '\n';
+      output += node.props.map(prop => indentAllLines(prop, `${indent}  `)).join('\n');
+      output += '\n';
+
+      // Otherwise inline them
+    } else if (inlineProps) {
+      output += ` ${inlineProps}`;
     }
+
+    // If no children, self close and return
+    if (node.children.length === 0) {
+      if (isStacked) {
+        output += `${indent}/>`;
+      } else {
+        output += ' />';
+      }
+
+      return output;
+    }
+
+    // Otherwise finish opening tag
+    if (isStacked) {
+      output += `${indent}>`;
+    } else {
+      output += '>';
+    }
+
+    // Inline if only text with no props
+    if (isAllTextNodes(node.children) && inlineProps.length === 0) {
+      output += node.children.join('');
+
+      // Otherwise continue nested indentation
+    } else {
+      output += '\n';
+      output += node.children.map(child => this.transformNode(child, depth + 1)).join('\n');
+      output += `\n${indent}`;
+    }
+
+    // Add closing tag
+    output += `</${node.name}>`;
 
     return output;
   }
 
-  // Otherwise finish opening tag
-  if (isStacked) {
-    output += `${indent}>`;
-  } else {
-    output += '>';
-  }
+  transformProps(names: string[], props: Props): string[] {
+    const output: string[] = [];
 
-  // Inline if only text with no props
-  if (isAllTextNodes(node.children) && inlineProps.length === 0) {
-    output += node.children.join('');
-
-    // Otherwise continue nested indentation
-  } else {
-    output += '\n';
-    output += node.children.map(child => formatTree(child, depth + 1)).join('\n');
-    output += `\n${indent}`;
-  }
-
-  // Add closing tag
-  output += `</${node.name}>`;
-
-  return output;
-}
-
-function getKeyAndRef(node: TestNode): Props {
-  const props: Props = {};
-
-  if (!node.instance) {
-    return props;
-  }
-
-  // @ts-ignore Allow internal access
-  const { key, ref } = node._fiber || node.instance._reactInternalFiber;
-
-  if (key) {
-    props.key = key;
-  }
-
-  if (ref) {
-    props.ref = ref;
-  }
-
-  return props;
-}
-
-function getProps(props: Props, internal: Props, options: Required<DebugOptions>): string[] {
-  const all: string[] = [];
-  const truthies: string[] = [];
-  const handlers: string[] = [];
-
-  Object.entries(props).forEach(([key, value]) => {
-    if (key === 'children') {
-      return;
+    if (this.options.sortProps) {
+      names.sort();
     }
 
-    if (options.groupProps) {
-      if (value === true) {
-        truthies.push(key);
-      } else if (key.startsWith('on') && typeof value === 'function') {
-        handlers.push(key);
-      } else {
-        all.push(key);
+    names.forEach(name => {
+      const value = props[name];
+
+      if (value === undefined) {
+        return;
+      } else if (value === true) {
+        output.push(name);
+
+        return;
       }
-    } else {
-      all.push(key);
-    }
-  });
 
-  return [
-    ...formatProps(['key', 'ref'], internal, options),
-    ...formatProps(truthies, props, options),
-    ...formatProps(all, props, options),
-    ...formatProps(handlers, props, options),
-  ];
-}
+      const propValue = this.format(value);
 
-function buildTree(node: TestNode | string, parent: TreeNode, options: Required<DebugOptions>) {
-  if (options.noChildren && parent.name !== 'ROOT') {
-    return;
-  }
-
-  // Text node, immediately add to parent
-  if (typeof node === 'string') {
-    parent.children.push(node);
-
-    return;
-  }
-
-  const children = toArray(node.children);
-
-  // Skip elements if option is disabled
-  if (
-    (typeof node.type === 'string' && !options.hostElements) ||
-    (typeof node.type === 'function' && !options.reactElements)
-  ) {
-    children.forEach(child => {
-      buildTree(child, parent, options);
+      if (propValue.startsWith('"')) {
+        output.push(`${name}=${propValue}`);
+      } else {
+        output.push(`${name}={${propValue}}`);
+      }
     });
 
-    return;
+    return output;
   }
 
-  // Build new parent and tree
-  const tree = {
-    children: [],
-    name: getTypeName(node.type),
-    props: getProps(node.props, options.keyAndRef ? getKeyAndRef(node) : {}, options),
-  };
-
-  children.forEach(child => {
-    buildTree(child, tree, options);
-  });
-
-  parent.children.push(tree);
+  toString(): string {
+    return this.transformNode(this.root);
+  }
 }
 
 export function debug(node: TestNode, options?: DebugOptions): string {
-  const tree = {
-    children: [],
-    name: 'ROOT',
-    props: [],
-  };
-
-  buildTree(node, tree, { ...DEFAULT_OPTIONS, ...options });
-
-  return formatTree(tree);
+  return new Debugger(node, options).toString();
 }
 
 export function debugFromElement(element: React.ReactElement, options?: DebugOptions): string {

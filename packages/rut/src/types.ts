@@ -20,6 +20,8 @@ export interface DebugOptions {
   hostElements?: boolean;
   /** Include `key` and `ref` props in the output. Defaults to `true`. */
   keyAndRef?: boolean;
+  /** Max length of arrays and objects before truncating. Defaults to 5. */
+  maxLength?: number;
   /** Do not render children. Defaults to `false`. */
   noChildren?: boolean;
   /** Include React elements in the output. Defaults to `true`. */
