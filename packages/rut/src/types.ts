@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-namespace */
 
 import React from 'react';
-import RutElement from './Element';
 
 export interface RendererOptions {
   /** Options to pass to the debugger. */
@@ -43,16 +42,6 @@ export interface DispatchOptions {
   propagate?: boolean;
 }
 
-export type PropsOf<T> = T extends RutElement<infer P>
-  ? P
-  : T extends React.ReactElement<infer P>
-  ? P
-  : T extends React.ComponentType<infer P>
-  ? P
-  : {};
-
-export type StructureOf<T> = { [K in keyof T]: T[K] };
-
 export interface UnknownProps {
   [name: string]: unknown;
 }
@@ -83,9 +72,13 @@ export interface FiberNode {
   type: React.ElementType;
 }
 
+// QUERY
+
 export type AtIndexType = 'first' | 'last' | number;
 
 export type Predicate = (node: TestNode, fiber: FiberNode) => boolean;
+
+// MATCHERS
 
 export interface MatchResult {
   context?: string;
@@ -101,19 +94,31 @@ export type NodeType =
   | 'host-component'
   | 'memo';
 
+// COMPONENTS
+
 export type HostComponentType = keyof JSX.IntrinsicElements;
 
-export type HostProps<T> = T extends HostComponentType ? JSX.IntrinsicElements[T] : {};
-
-export type HostElement<T> = T extends keyof HTMLElementTagNameMap
+export type InferHostElement<T> = T extends keyof HTMLElementTagNameMap
   ? HTMLElementTagNameMap[T]
   : T extends keyof SVGElementTagNameMap
   ? SVGElementTagNameMap[T]
-  : never;
+  : unknown;
+
+export type InferComponentProps<T> = T extends HostComponentType
+  ? JSX.IntrinsicElements[T]
+  : T extends React.ComponentType<infer P>
+  ? P
+  : {};
 
 // EVENTS
 
-export type InferElement<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
+export type InferEventFromHandler<K extends EventType, T> = EventMap<T>[K] extends (
+  event: infer E,
+) => void
+  ? E
+  : never;
+
+export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
 
 export type InferEventOptions<T> = T extends React.AnimationEvent | AnimationEvent
   ? { animationName?: string }
@@ -136,16 +141,18 @@ export type InferEventOptions<T> = T extends React.AnimationEvent | AnimationEve
   ? { propertyName?: string }
   : {};
 
-export type EventArgOf<T> = T extends (event: infer E) => void ? E : never;
+export type EventMap<T> = Omit<React.DOMAttributes<T>, 'children' | 'dangerouslySetInnerHTML'>;
 
-export type EventMap<T> = React.DOMAttributes<T>;
-
-export type EventType = Exclude<keyof EventMap<unknown>, 'children' | 'dangerouslySetInnerHTML'>;
+export type EventType = keyof EventMap<unknown>;
 
 export type EventOptions<T, E> = {
   currentTarget?: Partial<T>;
   target?: Partial<T>;
 } & InferEventOptions<E>;
+
+// AUGMENTATION
+
+export type StructureOf<T> = { [K in keyof T]: T[K] };
 
 declare module 'react-test-renderer' {
   interface ReactTestInstance {
@@ -163,8 +170,8 @@ declare global {
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;
       toHaveKey(value: string | number): R;
-      toHaveProp<K extends keyof PropsOf<R>>(name: K, value?: unknown): R;
-      toHaveProps(props: Partial<PropsOf<R>>): R;
+      toHaveProp<K extends keyof InferComponentProps<R>>(name: K, value?: unknown): R;
+      toHaveProps(props: Partial<InferComponentProps<R>>): R;
       toHaveRendered(): R;
       toHaveValue(value: unknown): R;
     }

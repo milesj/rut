@@ -3,18 +3,17 @@
 import React from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
 import {
-  EventArgOf,
+  InferEventFromHandler,
+  InferComponentProps,
   HostComponentType,
   Predicate,
   DispatchOptions,
   DebugOptions,
   UnknownProps,
-  HostProps,
   AtIndexType,
   EventType,
-  EventMap,
-  HostElement,
   EventOptions,
+  InferHostElement,
 } from './types';
 import { getTypeName } from './helpers';
 import { doAct, doAsyncAct } from './internals/act';
@@ -25,8 +24,10 @@ import { whereTypeAndProps } from './predicates';
 
 type Eventless<T> = Omit<T, 'dispatch' | 'dispatchAndWait'>;
 
-export default class Element<T = HTMLElement> {
-  readonly isRutElement = true;
+// Type is a React.ElementType but we can't use constraints
+// because JSX.Element does not provide enough type information.
+export default class Element<Type = unknown, Host = InferHostElement<Type>> {
+  private readonly isRutElement = true;
 
   private element: ReactTestInstance;
 
@@ -52,17 +53,7 @@ export default class Element<T = HTMLElement> {
    *  - Profiler, Suspense
    *  - Fragments
    */
-  debug = (options: DebugOptions = {}) => {
-    const output = debug(this.element, options);
-
-    // istanbul ignore next
-    if (!options.return) {
-      // eslint-disable-next-line no-console
-      console.log(output);
-    }
-
-    return output;
-  };
+  debug = (options: DebugOptions = {}) => debug(this.element, options);
 
   /**
    * Dispatch an event listener for the defined prop name. Requires a synthetic event
@@ -72,12 +63,12 @@ export default class Element<T = HTMLElement> {
    */
   dispatch<K extends EventType>(
     name: K,
-    event?: EventArgOf<EventMap<T>[K]>,
+    event?: InferEventFromHandler<K, Host>,
     options?: DispatchOptions,
   ): void;
   dispatch<K extends EventType>(
     name: K,
-    config?: EventOptions<T, EventArgOf<EventMap<T>[K]>>,
+    config?: EventOptions<Host, InferEventFromHandler<K, Host>>,
     options?: DispatchOptions,
   ): void;
   dispatch<K extends EventType>(
@@ -103,12 +94,12 @@ export default class Element<T = HTMLElement> {
 
   async dispatchAndWait<K extends EventType>(
     name: K,
-    event?: EventArgOf<EventMap<T>[K]>,
+    event?: InferEventFromHandler<K, Host>,
     options?: DispatchOptions,
   ): Promise<void>;
   async dispatchAndWait<K extends EventType>(
     name: K,
-    config?: EventOptions<T, EventArgOf<EventMap<T>[K]>>,
+    config?: EventOptions<Host, InferEventFromHandler<K, Host>>,
     options?: DispatchOptions,
   ): Promise<void>;
   async dispatchAndWait<K extends EventType>(
@@ -132,11 +123,14 @@ export default class Element<T = HTMLElement> {
    * Search through the current tree for all elements that match the defined React
    * component or HTML type. If any are found, a list of `Element`s is returned.
    */
-  find<T extends HostComponentType, P = HostProps<T>, PP = Partial<P>>(
+  find<T extends HostComponentType, P extends InferComponentProps<T>>(
     type: T,
-    props?: PP,
-  ): Element<HostElement<T>>[];
-  find<P, PP = Partial<P>>(type: React.ComponentType<P>, props?: PP): Eventless<Element>[];
+    props?: Partial<P>,
+  ): Element<T>[];
+  find<T extends React.ComponentType, P extends InferComponentProps<T>>(
+    type: T,
+    props?: Partial<P>,
+  ): Eventless<Element<T>>[];
   find(type: React.ElementType<unknown>, props?: UnknownProps): Element[] {
     return this.query(whereTypeAndProps(type, props));
   }
@@ -146,16 +140,16 @@ export default class Element<T = HTMLElement> {
    * component or HTML type. If any are found, return the `Element` at the defined
    * index. Accepts shorthand `first` and `last` indices.
    */
-  findAt<T extends HostComponentType, P = HostProps<T>, PP = Partial<P>>(
+  findAt<T extends HostComponentType, P extends InferComponentProps<T>>(
     type: T,
     at: AtIndexType,
-    props?: PP,
-  ): Element<HostElement<T>>;
-  findAt<P, PP = Partial<P>>(
-    type: React.ComponentType<P>,
+    props?: Partial<P>,
+  ): Element<T>;
+  findAt<T extends React.ComponentType, P extends InferComponentProps<T>>(
+    type: T,
     at: AtIndexType,
-    props?: PP,
-  ): Eventless<Element>;
+    props?: Partial<P>,
+  ): Eventless<Element<T>>;
   findAt(type: React.ElementType<unknown>, at: AtIndexType, props?: UnknownProps): Element {
     const results = this.query(whereTypeAndProps(type, props));
     let index: number;
@@ -186,11 +180,14 @@ export default class Element<T = HTMLElement> {
    * component or HTML type. If exactly 1 is found, a `Element`s is returned,
    * otherwise an error is thrown.
    */
-  findOne<T extends HostComponentType, P = HostProps<T>, PP = Partial<P>>(
+  findOne<T extends HostComponentType, P extends InferComponentProps<T>>(
     type: T,
-    props?: PP,
-  ): Element<HostElement<T>>;
-  findOne<P, PP = Partial<P>>(type: React.ComponentType<P>, props?: PP): Eventless<Element>;
+    props?: Partial<P>,
+  ): Element<T>;
+  findOne<T extends React.ComponentType, P extends InferComponentProps<T>>(
+    type: T,
+    props?: Partial<P>,
+  ): Eventless<Element<T>>;
   findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element {
     const results = this.find(type, props);
 
@@ -200,7 +197,7 @@ export default class Element<T = HTMLElement> {
       );
     }
 
-    // @ts-ignore
+    // @ts-ignore Because were removing dispatchers
     return results[0];
   }
 

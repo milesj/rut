@@ -139,7 +139,7 @@ class Debugger {
 
     // React element
     if (React.isValidElement(value)) {
-      return debugFromElement(value, { ...this.options, noChildren: true });
+      return debugFromElement(value, { ...this.options, noChildren: true, return: true });
     }
 
     // Built-in type
@@ -399,7 +399,16 @@ class Debugger {
 }
 
 export function debug(node: TestNode, options?: DebugOptions): string {
-  return new Debugger(node, options).toString();
+  const inst = new Debugger(node, options);
+  const output = inst.toString();
+
+  // istanbul ignore next
+  if (!inst.options.return) {
+    // eslint-disable-next-line no-console
+    console.log(output);
+  }
+
+  return output;
 }
 
 export function debugFromElement(element: React.ReactElement, options?: DebugOptions): string {

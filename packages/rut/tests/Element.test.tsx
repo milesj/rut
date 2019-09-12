@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Element from '../src/Element';
 import { render } from '../src/render';
 import { mockSyntheticEvent } from '../src/mocks/event';
-import { HostProps } from '../src/types';
 import {
   FuncComp,
   FuncCompWithDisplayName,
@@ -53,7 +52,7 @@ describe('Element', () => {
 
   describe('debug()', () => {
     it('debugs based on element depth', () => {
-      const { root } = render<HostProps<'div'>>(
+      const { root } = render<{}>(
         <div>
           <section>
             <article>
@@ -327,6 +326,8 @@ describe('Element', () => {
           <FuncComp>1</FuncComp>
         </div>,
       );
+
+      const f = root.findOne(FuncComp);
 
       expect(root.findOne(FuncComp)).toContainNode(1);
     });

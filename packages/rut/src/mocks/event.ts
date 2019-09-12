@@ -1,7 +1,7 @@
 /* eslint-disable complexity, max-classes-per-file */
 
 import React from 'react';
-import { EventType, EventOptions, InferElement } from '../types';
+import { EventType, EventOptions, InferHostElementFromEvent } from '../types';
 
 /**
  * In both the `mockEvent` and `mockSyntheticEvent` functions below,
@@ -168,7 +168,10 @@ function createHostEvent(type: string): Event {
 /**
  * Mock a DOM `Event` based on type.
  */
-export function mockEvent<T = Event>(type: string, options?: EventOptions<InferElement<T>, T>): T {
+export function mockEvent<T = Event>(
+  type: string,
+  options?: EventOptions<InferHostElementFromEvent<T>, T>,
+): T {
   const { currentTarget, target, ...props } = options || {};
   let event: Event;
 
@@ -259,7 +262,7 @@ export class SyntheticEvent extends BaseEvent {
  */
 export function mockSyntheticEvent<T = React.SyntheticEvent>(
   type: EventType,
-  options?: EventOptions<InferElement<T>, T>,
+  options?: EventOptions<InferHostElementFromEvent<T>, T>,
 ): T {
   let eventType = type.toLowerCase();
 
