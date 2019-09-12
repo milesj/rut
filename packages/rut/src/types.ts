@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-namespace */
 
 import React from 'react';
-import Element from './Element';
+import RutElement from './Element';
 
 export interface RendererOptions {
   /** Options to pass to the debugger. */
@@ -36,14 +36,14 @@ export interface DebugOptions {
 }
 
 export interface DispatchOptions {
+  /**
+   * Traverse up or down the tree and dispatch the event on every node
+   * unless propagation has been stopped.
+   */
   propagate?: boolean;
 }
 
-export type ArgsOf<T> = T extends (...args: infer A) => unknown ? A : never;
-
-export type ReturnOf<T> = T extends (...args: unknown[]) => infer R ? R : unknown;
-
-export type PropsOf<T> = T extends Element<infer P>
+export type PropsOf<T> = T extends RutElement<infer P>
   ? P
   : T extends React.ReactElement<infer P>
   ? P
@@ -103,7 +103,49 @@ export type NodeType =
 
 export type HostComponentType = keyof JSX.IntrinsicElements;
 
-export type HostProps<T extends HostComponentType> = JSX.IntrinsicElements[T];
+export type HostProps<T> = T extends HostComponentType ? JSX.IntrinsicElements[T] : {};
+
+export type HostElement<T> = T extends keyof HTMLElementTagNameMap
+  ? HTMLElementTagNameMap[T]
+  : T extends keyof SVGElementTagNameMap
+  ? SVGElementTagNameMap[T]
+  : never;
+
+// EVENTS
+
+export type InferElement<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
+
+export type InferEventOptions<T> = T extends React.AnimationEvent | AnimationEvent
+  ? { animationName?: string }
+  : T extends
+      | React.MouseEvent
+      | React.KeyboardEvent
+      | React.TouchEvent
+      | MouseEvent
+      | KeyboardEvent
+      | TouchEvent
+  ? {
+      altKey?: boolean;
+      ctrlKey?: boolean;
+      key?: string;
+      keyCode?: number;
+      metaKey?: boolean;
+      shiftKey?: boolean;
+    }
+  : T extends React.TransitionEvent | TransitionEvent
+  ? { propertyName?: string }
+  : {};
+
+export type EventArgOf<T> = T extends (event: infer E) => void ? E : never;
+
+export type EventMap<T> = React.DOMAttributes<T>;
+
+export type EventType = Exclude<keyof EventMap<unknown>, 'children' | 'dangerouslySetInnerHTML'>;
+
+export type EventOptions<T, E> = {
+  currentTarget?: Partial<T>;
+  target?: Partial<T>;
+} & InferEventOptions<E>;
 
 declare module 'react-test-renderer' {
   interface ReactTestInstance {

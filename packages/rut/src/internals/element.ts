@@ -9,8 +9,11 @@ export function getProp<P, K extends keyof P>(element: Element<P>, name: K): P[K
   return element.element.props[name];
 }
 
-export function getPropForDispatching<P, K extends keyof P>(element: Element<P>, name: K): P[K] {
-  const prop = getProp(element, name);
+export function getPropForDispatching<P>(
+  element: Element<P>,
+  name: string,
+): React.ReactEventHandler {
+  const prop = getProp(element, name as keyof P);
 
   if (!prop) {
     throw new Error(`Prop \`${name}\` does not exist.`);
@@ -21,6 +24,7 @@ export function getPropForDispatching<P, K extends keyof P>(element: Element<P>,
     throw new TypeError('Dispatching events is only allowed on host components (DOM elements).');
   }
 
+  // @ts-ignore
   return prop;
 }
 

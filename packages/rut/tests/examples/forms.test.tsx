@@ -82,31 +82,22 @@ describe('Forms Example', () => {
 
     email.dispatch(
       'onChange',
-      {},
       mockSyntheticEvent('onChange', { target: { value: 'rut@reactjs.com' } }),
     );
 
     expect(email).toHaveValue('rut@reactjs.com');
 
-    // Update username using find at pattern
+    // Update username using find at pattern (and short form dispatch)
     const username = root.findAt('input', 1);
 
-    username.dispatch(
-      'onChange',
-      {},
-      mockSyntheticEvent('onChange', { target: { value: 'rut-is-best' } }),
-    );
+    username.dispatch('onChange', { target: { value: 'rut-is-best' } });
 
     expect(username).toHaveValue('rut-is-best');
 
     // Update password using find one pattern
     const password = root.findOne('input', { type: 'password' });
 
-    password.dispatch(
-      'onChange',
-      {},
-      mockSyntheticEvent('onChange', { target: { value: 'Sup3rs3cr3T!' } }),
-    );
+    password.dispatch('onChange', { target: { value: 'Sup3rs3cr3T!' } });
 
     expect(password).toHaveValue('Sup3rs3cr3T!');
 
@@ -114,7 +105,7 @@ describe('Forms Example', () => {
     const event = mockSyntheticEvent<React.SyntheticEvent<HTMLFormElement, Event>>('onSubmit');
     const preventSpy = jest.spyOn(event, 'preventDefault');
 
-    root.findOne('form').dispatch('onSubmit', {}, event);
+    root.findOne('form').dispatch('onSubmit', event);
 
     // Assert that both our spies have been called!
     expect(preventSpy).toHaveBeenCalled();

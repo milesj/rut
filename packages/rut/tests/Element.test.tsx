@@ -108,6 +108,7 @@ describe('Element', () => {
       expect(() => {
         const { root } = render<DispatchProps>(<DispatchComp onSomething={() => {}} />);
 
+        // @ts-ignore
         root.dispatch('onSomething');
       }).toThrowError('Dispatching events is only allowed on host components (DOM elements).');
     });
@@ -125,7 +126,7 @@ describe('Element', () => {
 
       const { root } = render<{}>(<DispatchComp />);
 
-      root.findOne('button').dispatch('onClick', {}, mockSyntheticEvent('onClick'));
+      root.findOne('button').dispatch('onClick');
 
       expect(spy).toHaveBeenCalledWith(expect.any(Object));
     });
@@ -154,7 +155,7 @@ describe('Element', () => {
 
       expect(root).toContainNode(0);
 
-      await root.findOne('button').dispatchAndWait('onClick', {}, mockSyntheticEvent('onClick'));
+      await root.findOne('button').dispatchAndWait('onClick', mockSyntheticEvent('onClick'));
 
       expect(root).toContainNode(1);
     });

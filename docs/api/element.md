@@ -32,7 +32,7 @@ tree.
 ## `dispatch()`
 
 > dispatch\<K extends keyof Props>(name: K, options?: DispatchOptions, ...args: ArgsOf\<Props[K]>):
-> ReturnOf\<Props[K]>
+> void
 
 Dispatch an event listener for the defined prop name. Requires a list of arguments, and returns the
 result of the dispatch.
@@ -60,7 +60,7 @@ root.findOne('input').dispatch('onChange', {}, mockSyntheticEvent('onChange'));
 ## `dispatchAndWait()`
 
 > async dispatchAndWait\<K extends keyof Props>(name: K, options?: DispatchOptions, ...args:
-> ArgsOf\<Props[K]>): Promise\<ReturnOf\<Props[K]>>
+> ArgsOf\<Props[K]>): Promise\<void>
 
 Like [`dispatch()`](#dispatch) but waits for async calls within the dispatch and updating phase to
 complete before returning the re-rendered result. Because of this, the function must be `await`ed.

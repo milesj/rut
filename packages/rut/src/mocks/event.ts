@@ -1,6 +1,7 @@
 /* eslint-disable complexity, max-classes-per-file */
 
 import React from 'react';
+import { EventType, EventOptions, InferElement } from '../types';
 
 /**
  * In both the `mockEvent` and `mockSyntheticEvent` functions below,
@@ -17,38 +18,7 @@ import React from 'react';
  * structure is close enough for most, if not all of test cases.
  */
 
-export type InferElement<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
-
-export type InferEvent<T> = T extends React.SyntheticEvent<unknown, infer E> ? E : Event;
-
-export type InferEventOptions<T> = T extends AnimationEvent
-  ? { animationName?: string }
-  : T extends MouseEvent | KeyboardEvent | TouchEvent
-  ? {
-      altKey?: boolean;
-      ctrlKey?: boolean;
-      key?: string;
-      keyCode?: number;
-      metaKey?: boolean;
-      shiftKey?: boolean;
-    }
-  : T extends MessageEvent
-  ? { data?: unknown }
-  : T extends TransitionEvent
-  ? { propertyName?: string }
-  : {};
-
-export type EventType = Exclude<
-  keyof React.DOMAttributes<unknown>,
-  'children' | 'dangerouslySetInnerHTML'
->;
-
-export type EventOptions<T, E> = {
-  currentTarget?: Partial<T>;
-  target?: Partial<T>;
-} & InferEventOptions<E>;
-
-class BaseEvent {
+export class BaseEvent {
   bubbles: boolean = true;
 
   cancelable: boolean = true;
@@ -236,7 +206,7 @@ export function mockEvent<T = Event>(type: string, options?: EventOptions<InferE
   return event;
 }
 
-class SyntheticEvent extends BaseEvent {
+export class SyntheticEvent extends BaseEvent {
   nativeEvent: Event;
 
   persisted: boolean = false;
@@ -289,7 +259,7 @@ class SyntheticEvent extends BaseEvent {
  */
 export function mockSyntheticEvent<T = React.SyntheticEvent>(
   type: EventType,
-  options?: EventOptions<InferElement<T>, InferEvent<T>>,
+  options?: EventOptions<InferElement<T>, T>,
 ): T {
   let eventType = type.toLowerCase();
 

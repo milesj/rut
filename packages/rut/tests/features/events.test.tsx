@@ -39,19 +39,6 @@ describe('Events', () => {
     }
   }
 
-  it('can await the result of an dispatch', async () => {
-    const result = render<AsyncCompProps>(
-      <AsyncComp onClick={() => Promise.resolve('Updated!')} />,
-    );
-
-    const value = await result.root
-      .findOne('button')
-      .dispatch('onClick', {}, mockSyntheticEvent('onClick'));
-
-    expect(value).toBe('Updated!');
-    expect(result.root).toContainNode('Updated!');
-  });
-
   function EventComp() {
     const handleClick = (event: React.MouseEvent) => {
       event.preventDefault();
@@ -71,7 +58,7 @@ describe('Events', () => {
     const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('onClick');
     const spy = jest.spyOn(event, 'preventDefault');
 
-    result.root.findOne('button').dispatch('onClick', {}, event);
+    result.root.findOne('button').dispatch('onClick', event);
 
     expect(spy).toHaveBeenCalled();
   });

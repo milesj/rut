@@ -69,7 +69,7 @@ export default class Result<Props = {}> {
     // When being wrapped, we need to drill down and find the
     // element that matches the one initially passed in.
     if (this[OPTIONS].wrapper) {
-      const nodes = root.query<Props>(
+      const nodes = root.query(
         node => node.type === rootType && deepEqual(node.props, element.props),
       );
 
