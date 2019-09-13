@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-namespace */
 
 import React from 'react';
+import RutElement from './Element';
+import RutResult from './Result';
 
 export interface RendererOptions {
   /** Options to pass to the debugger. */
@@ -152,6 +154,12 @@ export type EventOptions<T, E> = {
 
 // AUGMENTATION
 
+export type PropsOf<T> = T extends RutResult<infer P>
+  ? P
+  : T extends RutElement<infer E>
+  ? InferComponentProps<E>
+  : {};
+
 export type StructureOf<T> = { [K in keyof T]: T[K] };
 
 declare module 'react-test-renderer' {
@@ -162,7 +170,7 @@ declare module 'react-test-renderer' {
 
 declare global {
   namespace jest {
-    interface Matchers<R> {
+    interface Matchers<R, P = PropsOf<R>> {
       toBeChecked(): R;
       toBeDisabled(): R;
       toBeElementType(type: React.ElementType): R;
@@ -170,8 +178,8 @@ declare global {
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;
       toHaveKey(value: string | number): R;
-      toHaveProp<K extends keyof InferComponentProps<R>>(name: K, value?: unknown): R;
-      toHaveProps(props: Partial<InferComponentProps<R>>): R;
+      toHaveProp<K extends keyof P>(name: K, value?: P[K]): R;
+      toHaveProps(props: Partial<P>): R;
       toHaveRendered(): R;
       toHaveValue(value: unknown): R;
     }

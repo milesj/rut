@@ -40,7 +40,8 @@ describe('toBeNodeType()', () => {
   };
 
   Object.entries(nodeTypes).forEach(([testTypeName, testNode]) => {
-    const expectedNode = render(<div>{testNode}</div>).root.children()[0];
+    // @ts-ignore
+    const expectedNode = render(<div>{testNode}</div>).root.element.children[0];
     const typeName = testTypeName as NodeType;
 
     if (typeof expectedNode === 'string') {

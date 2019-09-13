@@ -4,16 +4,16 @@ import { isReactNodeLike, NodeLike } from '../helpers';
 import { UnknownProps } from '../types';
 import { deepEqual } from './utils';
 
-export function getProp<P, K extends keyof P>(element: Element<P>, name: K): P[K] | undefined {
+export function getProp<T extends React.ElementType>(element: Element<T>, name: string): unknown {
   // @ts-ignore Allow internal access
   return element.element.props[name];
 }
 
-export function getPropForDispatching<P>(
-  element: Element<P>,
+export function getPropForDispatching<T extends React.ElementType>(
+  element: Element<T>,
   name: string,
 ): React.ReactEventHandler {
-  const prop = getProp(element, name as keyof P);
+  const prop = getProp(element, name);
 
   if (!prop) {
     throw new Error(`Prop \`${name}\` does not exist.`);

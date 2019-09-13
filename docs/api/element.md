@@ -5,23 +5,6 @@ An `Element` is a wrapper around a React element (more specifically a
 is primarily used for traversing the React tree. It can be accessed via the [root](./result.md#root)
 or when finding/querying through another `Element` instance.
 
-## `children()`
-
-> children(): (string | Element)[]
-
-Returns all direct children as a list of strings and `Element`s.
-
-```tsx
-const { root } = render<CardProps>(
-  <Card>
-    <h3>Title</h3>
-    Some description.
-  </Card>,
-);
-
-root.children(); // [<h3 />, #text]
-```
-
 ## `debug()`
 
 > debug(options?: DebugOptions): string

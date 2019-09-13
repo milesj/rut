@@ -114,13 +114,14 @@ that props, children, and other features can be typed correctly. This informatio
 inferrable as `JSX.Element` does not persist types.
 
 Furthermore, if the `root` is a host component (DOM element), you can apply props using the
-`HostProps` utility type.
+`InferComponentProps` utility type. This isn't _always necessary_, only when prop information is
+required.
 
 ```tsx
-import { render, HostProps } from 'rut';
+import { render, InferComponentProps } from 'rut';
 
 test('renders a native button', () => {
-  const result = render<HostProps<'button'>>(<button type="submit">Save</button>);
+  const result = render<InferComponentProps<'button'>>(<button type="submit">Save</button>);
 });
 ```
 

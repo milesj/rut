@@ -24,24 +24,16 @@ import { whereTypeAndProps } from './predicates';
 
 type Eventless<T> = Omit<T, 'dispatch' | 'dispatchAndWait'>;
 
-// Type is a React.ElementType but we can't use constraints
-// because JSX.Element does not provide enough type information.
-export default class Element<Type = unknown, Host = InferHostElement<Type>> {
+export default class Element<
+  Type extends React.ElementType = React.ElementType,
+  Host = InferHostElement<Type>
+> {
   private readonly isRutElement = true;
 
   private element: ReactTestInstance;
 
   constructor(element: ReactTestInstance) {
     this.element = element;
-  }
-
-  /**
-   * Return all children as a list of strings and `Element`s.
-   */
-  children(): (string | Element)[] {
-    return this.element.children.map(child =>
-      typeof child === 'string' ? child : new Element(child),
-    );
   }
 
   /**
@@ -131,7 +123,7 @@ export default class Element<Type = unknown, Host = InferHostElement<Type>> {
     type: T,
     props?: Partial<P>,
   ): Eventless<Element<T>>[];
-  find(type: React.ElementType<unknown>, props?: UnknownProps): Element[] {
+  find(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType>[] {
     return this.query(whereTypeAndProps(type, props));
   }
 
@@ -150,7 +142,11 @@ export default class Element<Type = unknown, Host = InferHostElement<Type>> {
     at: AtIndexType,
     props?: Partial<P>,
   ): Eventless<Element<T>>;
-  findAt(type: React.ElementType<unknown>, at: AtIndexType, props?: UnknownProps): Element {
+  findAt(
+    type: React.ElementType<unknown>,
+    at: AtIndexType,
+    props?: UnknownProps,
+  ): Element<React.ElementType> {
     const results = this.query(whereTypeAndProps(type, props));
     let index: number;
 
@@ -188,7 +184,7 @@ export default class Element<Type = unknown, Host = InferHostElement<Type>> {
     type: T,
     props?: Partial<P>,
   ): Eventless<Element<T>>;
-  findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element {
+  findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType> {
     const results = this.find(type, props);
 
     if (results.length !== 1) {
@@ -214,7 +210,10 @@ export default class Element<Type = unknown, Host = InferHostElement<Type>> {
    * ReactTestRenderer node and internal React fiber node. If any are found,
    * a list of `Element`s is returned.
    */
-  query(predicate: Predicate, options?: { deep?: boolean }): Element[] {
+  query<T extends React.ElementType>(
+    predicate: Predicate,
+    options?: { deep?: boolean },
+  ): Element<T>[] {
     return this.element
       .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
       .map(node => new Element(node));

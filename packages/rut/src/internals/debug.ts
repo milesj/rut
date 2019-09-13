@@ -21,15 +21,7 @@ const INDENT_CHARS = '  ';
 const MAX_INLINE_PROPS = 6;
 
 function getLongestItem(values: string[]): number {
-  let longest = 0;
-
-  values.forEach(value => {
-    if (value.length > longest) {
-      longest = value.length;
-    }
-  });
-
-  return longest;
+  return values.reduce((longest, value) => (value.length > longest ? value.length : longest), 0);
 }
 
 function indentAllLines(value: string, indent: string): string {
@@ -68,6 +60,7 @@ class Debugger {
 
     this.types = {
       '[object Array]': this.formatArray,
+      '[object AsyncFunction]': this.formatAsyncFunction,
       '[object Boolean]': this.formatPrimitive,
       '[object Date]': this.formatDate,
       '[object Error]': this.formatError,
@@ -162,6 +155,8 @@ class Debugger {
   }
 
   formatArray = (value: any[]) => this.transformList(value.map(val => this.format(val)), '[', ']');
+
+  formatAsyncFunction = (value: Function) => `async ${this.formatFunction(value)}`;
 
   formatDate = (value: Date) => `new Date('${value.toISOString()}')`;
 

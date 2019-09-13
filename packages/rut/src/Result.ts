@@ -12,7 +12,7 @@ const ELEMENT = Symbol('react-element');
 const RENDERER = Symbol('react-test-renderer');
 const OPTIONS = Symbol('result-options');
 
-export default class Result<Props = {}> {
+export default class Result<Props extends object = {}> {
   private readonly isRutResult = true;
 
   private [ELEMENT]: React.ReactElement<Props>;

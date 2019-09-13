@@ -7,10 +7,7 @@ import { formatValue } from '../helpers';
 /**
  * Check that an element has a `className` prop that matches the defined value.
  */
-export default function toHaveClassName(
-  element: Element<{ className?: string }>,
-  name: string,
-): MatchResult {
+export default function toHaveClassName(element: Element, name: string): MatchResult {
   isRutElement(element);
 
   const className = getProp(element, 'className');

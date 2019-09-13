@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Element from '../src/Element';
 import { render } from '../src/render';
 import { mockSyntheticEvent } from '../src/mocks/event';
 import {
@@ -20,34 +19,6 @@ describe('Element', () => {
     );
 
     expect(root).toMatchSnapshot();
-  });
-
-  describe('children()', () => {
-    it('returns an empty array when no children (null return)', () => {
-      function NullComp() {
-        return null;
-      }
-
-      const { root } = render<{}>(<NullComp />);
-
-      expect(root.children()).toEqual([]);
-    });
-
-    it('returns as strings and elements', () => {
-      function StringComp() {
-        return (
-          <div>
-            Foo
-            <br />
-            Bar
-          </div>
-        );
-      }
-
-      const { root } = render<{}>(<StringComp />);
-
-      expect(root.findOne('div').children()).toEqual(['Foo', expect.any(Element), 'Bar']);
-    });
   });
 
   describe('debug()', () => {
@@ -326,8 +297,6 @@ describe('Element', () => {
           <FuncComp>1</FuncComp>
         </div>,
       );
-
-      const f = root.findOne(FuncComp);
 
       expect(root.findOne(FuncComp)).toContainNode(1);
     });

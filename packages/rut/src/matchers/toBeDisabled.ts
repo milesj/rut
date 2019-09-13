@@ -5,6 +5,6 @@ import { MatchResult } from '../types';
 /**
  * Check that an element has a truthy `disabled` prop.
  */
-export default function toBeDisabled(element: Element<{ disabled?: boolean }>): MatchResult {
+export default function toBeDisabled(element: Element): MatchResult {
   return toHaveProp(element, 'disabled', true);
 }
