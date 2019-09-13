@@ -378,7 +378,7 @@ class Debugger {
 
       const propValue = this.format(value);
 
-      if (propValue.startsWith('"')) {
+      if (propValue.charAt(0) === '"') {
         output.push(`${name}=${propValue}`);
       } else {
         output.push(`${name}={${propValue}}`);

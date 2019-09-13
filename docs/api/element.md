@@ -14,13 +14,12 @@ tree.
 
 ## `dispatch()`
 
-> dispatch\<K extends keyof Props>(name: K, options?: DispatchOptions, ...args: ArgsOf\<Props[K]>):
-> void
+> dispatch(name: EventType, event?: React.SyntheticEvent, options?: DispatchOptions): void
 
-Dispatch an event listener for the defined prop name. Requires a list of arguments, and returns the
-result of the dispatch.
+> dispatch(name: EventType, event?: EventOptions, options?: DispatchOptions): void
 
-To ease the interaction and testing flow of `Event` objects, Rut provides a
+Dispatch an event for the defined event handler. Accepts a `SyntheticEvent`, an event options
+object, or nothing (will create an event behind the scenes). To ease integration, Rut provides a
 [`mockSyntheticEvent()`](../mocks.md) function.
 
 ```tsx
@@ -28,42 +27,55 @@ import { render, mockSyntheticEvent } from 'rut';
 
 const { root } = render<LoginFormProps>(<LoginForm />);
 
-root.findOne('input').dispatch('onChange', {}, mockSyntheticEvent('onChange'));
+// Event created internally
+root.findOne('input').dispatch('onChange');
+
+// Event created internally and passed custom options
+root.findOne('input').dispatch('onChange', { target: { value: 'foo' } });
+
+// Custom event provided
+root
+  .findOne('input')
+  .dispatch('onChange', mockSyntheticEvent('onChange', { target: { value: 'foo' } }));
 ```
 
 > This may only be executed on host components (DOM elements). Why? Because it's an abstraction that
-> forces testing on what the consumer will ultimately interact with. Executing listeners on a React
+> forces testing on what the consumer will ultimately interact with. Executing handlers on a React
 > component is a code smell.
 
 ### Options
 
-- `propagate` (`boolean`) - Propagate the event up the tree by executing the same listener on every
-  parent until hitting the root or the event has been stopped. _(Experimental)_
+- `propagate` (`boolean`) - Propagate the event up or down the tree by executing the same handler on
+  every element until hitting the root, left, or the event has been stopped. _(Experimental)_
 
 ## `dispatchAndWait()`
 
-> async dispatchAndWait\<K extends keyof Props>(name: K, options?: DispatchOptions, ...args:
-> ArgsOf\<Props[K]>): Promise\<void>
+> async dispatchAndWait(name: EventType, event?: React.SyntheticEvent, options?: DispatchOptions):
+> Promise<void>
+
+> async dispatchAndWait(name: EventType, event?: EventOptions, options?: DispatchOptions):
+> Promise<void>
 
 Like [`dispatch()`](#dispatch) but waits for async calls within the dispatch and updating phase to
 complete before returning the re-rendered result. Because of this, the function must be `await`ed.
 
 ```tsx
-import { render, mockSyntheticEvent } from 'rut';
+import { render } from 'rut';
 
 it('waits for update call to finish', async () => {
-  const { root } = render<EditProfileProps>(<EditProfile id={1} />);
+  const { root } = render<EditProfileProps>(<EditProfile id={1} onSubmit={updateUser} />);
 
-  await root.findOne('form').dispatchAndWait('onSubmit', {}, mockSyntheticEvent('onSubmit'));
+  await root.findOne('form').dispatchAndWait('onSubmit');
 });
 ```
 
 ## `find()`
 
-> find\<Tag extends HostComponentType, Props = JSX.IntrinsicElements[Tag]>(type: Tag, props?:
-> Partial\<Props>): Element\<Props>[]
+> find\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, props?:
+> Partial\<P>): Element\<T>[]
 
-> find\<Props>(type: React.ComponentType\<Props>, props?: Partial\<Props>): Element\<Props>[]
+> find\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, props?:
+> Partial\<P>): Element\<T>[]
 
 Search through the current tree for all elements that match the defined React component or HTML tag.
 If any are found, a list of `Element`s is returned.
@@ -95,11 +107,11 @@ const input = root.find('input', { name: 'email' }); // 1
 
 ## `findAt()`
 
-> findAt\<Tag extends HostComponentType, Props = JSX.IntrinsicElements[Tag]>(type: Tag, at: 'first'
-> | 'last' | number, props?: Partial\<Props>): Element\<Props>
+> findAt\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, at: 'first' |
+> 'last' | number, props?: Partial\<P>): Element\<T>[]
 
-> findAt\<Props>(type: React.ComponentType\<Props>, at: 'first' | 'last' | number, props?:
-> Partial\<Props>): Element\<Props>
+> findAt\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, at: 'first' |
+> 'last' | number, props?: Partial\<P>): Element\<T>[]
 
 Like [`find()`](#find) but returns the element at the defined index. Accepts shorthand `first` and
 `last` indices, or a numerical index. If no element is found, an error is thrown.
@@ -120,10 +132,11 @@ const password = root.findAt('input', 'last');
 
 ## `findOne()`
 
-> findOne\<Tag extends HostComponentType, Props = JSX.IntrinsicElements[Tag]>(type: Tag, props?:
-> Partial\<Props>): Element\<Props>
+> findOne\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, props?:
+> Partial\<P>): Element\<T>
 
-> findOne\<Props>(type: React.ComponentType\<Props>, props?: Partial\<Props>): Element\<Props>
+> findOne\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, props?:
+> Partial\<P>): Element\<T>
 
 Like [`find()`](#find) but only returns a single instance. If no elements are found, or too many
 elements are found, an error is thrown.
@@ -143,8 +156,8 @@ expect(root.name()).toBe('Button');
 
 ## `query()`
 
-> query\<Props>(predicate: Predicate | ((node: TestNode, fiber: FiberNode) => boolean), options?:
-> QueryOptions): Element\<Props>[]
+> query\<T extends React.ElementType>(predicate: Predicate | ((node: TestNode, fiber: FiberNode) =>
+> boolean), options?: QueryOptions): Element\<T>[]
 
 A low-level abstraction for querying and finding components in the current tree using a predicate
 function. This predicate is passed the `react-rest-renderer` test instance and a `react` fiber node,

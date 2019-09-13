@@ -4,6 +4,7 @@ import { NodeType } from '../../src/types';
 import toBeNodeType from '../../src/matchers/toBeNodeType';
 import { runMatcher } from '../helpers';
 import { FuncComp, ClassComp, ForwardRefComp, MemoComp } from '../fixtures';
+import Element from '../../src/Element';
 
 describe('toBeNodeType()', () => {
   it('errors if a non-Element is passed', () => {
@@ -41,7 +42,7 @@ describe('toBeNodeType()', () => {
 
   Object.entries(nodeTypes).forEach(([testTypeName, testNode]) => {
     // @ts-ignore
-    const expectedNode = render(<div>{testNode}</div>).root.element.children[0];
+    const expectedNode = new Element(render(<div>{testNode}</div>).root.element.children[0]);
     const typeName = testTypeName as NodeType;
 
     if (typeof expectedNode === 'string') {

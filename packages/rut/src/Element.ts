@@ -70,7 +70,7 @@ export default class Element<
     options: DispatchOptions = {},
   ): void {
     const prop = getPropForDispatching(this, name);
-    const event = createEvent(name, eventOrConfig);
+    const event = createEvent(name, eventOrConfig, this.element.type);
 
     // istanbul ignore next
     if (options.propagate) {
@@ -101,7 +101,7 @@ export default class Element<
     options: DispatchOptions = {},
   ): Promise<void> {
     const prop = getPropForDispatching(this, name);
-    const event = createEvent(name, eventOrConfig);
+    const event = createEvent(name, eventOrConfig, this.element.type);
 
     // istanbul ignore next
     if (options.propagate) {
