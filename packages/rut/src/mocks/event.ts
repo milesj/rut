@@ -168,10 +168,7 @@ function createHostEvent(type: string): Event {
 /**
  * Mock a DOM `Event` based on type.
  */
-export function mockEvent<T = Event>(
-  type: string,
-  options?: EventOptions<InferHostElementFromEvent<T>, T>,
-): T {
+export function mockEvent<T = Event>(type: string, options?: EventOptions<Element, T>): T {
   const { currentTarget, target, ...props } = options || {};
   let event: Event;
 

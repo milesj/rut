@@ -1,4 +1,4 @@
-/* eslint-disable lines-between-class-members, no-dupe-class-members */
+/* eslint-disable lines-between-class-members, no-dupe-class-members, @typescript-eslint/no-explicit-any */
 
 import React from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
@@ -14,6 +14,7 @@ import {
   EventType,
   EventOptions,
   InferHostElement,
+  EventMap,
 } from './types';
 import { getTypeName } from './helpers';
 import { doAct, doAsyncAct } from './internals/act';
@@ -55,12 +56,12 @@ export default class Element<
    */
   dispatch<K extends EventType>(
     name: K,
-    event?: InferEventFromHandler<K, Host>,
+    event?: InferEventFromHandler<EventMap<Host>[K]>,
     options?: DispatchOptions,
   ): void;
   dispatch<K extends EventType>(
     name: K,
-    config?: EventOptions<Host, InferEventFromHandler<K, Host>>,
+    config?: EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
     options?: DispatchOptions,
   ): void;
   dispatch<K extends EventType>(
@@ -86,12 +87,12 @@ export default class Element<
 
   async dispatchAndWait<K extends EventType>(
     name: K,
-    event?: InferEventFromHandler<K, Host>,
+    event?: InferEventFromHandler<EventMap<Host>[K]>,
     options?: DispatchOptions,
   ): Promise<void>;
   async dispatchAndWait<K extends EventType>(
     name: K,
-    config?: EventOptions<Host, InferEventFromHandler<K, Host>>,
+    config?: EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
     options?: DispatchOptions,
   ): Promise<void>;
   async dispatchAndWait<K extends EventType>(
@@ -119,7 +120,7 @@ export default class Element<
     type: T,
     props?: Partial<P>,
   ): Element<T>[];
-  find<T extends React.ComponentType, P extends InferComponentProps<T>>(
+  find<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
   ): Eventless<Element<T>>[];
@@ -137,7 +138,7 @@ export default class Element<
     at: AtIndexType,
     props?: Partial<P>,
   ): Element<T>;
-  findAt<T extends React.ComponentType, P extends InferComponentProps<T>>(
+  findAt<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     at: AtIndexType,
     props?: Partial<P>,
@@ -180,7 +181,7 @@ export default class Element<
     type: T,
     props?: Partial<P>,
   ): Element<T>;
-  findOne<T extends React.ComponentType, P extends InferComponentProps<T>>(
+  findOne<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
   ): Eventless<Element<T>>;

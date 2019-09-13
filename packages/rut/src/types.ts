@@ -114,15 +114,22 @@ export type InferComponentProps<T> = T extends HostComponentType
 
 // EVENTS
 
-export type InferEventFromHandler<K extends EventType, T> = EventMap<T>[K] extends (
-  event: infer E,
-) => void
-  ? E
-  : never;
+export type InferEventFromHandler<T> = T extends (event: infer E) => void ? E : never;
 
 export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
 
-export type InferEventOptions<T> = T extends React.AnimationEvent | AnimationEvent
+export type EventMap<T> = Required<
+  Omit<React.DOMAttributes<T>, 'children' | 'dangerouslySetInnerHTML'>
+>;
+
+export type EventType = keyof EventMap<unknown>;
+
+export type EventOptions<T, E> = {
+  currentTarget?: Partial<T>;
+  target?: Partial<T>;
+} & ExpandedEventOptions<E>;
+
+export type ExpandedEventOptions<T> = T extends React.AnimationEvent | AnimationEvent
   ? { animationName?: string }
   : T extends
       | React.MouseEvent
@@ -142,15 +149,6 @@ export type InferEventOptions<T> = T extends React.AnimationEvent | AnimationEve
   : T extends React.TransitionEvent | TransitionEvent
   ? { propertyName?: string }
   : {};
-
-export type EventMap<T> = Omit<React.DOMAttributes<T>, 'children' | 'dangerouslySetInnerHTML'>;
-
-export type EventType = keyof EventMap<unknown>;
-
-export type EventOptions<T, E> = {
-  currentTarget?: Partial<T>;
-  target?: Partial<T>;
-} & InferEventOptions<E>;
 
 // AUGMENTATION
 

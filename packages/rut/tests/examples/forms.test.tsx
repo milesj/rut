@@ -102,7 +102,7 @@ describe('Forms Example', () => {
     expect(password).toHaveValue('Sup3rs3cr3T!');
 
     // Submit the form by dispatching an event on either the form or button
-    const event = mockSyntheticEvent<React.SyntheticEvent<HTMLFormElement, Event>>('onSubmit');
+    const event = mockSyntheticEvent<React.FormEvent<HTMLFormElement>>('onSubmit');
     const preventSpy = jest.spyOn(event, 'preventDefault');
 
     root.findOne('form').dispatch('onSubmit', event);
