@@ -20,8 +20,8 @@ import { getTypeName } from './helpers';
 import { doAct, doAsyncAct } from './internals/act';
 import { debug } from './internals/debug';
 import { getPropForDispatching } from './internals/element';
-import { createEvent } from './internals/event';
 import { whereTypeAndProps } from './predicates';
+import { factorySyntheticEvent } from './mocks/event';
 
 type Eventless<T> = Omit<T, 'dispatch' | 'dispatchAndWait'>;
 
@@ -70,7 +70,7 @@ export default class Element<
     options: DispatchOptions = {},
   ): void {
     const prop = getPropForDispatching(this, name);
-    const event = createEvent(name, eventOrConfig, this.element.type);
+    const event = factorySyntheticEvent(name, eventOrConfig, this.element.type);
 
     // istanbul ignore next
     if (options.propagate) {
@@ -101,7 +101,7 @@ export default class Element<
     options: DispatchOptions = {},
   ): Promise<void> {
     const prop = getPropForDispatching(this, name);
-    const event = createEvent(name, eventOrConfig, this.element.type);
+    const event = factorySyntheticEvent(name, eventOrConfig, this.element.type);
 
     // istanbul ignore next
     if (options.propagate) {

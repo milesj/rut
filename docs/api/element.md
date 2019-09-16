@@ -46,7 +46,7 @@ root
 ### Options
 
 - `propagate` (`boolean`) - Propagate the event up or down the tree by executing the same handler on
-  every element until hitting the root, left, or the event has been stopped. _(Experimental)_
+  every element until hitting the root, leaf, or the event has been stopped. _(Experimental)_
 
 ## `dispatchAndWait()`
 
@@ -108,10 +108,10 @@ const input = root.find('input', { name: 'email' }); // 1
 ## `findAt()`
 
 > findAt\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, at: 'first' |
-> 'last' | number, props?: Partial\<P>): Element\<T>[]
+> 'last' | number, props?: Partial\<P>): Element\<T>
 
 > findAt\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, at: 'first' |
-> 'last' | number, props?: Partial\<P>): Element\<T>[]
+> 'last' | number, props?: Partial\<P>): Element\<T>
 
 Like [`find()`](#find) but returns the element at the defined index. Accepts shorthand `first` and
 `last` indices, or a numerical index. If no element is found, an error is thrown.
