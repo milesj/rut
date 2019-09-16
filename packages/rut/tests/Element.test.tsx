@@ -100,6 +100,53 @@ describe('Element', () => {
 
       expect(spy).toHaveBeenCalledWith(expect.any(Object));
     });
+
+    it('executes the function prop with a custom target', () => {
+      const spy = jest.fn();
+      const target = { tagName: 'BUTTON' };
+
+      function DispatchComp() {
+        return (
+          <button type="button" onClick={spy}>
+            Click
+          </button>
+        );
+      }
+
+      const { root } = render<{}>(<DispatchComp />);
+
+      root.findOne('button').dispatch('onClick', { target, shiftKey: true });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          shiftKey: true,
+          target,
+        }),
+      );
+    });
+
+    it('executes the function prop with a custom mocked event', () => {
+      const spy = jest.fn();
+      const target = { tagName: 'BUTTON' };
+      const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('onClick', {
+        target,
+        altKey: true,
+      });
+
+      function DispatchComp() {
+        return (
+          <button type="button" onClick={spy}>
+            Click
+          </button>
+        );
+      }
+
+      const { root } = render<{}>(<DispatchComp />);
+
+      root.findOne('button').dispatch('onClick', event);
+
+      expect(spy).toHaveBeenCalledWith(event);
+    });
   });
 
   describe('dispatchAndWait()', () => {

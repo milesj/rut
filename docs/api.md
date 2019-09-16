@@ -39,7 +39,7 @@ Mock a ref found within the current render tree. This mock function is passed th
 being referenced, for use in determining and providing a custom mock. For example:
 
 ```tsx
-import { render, mockSyntheticEvent } from 'rut';
+import { render } from 'rut';
 
 const spy = jest.fn();
 const { root } = render<LoginFormProps>(<LoginForm />, {
@@ -50,7 +50,7 @@ const { root } = render<LoginFormProps>(<LoginForm />, {
   },
 });
 
-root.findOne('input').dispatch('onChange', {}, mockSyntheticEvent('onChange'));
+root.findOne('input').dispatch('onChange');
 
 expect(spy).toHaveBeenCalled();
 ```

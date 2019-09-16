@@ -5,7 +5,7 @@
   "scripts": {
     "build": "yarn run type",
     "clean": "rm -rf packages/*/{*.tsbuildinfo,lib}",
-    "coverage": "yarn run jest --coverage",
+    "coverage": "yarn run jest --coverage && open ./coverage/lcov-report/index.html",
     "eslint": "beemo eslint",
     "jest": "beemo jest",
     "prettier": "beemo prettier",

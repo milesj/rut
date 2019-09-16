@@ -129,20 +129,6 @@ export function getTypeName(type: unknown): string {
 }
 
 /**
- * Return the React component, element, or node name, inferred from `getTypeName`,
- * formatted as a JSX element.
- */
-export function getNodeName(type: unknown): string {
-  // Text node
-  if (typeof type === 'string') {
-    return `"${type}"`;
-  }
-
-  // Component or element nodes
-  return `<${getTypeName(type)} />`;
-}
-
-/**
  * Format a value for use within error messages.
  */
 export function formatValue(value: unknown): string {
