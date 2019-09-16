@@ -47,7 +47,7 @@ export default function toContainNode(
   );
 
   const expectedNode = React.isValidElement(node)
-    ? debugFromElement(node, { noChildren: true })
+    ? debugFromElement(node, { children: false, log: false })
     : formatValue(node);
 
   return {

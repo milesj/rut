@@ -16,6 +16,8 @@ export interface RendererOptions {
 }
 
 export interface DebugOptions {
+  /** Render children. Defaults to `true`. */
+  children?: boolean;
   /** Group props into the following: key & ref, truthy booleans, everything
   else, event handlers. Defaults to `true`. */
   groupProps?: boolean;
@@ -23,15 +25,12 @@ export interface DebugOptions {
   hostElements?: boolean;
   /** Include `key` and `ref` props in the output. Defaults to `true`. */
   keyAndRef?: boolean;
+  /** Log to the console automatically. Defaults to `true`. */
+  log?: boolean;
   /** Max length of arrays and objects before truncating. Defaults to 5. */
   maxLength?: number;
-  /** Do not render children. Defaults to `false`. */
-  noChildren?: boolean;
   /** Include React elements in the output. Defaults to `true`. */
   reactElements?: boolean;
-  /** Do not log to the console and instead return the output. Defaults to
-  `false`. */
-  return?: boolean;
   /** Sort the props within each grouping from A-Z. Defaults to `true`. */
   sortProps?: boolean;
 }

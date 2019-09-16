@@ -71,7 +71,7 @@ describe('Result', () => {
     const result = render<{}>(<ContextComp />, { wrapper: <Wrapper /> });
 
     expect(result).toMatchSnapshot();
-    expect(result.debug({ return: true })).toContain('<Wrapper>');
+    expect(result.debug({ log: false })).toContain('<Wrapper>');
     expect(result.root).toContainNode('wrapped');
   });
 
@@ -97,7 +97,7 @@ describe('Result', () => {
     const result = render<{}>(<Wrapped />, { strict: true, wrapper: <Wrapper /> });
 
     expect(result).toMatchSnapshot();
-    expect(result.debug({ return: true })).toContain('<Wrapper>');
+    expect(result.debug({ log: false })).toContain('<Wrapper>');
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('componentWillReceiveProps has been renamed'),
     );
@@ -683,7 +683,7 @@ describe('Result', () => {
         wrapper: <div id="first" />,
       });
 
-      const out1 = result.debug({ return: true });
+      const out1 = result.debug({ log: false });
 
       expect(out1).toMatchSnapshot();
 
@@ -691,7 +691,7 @@ describe('Result', () => {
         wrapper: <section id="second" />,
       });
 
-      const out2 = result.debug({ return: true });
+      const out2 = result.debug({ log: false });
 
       expect(out2).toMatchSnapshot();
       expect(out1).not.toBe(out2);

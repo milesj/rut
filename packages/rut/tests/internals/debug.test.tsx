@@ -10,7 +10,7 @@ describe('debug', () => {
     expect(result).toMatchSnapshot();
 
     // Without
-    expect(result.debug({ keyAndRef: false, return: true })).toMatchSnapshot();
+    expect(result.debug({ keyAndRef: false, log: false })).toMatchSnapshot();
   });
 
   it('sorts props, and groups into: true first, everything else, event handlers last', () => {
@@ -44,13 +44,13 @@ describe('debug', () => {
     expect(result).toMatchSnapshot();
 
     // Not grouped
-    expect(result.debug({ groupProps: false, return: true })).toMatchSnapshot();
+    expect(result.debug({ groupProps: false, log: false })).toMatchSnapshot();
 
     // Not sorted
-    expect(result.debug({ return: true, sortProps: false })).toMatchSnapshot();
+    expect(result.debug({ log: false, sortProps: false })).toMatchSnapshot();
 
     // Not both
-    expect(result.debug({ groupProps: false, return: true, sortProps: false })).toMatchSnapshot();
+    expect(result.debug({ groupProps: false, log: false, sortProps: false })).toMatchSnapshot();
   });
 
   it('formats array props', () => {
@@ -157,7 +157,7 @@ describe('debug', () => {
       </ChildComp>,
     );
 
-    expect(debug({ noChildren: true, return: true })).toMatchSnapshot();
+    expect(debug({ children: false, log: false })).toMatchSnapshot();
   });
 
   describe('element output', () => {
@@ -187,19 +187,19 @@ describe('debug', () => {
     it('renders normal', () => {
       const { debug } = render<{}>(<Outer />);
 
-      expect(debug({ return: true })).toMatchSnapshot();
+      expect(debug({ log: false })).toMatchSnapshot();
     });
 
     it('hides DOM output', () => {
       const { debug } = render<{}>(<Outer />);
 
-      expect(debug({ hostElements: false, return: true })).toMatchSnapshot();
+      expect(debug({ hostElements: false, log: false })).toMatchSnapshot();
     });
 
     it('hides React output', () => {
       const { debug } = render<{}>(<Outer />);
 
-      expect(debug({ reactElements: false, return: true })).toMatchSnapshot();
+      expect(debug({ reactElements: false, log: false })).toMatchSnapshot();
     });
   });
 });

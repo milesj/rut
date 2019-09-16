@@ -33,9 +33,9 @@ describe('Element', () => {
         </div>,
       );
 
-      expect(root.debug({ return: true })).toMatchSnapshot();
-      expect(root.findOne('section').debug({ return: true })).toMatchSnapshot();
-      expect(root.findOne('h1').debug({ return: true })).toMatchSnapshot();
+      expect(root.debug({ log: false })).toMatchSnapshot();
+      expect(root.findOne('section').debug({ log: false })).toMatchSnapshot();
+      expect(root.findOne('h1').debug({ log: false })).toMatchSnapshot();
     });
   });
 
