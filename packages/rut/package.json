@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/jest": "*",
-    "@types/prop-types": "*",
+    "@types/prop-types": "^15.7.2",
     "prop-types": "^15.7.2"
   }
 }

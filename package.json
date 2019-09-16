@@ -18,7 +18,7 @@
     "posttest": "yarn run eslint"
   },
   "devDependencies": {
-    "@milesj/build-tools": "^0.55.1",
+    "@milesj/build-tools": "^0.56.2",
     "@types/jest": "^24.0.18",
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
@@ -52,7 +52,9 @@
       "timers": "real"
     },
     "prettier": {
-      "ignore": ["CHANGELOG.md"]
+      "ignore": [
+        "CHANGELOG.md"
+      ]
     }
   }
 }
