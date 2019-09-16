@@ -9,12 +9,18 @@ export = {
   rules,
   configs: {
     recommended: {
-      plugins: ['rut'],
-      rules: {
-        'rut/no-act': 'error',
-        'rut/no-internals': 'error',
-        'rut/require-render-generics': 'error',
-      },
+      overrides: [
+        {
+          files: ['*.test.js', '*.test.jsx', '*.test.ts', '*.test.tsx'],
+          plugins: ['rut'],
+          rules: {
+            'rut/consistent-event-type': 'error',
+            'rut/no-act': 'error',
+            'rut/no-internals': 'error',
+            'rut/require-render-generics': 'error',
+          },
+        },
+      ],
     },
   },
 };

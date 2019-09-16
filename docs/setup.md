@@ -47,29 +47,28 @@ Install the `eslint-plugin-rut` package as a dev dependency.
 yarn add --dev eslint-plugin-rut
 ```
 
-Once installed, add the recommended config to your `.eslintrc.js` file. It's highly encouraged to
-only apply these rules to test files, otherwise your source files may trigger false positives, so
-use overrides!
+Once installed, add the recommended config to your `.eslintrc.js` file. By default this will target
+all test files using ESLint overrides in the format of `*.test.(ts|js)x?`.
+
+```js
+module.exports = {
+  extends: ['plugin:rut/recommended'],
+};
+```
+
+If you prefer to manage the targets yourself, something like the following will suffice.
 
 ```js
 module.exports = {
   overrides: [
     {
-      files: ['*.test.ts', '*.test.js'],
+      files: ['*.spec.ts', '*.spec.js'],
       plugins: ['rut'],
       rules: {
         'rut/no-act': 'error',
       },
     },
   ],
-};
-```
-
-If you don't mind targeting everything, you can extend the recommended preset.
-
-```js
-module.exports = {
-  extends: ['plugin:rut/recommended'],
 };
 ```
 

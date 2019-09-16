@@ -1,5 +1,25 @@
 # ESLint Rules
 
+## `consistent-event-type`
+
+Verify and enforce the correct event types are used when mocking or dispatching events.
+
+```tsx
+// Bad
+import { mockEvent, mockSyntheticEvent } from 'rut';
+
+mockEvent('onKeyDown');
+mockSyntheticEvent('keydown');
+```
+
+```tsx
+// Good
+import { mockEvent, mockSyntheticEvent } from 'rut';
+
+mockEvent('keydown');
+mockSyntheticEvent('onKeyDown');
+```
+
 ## `no-act`
 
 Disallow usage of React's `act()` within tests. This functionality is provided by Rut and shouldn't
