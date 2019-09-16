@@ -54,19 +54,9 @@ export default class Element<
    *
    * Note: This may only be executed on host components (DOM elements).
    */
-  dispatch<K extends EventType>(
+  dispatch<K extends EventType, E = InferEventFromHandler<EventMap<Host>[K]>>(
     name: K,
-    event?: InferEventFromHandler<EventMap<Host>[K]>,
-    options?: DispatchOptions,
-  ): void;
-  dispatch<K extends EventType>(
-    name: K,
-    config?: EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
-    options?: DispatchOptions,
-  ): void;
-  dispatch<K extends EventType>(
-    name: K,
-    eventOrConfig?: unknown,
+    eventOrConfig?: E | EventOptions<Host, E>,
     options: DispatchOptions = {},
   ): void {
     const prop = getPropForDispatching(this, name);
@@ -85,19 +75,9 @@ export default class Element<
    * Like `dispatch` but also awaits the event so that async calls have time to finish.
    */
 
-  async dispatchAndWait<K extends EventType>(
+  async dispatchAndWait<K extends EventType, E = InferEventFromHandler<EventMap<Host>[K]>>(
     name: K,
-    event?: InferEventFromHandler<EventMap<Host>[K]>,
-    options?: DispatchOptions,
-  ): Promise<void>;
-  async dispatchAndWait<K extends EventType>(
-    name: K,
-    config?: EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
-    options?: DispatchOptions,
-  ): Promise<void>;
-  async dispatchAndWait<K extends EventType>(
-    name: K,
-    eventOrConfig?: unknown,
+    eventOrConfig?: E | EventOptions<Host, E>,
     options: DispatchOptions = {},
   ): Promise<void> {
     const prop = getPropForDispatching(this, name);
