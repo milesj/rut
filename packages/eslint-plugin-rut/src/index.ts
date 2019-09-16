@@ -11,7 +11,7 @@ export = {
     recommended: {
       overrides: [
         {
-          files: ['*.test.js', '*.test.jsx', '*.test.ts', '*.test.tsx'],
+          files: ['*.test.{js,jsx}', '*.test.{ts,tsx}'],
           plugins: ['rut'],
           rules: {
             'rut/consistent-event-type': 'error',

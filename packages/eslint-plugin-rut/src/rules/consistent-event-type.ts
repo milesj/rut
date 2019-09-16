@@ -1,4 +1,5 @@
 import { Rule } from 'eslint';
+import { Literal } from 'estree';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -20,19 +21,17 @@ const rule: Rule.RuleModule = {
     return {
       // eslint-disable-next-line complexity
       CallExpression(node) {
-        if (node.type !== 'CallExpression' || node.callee.type !== 'Identifier') {
-          return;
-        } else if (node.arguments.length === 0 || node.arguments[0].type !== 'Literal') {
-          context.report({
-            node,
-            messageId: 'noEventType',
-          });
-
+        if (
+          node.type !== 'CallExpression' ||
+          node.callee.type !== 'Identifier' ||
+          node.arguments.length === 0 ||
+          node.arguments[0].type !== 'Literal'
+        ) {
           return;
         }
 
         const { name } = node.callee;
-        const arg = node.arguments[0];
+        const arg = node.arguments[0] as Literal;
         const type = String(arg.value);
 
         // mockEvent()

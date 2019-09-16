@@ -13,15 +13,6 @@ createRule().run('consistent-event-type', rule, {
 
   invalid: [
     {
-      code: 'mockEvent()',
-      errors: [
-        {
-          type: 'CallExpression',
-          message: 'Event type is required. None found.',
-        },
-      ],
-    },
-    {
       code: `mockEvent('onClick')`,
       errors: [
         {
@@ -36,15 +27,6 @@ createRule().run('consistent-event-type', rule, {
         {
           type: 'Literal',
           message: 'Event type must *not* start with "on" and must be all lowercase.',
-        },
-      ],
-    },
-    {
-      code: 'mockSyntheticEvent()',
-      errors: [
-        {
-          type: 'CallExpression',
-          message: 'Event type is required. None found.',
         },
       ],
     },
