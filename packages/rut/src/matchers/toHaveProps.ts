@@ -10,13 +10,12 @@ import { isRutElement, deepEqual } from '../internals/utils';
 export default function toHaveProps(element: Element, props: UnknownProps): MatchResult {
   isRutElement(element);
 
-  const keys = Object.keys(props);
   // @ts-ignore Allow internal access
   const baseProps = element.element.props;
   const formattedKeys: string[] = [];
   let invalid = false;
 
-  keys.forEach(key => {
+  Object.keys(props).forEach(key => {
     formattedKeys.push(formatValue(key));
 
     if (!invalid && !deepEqual(baseProps[key], props[key])) {
