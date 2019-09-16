@@ -81,11 +81,17 @@ export type Predicate = (node: TestNode, fiber: FiberNode) => boolean;
 
 // MATCHERS
 
+export type MatchComparator = (a: unknown, b: unknown) => boolean;
+
 export interface MatchResult {
-  context?: string;
+  actual?: unknown;
+  diff?: boolean;
+  expected?: unknown;
   message: string;
+  name: string;
   notMessage: string;
-  passed: boolean;
+  passed: boolean | ((comp?: MatchComparator) => boolean);
+  received: string;
 }
 
 export type NodeType =

@@ -56,17 +56,9 @@ export default class Element<
    */
   dispatch<K extends EventType>(
     name: K,
-    event?: InferEventFromHandler<EventMap<Host>[K]>,
-    options?: DispatchOptions,
-  ): void;
-  dispatch<K extends EventType>(
-    name: K,
-    config?: EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
-    options?: DispatchOptions,
-  ): void;
-  dispatch<K extends EventType>(
-    name: K,
-    eventOrConfig?: unknown,
+    eventOrConfig?:
+      | InferEventFromHandler<EventMap<Host>[K]>
+      | EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
     options: DispatchOptions = {},
   ): void {
     const prop = getPropForDispatching(this, name);
@@ -87,17 +79,9 @@ export default class Element<
 
   async dispatchAndWait<K extends EventType>(
     name: K,
-    event?: InferEventFromHandler<EventMap<Host>[K]>,
-    options?: DispatchOptions,
-  ): Promise<void>;
-  async dispatchAndWait<K extends EventType>(
-    name: K,
-    config?: EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
-    options?: DispatchOptions,
-  ): Promise<void>;
-  async dispatchAndWait<K extends EventType>(
-    name: K,
-    eventOrConfig?: unknown,
+    eventOrConfig?:
+      | InferEventFromHandler<EventMap<Host>[K]>
+      | EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
     options: DispatchOptions = {},
   ): Promise<void> {
     const prop = getPropForDispatching(this, name);

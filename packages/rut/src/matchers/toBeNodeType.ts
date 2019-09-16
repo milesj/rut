@@ -34,8 +34,12 @@ export default function toBeNodeType(element: Element, type: NodeType): MatchRes
   const typeName = formatValue(type);
 
   return {
-    message: `expected \`${element}\` to be a ${typeName}, found ${actualTypeName}`,
-    notMessage: `expected \`${element}\` not to be a ${typeName}, found ${actualTypeName}`,
+    actual: actualTypeName,
+    expected: typeName,
+    message: `expected {{received}} to be a {{expected}}, found {{actual}}`,
+    name: 'toBeNodeType',
+    notMessage: `expected {{received}} not to be a {{expected}}, found {{actual}}`,
     passed: Array.isArray(nodeToTag) ? nodeToTag.includes(fiberTag) : nodeToTag === fiberTag,
+    received: element.toString(),
   };
 }

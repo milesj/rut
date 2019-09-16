@@ -15,8 +15,12 @@ export default function toBeElementType(element: Element, type: React.ElementTyp
   const typeName = formatValue(type);
 
   return {
-    message: `expected \`${element}\` to be a ${typeName}`,
-    notMessage: `expected \`${element}\` not to be a ${typeName}`,
+    actual: formatValue(actualType),
+    expected: typeName,
+    message: `expected {{received}} to be a {{expected}}`,
+    name: 'toBeElementType',
+    notMessage: `expected {{received}} not to be a {{expected}}`,
     passed: actualType === type,
+    received: element.toString(),
   };
 }

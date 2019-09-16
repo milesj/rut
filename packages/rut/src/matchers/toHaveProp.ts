@@ -18,15 +18,21 @@ export default function toHaveProp(element: Element, name: string, value?: unkno
 
   if (value !== undefined) {
     return {
-      message: `expected \`${element}\` to have a ${formattedName} prop with a value of ${formattedValue}, instead has a value of ${actualValue}`,
-      notMessage: `expected \`${element}\` not to have a ${formattedName} prop with a value of ${formattedValue}, instead has a value of ${actualValue}`,
-      passed: deepEqual(prop, value),
+      actual: actualValue,
+      expected: formattedValue,
+      message: `expected {{received}} to have a ${formattedName} prop with a value of {{expected}}, instead has a value of {{actual}}`,
+      name: 'toHaveProp',
+      notMessage: `expected {{received}} not to have a ${formattedName} prop with a value of {{expected}}, instead has a value of {{actual}}`,
+      passed: equals => (equals ? equals(prop, value) : deepEqual(prop, value)),
+      received: element.toString(),
     };
   }
 
   return {
-    message: `expected \`${element}\` to have a ${formattedName} prop`,
-    notMessage: `expected \`${element}\` not to have a ${formattedName} prop`,
+    message: `expected {{received}} to have a ${formattedName} prop`,
+    name: 'toHaveProp',
+    notMessage: `expected {{received}} not to have a ${formattedName} prop`,
     passed: prop !== undefined,
+    received: element.toString(),
   };
 }

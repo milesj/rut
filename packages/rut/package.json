@@ -34,7 +34,6 @@
     "react-test-renderer": "^16.9.0"
   },
   "devDependencies": {
-    "@types/jest": "*",
     "@types/prop-types": "^15.7.2",
     "prop-types": "^15.7.2"
   }
