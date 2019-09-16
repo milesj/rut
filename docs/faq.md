@@ -10,7 +10,14 @@ DOM. An alternative would be to mock these APIs, but that might be more trouble 
 
 ## How to handle async calls during a mount or update?
 
-TODO
+Testing async calls has been historically difficult, as you'd have to use arbitrary timers or await
+a promise returning function. Rut attempts to mitigate this problem by capturing async calls and
+waiting for them to resolve before returning a rendered result. This is typically done with the
+[`renderAndWait`](./api.md#renderandwait) and [`Result#updateAndWait`](./result.md#updateandwait)
+methods.
+
+An example of this can be found in the
+[official async tests](https://github.com/milesj/rut/blob/master/packages/rut/tests/examples/async.test.tsx).
 
 ## How to check the props of an element?
 
@@ -94,3 +101,27 @@ it('renders active state', () => {
   expect(root).toContainNode('Active');
 });
 ```
+
+## What about Enzyme?
+
+[Enzyme](https://github.com/airbnb/enzyme) paved the way for React testing, but sadly, has fallen
+from grace over the past few years. This is compounded by the following prevalent issues:
+
+- New React features take quite some time before landing in Enzyme (Context took almost a year!),
+  resulting in consumers either not adopting new React features, or simply not testing components
+  that use new React features.
+- Enzyme encourages bad testing practices and relies on implementation details. This includes direct
+  access to state, props, and component instances, simulating events on non-DOM elements, and more.
+- Changes to Enzyme core must be applied to all renderer types (shallow, mount, render) and all
+  React version adapters (15, 16, etc). This is usually very tedious and problematic.
+
+Rut aims to avoid these issues by utilizing the
+[react-test-renderer](https://reactjs.org/docs/test-renderer.html) provided by the React core team,
+and continually released alongside new REact versions.
+
+## What about React Testing Library?
+
+[RTL](https://testing-library.com/docs/react-testing-library/intro) and Rut serve a similar purpose,
+have similar APIs, and align on the same best practices. The major difference is that RTL requires a
+DOM and uses `react-dom` for tree rendering, while Rut is DOM-less and uses `react-test-renderer`.
+Honestly, both are great solutions, so choose the one you like best!

@@ -250,6 +250,41 @@ describe('Element', () => {
 
       expect(root.find('input', { name: 'email' })).toHaveLength(1);
     });
+
+    it('does not return `memo()` components (RTR limitation)', () => {
+      function BaseComp() {
+        return <div />;
+      }
+
+      const MemoComp = React.memo(BaseComp);
+
+      const { root } = render(
+        <div>
+          <MemoComp />
+        </div>,
+      );
+
+      expect(root.find(MemoComp)).toHaveLength(0);
+      expect(root.find(BaseComp)).toHaveLength(1);
+    });
+
+    it('returns `forwardRef()` components but not base component (RTR limitation)', () => {
+      function BaseComp(props: object, ref: React.Ref<HTMLDivElement>) {
+        return <div ref={ref} />;
+      }
+
+      const ForwardComp = React.forwardRef(BaseComp);
+      const ref = React.createRef<HTMLDivElement>();
+
+      const { root } = render(
+        <div>
+          <ForwardComp ref={ref} />
+        </div>,
+      );
+
+      expect(root.find(ForwardComp)).toHaveLength(1);
+      expect(root.find(BaseComp)).toHaveLength(0);
+    });
   });
 
   describe('findAt()', () => {

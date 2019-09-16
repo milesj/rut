@@ -79,6 +79,7 @@ it('waits for update call to finish', async () => {
 
 Search through the current tree for all elements that match the defined React component or HTML tag.
 If any are found, a list of `Element`s is returned.
+[A caveat exists for this method](../caveats.md).
 
 ```tsx
 const { root } = render<NewsReelProps>(<NewsReel />);

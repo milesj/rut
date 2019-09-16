@@ -50,6 +50,9 @@
       ],
       "testEnvironment": "node",
       "timers": "real"
+    },
+    "prettier": {
+      "ignore": ["CHANGELOG.md"]
     }
   }
 }
