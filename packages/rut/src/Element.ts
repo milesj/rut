@@ -1,40 +1,40 @@
-/* eslint-disable lines-between-class-members, no-dupe-class-members */
+/* eslint-disable lines-between-class-members, no-dupe-class-members, @typescript-eslint/no-explicit-any */
 
 import React from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
 import {
-  ArgsOf,
-  ReturnOf,
+  InferEventFromHandler,
+  InferComponentProps,
   HostComponentType,
   Predicate,
   DispatchOptions,
   DebugOptions,
   UnknownProps,
-  HostProps,
   AtIndexType,
+  EventType,
+  EventOptions,
+  InferHostElement,
+  EventMap,
 } from './types';
 import { getTypeName } from './helpers';
 import { doAct, doAsyncAct } from './internals/act';
 import { debug } from './internals/debug';
 import { getPropForDispatching } from './internals/element';
 import { whereTypeAndProps } from './predicates';
+import { factorySyntheticEvent } from './mocks/event';
 
-export default class Element<Props = {}> {
-  readonly isRutElement = true;
+type Eventless<T> = Omit<T, 'dispatch' | 'dispatchAndWait'>;
+
+export default class Element<
+  Type extends React.ElementType = React.ElementType,
+  Host = InferHostElement<Type>
+> {
+  private readonly isRutElement = true;
 
   private element: ReactTestInstance;
 
   constructor(element: ReactTestInstance) {
     this.element = element;
-  }
-
-  /**
-   * Return all children as a list of strings and `Element`s.
-   */
-  children(): (string | Element)[] {
-    return this.element.children.map(child =>
-      typeof child === 'string' ? child : new Element(child),
-    );
   }
 
   /**
@@ -46,30 +46,31 @@ export default class Element<Props = {}> {
    *  - Profiler, Suspense
    *  - Fragments
    */
-  debug = (options: DebugOptions = {}) => {
-    const output = debug(this.element, options);
-
-    // istanbul ignore next
-    if (!options.return) {
-      // eslint-disable-next-line no-console
-      console.log(output);
-    }
-
-    return output;
-  };
+  debug = (options: DebugOptions = {}) => debug(this.element, options);
 
   /**
-   * Dispatch an event listener for the defined prop name. Requires a list of arguments
-   * that match the original type, and returns the result of the dispatch.
+   * Dispatch an event listener for the defined prop name. Requires a synthetic event
+   * based on the original event type.
    *
    * Note: This may only be executed on host components (DOM elements).
    */
-  dispatch<K extends keyof Props>(
+  dispatch<K extends EventType>(
     name: K,
+    event?: InferEventFromHandler<EventMap<Host>[K]>,
+    options?: DispatchOptions,
+  ): void;
+  dispatch<K extends EventType>(
+    name: K,
+    config?: EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
+    options?: DispatchOptions,
+  ): void;
+  dispatch<K extends EventType>(
+    name: K,
+    eventOrConfig?: unknown,
     options: DispatchOptions = {},
-    ...args: ArgsOf<Props[K]>
-  ): ReturnOf<Props[K]> {
+  ): void {
     const prop = getPropForDispatching(this, name);
+    const event = factorySyntheticEvent(name, eventOrConfig, this.element.type);
 
     // istanbul ignore next
     if (options.propagate) {
@@ -77,19 +78,30 @@ export default class Element<Props = {}> {
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    // @ts-ignore We know its a function
-    return doAct(() => prop(...args));
+    doAct(() => prop(event));
   }
 
   /**
    * Like `dispatch` but also awaits the event so that async calls have time to finish.
    */
-  async dispatchAndWait<K extends keyof Props>(
+
+  async dispatchAndWait<K extends EventType>(
     name: K,
+    event?: InferEventFromHandler<EventMap<Host>[K]>,
+    options?: DispatchOptions,
+  ): Promise<void>;
+  async dispatchAndWait<K extends EventType>(
+    name: K,
+    config?: EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
+    options?: DispatchOptions,
+  ): Promise<void>;
+  async dispatchAndWait<K extends EventType>(
+    name: K,
+    eventOrConfig?: unknown,
     options: DispatchOptions = {},
-    ...args: ArgsOf<Props[K]>
-  ): Promise<ReturnOf<Props[K]>> {
+  ): Promise<void> {
     const prop = getPropForDispatching(this, name);
+    const event = factorySyntheticEvent(name, eventOrConfig, this.element.type);
 
     // istanbul ignore next
     if (options.propagate) {
@@ -97,20 +109,22 @@ export default class Element<Props = {}> {
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    // @ts-ignore We know its a function
-    return doAsyncAct(() => prop(...args));
+    await doAsyncAct(() => prop(event));
   }
 
   /**
    * Search through the current tree for all elements that match the defined React
    * component or HTML type. If any are found, a list of `Element`s is returned.
    */
-  find<T extends HostComponentType, P = HostProps<T>, PP = Partial<P>>(
+  find<T extends HostComponentType, P extends InferComponentProps<T>>(
     type: T,
-    props?: PP,
-  ): Element<P>[];
-  find<P, PP = Partial<P>>(type: React.ComponentType<P>, props?: PP): Element<P>[];
-  find(type: React.ElementType<unknown>, props?: UnknownProps): Element<unknown>[] {
+    props?: Partial<P>,
+  ): Element<T>[];
+  find<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
+    type: T,
+    props?: Partial<P>,
+  ): Eventless<Element<T>>[];
+  find(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType>[] {
     return this.query(whereTypeAndProps(type, props));
   }
 
@@ -119,17 +133,21 @@ export default class Element<Props = {}> {
    * component or HTML type. If any are found, return the `Element` at the defined
    * index. Accepts shorthand `first` and `last` indices.
    */
-  findAt<T extends HostComponentType, P = HostProps<T>, PP = Partial<P>>(
+  findAt<T extends HostComponentType, P extends InferComponentProps<T>>(
     type: T,
     at: AtIndexType,
-    props?: PP,
-  ): Element<P>;
-  findAt<P, PP = Partial<P>>(type: React.ComponentType<P>, at: AtIndexType, props?: PP): Element<P>;
+    props?: Partial<P>,
+  ): Element<T>;
+  findAt<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
+    type: T,
+    at: AtIndexType,
+    props?: Partial<P>,
+  ): Eventless<Element<T>>;
   findAt(
     type: React.ElementType<unknown>,
     at: AtIndexType,
     props?: UnknownProps,
-  ): Element<unknown> {
+  ): Element<React.ElementType> {
     const results = this.query(whereTypeAndProps(type, props));
     let index: number;
 
@@ -159,12 +177,15 @@ export default class Element<Props = {}> {
    * component or HTML type. If exactly 1 is found, a `Element`s is returned,
    * otherwise an error is thrown.
    */
-  findOne<T extends HostComponentType, P = HostProps<T>, PP = Partial<P>>(
+  findOne<T extends HostComponentType, P extends InferComponentProps<T>>(
     type: T,
-    props?: PP,
-  ): Element<P>;
-  findOne<P, PP = Partial<P>>(type: React.ComponentType<P>, props?: PP): Element<P>;
-  findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element<unknown> {
+    props?: Partial<P>,
+  ): Element<T>;
+  findOne<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
+    type: T,
+    props?: Partial<P>,
+  ): Eventless<Element<T>>;
+  findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType> {
     const results = this.find(type, props);
 
     if (results.length !== 1) {
@@ -173,6 +194,7 @@ export default class Element<Props = {}> {
       );
     }
 
+    // @ts-ignore Because were removing dispatchers
     return results[0];
   }
 
@@ -189,7 +211,10 @@ export default class Element<Props = {}> {
    * ReactTestRenderer node and internal React fiber node. If any are found,
    * a list of `Element`s is returned.
    */
-  query<P = {}>(predicate: Predicate, options?: { deep?: boolean }): Element<P>[] {
+  query<T extends React.ElementType>(
+    predicate: Predicate,
+    options?: { deep?: boolean },
+  ): Element<T>[] {
     return this.element
       .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
       .map(node => new Element(node));

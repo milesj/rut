@@ -4,12 +4,12 @@ import { isReactNodeLike, NodeLike } from '../helpers';
 import { UnknownProps } from '../types';
 import { deepEqual } from './utils';
 
-export function getProp<P, K extends keyof P>(element: Element<P>, name: K): P[K] | undefined {
+export function getProp(element: Element, name: string): unknown {
   // @ts-ignore Allow internal access
   return element.element.props[name];
 }
 
-export function getPropForDispatching<P, K extends keyof P>(element: Element<P>, name: K): P[K] {
+export function getPropForDispatching(element: Element, name: string): React.ReactEventHandler {
   const prop = getProp(element, name);
 
   if (!prop) {
@@ -21,6 +21,7 @@ export function getPropForDispatching<P, K extends keyof P>(element: Element<P>,
     throw new TypeError('Dispatching events is only allowed on host components (DOM elements).');
   }
 
+  // @ts-ignore
   return prop;
 }
 

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import Element from '../src/Element';
 import { render } from '../src/render';
 import { mockSyntheticEvent } from '../src/mocks/event';
-import { HostProps } from '../src/types';
 import {
   FuncComp,
   FuncCompWithDisplayName,
@@ -23,37 +21,9 @@ describe('Element', () => {
     expect(root).toMatchSnapshot();
   });
 
-  describe('children()', () => {
-    it('returns an empty array when no children (null return)', () => {
-      function NullComp() {
-        return null;
-      }
-
-      const { root } = render<{}>(<NullComp />);
-
-      expect(root.children()).toEqual([]);
-    });
-
-    it('returns as strings and elements', () => {
-      function StringComp() {
-        return (
-          <div>
-            Foo
-            <br />
-            Bar
-          </div>
-        );
-      }
-
-      const { root } = render<{}>(<StringComp />);
-
-      expect(root.findOne('div').children()).toEqual(['Foo', expect.any(Element), 'Bar']);
-    });
-  });
-
   describe('debug()', () => {
     it('debugs based on element depth', () => {
-      const { root } = render<HostProps<'div'>>(
+      const { root } = render<{}>(
         <div>
           <section>
             <article>
@@ -63,9 +33,9 @@ describe('Element', () => {
         </div>,
       );
 
-      expect(root.debug({ return: true })).toMatchSnapshot();
-      expect(root.findOne('section').debug({ return: true })).toMatchSnapshot();
-      expect(root.findOne('h1').debug({ return: true })).toMatchSnapshot();
+      expect(root.debug({ log: false })).toMatchSnapshot();
+      expect(root.findOne('section').debug({ log: false })).toMatchSnapshot();
+      expect(root.findOne('h1').debug({ log: false })).toMatchSnapshot();
     });
   });
 
@@ -108,6 +78,7 @@ describe('Element', () => {
       expect(() => {
         const { root } = render<DispatchProps>(<DispatchComp onSomething={() => {}} />);
 
+        // @ts-ignore
         root.dispatch('onSomething');
       }).toThrowError('Dispatching events is only allowed on host components (DOM elements).');
     });
@@ -125,9 +96,56 @@ describe('Element', () => {
 
       const { root } = render<{}>(<DispatchComp />);
 
-      root.findOne('button').dispatch('onClick', {}, mockSyntheticEvent('onClick'));
+      root.findOne('button').dispatch('onClick');
 
       expect(spy).toHaveBeenCalledWith(expect.any(Object));
+    });
+
+    it('executes the function prop with a custom target', () => {
+      const spy = jest.fn();
+      const target = { tagName: 'BUTTON' };
+
+      function DispatchComp() {
+        return (
+          <button type="button" onClick={spy}>
+            Click
+          </button>
+        );
+      }
+
+      const { root } = render<{}>(<DispatchComp />);
+
+      root.findOne('button').dispatch('onClick', { target, shiftKey: true });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          shiftKey: true,
+          target,
+        }),
+      );
+    });
+
+    it('executes the function prop with a custom mocked event', () => {
+      const spy = jest.fn();
+      const target = { tagName: 'BUTTON' };
+      const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('onClick', {
+        target,
+        altKey: true,
+      });
+
+      function DispatchComp() {
+        return (
+          <button type="button" onClick={spy}>
+            Click
+          </button>
+        );
+      }
+
+      const { root } = render<{}>(<DispatchComp />);
+
+      root.findOne('button').dispatch('onClick', event);
+
+      expect(spy).toHaveBeenCalledWith(event);
     });
   });
 
@@ -154,7 +172,7 @@ describe('Element', () => {
 
       expect(root).toContainNode(0);
 
-      await root.findOne('button').dispatchAndWait('onClick', {}, mockSyntheticEvent('onClick'));
+      await root.findOne('button').dispatchAndWait('onClick', mockSyntheticEvent('onClick'));
 
       expect(root).toContainNode(1);
     });

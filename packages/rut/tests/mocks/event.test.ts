@@ -1,4 +1,6 @@
-import { mockEvent, mockSyntheticEvent } from '../../src/mocks/event';
+import { SyntheticEvent } from '../../src/internals/event';
+import { mockEvent, mockSyntheticEvent, factorySyntheticEvent } from '../../src/mocks/event';
+import { FuncComp } from '../fixtures';
 
 describe('event', () => {
   describe('mockEvent()', () => {
@@ -118,6 +120,56 @@ describe('event', () => {
 
       expect(event.ctrlKey).toBe(true);
       expect(event.key).toBe('Enter');
+    });
+  });
+
+  describe('factorySyntheticEvent()', () => {
+    const target = { tagName: 'strong' };
+
+    it('creates a synthetic event if nothing passed', () => {
+      expect(factorySyntheticEvent('onClick')).toBeInstanceOf(SyntheticEvent);
+    });
+
+    it('creates a synthetic event with custom options', () => {
+      const event = factorySyntheticEvent('onClick', { target, shiftKey: true });
+
+      expect(event).toBeInstanceOf(SyntheticEvent);
+      expect(event.target).toBe(target);
+      // @ts-ignore
+      expect(event.shiftKey).toBe(true);
+    });
+
+    it('sets target automatically based on type', () => {
+      const event = factorySyntheticEvent('onClick', {}, 'div');
+
+      expect(event).toBeInstanceOf(SyntheticEvent);
+      expect(event.target).toEqual({ tagName: 'DIV' });
+    });
+
+    it('doesnt set target automatically if target is defined', () => {
+      const event = factorySyntheticEvent('onClick', { target }, 'div');
+
+      expect(event).toBeInstanceOf(SyntheticEvent);
+      expect(event.target).toBe(target);
+    });
+
+    it('doesnt set target automatically if type not a DOM element', () => {
+      const event = factorySyntheticEvent('onClick', {}, FuncComp);
+
+      expect(event).toBeInstanceOf(SyntheticEvent);
+      expect(event.target).toEqual({});
+    });
+
+    it('returns passed synthetic event', () => {
+      const event = new SyntheticEvent('onClick', mockEvent('click'));
+
+      expect(factorySyntheticEvent('onClick', event)).toBe(event);
+    });
+
+    it('returns passed synthetic event (from mock)', () => {
+      const event = mockSyntheticEvent('onClick');
+
+      expect(factorySyntheticEvent('onClick', event)).toBe(event);
     });
   });
 });

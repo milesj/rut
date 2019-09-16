@@ -12,6 +12,7 @@ export default function toHaveRendered(element: Element): MatchResult {
   return {
     message: `expected \`${element}\` to have rendered children`,
     notMessage: `expected \`${element}\` not to have rendered children`,
-    passed: element.children().length > 0,
+    // @ts-ignore Allow internal access
+    passed: element.element.children.length > 0,
   };
 }

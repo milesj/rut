@@ -3,55 +3,6 @@ import { render } from '../../src/render';
 import { mockSyntheticEvent } from '../../src/mocks/event';
 
 describe('Events', () => {
-  interface AsyncCompProps {
-    onClick: () => Promise<unknown>;
-  }
-
-  class AsyncComp extends React.Component<AsyncCompProps, { value: unknown }> {
-    state = {
-      value: '',
-    };
-
-    handleClick = async () => {
-      let value = null;
-
-      try {
-        value = await this.props.onClick();
-
-        this.setState({ value });
-      } catch {
-        // Skip
-      }
-
-      return value;
-    };
-
-    render() {
-      return (
-        <div>
-          <div>{this.state.value}</div>
-
-          <button type="button" onClick={this.handleClick}>
-            Trigger
-          </button>
-        </div>
-      );
-    }
-  }
-
-  it('can await the result of an dispatch', async () => {
-    const result = render<AsyncCompProps>(
-      <AsyncComp onClick={() => Promise.resolve('Updated!')} />,
-    );
-
-    const value = await result.root
-      .findOne('button')
-      .dispatch('onClick', {}, mockSyntheticEvent('onClick'));
-
-    expect(value).toBe('Updated!');
-    expect(result.root).toContainNode('Updated!');
-  });
-
   function EventComp() {
     const handleClick = (event: React.MouseEvent) => {
       event.preventDefault();
@@ -67,11 +18,11 @@ describe('Events', () => {
   }
 
   it('can call methods on the event object', () => {
-    const result = render<AsyncCompProps>(<EventComp />);
+    const result = render<{}>(<EventComp />);
     const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('onClick');
     const spy = jest.spyOn(event, 'preventDefault');
 
-    result.root.findOne('button').dispatch('onClick', {}, event);
+    result.root.findOne('button').dispatch('onClick', event);
 
     expect(spy).toHaveBeenCalled();
   });

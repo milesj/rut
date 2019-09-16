@@ -43,6 +43,7 @@ export function isRutElement(value: unknown) {
   if (
     typeof value === 'object' &&
     value !== null &&
+    // @ts-ignore Allow access
     (value.constructor.name === 'Element' || (value as Element).isRutElement === true)
   ) {
     return;

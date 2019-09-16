@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-namespace */
 
 import React from 'react';
-import Element from './Element';
+import RutElement from './Element';
+import RutResult from './Result';
 
 export interface RendererOptions {
   /** Options to pass to the debugger. */
@@ -15,6 +16,8 @@ export interface RendererOptions {
 }
 
 export interface DebugOptions {
+  /** Render children. Defaults to `true`. */
+  children?: boolean;
   /** Group props into the following: key & ref, truthy booleans, everything
   else, event handlers. Defaults to `true`. */
   groupProps?: boolean;
@@ -22,36 +25,23 @@ export interface DebugOptions {
   hostElements?: boolean;
   /** Include `key` and `ref` props in the output. Defaults to `true`. */
   keyAndRef?: boolean;
+  /** Log to the console automatically. Defaults to `true`. */
+  log?: boolean;
   /** Max length of arrays and objects before truncating. Defaults to 5. */
   maxLength?: number;
-  /** Do not render children. Defaults to `false`. */
-  noChildren?: boolean;
   /** Include React elements in the output. Defaults to `true`. */
   reactElements?: boolean;
-  /** Do not log to the console and instead return the output. Defaults to
-  `false`. */
-  return?: boolean;
   /** Sort the props within each grouping from A-Z. Defaults to `true`. */
   sortProps?: boolean;
 }
 
 export interface DispatchOptions {
+  /**
+   * Traverse up or down the tree and dispatch the event on every node
+   * unless propagation has been stopped.
+   */
   propagate?: boolean;
 }
-
-export type ArgsOf<T> = T extends (...args: infer A) => unknown ? A : never;
-
-export type ReturnOf<T> = T extends (...args: unknown[]) => infer R ? R : unknown;
-
-export type PropsOf<T> = T extends Element<infer P>
-  ? P
-  : T extends React.ReactElement<infer P>
-  ? P
-  : T extends React.ComponentType<infer P>
-  ? P
-  : {};
-
-export type StructureOf<T> = { [K in keyof T]: T[K] };
 
 export interface UnknownProps {
   [name: string]: unknown;
@@ -83,9 +73,13 @@ export interface FiberNode {
   type: React.ElementType;
 }
 
+// QUERY
+
 export type AtIndexType = 'first' | 'last' | number;
 
 export type Predicate = (node: TestNode, fiber: FiberNode) => boolean;
+
+// MATCHERS
 
 export interface MatchResult {
   context?: string;
@@ -101,9 +95,69 @@ export type NodeType =
   | 'host-component'
   | 'memo';
 
+// COMPONENTS
+
 export type HostComponentType = keyof JSX.IntrinsicElements;
 
-export type HostProps<T extends HostComponentType> = JSX.IntrinsicElements[T];
+export type InferHostElement<T> = T extends keyof HTMLElementTagNameMap
+  ? HTMLElementTagNameMap[T]
+  : T extends keyof SVGElementTagNameMap
+  ? SVGElementTagNameMap[T]
+  : unknown;
+
+export type InferComponentProps<T> = T extends HostComponentType
+  ? JSX.IntrinsicElements[T]
+  : T extends React.ComponentType<infer P>
+  ? P
+  : {};
+
+// EVENTS
+
+export type InferEventFromHandler<T> = T extends (event: infer E) => void ? E : never;
+
+export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
+
+export type EventMap<T> = Required<
+  Omit<React.DOMAttributes<T>, 'children' | 'dangerouslySetInnerHTML'>
+>;
+
+export type EventType = keyof EventMap<unknown>;
+
+export type EventOptions<T, E> = {
+  currentTarget?: Partial<T>;
+  target?: Partial<T>;
+} & ExpandedEventOptions<E>;
+
+export type ExpandedEventOptions<T> = T extends React.AnimationEvent | AnimationEvent
+  ? { animationName?: string }
+  : T extends
+      | React.MouseEvent
+      | React.KeyboardEvent
+      | React.TouchEvent
+      | MouseEvent
+      | KeyboardEvent
+      | TouchEvent
+  ? {
+      altKey?: boolean;
+      ctrlKey?: boolean;
+      key?: string;
+      keyCode?: number;
+      metaKey?: boolean;
+      shiftKey?: boolean;
+    }
+  : T extends React.TransitionEvent | TransitionEvent
+  ? { propertyName?: string }
+  : {};
+
+// AUGMENTATION
+
+export type PropsOf<T> = T extends RutResult<infer P>
+  ? P
+  : T extends RutElement<infer E>
+  ? InferComponentProps<E>
+  : {};
+
+export type StructureOf<T> = { [K in keyof T]: T[K] };
 
 declare module 'react-test-renderer' {
   interface ReactTestInstance {
@@ -113,7 +167,7 @@ declare module 'react-test-renderer' {
 
 declare global {
   namespace jest {
-    interface Matchers<R> {
+    interface Matchers<R, P = PropsOf<R>> {
       toBeChecked(): R;
       toBeDisabled(): R;
       toBeElementType(type: React.ElementType): R;
@@ -121,8 +175,8 @@ declare global {
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;
       toHaveKey(value: string | number): R;
-      toHaveProp<K extends keyof PropsOf<R>>(name: K, value?: unknown): R;
-      toHaveProps(props: Partial<PropsOf<R>>): R;
+      toHaveProp<K extends keyof P>(name: K, value?: P[K]): R;
+      toHaveProps(props: Partial<P>): R;
       toHaveRendered(): R;
       toHaveValue(value: unknown): R;
     }

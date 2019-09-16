@@ -8,10 +8,7 @@ import { isRutElement } from '../internals/utils';
  * Check that an element has a `value` or `defaultValue` prop that
  * matches the provided value.
  */
-export default function toHaveValue(
-  element: Element<{ defaultValue?: string; value?: string }>,
-  value: unknown,
-): MatchResult {
+export default function toHaveValue(element: Element, value: unknown): MatchResult {
   isRutElement(element);
 
   const defaultValue = getProp(element, 'defaultValue');

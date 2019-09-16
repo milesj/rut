@@ -8,11 +8,7 @@ import { isRutElement, deepEqual } from '../internals/utils';
  * Check that an element has a prop that matches the provided name, with optional matching value.
  * Arrays and objects will be matched using deep equality.
  */
-export default function toHaveProp<P>(
-  element: Element<P>,
-  name: keyof P,
-  value?: unknown,
-): MatchResult {
+export default function toHaveProp(element: Element, name: string, value?: unknown): MatchResult {
   isRutElement(element);
 
   const prop = getProp(element, name);

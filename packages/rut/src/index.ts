@@ -18,5 +18,5 @@ export * from './types';
 export { configure, matchers, render, renderAndWait };
 
 // We don't want to export the classes, only the types
-export type Element<T> = StructureOf<BaseElement<T>>;
-export type Result<T> = StructureOf<BaseResult<T>>;
+export type Element<T extends React.ElementType> = StructureOf<BaseElement<T>>;
+export type Result<T extends object> = StructureOf<BaseResult<T>>;

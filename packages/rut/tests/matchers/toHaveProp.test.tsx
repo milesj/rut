@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '../../src/render';
 import toHaveProp from '../../src/matchers/toHaveProp';
+import { InferComponentProps } from '../../src/types';
 import { runMatcher } from '../helpers';
-import { HostProps } from '../../lib/types';
 
 describe('toHaveProp()', () => {
-  type DivProps = HostProps<'div'>;
+  type DivProps = InferComponentProps<'div'>;
 
   it('errors if a non-Element is passed', () => {
     expect(() => {

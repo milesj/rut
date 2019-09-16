@@ -37,8 +37,6 @@ All options are _optional_.
   - `keyCode` (`number`) - The key that was pressed, as a numerical code.
   - `metaKey` (`boolean`) - The command key was pressed (Mac only).
   - `shiftKey` (`boolean`) - The shift key was pressed.
-- **MessageEvent**
-  - `data` (`unknown`) - Data being sent within a message.
 - **TransitionEvent**
   - `propertyName` (`string`) - Name of the property that triggered the transition.
 
@@ -110,9 +108,9 @@ afterEach(() => {
 
 > mockSyntheticEvent\<T = React.SyntheticEvent>(type: EventType, options?: EventOptions): T
 
-Generates `React.SyntheticEvent` and native `Event` mocks for use within event ting. Based on the
-defined event type, an appropriate sub-class will be used. For example, if the `type` is `onClick`,
-then a `React.MouseEvent` (with a native `MouseEvent` of type `click`) will be used.
+Generates `React.SyntheticEvent` and native `Event` mocks for use within event dispatching. Based on
+the defined event type, an appropriate sub-class will be used. For example, if the `type` is
+`onClick`, then a `React.MouseEvent` (with a native `MouseEvent` of type `click`) will be used.
 
 ```tsx
 import { render, mockSyntheticEvent } from 'rut';
@@ -123,7 +121,7 @@ describe('<Form />', () => {
     const spy = jest.fn();
     const { root } = render<FormProps>(<Form onClick={spy} />);
 
-    root.findOne('button').dispatch('onClick', {}, mockSyntheticEvent('onClick'));
+    root.findOne('button').dispatch('onClick', mockSyntheticEvent('onClick'));
 
     expect(spy).toHaveBeenCalled();
   });
@@ -140,7 +138,7 @@ explicitly defined.
 const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('onClick');
 const spy = jest.spyOn(event, 'preventDefault');
 
-root.findOne('button').dispatch('onClick', {}, event);
+root.findOne('button').dispatch('onClick', event);
 ```
 
 Supports the same [options](#options) as [`mockEvent()`](#mockevent).

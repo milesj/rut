@@ -81,11 +81,13 @@ describe('Hooks', () => {
     it('persists reference between updates', () => {
       const { root, update } = render<{ id: string }>(<MemoComp id="1" />);
 
-      const value = root.findOne('span').children()[0];
+      // @ts-ignore
+      const value = root.findOne('span').element.children[0];
 
       update({ id: '2' });
 
-      expect(root.findOne('span').children()[0]).toBe(value);
+      // @ts-ignore
+      expect(root.findOne('span').element.children[0]).toBe(value);
     });
   });
 

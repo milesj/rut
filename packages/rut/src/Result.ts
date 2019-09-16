@@ -12,8 +12,8 @@ const ELEMENT = Symbol('react-element');
 const RENDERER = Symbol('react-test-renderer');
 const OPTIONS = Symbol('result-options');
 
-export default class Result<Props = {}> {
-  readonly isRutResult = true;
+export default class Result<Props extends object = {}> {
+  private readonly isRutResult = true;
 
   private [ELEMENT]: React.ReactElement<Props>;
 
@@ -43,33 +43,24 @@ export default class Result<Props = {}> {
    *  - Profiler, Suspense
    *  - Fragments
    */
-  debug = (options: DebugOptions = {}) => {
-    const output = debug(this[RENDERER].root, {
+  debug = (options: DebugOptions = {}) =>
+    debug(this[RENDERER].root, {
       ...this[OPTIONS].debugger,
       ...options,
     });
 
-    // istanbul ignore next
-    if (!options.return) {
-      // eslint-disable-next-line no-console
-      console.log(output);
-    }
-
-    return output;
-  };
-
   /**
    * Return the root component as an `Element`.
    */
-  get root(): Element<Props> {
+  get root(): Element<React.ComponentType<Props>> {
     const element = this[ELEMENT];
-    const root = new Element<Props>(this[RENDERER].root);
+    const root = new Element(this[RENDERER].root);
     const rootType = unwrapExoticType((element as unknown) as NodeLike);
 
     // When being wrapped, we need to drill down and find the
     // element that matches the one initially passed in.
     if (this[OPTIONS].wrapper) {
-      const nodes = root.query<Props>(
+      const nodes = root.query(
         node => node.type === rootType && deepEqual(node.props, element.props),
       );
 

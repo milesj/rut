@@ -89,7 +89,7 @@ it('renders active state', () => {
 
   expect(root).toContainNode('Inactive');
 
-  root.findOne('button').dispatch('onClick', {}, mockSyntheticEvent('onClick'));
+  root.findOne('button').dispatch('onClick');
 
   expect(root).toContainNode('Active');
 });

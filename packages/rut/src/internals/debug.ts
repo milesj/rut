@@ -21,15 +21,7 @@ const INDENT_CHARS = '  ';
 const MAX_INLINE_PROPS = 6;
 
 function getLongestItem(values: string[]): number {
-  let longest = 0;
-
-  values.forEach(value => {
-    if (value.length > longest) {
-      longest = value.length;
-    }
-  });
-
-  return longest;
+  return values.reduce((longest, value) => (value.length > longest ? value.length : longest), 0);
 }
 
 function indentAllLines(value: string, indent: string): string {
@@ -54,13 +46,13 @@ class Debugger {
     this.node = node;
 
     this.options = {
+      children: true,
       groupProps: true,
       hostElements: true,
       keyAndRef: true,
+      log: true,
       maxLength: 5,
-      noChildren: false,
       reactElements: true,
-      return: false,
       sortProps: true,
       ...globalOptions,
       ...options,
@@ -68,6 +60,7 @@ class Debugger {
 
     this.types = {
       '[object Array]': this.formatArray,
+      '[object AsyncFunction]': this.formatAsyncFunction,
       '[object Boolean]': this.formatPrimitive,
       '[object Date]': this.formatDate,
       '[object Error]': this.formatError,
@@ -91,9 +84,9 @@ class Debugger {
   }
 
   buildTree(node: TestNode | string, parent: TreeNode): TreeNode {
-    const { hostElements, keyAndRef, noChildren, reactElements } = this.options;
+    const { hostElements, keyAndRef, children: includeChildren, reactElements } = this.options;
 
-    if (noChildren && parent.name !== 'ROOT') {
+    if (!includeChildren && parent.name !== 'ROOT') {
       return parent;
     }
 
@@ -139,7 +132,7 @@ class Debugger {
 
     // React element
     if (React.isValidElement(value)) {
-      return debugFromElement(value, { ...this.options, noChildren: true });
+      return debugFromElement(value, { ...this.options, children: false, log: false });
     }
 
     // Built-in type
@@ -162,6 +155,8 @@ class Debugger {
   }
 
   formatArray = (value: any[]) => this.transformList(value.map(val => this.format(val)), '[', ']');
+
+  formatAsyncFunction = (value: Function) => `async ${this.formatFunction(value)}`;
 
   formatDate = (value: Date) => `new Date('${value.toISOString()}')`;
 
@@ -383,7 +378,7 @@ class Debugger {
 
       const propValue = this.format(value);
 
-      if (propValue.startsWith('"')) {
+      if (propValue.charAt(0) === '"') {
         output.push(`${name}=${propValue}`);
       } else {
         output.push(`${name}={${propValue}}`);
@@ -399,11 +394,20 @@ class Debugger {
 }
 
 export function debug(node: TestNode, options?: DebugOptions): string {
-  return new Debugger(node, options).toString();
+  const inst = new Debugger(node, options);
+  const output = inst.toString();
+
+  // istanbul ignore next
+  if (inst.options.log) {
+    // eslint-disable-next-line no-console
+    console.log(output);
+  }
+
+  return output;
 }
 
 export function debugFromElement(element: React.ReactElement, options?: DebugOptions): string {
-  const { children, ...props } = element.props;
+  const { children = [], ...props } = element.props;
 
   return debug(
     {
