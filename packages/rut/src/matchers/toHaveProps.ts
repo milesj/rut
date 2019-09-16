@@ -11,26 +11,17 @@ export default function toHaveProps(element: Element, props: UnknownProps): Matc
   isRutElement(element);
 
   // @ts-ignore Allow internal access
-  const baseProps = element.element.props;
-  const formattedKeys: string[] = [];
-  let invalid = false;
-
-  Object.keys(props).forEach(key => {
-    formattedKeys.push(formatValue(key));
-
-    if (!invalid && !deepEqual(baseProps[key], props[key])) {
-      invalid = true;
-    }
-  });
+  const actualProps = element.element.props;
+  const keys = Object.keys(props).map(key => formatValue(key));
 
   return {
-    actual: baseProps,
+    actual: actualProps,
     diff: true,
     expected: props,
-    message: `expected {{received}} to have matching props for ${formattedKeys.join(', ')}`,
+    message: `expected {{received}} to have matching props for ${keys.join(', ')}`,
     name: 'toHaveProps',
-    notMessage: `expected {{received}} not to have matching props for ${formattedKeys.join(', ')}`,
-    passed: equals => (equals ? equals(baseProps, props) : !invalid),
+    notMessage: `expected {{received}} not to have matching props for ${keys.join(', ')}`,
+    passed: equals => (equals ? equals(actualProps, props) : deepEqual(actualProps, props)),
     received: element.toString(),
   };
 }
