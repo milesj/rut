@@ -13,19 +13,25 @@ export default function toHaveProps(element: Element, props: UnknownProps): Matc
   const keys = Object.keys(props);
   // @ts-ignore Allow internal access
   const baseProps = element.element.props;
-  const invalid: string[] = [];
+  const formattedKeys: string[] = [];
+  let invalid = false;
 
   keys.forEach(key => {
-    if (!deepEqual(baseProps[key], props[key])) {
-      invalid.push(formatValue(key));
+    formattedKeys.push(formatValue(key));
+
+    if (!invalid && !deepEqual(baseProps[key], props[key])) {
+      invalid = true;
     }
   });
 
   return {
-    message: `expected {{received}} to have matching props ${keys.join(', ')}`,
+    actual: baseProps,
+    diff: true,
+    expected: props,
+    message: `expected {{received}} to have matching props for ${formattedKeys.join(', ')}`,
     name: 'toHaveProps',
-    notMessage: `expected {{received}} not to have matching props ${keys.join(', ')}`,
-    passed: equals => (equals ? equals(baseProps, props) : invalid.length === 0),
+    notMessage: `expected {{received}} not to have matching props for ${formattedKeys.join(', ')}`,
+    passed: equals => (equals ? equals(baseProps, props) : !invalid),
     received: element.toString(),
   };
 }

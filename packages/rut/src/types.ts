@@ -85,7 +85,7 @@ export type MatchComparator = (a: unknown, b: unknown) => boolean;
 
 export interface MatchResult {
   actual?: unknown;
-  context?: string;
+  diff?: boolean;
   expected?: unknown;
   message: string;
   name: string;
