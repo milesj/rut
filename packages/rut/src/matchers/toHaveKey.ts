@@ -16,8 +16,12 @@ export default function toHaveKey(element: Element, value: React.Key): MatchResu
   const expectedValue = formatValue(value);
 
   return {
-    message: `expected \`${element}\` to have a ${expectedValue} key, has ${actualValue}`,
-    notMessage: `expected \`${element}\` not to have a ${expectedValue} key, has ${actualValue}`,
+    actual: actualValue,
+    expected: expectedValue,
+    message: `expected {{received}} to have a {{expected}} key, has {{actual}}`,
+    name: 'toHaveKey',
+    notMessage: `expected {{received}} not to have a {{expected}} key, has {{actual}}`,
     passed: key !== null && key === value,
+    received: element.toString(),
   };
 }

@@ -22,5 +22,8 @@ export default function toBeChecked(element: Element): MatchResult {
     name = 'checked';
   }
 
-  return toHaveProp(element, name, true);
+  const result = toHaveProp(element, name, true);
+  result.name = 'toBeChecked';
+
+  return result;
 }

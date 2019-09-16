@@ -1,5 +1,4 @@
 import Element from '../Element';
-import { getProp } from '../internals/element';
 import { formatValue } from '../helpers';
 import { MatchResult, UnknownProps } from '../types';
 import { isRutElement, deepEqual } from '../internals/utils';
@@ -11,21 +10,22 @@ import { isRutElement, deepEqual } from '../internals/utils';
 export default function toHaveProps(element: Element, props: UnknownProps): MatchResult {
   isRutElement(element);
 
+  const keys = Object.keys(props);
+  // @ts-ignore Allow internal access
+  const baseProps = element.element.props;
   const invalid: string[] = [];
 
-  Object.entries(props).forEach(([key, value]) => {
-    const prop = getProp(element, key);
-
-    if (!deepEqual(prop, value)) {
+  keys.forEach(key => {
+    if (!deepEqual(baseProps[key], props[key])) {
       invalid.push(formatValue(key));
     }
   });
 
   return {
-    message: `expected \`${element}\` to have all props, mismatched are ${invalid.join(', ')}`,
-    notMessage: `expected \`${element}\` not to have all props, mismatched are ${invalid.join(
-      ', ',
-    )}`,
-    passed: invalid.length === 0,
+    message: `expected {{received}} to have matching props ${keys.join(', ')}`,
+    name: 'toHaveProps',
+    notMessage: `expected {{received}} not to have matching props ${keys.join(', ')}`,
+    passed: equals => (equals ? equals(baseProps, props) : invalid.length === 0),
+    received: element.toString(),
   };
 }

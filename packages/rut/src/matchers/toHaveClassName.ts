@@ -15,8 +15,13 @@ export default function toHaveClassName(element: Element, name: string): MatchRe
   const expectedName = formatValue(name);
 
   return {
-    message: `expected \`${element}\` to have a ${expectedName} class name, has ${actualName}`,
-    notMessage: `expected \`${element}\` not to have a ${expectedName} class name, has ${actualName}`,
+    actual: actualName,
+    expected: expectedName,
+    message: `expected {{received}} to have a {{expected}} class name, has {{actual}}`,
+    name: 'toHaveClassName',
+    notMessage: `expected {{received}} not to have a {{expected}} class name, has {{actual}}
+    `,
     passed: typeof className === 'string' && className.split(' ').includes(name),
+    received: element.toString(),
   };
 }

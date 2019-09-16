@@ -23,5 +23,8 @@ export default function toHaveValue(element: Element, value: unknown): MatchResu
     name = 'value';
   }
 
-  return toHaveProp(element, name as 'value', value);
+  const result = toHaveProp(element, name, value);
+  result.name = 'toHaveValue';
+
+  return result;
 }

@@ -51,8 +51,11 @@ export default function toContainNode(
     : formatValue(node);
 
   return {
-    message: `expected \`${element}\` to contain node ${expectedNode}`,
-    notMessage: `expected \`${element}\` not to contain node ${expectedNode}`,
+    expected: expectedNode,
+    message: `expected {{received}} to contain node {{expected}}`,
+    name: 'toContainNode',
+    notMessage: `expected {{received}} not to contain node {{expected}}`,
     passed: results.length > 0,
+    received: element.toString(),
   };
 }

@@ -10,9 +10,11 @@ export default function toHaveRendered(element: Element): MatchResult {
   isRutElement(element);
 
   return {
-    message: `expected \`${element}\` to have rendered children`,
-    notMessage: `expected \`${element}\` not to have rendered children`,
+    message: `expected {{received}} to have rendered children`,
+    name: 'toHaveRendered',
+    notMessage: `expected {{received}} not to have rendered children`,
     // @ts-ignore Allow internal access
     passed: element.element.children.length > 0,
+    received: element.toString(),
   };
 }
