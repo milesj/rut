@@ -13,8 +13,8 @@ DOM. An alternative would be to mock these APIs, but that might be more trouble 
 Testing async calls has been historically difficult, as you'd have to use arbitrary timers or await
 a promise returning function. Rut attempts to mitigate this problem by capturing async calls and
 waiting for them to resolve before returning a rendered result. This is typically done with the
-[`renderAndWait`](./api.md#renderandwait) and [`Result#updateAndWait`](./result.md#updateandwait)
-methods.
+[`renderAndWait`](./api.md#renderandwait), [`Result#updateAndWait`](./api/result.md#updateandwait),
+and other methods like `*AndWait`.
 
 An example of this can be found in the
 [official async tests](https://github.com/milesj/rut/blob/master/packages/rut/tests/examples/async.test.tsx).
