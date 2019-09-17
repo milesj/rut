@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`toBeNodeType() "class-component" type errors when types dont match (not negation) 1`] = `"expected \`ClassComp\` not to be a \\"class-component\\", found 1"`;
+exports[`toBeNodeType() "class-component" type errors when types dont match (not negation) 1`] = `"expected <ClassComp /> not to be a \\"class-component\\", found \\"class-component\\""`;
 
-exports[`toBeNodeType() "class-component" type errors when types dont match 1`] = `"expected \`ClassComp\` to be a \\"function-component\\", found 1"`;
+exports[`toBeNodeType() "class-component" type errors when types dont match 1`] = `"expected <ClassComp /> to be a \\"function-component\\", found \\"class-component\\""`;
 
-exports[`toBeNodeType() "forward-ref" type errors when types dont match (not negation) 1`] = `"expected \`ForwardRef\` not to be a \\"forward-ref\\", found 11"`;
+exports[`toBeNodeType() "forward-ref" type errors when types dont match (not negation) 1`] = `"expected <ForwardRef /> not to be a \\"forward-ref\\", found \\"forward-ref\\""`;
 
-exports[`toBeNodeType() "forward-ref" type errors when types dont match 1`] = `"expected \`ForwardRef\` to be a \\"function-component\\", found 11"`;
+exports[`toBeNodeType() "forward-ref" type errors when types dont match 1`] = `"expected <ForwardRef /> to be a \\"function-component\\", found \\"forward-ref\\""`;
 
-exports[`toBeNodeType() "function-component" type errors when types dont match (not negation) 1`] = `"expected \`FuncComp\` not to be a \\"function-component\\", found 0"`;
+exports[`toBeNodeType() "function-component" type errors when types dont match (not negation) 1`] = `"expected <FuncComp /> not to be a \\"function-component\\", found \\"function-component\\""`;
 
-exports[`toBeNodeType() "function-component" type errors when types dont match 1`] = `"expected \`FuncComp\` to be a \\"class-component\\", found 0"`;
+exports[`toBeNodeType() "function-component" type errors when types dont match 1`] = `"expected <FuncComp /> to be a \\"class-component\\", found \\"function-component\\""`;
 
-exports[`toBeNodeType() "host-component" type errors when types dont match (not negation) 1`] = `"expected \`div\` not to be a \\"host-component\\", found 5"`;
+exports[`toBeNodeType() "host-component" type errors when types dont match (not negation) 1`] = `"expected <div /> not to be a \\"host-component\\", found \\"host-component\\""`;
 
-exports[`toBeNodeType() "host-component" type errors when types dont match 1`] = `"expected \`div\` to be a \\"function-component\\", found 5"`;
+exports[`toBeNodeType() "host-component" type errors when types dont match 1`] = `"expected <div /> to be a \\"function-component\\", found \\"host-component\\""`;
 
-exports[`toBeNodeType() "memo" type errors when types dont match (not negation) 1`] = `"expected \`Memo(FuncComp)\` not to be a \\"memo\\", found 15"`;
+exports[`toBeNodeType() "memo" type errors when types dont match (not negation) 1`] = `"expected <Memo(FuncComp) /> not to be a \\"memo\\", found \\"memo\\""`;
 
-exports[`toBeNodeType() "memo" type errors when types dont match 1`] = `"expected \`Memo(FuncComp)\` to be a \\"function-component\\", found 15"`;
+exports[`toBeNodeType() "memo" type errors when types dont match 1`] = `"expected <Memo(FuncComp) /> to be a \\"function-component\\", found \\"memo\\""`;
 
 exports[`toBeNodeType() errors if an invalid node type 1`] = `"Invalid node type \\"unknown-type\\", expected one of: class-component, forward-ref, function-component, host-component, memo"`;
 

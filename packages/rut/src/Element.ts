@@ -182,11 +182,13 @@ export default class Element<
   }
 
   /**
-   * Return the name of the component, element, or node.
+   * Return the name of the component, element, or node as JSX.
    */
-  name(): string {
+  name(jsx: boolean = false): string {
     // Use the raw fiber types for names, as they preserve the internal node structures
-    return getTypeName(this.element._fiber.elementType || this.element._fiber.type);
+    const name = getTypeName(this.element._fiber.elementType || this.element._fiber.type);
+
+    return jsx ? `<${name} />` : name;
   }
 
   /**
@@ -233,6 +235,6 @@ export default class Element<
    * Return name when cast as a string.
    */
   toString(): string {
-    return this.name();
+    return this.name(true);
   }
 }

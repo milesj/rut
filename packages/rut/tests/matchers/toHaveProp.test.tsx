@@ -24,7 +24,7 @@ describe('toHaveProp()', () => {
     it('errors when a prop by name doesnt exist', () => {
       expect(() => {
         runMatcher(toHaveProp(render<DivProps>(<div />).root, 'id'));
-      }).toThrowError('expected `div` to have a "id" prop');
+      }).toThrowError('expected <div /> to have a "id" prop');
     });
 
     it('passes when a prop by name exists and values match', () => {
@@ -36,7 +36,7 @@ describe('toHaveProp()', () => {
     it('errors when a prop by name exists and values dont match', () => {
       expect(() => {
         runMatcher(toHaveProp(render<DivProps>(<div id="foo" />).root, 'id', 'bar'));
-      }).toThrowError('expected `div` to have a "id" prop with a value of "bar"');
+      }).toThrowError('expected <div /> to have a "id" prop with a value of "bar"');
     });
   });
 
@@ -50,7 +50,7 @@ describe('toHaveProp()', () => {
     it('errors when a prop by name exists', () => {
       expect(() => {
         runMatcher(toHaveProp(render<DivProps>(<div id="foo" />).root, 'id'), true);
-      }).toThrowError('expected `div` not to have a "id" prop');
+      }).toThrowError('expected <div /> not to have a "id" prop');
     });
 
     it('passes when a prop by name exists and values dont match', () => {
@@ -62,7 +62,7 @@ describe('toHaveProp()', () => {
     it('errors when a prop by name exists and values match', () => {
       expect(() => {
         runMatcher(toHaveProp(render<DivProps>(<div id="foo" />).root, 'id', 'foo'), true);
-      }).toThrowError('expected `div` not to have a "id" prop with a value of "foo"');
+      }).toThrowError('expected <div /> not to have a "id" prop with a value of "foo"');
     });
   });
 });

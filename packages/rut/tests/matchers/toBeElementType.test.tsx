@@ -27,7 +27,7 @@ describe('toBeElementType()', () => {
     it('errors when types dont match', () => {
       expect(() => {
         runMatcher(toBeElementType(render(<div />).root, 'span'));
-      }).toThrowError('expected `div` to be a "span"');
+      }).toThrowError('expected <div /> to be a "span"');
     });
 
     it('passes when types match (not negation)', () => {
@@ -39,7 +39,7 @@ describe('toBeElementType()', () => {
     it('errors when types dont match (not negation)', () => {
       expect(() => {
         runMatcher(toBeElementType(render(<div />).root, 'div'), true);
-      }).toThrowError('expected `div` not to be a "div"');
+      }).toThrowError('expected <div /> not to be a "div"');
     });
   });
 
@@ -53,7 +53,7 @@ describe('toBeElementType()', () => {
     it('errors when types dont match', () => {
       expect(() => {
         runMatcher(toBeElementType(render<TestProps>(<FuncComp />).root, FuncCompWithDisplayName));
-      }).toThrowError('expected `FuncComp` to be a `CustomFuncName`');
+      }).toThrowError('expected <FuncComp /> to be a `CustomFuncName`');
     });
 
     it('passes when types match (not negation)', () => {
@@ -68,7 +68,7 @@ describe('toBeElementType()', () => {
     it('errors when types dont match (not negation)', () => {
       expect(() => {
         runMatcher(toBeElementType(render<TestProps>(<FuncComp />).root, FuncComp), true);
-      }).toThrowError('expected `FuncComp` not to be a `FuncComp`');
+      }).toThrowError('expected <FuncComp /> not to be a `FuncComp`');
     });
   });
 
@@ -84,7 +84,7 @@ describe('toBeElementType()', () => {
         runMatcher(
           toBeElementType(render<TestProps>(<ClassComp />).root, ClassCompWithDisplayName),
         );
-      }).toThrowError('expected `ClassComp` to be a `CustomCompName`');
+      }).toThrowError('expected <ClassComp /> to be a `CustomCompName`');
     });
 
     it('passes when types match (not negation)', () => {
@@ -99,7 +99,7 @@ describe('toBeElementType()', () => {
     it('errors when types dont match (not negation)', () => {
       expect(() => {
         runMatcher(toBeElementType(render<TestProps>(<ClassComp />).root, ClassComp), true);
-      }).toThrowError('expected `ClassComp` not to be a `ClassComp`');
+      }).toThrowError('expected <ClassComp /> not to be a `ClassComp`');
     });
   });
 });

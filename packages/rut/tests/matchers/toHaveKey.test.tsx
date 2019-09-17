@@ -20,13 +20,13 @@ describe('toHaveKey()', () => {
     it('errors when a key doesnt exist', () => {
       expect(() => {
         runMatcher(toHaveKey(render(<div />).root, 'id'));
-      }).toThrowError('expected `div` to have a "id" key');
+      }).toThrowError('expected <div /> to have a "id" key');
     });
 
     it('errors when a key exists but doesnt match', () => {
       expect(() => {
         runMatcher(toHaveKey(render(<div key="foo" />).root, 'bar'));
-      }).toThrowError('expected `div` to have a "bar" key');
+      }).toThrowError('expected <div /> to have a "bar" key');
     });
   });
 
@@ -40,7 +40,7 @@ describe('toHaveKey()', () => {
     it('errors when a key exists and matches', () => {
       expect(() => {
         runMatcher(toHaveKey(render(<div key="foo" />).root, 'foo'), true);
-      }).toThrowError('expected `div` not to have a "foo" key');
+      }).toThrowError('expected <div /> not to have a "foo" key');
     });
   });
 });

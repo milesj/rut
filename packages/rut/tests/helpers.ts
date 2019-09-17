@@ -2,7 +2,7 @@ import { MatchResult } from '../src/types';
 
 export function formatMatcherMessage(result: MatchResult, isNot: boolean) {
   return (isNot ? result.notMessage : result.message)
-    .replace('{{received}}', `\`${String(result.received)}\``)
+    .replace('{{received}}', String(result.received))
     .replace('{{expected}}', String(result.expected))
     .replace('{{actual}}', String(result.actual));
 }

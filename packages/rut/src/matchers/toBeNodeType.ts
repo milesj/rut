@@ -13,6 +13,18 @@ const nodeTypeMap: { [K in NodeType]: number | number[] } = {
   memo: [14, 15],
 };
 
+function getTypeFromTag(tag: number): string {
+  let value = '';
+
+  Object.entries(nodeTypeMap).forEach(([key, type]) => {
+    if (type === tag || (Array.isArray(type) && type.includes(tag))) {
+      value = key;
+    }
+  });
+
+  return value;
+}
+
 /**
  * Check that an element is a specific type of React node.
  * React nodes are based on React fiber work tags.
@@ -30,7 +42,7 @@ export default function toBeNodeType(element: Element, type: NodeType): MatchRes
     );
   }
 
-  const actualTypeName = formatValue(fiberTag);
+  const actualTypeName = formatValue(getTypeFromTag(fiberTag));
   const typeName = formatValue(type);
 
   return {

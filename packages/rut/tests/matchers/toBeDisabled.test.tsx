@@ -20,7 +20,9 @@ describe('toBeDisabled()', () => {
     it('errors when not disabled', () => {
       expect(() => {
         runMatcher(toBeDisabled(render(<input />).root));
-      }).toThrowError('expected `input` to have a "disabled" prop with a value of true');
+      }).toThrowError(
+        'expected <input /> to have a "disabled" prop with a value of `true`, instead has a value of `undefined`',
+      );
     });
   });
 
@@ -34,7 +36,9 @@ describe('toBeDisabled()', () => {
     it('errors when disabled', () => {
       expect(() => {
         runMatcher(toBeDisabled(render(<input disabled />).root), true);
-      }).toThrowError('expected `input` not to have a "disabled" prop with a value of true');
+      }).toThrowError(
+        'expected <input /> not to have a "disabled" prop with a value of `true`, instead has a value of `true`',
+      );
     });
   });
 });
