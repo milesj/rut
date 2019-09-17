@@ -1,3 +1,5 @@
+import asyncHooks from 'async_hooks';
+
 type AsyncQueue = Set<Promise<unknown>>;
 type Timer = typeof global.setTimeout;
 
@@ -81,4 +83,46 @@ export function wrapAndCaptureAsync(): () => Promise<void> {
       return undefined;
     });
   };
+}
+
+export async function hookAndCaptureAsync(cb: () => void) {
+  const queue: AsyncQueue = new Set();
+  const resolvers = new Map<number, () => void>();
+
+  const clean = (id: number) => {
+    if (resolvers.has(id)) {
+      resolvers.get(id)!();
+    }
+  };
+  const hook = asyncHooks
+    .createHook({
+      before: clean,
+      destroy: clean,
+      init(id, type, triggerId, resource: { promise: Promise<unknown> }) {
+        switch (type.toLowerCase()) {
+          case 'promise':
+            queue.add(resource.promise);
+            break;
+          case 'timeout':
+          case 'immediate':
+            queue.add(
+              new Promise(resolve => {
+                resolvers.set(id, resolve);
+              }),
+            );
+            break;
+          default:
+            break;
+        }
+      },
+    })
+    .enable();
+
+  cb();
+
+  // hook.disable();
+
+  console.log(Array.from(queue));
+
+  await NativePromise.all(Array.from(queue));
 }
