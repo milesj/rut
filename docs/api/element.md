@@ -140,7 +140,7 @@ elements are found, an error is thrown.
 
 ## `name()`
 
-> name(): string
+> name(jsx: boolean = false): string
 
 Returns the name of the component (most commonly from `displayName`). If a component has been
 wrapped with an HOC, it will attempt to preserve the name.
@@ -149,6 +149,7 @@ wrapped with an HOC, it will attempt to preserve the name.
 const { root } = render<ButtonProps>(<Button />);
 
 expect(root.name()).toBe('Button');
+expect(root.name(true)).toBe('<Button />');
 ```
 
 ## `query()`

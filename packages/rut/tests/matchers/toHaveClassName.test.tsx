@@ -26,7 +26,7 @@ describe('toHaveClassName()', () => {
     it('errors when the class name does not match', () => {
       expect(() => {
         runMatcher(toHaveClassName(render(<div className="foo bar" />).root, 'baz'));
-      }).toThrowError('expected `div` to have a "baz" class name');
+      }).toThrowError('expected <div /> to have a "baz" class name');
     });
   });
 
@@ -34,13 +34,13 @@ describe('toHaveClassName()', () => {
     it('errors for exact class name', () => {
       expect(() => {
         runMatcher(toHaveClassName(render(<div className="foo" />).root, 'foo'), true);
-      }).toThrowError('expected `div` not to have a "foo" class name');
+      }).toThrowError('expected <div /> not to have a "foo" class name');
     });
 
     it('errors when one of the class names exist', () => {
       expect(() => {
         runMatcher(toHaveClassName(render(<div className="foo bar baz" />).root, 'bar'), true);
-      }).toThrowError('expected `div` not to have a "bar" class name');
+      }).toThrowError('expected <div /> not to have a "bar" class name');
     });
 
     it('passes when the class name does not match', () => {

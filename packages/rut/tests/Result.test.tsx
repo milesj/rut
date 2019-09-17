@@ -199,19 +199,19 @@ describe('Result', () => {
     it('returns name of host component', () => {
       const name = render(<main />).toString();
 
-      expect(name).toBe('main');
+      expect(name).toBe('<main />');
     });
 
     it('returns name of class component', () => {
       const name = render<TestProps>(<ClassComp />).toString();
 
-      expect(name).toBe('ClassComp');
+      expect(name).toBe('<ClassComp />');
     });
 
     it('returns name of function component', () => {
       const name = render<TestProps>(<FuncComp />).toString();
 
-      expect(name).toBe('FuncComp');
+      expect(name).toBe('<FuncComp />');
     });
   });
 
