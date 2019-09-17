@@ -137,7 +137,7 @@ export function formatValue(value: unknown): string {
   if (typeOf === 'string') {
     return `"${value}"`;
   } else if (typeOf === 'number' || typeOf === 'boolean' || value === null || value === undefined) {
-    return String(value);
+    return `\`${String(value)}\``;
   }
 
   return `\`${getTypeName(value)}\``;
