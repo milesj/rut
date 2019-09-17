@@ -1,3 +1,5 @@
+const RESULT_NAMES = ['Result', 'SyncResult', 'AsyncResult'];
+
 const serializer: jest.SnapshotSerializerPlugin = {
   print(value) {
     return value.debug({ log: false });
@@ -8,7 +10,7 @@ const serializer: jest.SnapshotSerializerPlugin = {
       typeof value === 'object' &&
       !!value &&
       ((value.isRutElement === true && value.constructor.name === 'Element') ||
-        (value.isRutResult === true && value.constructor.name === 'Result'))
+        (value.isRutResult === true && RESULT_NAMES.includes(value.constructor.name)))
     );
   },
 };

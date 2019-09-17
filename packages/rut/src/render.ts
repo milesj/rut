@@ -1,5 +1,6 @@
 import React from 'react';
-import Result from './Result';
+import AsyncResult from './AsyncResult';
+import SyncResult from './SyncResult';
 import { globalOptions } from './configure';
 import { doAct, doAsyncAct } from './internals/act';
 import { RendererOptions } from './types';
@@ -7,10 +8,10 @@ import { RendererOptions } from './types';
 export function render<Props extends object = {}>(
   element: React.ReactElement<Props>,
   options?: RendererOptions,
-): Omit<Result<Props>, 'rerenderAndWait'> {
+): SyncResult<Props> {
   return doAct(
     () =>
-      new Result(element, {
+      new SyncResult(element, {
         ...globalOptions,
         ...options,
       }),
@@ -20,10 +21,10 @@ export function render<Props extends object = {}>(
 export async function renderAndWait<Props extends object = {}>(
   element: React.ReactElement<Props>,
   options?: RendererOptions,
-): Promise<Omit<Result<Props>, 'rerender'>> {
+): Promise<AsyncResult<Props>> {
   return doAsyncAct(
     () =>
-      new Result(element, {
+      new AsyncResult(element, {
         ...globalOptions,
         ...options,
       }),

@@ -40,7 +40,7 @@ function wrapPromise(queue: AsyncQueue): void {
   promiseMethodsToWrap.forEach(method => {
     Object.defineProperty(FacadePromise, method, {
       value: (...args: unknown[]) => {
-        // @ts-ignore
+        // @ts-ignore Ignore call signature error
         const promise = NativePromise[method](...args);
 
         queue.add(promise);

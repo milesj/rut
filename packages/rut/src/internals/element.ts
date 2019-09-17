@@ -21,7 +21,7 @@ export function getPropForDispatching(element: Element, name: string): React.Rea
     throw new TypeError('Dispatching events is only allowed on host components (DOM elements).');
   }
 
-  // @ts-ignore
+  // @ts-ignore We check above
   return prop;
 }
 

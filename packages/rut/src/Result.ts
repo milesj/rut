@@ -8,23 +8,19 @@ import { deepEqual } from './internals/utils';
 import { RendererOptions, DebugOptions } from './types';
 import { NodeLike } from './helpers';
 
-const ELEMENT = Symbol('react-element');
-const RENDERER = Symbol('react-test-renderer');
-const OPTIONS = Symbol('result-options');
-
 export default class Result<Props extends object = {}> {
+  protected element: React.ReactElement<Props>;
+
+  protected readonly renderer: ReactTestRenderer;
+
+  protected options: RendererOptions;
+
   private readonly isRutResult = true;
 
-  private [ELEMENT]: React.ReactElement<Props>;
-
-  private [RENDERER]: ReactTestRenderer;
-
-  private [OPTIONS]: RendererOptions;
-
   constructor(element: React.ReactElement<Props>, options: RendererOptions = {}) {
-    this[OPTIONS] = options;
-    this[ELEMENT] = element;
-    this[RENDERER] = create(
+    this.options = options;
+    this.element = element;
+    this.renderer = create(
       this.wrapElement(element),
       options.mockRef
         ? {
@@ -44,8 +40,8 @@ export default class Result<Props extends object = {}> {
    *  - Fragments
    */
   debug = (options: DebugOptions = {}) =>
-    debug(this[RENDERER].root, {
-      ...this[OPTIONS].debugger,
+    debug(this.renderer.root, {
+      ...this.options.debugger,
       ...options,
     });
 
@@ -53,13 +49,13 @@ export default class Result<Props extends object = {}> {
    * Return the root component as an `Element`.
    */
   get root(): Element<React.ComponentType<Props>> {
-    const element = this[ELEMENT];
-    const root = new Element(this[RENDERER].root);
+    const { element } = this;
+    const root = new Element(this.renderer.root);
     const rootType = unwrapExoticType((element as unknown) as NodeLike);
 
     // When being wrapped, we need to drill down and find the
     // element that matches the one initially passed in.
-    if (this[OPTIONS].wrapper) {
+    if (this.options.wrapper) {
       const nodes = root.query(
         node => node.type === rootType && deepEqual(node.props, element.props),
       );
@@ -82,7 +78,7 @@ export default class Result<Props extends object = {}> {
    * the platform-specific nodes and their props, but doesn’t contain any user-written
    * components. This is handy for snapshot testing.
    */
-  toJSON = () => this[RENDERER].toJSON();
+  toJSON = () => this.renderer.toJSON();
 
   /**
    * Return root element name.
@@ -94,40 +90,14 @@ export default class Result<Props extends object = {}> {
    * the representation is more detailed than the one provided by `toJSON()`,
    * and includes the user-written components.
    */
-  toTree = () => this[RENDERER].toTree();
-
-  /**
-   * Re-render the in-memory tree with a new element and optional options. This
-   * simulates a React update at the root. If the new element has the same type and key as
-   * the previous element, the tree will be updated; otherwise, it will mount a new tree.
-   *
-   * Returns the new root as an `Element`.
-   */
-  rerender = (element: React.ReactElement<Props>, options?: RendererOptions) => {
-    Object.assign(this[OPTIONS], options);
-
-    doAct(() => this[RENDERER].update(this.updateElement(element)));
-
-    return this.root;
-  };
-
-  /**
-   * Like `rerender` but also awaits the re-render so that async calls have time to finish.
-   */
-  rerenderAndWait = async (element: React.ReactElement<Props>, options?: RendererOptions) => {
-    Object.assign(this[OPTIONS], options);
-
-    await doAsyncAct(() => this[RENDERER].update(this.updateElement(element)));
-
-    return this.root;
-  };
+  toTree = () => this.renderer.toTree();
 
   /**
    * Unmount the in-memory tree, triggering the appropriate lifecycle events.
    */
   unmount = () => {
     doAct(() => {
-      this[RENDERER].unmount();
+      this.renderer.unmount();
     });
   };
 
@@ -136,7 +106,7 @@ export default class Result<Props extends object = {}> {
    * it will force an update of the current element.
    */
   update = (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
-    doAct(() => this[RENDERER].update(this.updateElement(newPropsOrElement, newChildren)));
+    doAct(() => this.renderer.update(this.updateElement(newPropsOrElement, newChildren)));
   };
 
   /**
@@ -144,7 +114,7 @@ export default class Result<Props extends object = {}> {
    */
   updateAndWait = async (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
     await doAsyncAct(() =>
-      this[RENDERER].update(this.updateElement(newPropsOrElement, newChildren)),
+      this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
     );
   };
 
@@ -155,22 +125,22 @@ export default class Result<Props extends object = {}> {
     newPropsOrElement?: Partial<Props> | React.ReactElement,
     newChildren?: React.ReactNode,
   ): React.ReactElement {
-    const { children } = this[ELEMENT].props as {
+    const { children } = this.element.props as {
       children?: React.ReactNode;
     };
 
-    this[ELEMENT] = React.isValidElement(newPropsOrElement)
+    this.element = React.isValidElement(newPropsOrElement)
       ? newPropsOrElement
-      : React.cloneElement(this[ELEMENT], newPropsOrElement, newChildren || children);
+      : React.cloneElement(this.element, newPropsOrElement, newChildren || children);
 
-    return this.wrapElement(this[ELEMENT]);
+    return this.wrapElement(this.element);
   }
 
   /**
    * Wrap the root element with additional elements for convenient composition.
    */
   protected wrapElement(root: React.ReactElement): React.ReactElement {
-    const options = this[OPTIONS];
+    const { options } = this;
     let element: React.ReactElement = root;
 
     // Wrap with another elemnt

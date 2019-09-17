@@ -14,9 +14,8 @@ tree.
 
 ## `dispatch()`
 
-> dispatch(name: EventType, event?: React.SyntheticEvent, options?: DispatchOptions): void
-
-> dispatch(name: EventType, event?: EventOptions, options?: DispatchOptions): void
+> dispatch(name: EventType, event?: React.SyntheticEvent | EventOptions, options?: DispatchOptions):
+> this
 
 Dispatch an event for the defined event handler. Accepts a `SyntheticEvent`, an event options
 object, or nothing (will create an event behind the scenes). To ease integration, Rut provides a
@@ -50,11 +49,8 @@ root
 
 ## `dispatchAndWait()`
 
-> async dispatchAndWait(name: EventType, event?: React.SyntheticEvent, options?: DispatchOptions):
-> Promise<void>
-
-> async dispatchAndWait(name: EventType, event?: EventOptions, options?: DispatchOptions):
-> Promise<void>
+> async dispatchAndWait(name: EventType, event?: React.SyntheticEvent | EventOptions, options?:
+> DispatchOptions): Promise<void>
 
 Like [`dispatch()`](#dispatch) but waits for async calls within the dispatch and updating phase to
 complete before returning the re-rendered result. Because of this, the function must be `await`ed.

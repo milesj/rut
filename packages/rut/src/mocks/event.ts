@@ -54,7 +54,7 @@ export function mockEvent<T = Event>(type: string, options?: EventOptions<Elemen
     });
   });
 
-  // @ts-ignore
+  // @ts-ignore Infer generics
   return event;
 }
 
@@ -71,7 +71,7 @@ export function mockSyntheticEvent<T = React.SyntheticEvent>(
     eventType = eventType.slice(2);
   }
 
-  // @ts-ignore
+  // @ts-ignore Infer generics
   return new SyntheticEvent(eventType, mockEvent(eventType, options));
 }
 

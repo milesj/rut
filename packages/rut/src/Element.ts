@@ -23,8 +23,6 @@ import { getPropForDispatching } from './internals/element';
 import { whereTypeAndProps } from './predicates';
 import { factorySyntheticEvent } from './mocks/event';
 
-type Eventless<T> = Omit<T, 'dispatch' | 'dispatchAndWait'>;
-
 export default class Element<
   Type extends React.ElementType = React.ElementType,
   Host = InferHostElement<Type>
@@ -60,7 +58,7 @@ export default class Element<
       | InferEventFromHandler<EventMap<Host>[K]>
       | EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
     options: DispatchOptions = {},
-  ): void {
+  ): this {
     const prop = getPropForDispatching(this, name);
     const event = factorySyntheticEvent(name, eventOrConfig, this.element.type);
 
@@ -71,6 +69,8 @@ export default class Element<
     }
 
     doAct(() => prop(event));
+
+    return this;
   }
 
   /**
@@ -107,7 +107,7 @@ export default class Element<
   find<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
-  ): Eventless<Element<T>>[];
+  ): Element<T>[];
   find(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType>[] {
     return this.query(whereTypeAndProps(type, props));
   }
@@ -126,7 +126,7 @@ export default class Element<
     type: T,
     at: AtIndexType,
     props?: Partial<P>,
-  ): Eventless<Element<T>>;
+  ): Element<T>;
   findAt(
     type: React.ElementType<unknown>,
     at: AtIndexType,
@@ -168,7 +168,7 @@ export default class Element<
   findOne<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
-  ): Eventless<Element<T>>;
+  ): Element<T>;
   findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType> {
     const results = this.find(type, props);
 
@@ -178,7 +178,6 @@ export default class Element<
       );
     }
 
-    // @ts-ignore Because were removing dispatchers
     return results[0];
   }
 
