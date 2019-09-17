@@ -68,7 +68,7 @@ describe('toBeElementType()', () => {
     it('errors when types dont match (not negation)', () => {
       expect(() => {
         runMatcher(toBeElementType(render<TestProps>(<FuncComp />).root, FuncComp), true);
-      }).toThrowError('expected <FuncComp /> not to be a <FuncComp />');
+      }).toThrowError('expected <FuncComp /> not to be a `FuncComp`');
     });
   });
 
@@ -99,7 +99,7 @@ describe('toBeElementType()', () => {
     it('errors when types dont match (not negation)', () => {
       expect(() => {
         runMatcher(toBeElementType(render<TestProps>(<ClassComp />).root, ClassComp), true);
-      }).toThrowError('expected <ClassComp /> not to be a <ClassComp />');
+      }).toThrowError('expected <ClassComp /> not to be a `ClassComp`');
     });
   });
 });
