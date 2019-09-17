@@ -5,7 +5,7 @@
 Verify and enforce the correct event types are used when mocking or dispatching events.
 
 ```tsx
-// Bad
+// Invalid
 import { mockEvent, mockSyntheticEvent } from 'rut';
 
 mockEvent('onKeyDown');
@@ -13,7 +13,7 @@ mockSyntheticEvent('keydown');
 ```
 
 ```tsx
-// Good
+// Valid
 import { mockEvent, mockSyntheticEvent } from 'rut';
 
 mockEvent('keydown');
@@ -26,7 +26,7 @@ Disallow usage of React's `act()` within tests. This functionality is provided b
 be necessary.
 
 ```tsx
-// Bad
+// Invalid
 import { render } from 'rut';
 import { act } from 'react-test-renderer';
 import Example from '../src/Example';
@@ -39,7 +39,7 @@ act(() => {
 ```
 
 ```tsx
-// Good
+// Valid
 import { render } from 'rut';
 import Example from '../src/Example';
 
@@ -53,7 +53,7 @@ update({ id: 2 });
 Disallow import and usage of Rut's internal APIs. Accessing these directly is a code smell.
 
 ```tsx
-// Bad
+// Invalid
 import { render } from 'rut';
 import debug from 'rut/lib/internals/debug';
 import Example from '../src/Example';
@@ -64,7 +64,7 @@ debug(root);
 ```
 
 ```tsx
-// Good
+// Valid
 import { render } from 'rut';
 import Example from '../src/Example';
 
@@ -80,7 +80,7 @@ root.debug();
 Require generics for `render()` and `renderAndWait()` functions.
 
 ```tsx
-// Bad
+// Invalid
 import { render } from 'rut';
 import Example from '../src/Example';
 
@@ -88,7 +88,7 @@ const { root } = render(<Example id={1} />);
 ```
 
 ```tsx
-// Good
+// Valid
 import { render } from 'rut';
 import Example, { ExampleProps } from '../src/Example';
 

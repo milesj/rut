@@ -1,16 +1,31 @@
 import { Rule } from 'eslint';
 import { VariableDeclarator } from 'estree';
 
-const RESULT_INTERNALS = [
+const RESULT_INTERNALS = new Set([
   'isRutResult',
   'element',
   'renderer',
   'options',
   'updateElement',
   'wrapElement',
-];
+]);
 
-// const ELEMENT_INTERNALS = ['isRutElement', 'element', 'props'];
+const ELEMENT_INTERNALS = new Set(['isRutElement']);
+
+const ELEMENT_NODE_INTERNALS = new Set([
+  '_fiber',
+  'instance',
+  'type',
+  'props',
+  'parent',
+  'children',
+  'find',
+  'findByType',
+  'findByProps',
+  'findAll',
+  'findAllByType',
+  'findAllByProps',
+]);
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -71,10 +86,7 @@ const rule: Rule.RuleModule = {
           // Destructure
           if (render.id.type === 'ObjectPattern') {
             render.id.properties.forEach(property => {
-              if (
-                property.key.type === 'Identifier' &&
-                RESULT_INTERNALS.includes(property.key.name)
-              ) {
+              if (property.key.type === 'Identifier' && RESULT_INTERNALS.has(property.key.name)) {
                 context.report({
                   node: property,
                   messageId: 'noInternalApis',
@@ -88,16 +100,44 @@ const rule: Rule.RuleModule = {
         }
       },
 
+      // eslint-disable-next-line complexity
       MemberExpression(node) {
-        if (
-          resultNames.size === 0 ||
-          node.type !== 'MemberExpression' ||
-          (node.object.type === 'Identifier' && !resultNames.has(node.object.name))
-        ) {
+        if (node.type !== 'MemberExpression') {
           return;
         }
 
-        if (node.property.type === 'Identifier' && RESULT_INTERNALS.includes(node.property.name)) {
+        // result.<name>
+        if (
+          resultNames.size > 0 &&
+          node.object.type === 'Identifier' &&
+          resultNames.has(node.object.name) &&
+          node.property.type === 'Identifier' &&
+          RESULT_INTERNALS.has(node.property.name)
+        ) {
+          context.report({
+            node,
+            messageId: 'noInternalApis',
+          });
+        }
+
+        // element.element.<name>
+        // findOne().element.<name>
+        if (
+          node.property.type === 'Identifier' &&
+          ELEMENT_NODE_INTERNALS.has(node.property.name) &&
+          node.object.type === 'MemberExpression' &&
+          node.object.property.type === 'Identifier' &&
+          node.object.property.name === 'element'
+        ) {
+          context.report({
+            node: node.object.property,
+            messageId: 'noInternalApis',
+          });
+        }
+      },
+
+      Identifier(node) {
+        if (node.type === 'Identifier' && ELEMENT_INTERNALS.has(node.name)) {
           context.report({
             node,
             messageId: 'noInternalApis',

@@ -27,9 +27,9 @@ export default class Element<
   Type extends React.ElementType = React.ElementType,
   Host = InferHostElement<Type>
 > {
-  private readonly isRutElement = true;
+  protected element: ReactTestInstance;
 
-  private element: ReactTestInstance;
+  private readonly isRutElement = true;
 
   constructor(element: ReactTestInstance) {
     this.element = element;

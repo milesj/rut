@@ -1,3 +1,5 @@
+/* eslint-disable rut/no-internals */
+
 import React from 'react';
 import { render } from '../../src/render';
 import { NodeType } from '../../src/types';

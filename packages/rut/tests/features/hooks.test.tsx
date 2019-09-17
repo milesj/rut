@@ -1,3 +1,5 @@
+/* eslint-disable rut/no-internals */
+
 import React, { useReducer, useCallback, useMemo, useRef } from 'react';
 import { render } from '../../src/render';
 import { mockSyntheticEvent } from '../../src/mocks/event';
