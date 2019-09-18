@@ -32,6 +32,7 @@ describe('<Input />', () => {
 
 - Type safe by design. Test with confidence.
 - First-class async support. Wait for async calls to finish before returning a rendered result.
+  _(Experimental)_
 - Deep [`act()`](https://reactjs.org/docs/testing-recipes.html#act) integration. Let Rut do the
   heavy lifting.
 - Update a component with new props, children, or a completely new element.
