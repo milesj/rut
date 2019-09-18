@@ -39,16 +39,11 @@ function wrapPromise(queue: AsyncQueue): void {
     return promise;
   }
 
+  // Map static properties. We don't need to provide our own
+  // since these are all resolved by default for the most part.
   promiseMethodsToWrap.forEach(method => {
     Object.defineProperty(FacadePromise, method, {
-      value: (...args: unknown[]) => {
-        // @ts-ignore Ignore call signature error
-        const promise = NativePromise[method](...args);
-
-        queue.add(promise);
-
-        return promise;
-      },
+      value: NativePromise[method],
     });
   });
 
@@ -69,48 +64,88 @@ function unwrapTimers(): void {
   global.setTimeout = nativeSetTimeout;
 }
 
+// Grab all promises in the current queue and clear it.
+// Await them until all resolve, but recursively call
+// incase promises have been chained or new timers created.
+function waitAndResolve(
+  queue: Set<Promise<unknown>> | Map<number, Promise<unknown>>,
+): Promise<void> {
+  const all = Array.from(queue.values());
+
+  if (all.length === 0) {
+    return NativePromise.resolve();
+  }
+
+  queue.clear();
+
+  return NativePromise.all(all).then(() => waitAndResolve(queue));
+}
+
 export function wrapAndCaptureAsync(): () => Promise<void> {
   const queue: AsyncQueue = new Set();
 
   wrapPromise(queue);
   wrapTimers(queue);
 
-  return () => {
-    unwrapPromise();
-    unwrapTimers();
+  return () =>
+    waitAndResolve(queue).then(() => {
+      unwrapPromise();
+      unwrapTimers();
 
-    return NativePromise.all(Array.from(queue)).then(() => {
       return undefined;
     });
-  };
 }
 
-export async function hookAndCaptureAsync(cb: () => void) {
-  const queue: AsyncQueue = new Set();
+// Use `async_hooks` to capture native async calls from Node. This would be the ideal
+// solution, but there is so much noise happening from Jest and Node itself, that
+// it's very difficult, or maybe impossible, to only capture from the render.
+export async function hookAndCaptureAsync(cb: () => Promise<void>): Promise<void> {
+  const queue = new Map<number, Promise<unknown>>();
   const resolvers = new Map<number, () => void>();
+  const tid = asyncHooks.triggerAsyncId();
 
-  const clean = (id: number) => {
+  // Hook into promises and timers
+  function resolveTimer(id: number) {
     if (resolvers.has(id)) {
       resolvers.get(id)!();
     }
-  };
+  }
+
+  function removePromise(id: number) {
+    if (queue.has(id)) {
+      queue.delete(id);
+    }
+  }
+
   const hook = asyncHooks
     .createHook({
-      before: clean,
-      destroy: clean,
+      before(id) {
+        resolveTimer(id);
+      },
+      destroy(id) {
+        resolveTimer(id);
+        removePromise(id);
+      },
       init(id, type, triggerId, resource: { promise: Promise<unknown> }) {
+        if (triggerId !== tid && !queue.has(triggerId)) {
+          return;
+        }
+
         switch (type.toLowerCase()) {
           case 'promise':
-            queue.add(resource.promise);
+            queue.set(id, resource.promise);
             break;
+
           case 'timeout':
           case 'immediate':
-            queue.add(
+            queue.set(
+              id,
               new Promise(resolve => {
                 resolvers.set(id, resolve);
               }),
             );
             break;
+
           default:
             break;
         }
@@ -118,11 +153,13 @@ export async function hookAndCaptureAsync(cb: () => void) {
     })
     .enable();
 
-  cb();
+  await cb();
+  await waitAndResolve(queue);
 
-  // hook.disable();
+  // Stop hooking
+  hook.disable();
 
-  console.log(Array.from(queue));
-
-  await NativePromise.all(Array.from(queue));
+  // Clear lists for GC
+  queue.clear();
+  resolvers.clear();
 }

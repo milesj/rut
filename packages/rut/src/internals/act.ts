@@ -1,5 +1,5 @@
 import { act } from 'react-test-renderer';
-import { hookAndCaptureAsync } from './async';
+import { wrapAndCaptureAsync } from './async';
 
 type Actable<T> = () => T;
 
@@ -14,19 +14,17 @@ export function doAct<T>(cb: Actable<T>): T {
 }
 
 export async function doAsyncAct<T>(cb: Actable<T>): Promise<T> {
-  // const waitForQueue = wrapAndCaptureAsync();
+  const waitForQueue = wrapAndCaptureAsync();
   let value: T;
 
   await act(async () => {
-    await hookAndCaptureAsync(() => {
-      value = cb();
-    });
+    value = await cb();
   });
 
-  // // We need an additional act as async results may cause re-renders
-  // await act(async () => {
-  //   await waitForQueue();
-  // });
+  // We need an additional act as async results may cause re-renders
+  await act(async () => {
+    await waitForQueue();
+  });
 
   return value!;
 }
