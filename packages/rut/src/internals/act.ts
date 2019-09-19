@@ -1,30 +1,41 @@
 import { act } from 'react-test-renderer';
-import { wrapAndCaptureAsync } from './async';
+import ExhaustHook from 'exhaust-hook';
 
 type Actable<T> = () => T;
+
+const unfinishedRenders = new Set<Promise<void>>();
 
 export function doAct<T>(cb: Actable<T>): T {
   let value: T;
 
   act(() => {
-    value = cb();
+    const promise = new Promise<void>(resolve => {
+      ExhaustHook.runSync(() => {
+        value = cb();
+      }, 1000)
+        .finally(() => {
+          unfinishedRenders.delete(promise);
+          resolve();
+        })
+        .catch(() => {});
+    });
+
+    unfinishedRenders.add(promise);
   });
 
   return value!;
 }
 
 export async function doAsyncAct<T>(cb: Actable<T>): Promise<T> {
-  const waitForQueue = wrapAndCaptureAsync();
-  let value: T;
+  let value!: T;
 
   await act(async () => {
-    value = await cb();
+    await ExhaustHook.run(async () => {
+      value = await cb();
+    }, 1000);
+
+    await Promise.all([...unfinishedRenders]);
   });
 
-  // We need an additional act as async results may cause re-renders
-  await act(async () => {
-    await waitForQueue();
-  });
-
-  return value!;
+  return value;
 }
