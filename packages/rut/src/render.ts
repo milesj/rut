@@ -9,24 +9,22 @@ export function render<Props extends object = {}>(
   element: React.ReactElement<Props>,
   options?: RendererOptions,
 ): SyncResult<Props> {
-  return doAct(
-    () =>
-      new SyncResult(element, {
-        ...globalOptions,
-        ...options,
-      }),
-  );
+  const opts = {
+    ...globalOptions,
+    ...options,
+  };
+
+  return doAct(() => new SyncResult(element, opts));
 }
 
 export async function renderAndWait<Props extends object = {}>(
   element: React.ReactElement<Props>,
   options?: RendererOptions,
 ): Promise<AsyncResult<Props>> {
-  return doAsyncAct(
-    () =>
-      new AsyncResult(element, {
-        ...globalOptions,
-        ...options,
-      }),
-  );
+  const opts = {
+    ...globalOptions,
+    ...options,
+  };
+
+  return doAsyncAct(() => new AsyncResult(element, opts), opts.asyncMode);
 }

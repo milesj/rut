@@ -22,6 +22,7 @@ import { debug } from './internals/debug';
 import { getPropForDispatching } from './internals/element';
 import { whereTypeAndProps } from './predicates';
 import { factorySyntheticEvent } from './mocks/event';
+import { globalOptions } from './configure';
 
 export default class Element<
   Type extends React.ElementType = React.ElementType,
@@ -93,7 +94,7 @@ export default class Element<
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    await doAsyncAct(() => prop(event));
+    await doAsyncAct(() => prop(event), options.asyncMode || globalOptions.asyncMode);
   }
 
   /**

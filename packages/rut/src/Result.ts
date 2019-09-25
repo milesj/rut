@@ -113,8 +113,9 @@ export default class Result<Props extends object = {}> {
    * Like `update` but also awaits the update so that async calls have time to finish.
    */
   updateAndWait = async (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
-    await doAsyncAct(() =>
-      this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
+    await doAsyncAct(
+      () => this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
+      this.options.asyncMode,
     );
   };
 

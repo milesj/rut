@@ -4156,6 +4156,11 @@ execa@^2.0.4:
     signal-exit "^3.0.2"
     strip-final-newline "^2.0.0"
 
+exhaust-hook@^1.0.0-alpha.6:
+  version "1.0.0-alpha.6"
+  resolved "https://registry.npmjs.org/exhaust-hook/-/exhaust-hook-1.0.0-alpha.6.tgz#6dcba3565867a8e52c3ebb89f8f56f650f98ca36"
+  integrity sha512-zzmKTKclDJjSSN8HceuvtCrd/UbphGB/4Ro6BBOAHCA+sfhOplMbtQRaVXTkwKJ4Y8GDubkujn6G1xwOa8DeQw==
+
 exit@^0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/exit/-/exit-0.1.2.tgz#0632638f8d877cc82107d30a0fff1a17cba1cd0c"

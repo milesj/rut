@@ -5,6 +5,8 @@ import RutElement from './Element';
 import RutResult from './Result';
 
 export interface RendererOptions {
+  /** Mode in which to capture async calls. */
+  asyncMode?: AsyncMode;
   /** Options to pass to the debugger. */
   debugger?: DebugOptions;
   /** Mock a ref found within the current render tree. */
@@ -36,6 +38,8 @@ export interface DebugOptions {
 }
 
 export interface DispatchOptions {
+  /** Mode in which to capture async calls. */
+  asyncMode?: AsyncMode;
   /**
    * Traverse up or down the tree and dispatch the event on every node
    * unless propagation has been stopped.
@@ -72,6 +76,8 @@ export interface FiberNode {
   tag: number;
   type: React.ElementType;
 }
+
+export type AsyncMode = 'wrap' | 'hook';
 
 // QUERY
 
