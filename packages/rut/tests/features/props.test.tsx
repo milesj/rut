@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '../../src/render';
 
 describe('Props', () => {
-  it('supports primitives and scalars', () => {
+  it('supports primitives and scalars', async () => {
     interface PrimitiveCompProps {
       count: number;
       node: React.ReactNode;
@@ -19,7 +19,7 @@ describe('Props', () => {
       );
     }
 
-    const result = render<PrimitiveCompProps>(
+    const result = await render<PrimitiveCompProps>(
       <PrimitiveComp
         count={123456}
         node={<div>This is a sidebar!</div>}
@@ -30,7 +30,7 @@ describe('Props', () => {
     expect(result).toMatchSnapshot();
   });
 
-  it('supports render props', () => {
+  it('supports render props', async () => {
     interface RenderPropCompProps {
       renderItem: (value: number) => React.ReactNode;
     }
@@ -39,7 +39,7 @@ describe('Props', () => {
       return <div>{renderItem(123)}</div>;
     }
 
-    const result = render<RenderPropCompProps>(
+    const result = await render<RenderPropCompProps>(
       <RenderPropComp renderItem={value => <b>{value * 2}</b>} />,
     );
 

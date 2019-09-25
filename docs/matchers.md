@@ -13,7 +13,7 @@ Check that an element has a truthy `checked` or `defaultChecked` prop. This is m
 with form fields.
 
 ```tsx
-const { root } = render<InputProps>(<Input checked />);
+const { root } = await render<InputProps>(<Input checked />);
 
 expect(root).toBeChecked(); // true
 ```
@@ -25,7 +25,7 @@ expect(root).toBeChecked(); // true
 Check that an element has a truthy `disabled` prop. This is most commonly used with form fields.
 
 ```tsx
-const { root } = render<InputProps>(<Input disabled />);
+const { root } = await render<InputProps>(<Input disabled />);
 
 expect(root).toBeDisabled(); // true
 ```
@@ -38,13 +38,13 @@ Check that an element is a valid React element type. Accepts either a class or f
 or the name of a host component (HTML tag).
 
 ```tsx
-const { root } = render<InputProps>(<Input disabled />);
+const { root } = await render<InputProps>(<Input disabled />);
 
 expect(root).toBeElementType(Input); // true
 ```
 
 ```tsx
-const { root } = render(<div />);
+const { root } = await render(<div />);
 
 expect(root).toBeElementType('div'); // true
 ```
@@ -57,7 +57,7 @@ Check that an element contains a node (string, element, etc) within its children
 [A caveat exists for this matcher](./caveats.md).
 
 ```tsx
-const { root } = render(<div>Hello world</div>);
+const { root } = await render(<div>Hello world</div>);
 
 expect(root).toContainNode('Hello world'); // true
 ```
@@ -65,7 +65,7 @@ expect(root).toContainNode('Hello world'); // true
 Will also check for the node at any depth in the current tree.
 
 ```tsx
-const { root } = render(
+const { root } = await render(
   <div>
     <article>
       <h1>Rut</h1>
@@ -79,7 +79,7 @@ expect(root).toContainNode('Rut'); // true
 And when checking elements, it will compare the component type and props for deep equality.
 
 ```tsx
-const { root } = render(
+const { root } = await render(
   <div>
     <article>
       <Title level={1}>Rut</Title>
@@ -97,7 +97,7 @@ expect(root).toContainNode(<Title level={1}>Rut</Title>); // true
 Check that an element has a `className` prop that matches the defined value.
 
 ```tsx
-const { root } = render(<div className="foo-bar" />);
+const { root } = await render(<div className="foo-bar" />);
 
 expect(root).toHaveClassName('foo'); // false
 ```
@@ -109,7 +109,7 @@ expect(root).toHaveClassName('foo'); // false
 Check that an element has a React `key` that matches the provided value.
 
 ```tsx
-const { root } = render(<div key={123} />);
+const { root } = await render(<div key={123} />);
 
 expect(root).toHaveKey(123); // true
 ```
@@ -122,7 +122,7 @@ Check that an element has a prop that matches the provided name, with optional m
 Arrays and objects will be matched using deep equality.
 
 ```tsx
-const { root } = render(<div id="foo" />);
+const { root } = await render(<div id="foo" />);
 
 expect(root).toHaveProp('id'); // true
 expect(root).toHaveProp('id', 'bar'); // false
@@ -136,7 +136,7 @@ Check that an element's props match all the provided props and their values. Arr
 be matched using deep equality.
 
 ```tsx
-const { root } = render(<div id="foo" role="main" />);
+const { root } = await render(<div id="foo" role="main" />);
 
 expect(root).toHaveProps({ id: 'foo', role: 'main' }); // true
 ```
@@ -153,7 +153,7 @@ function NoChildren() {
   return null;
 }
 
-const { root } = render(<NoChildren />);
+const { root } = await render(<NoChildren />);
 
 expect(root).toHaveRendered(); // false
 ```
@@ -163,7 +163,7 @@ function WithChildren() {
   return <div />;
 }
 
-const { root } = render(<WithChildren />);
+const { root } = await render(<WithChildren />);
 
 expect(root).toHaveRendered(); // true
 ```
@@ -176,7 +176,7 @@ Check that an element has a `value` or `defaultValue` prop that matches the prov
 most commonly used with form fields.
 
 ```tsx
-const { root } = render<InputProps>(<Input defaultValue="foo" />);
+const { root } = await render<InputProps>(<Input defaultValue="foo" />);
 
 expect(root).toHaveValue('foo'); // true
 ```

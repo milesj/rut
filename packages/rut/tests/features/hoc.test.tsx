@@ -32,24 +32,24 @@ describe('HOCs', () => {
     }
   }
 
-  it('can render the wrapped component + hoc', () => {
+  it('can render the wrapped component + hoc', async () => {
     const StyledComp = withStyles()(Wrapped);
-    const result = render<WrappedProps>(<StyledComp id={1} />);
+    const result = await render<WrappedProps>(<StyledComp id={1} />);
 
     expect(result).toMatchSnapshot();
   });
 
-  it('returns the result HOC as the root', () => {
+  it('returns the result HOC as the root', async () => {
     const StyledComp = withStyles()(Wrapped);
-    const { root } = render<WrappedProps>(<StyledComp id={2} />);
+    const { root } = await render<WrappedProps>(<StyledComp id={2} />);
 
     expect(root.name()).toBe('withStyles(Wrapped)');
     expect(root).toHaveProps({ id: 2 });
   });
 
-  it('can find the wrapped component', () => {
+  it('can find the wrapped component', async () => {
     const StyledComp = withStyles()(Wrapped);
-    const { root } = render<WrappedProps>(<StyledComp id={3} />);
+    const { root } = await render<WrappedProps>(<StyledComp id={3} />);
 
     expect(root.find(Wrapped)).toHaveLength(1);
     expect(root.findOne(Wrapped)).toHaveProps({ id: 3, styles: { color: 'green' } });
@@ -76,9 +76,9 @@ describe('HOCs', () => {
     }
   }
 
-  it('supports multiple layers of HOCs', () => {
+  it('supports multiple layers of HOCs', async () => {
     const DeepComp = connect(withStyles()(DeepWrapped));
-    const result = render<WrappedProps>(<DeepComp id={4} />);
+    const result = await render<WrappedProps>(<DeepComp id={4} />);
 
     expect(result).toMatchSnapshot();
   });

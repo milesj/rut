@@ -4,8 +4,8 @@ import { whereKey, whereProps } from '../src/predicates';
 
 describe('predicates', () => {
   describe('whereKey()', () => {
-    it('returns all elements with the defined key', () => {
-      const { root } = render(
+    it('returns all elements with the defined key', async () => {
+      const { root } = await render(
         <ul>
           <li key="1">1</li>
           <li key="2">2</li>
@@ -16,8 +16,8 @@ describe('predicates', () => {
       expect(root.query(whereKey('1'))).toHaveLength(1);
     });
 
-    it('returns multiple elements using an array', () => {
-      const { root } = render(
+    it('returns multiple elements using an array', async () => {
+      const { root } = await render(
         <ul>
           <li key="1">1</li>
           <li key="2">2</li>
@@ -28,8 +28,8 @@ describe('predicates', () => {
       expect(root.query(whereKey(['1', '3']))).toHaveLength(2);
     });
 
-    it('returns all elements from any depth', () => {
-      const { root } = render(
+    it('returns all elements from any depth', async () => {
+      const { root } = await render(
         <ul>
           <li key="1">1</li>
           <li key="2">2</li>
@@ -48,8 +48,8 @@ describe('predicates', () => {
   });
 
   describe('whereProps()', () => {
-    it('returns all elements that match the props', () => {
-      const { root } = render(
+    it('returns all elements that match the props', async () => {
+      const { root } = await render(
         <div>
           <input type="text" name="foo" disabled />
           <input type="text" name="bar" />
@@ -63,8 +63,8 @@ describe('predicates', () => {
       expect(root.query(whereProps({ type: 'text', disabled: true, name: 'baz' }))).toHaveLength(0);
     });
 
-    it('returns all elements from any depth', () => {
-      const { root } = render(
+    it('returns all elements from any depth', async () => {
+      const { root } = await render(
         <div>
           <input type="text" name="foo" />
 

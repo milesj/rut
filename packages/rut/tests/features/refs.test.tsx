@@ -19,9 +19,9 @@ describe('Refs', () => {
       },
     );
 
-    it('resolves the ref from the inner component', () => {
+    it('resolves the ref from the inner component', async () => {
       const ref = React.createRef<HTMLButtonElement>();
-      const result = render<ButtonProps>(<Button ref={ref}>Child</Button>, {
+      const result = await render<ButtonProps>(<Button ref={ref}>Child</Button>, {
         mockRef: () => mock,
       });
 
@@ -53,12 +53,12 @@ describe('Refs', () => {
 
     const HocButton = withRef(InnerButton);
 
-    it('resolves the ref from the HOC', () => {
+    it('resolves the ref from the HOC', async () => {
       const ref = React.createRef<HTMLButtonElement>();
 
       expect(ref.current).toBeNull();
 
-      const result = render<ButtonProps>(<HocButton ref={ref}>Child</HocButton>);
+      const result = await render<ButtonProps>(<HocButton ref={ref}>Child</HocButton>);
 
       expect(result).toMatchSnapshot();
       expect(ref.current!.constructor.name).toBe('InnerButton');
@@ -74,9 +74,9 @@ describe('Refs', () => {
       }
     }
 
-    it('resolves the ref', () => {
+    it('resolves the ref', async () => {
       const div = { tagName: 'DIV' };
-      const result = render<{}>(<Section>Child</Section>, {
+      const result = await render<{}>(<Section>Child</Section>, {
         mockRef: () => div,
       });
 
@@ -105,9 +105,9 @@ describe('Refs', () => {
       }
     }
 
-    it('resolves the callback ref', () => {
+    it('resolves the callback ref', async () => {
       const input = { tagName: 'INPUT' };
-      const result = render<InputProps>(<Input value="foo" />, {
+      const result = await render<InputProps>(<Input value="foo" />, {
         mockRef: () => input,
       });
 
@@ -133,9 +133,9 @@ describe('Refs', () => {
       }
     }
 
-    it('resolves the string ref', () => {
+    it('resolves the string ref', async () => {
       const a = { tagName: 'A' };
-      const result = render<LinkProps>(<Link href="/">Child</Link>, {
+      const result = await render<LinkProps>(<Link href="/">Child</Link>, {
         mockRef: () => a,
       });
 

@@ -10,7 +10,7 @@ The React element passed to `render`, represented as an [Element](./element.md) 
 the entry point into the entire rendered React tree.
 
 ```tsx
-const { root } = render<ButtonProps>(<Button>Save</Button>);
+const { root } = await render<ButtonProps>(<Button>Save</Button>);
 
 expect(root).toContainNode('Save'); // true
 ```
@@ -26,7 +26,7 @@ Logs or returns a JSX representation of the _reconciled_ React component tree. B
 log to the console.
 
 ```tsx
-const { debug } = render<ButtonProps>(<Button>Save</Button>);
+const { debug } = await render<ButtonProps>(<Button>Save</Button>);
 
 debug();
 
@@ -65,7 +65,7 @@ Re-render the in-memory tree with an updated [root](#root) element and optional 
 the new root element. This is a perfect opportunity to update or replace the `wrapper` element.
 
 ```tsx
-const { root, rerender } = render<InputProps>(<Input name="email" />, {
+const { root, rerender } = await render<InputProps>(<Input name="email" />, {
   wrapper: <Form method="GET" />,
 });
 
@@ -79,7 +79,7 @@ If you don't destructure the result, you may use the `root` on the initial retur
 of using the new root, as the instance is preserved.
 
 ```tsx
-const result = render<InputProps>(<Input name="email" />, {
+const result = await render<InputProps>(<Input name="email" />, {
   wrapper: <Form method="GET" />,
 });
 
@@ -121,7 +121,7 @@ Can be used to update the [root](#root)'s props or children. When passing no arg
 re-render the element with current props and children (useful for testing cache and conditionals).
 
 ```tsx
-const { update } = render<ButtonProps>(<Button type="button">Save</Button>);
+const { update } = await render<ButtonProps>(<Button type="button">Save</Button>);
 
 update(); // Re-render
 ```
@@ -148,7 +148,7 @@ Like [`update()`](#update) but waits for async calls within the updating phase t
 returning the re-rendered result. Because of this, the function must be `await`ed.
 
 ```tsx
-const { root, updateAndWait } = render<UserListProps>(<UserList />);
+const { root, updateAndWait } = await render<UserListProps>(<UserList />);
 
 expect(root.find(User)).toHaveLength(10);
 
@@ -165,7 +165,7 @@ Like the name states, this triggers an unmount. This isn't necessary to call in 
 when you want to test the unmounting phase.
 
 ```tsx
-const { unmount } = render<ButtonProps>(<Button>Save</Button>);
+const { unmount } = await render<ButtonProps>(<Button>Save</Button>);
 
 unmount();
 ```

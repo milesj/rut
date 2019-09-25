@@ -5,17 +5,17 @@ import { globalOptions } from './configure';
 import { doAct, doAsyncAct } from './internals/act';
 import { RendererOptions } from './types';
 
-export function render<Props extends object = {}>(
-  element: React.ReactElement<Props>,
-  options?: RendererOptions,
-): SyncResult<Props> {
-  const opts = {
-    ...globalOptions,
-    ...options,
-  };
+// export function render<Props extends object = {}>(
+//   element: React.ReactElement<Props>,
+//   options?: RendererOptions,
+// ): SyncResult<Props> {
+//   const opts = {
+//     ...globalOptions,
+//     ...options,
+//   };
 
-  return doAct(() => new SyncResult(element, opts));
-}
+//   return doAct(() => new SyncResult(element, opts));
+// }
 
 export async function renderAndWait<Props extends object = {}>(
   element: React.ReactElement<Props>,
@@ -28,3 +28,5 @@ export async function renderAndWait<Props extends object = {}>(
 
   return doAsyncAct(() => new AsyncResult(element, opts), opts.asyncMode);
 }
+
+export const render = renderAndWait;

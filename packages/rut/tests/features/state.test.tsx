@@ -27,8 +27,8 @@ describe('State', () => {
       }
     }
 
-    it('re-renders when state changes', () => {
-      const result = render<{}>(<StatefulComp />);
+    it('re-renders when state changes', async () => {
+      const result = await render<{}>(<StatefulComp />);
 
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Inactive');
@@ -57,8 +57,8 @@ describe('State', () => {
       );
     }
 
-    it('re-renders when state changes', () => {
-      const result = render<{}>(<StatefulComp />);
+    it('re-renders when state changes', async () => {
+      const result = await render<{}>(<StatefulComp />);
 
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Inactive');

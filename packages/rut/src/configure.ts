@@ -1,7 +1,7 @@
 import { RendererOptions } from './types';
 
 export const globalOptions: RendererOptions = {
-  asyncMode: 'hook',
+  // asyncMode: 'hook',
 };
 
 export function configure(options: RendererOptions) {

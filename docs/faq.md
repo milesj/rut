@@ -44,7 +44,7 @@ it('passes id down', () => {
 
 // GOOD
 it('passes id down', () => {
-  const { root } = render<Props>(<PropsExample id="foo">Content</PropsExample>);
+  const { root } = await render<Props>(<PropsExample id="foo">Content</PropsExample>);
 
   expect(root).toHaveProp('id', 'foo');
 });
@@ -92,7 +92,7 @@ it('renders active state', () => {
 
 // GOOD
 it('renders active state', () => {
-  const { root } = render(<StateExample />);
+  const { root } = await render(<StateExample />);
 
   expect(root).toContainNode('Inactive');
 

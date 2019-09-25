@@ -119,7 +119,7 @@ import Form, { FormProps } from '../src/Form';
 describe('<Form />', () => {
   it('triggers click', () => {
     const spy = jest.fn();
-    const { root } = render<FormProps>(<Form onClick={spy} />);
+    const { root } = await render<FormProps>(<Form onClick={spy} />);
 
     root.findOne('button').dispatch('onClick', mockSyntheticEvent('onClick'));
 

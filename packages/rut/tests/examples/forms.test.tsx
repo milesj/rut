@@ -63,8 +63,8 @@ describe('Forms Example', () => {
   }
 
   // Simple test that checks that the form and its fields have rendered.
-  it('renders a form', () => {
-    const { root } = render<SignupFormProps>(<SignupForm onSubmit={() => {}} />);
+  it('renders a form', async () => {
+    const { root } = await render<SignupFormProps>(<SignupForm onSubmit={() => {}} />);
 
     expect(root.find('form')).toHaveLength(1);
     expect(root.find('input')).toHaveLength(3);
@@ -73,9 +73,9 @@ describe('Forms Example', () => {
   // This test is a little more involved as we want to update the hook state
   // when an input field's value changes. To do this we must trigger an `onChange`
   // event with the target being changed.
-  it('updates state when fields change and submits the form', () => {
+  it('updates state when fields change and submits the form', async () => {
     const submitSpy = jest.fn();
-    const { root } = render<SignupFormProps>(<SignupForm onSubmit={submitSpy} />);
+    const { root } = await render<SignupFormProps>(<SignupForm onSubmit={submitSpy} />);
 
     // Update email using find + props pattern
     const email = root.find('input', { name: 'email' })[0];

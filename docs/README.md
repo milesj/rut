@@ -11,7 +11,7 @@ import Input, { InputProps } from '../src/Input';
 
 describe('<Input />', () => {
   it('renders an input field', () => {
-    const { root, update } = render<InputProps>(<Input name="rut" value="foo" />);
+    const { root, update } = await render<InputProps>(<Input name="rut" value="foo" />);
 
     expect(root).toHaveProp('name', 'rut');
     expect(root).toHaveValue('foo');

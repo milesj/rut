@@ -22,7 +22,7 @@ function BaseComp() {
 
 const MemoComp = React.memo(BaseComp);
 
-const { root } = render(
+const { root } = await render(
   <App>
     <MemoComp />
   </App>,
@@ -50,7 +50,7 @@ function User({ firstName, lastName }: { firstName: string; lastName: string }) 
   );
 }
 
-const { root } = render(<User firstName="Bruce" lastName="Wayne" />);
+const { root } = await render(<User firstName="Bruce" lastName="Wayne" />);
 
 // Works
 expect(root).toContainNode('Bruce Wayne');

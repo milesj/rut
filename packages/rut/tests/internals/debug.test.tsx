@@ -3,9 +3,9 @@ import { render } from '../../src/render';
 import { ClassComp, FuncComp, TestProps } from '../fixtures';
 
 describe('debug', () => {
-  it('adds key and ref props first', () => {
+  it('adds key and ref props first', async () => {
     const ref = React.createRef<ClassComp>();
-    const result = render<TestProps>(<ClassComp key={123} ref={ref} name="test" />);
+    const result = await render<TestProps>(<ClassComp key={123} ref={ref} name="test" />);
 
     expect(result).toMatchSnapshot();
 
@@ -13,7 +13,7 @@ describe('debug', () => {
     expect(result.debug({ keyAndRef: false, log: false })).toMatchSnapshot();
   });
 
-  it('sorts props, and groups into: true first, everything else, event handlers last', () => {
+  it('sorts props, and groups into: true first, everything else, event handlers last', async () => {
     interface SortOrderProps {
       enabled: boolean;
       selected: boolean;
@@ -28,7 +28,7 @@ describe('debug', () => {
       return <div />;
     }
 
-    const result = render<SortOrderProps>(
+    const result = await render<SortOrderProps>(
       <SortOrder
         // Wont show up since its a function component
         key="key"
@@ -53,12 +53,12 @@ describe('debug', () => {
     expect(result.debug({ groupProps: false, log: false, sortProps: false })).toMatchSnapshot();
   });
 
-  it('formats array props', () => {
+  it('formats array props', async () => {
     function ArrayProp(props: { list: unknown[] }) {
       return <ul />;
     }
 
-    const result = render<{}>(<ArrayProp list={['string', 123, true, null, {}, []]} />);
+    const result = await render<{}>(<ArrayProp list={['string', 123, true, null, {}, []]} />);
 
     expect(result).toMatchSnapshot();
 
@@ -77,51 +77,51 @@ describe('debug', () => {
     expect(result).toMatchSnapshot();
   });
 
-  it('formats object props', () => {
+  it('formats object props', async () => {
     function ObjectProp(props: { data: unknown }) {
       return <div />;
     }
 
-    const result = render<{}>(
+    const result = await render<{}>(
       <ObjectProp data={{ id: 1, name: 'Bruce Wayne', alias: 'Batman', age: 40 }} />,
     );
 
     expect(result).toMatchSnapshot();
   });
 
-  it('formats regex props', () => {
+  it('formats regex props', async () => {
     function RegexProp(props: { pattern: RegExp }) {
       return <div />;
     }
 
-    const result = render<{}>(<RegexProp pattern={/foo|bar|baz/u} />);
+    const result = await render<{}>(<RegexProp pattern={/foo|bar|baz/u} />);
 
     expect(result).toMatchSnapshot();
   });
 
-  it('formats map props', () => {
+  it('formats map props', async () => {
     function MapProp(props: { map: Map<string, number> }) {
       return <div />;
     }
 
-    const result = render<{}>(
+    const result = await render<{}>(
       <MapProp map={new Map([['foo', 123], ['bar', 456], ['baz', 789]])} />,
     );
 
     expect(result).toMatchSnapshot();
   });
 
-  it('formats set props', () => {
+  it('formats set props', async () => {
     function SetProp(props: { set: Set<string> }) {
       return <div />;
     }
 
-    const result = render<{}>(<SetProp set={new Set(['foo', 'bar', 'foo', 'baz'])} />);
+    const result = await render<{}>(<SetProp set={new Set(['foo', 'bar', 'foo', 'baz'])} />);
 
     expect(result).toMatchSnapshot();
   });
 
-  it('formats function and class instance props', () => {
+  it('formats function and class instance props', async () => {
     function funcName() {}
     class ClassName {}
 
@@ -134,12 +134,12 @@ describe('debug', () => {
       return <div />;
     }
 
-    const result = render<FuncPropProps>(<FuncProp func={funcName} inst={new ClassName()} />);
+    const result = await render<FuncPropProps>(<FuncProp func={funcName} inst={new ClassName()} />);
 
     expect(result).toMatchSnapshot();
   });
 
-  it('doesnt render children', () => {
+  it('doesnt render children', async () => {
     interface ChildCompProps {
       children: React.ReactNode;
       foo?: string;
@@ -151,7 +151,7 @@ describe('debug', () => {
       return <div>{children}</div>;
     }
 
-    const { debug } = render<ChildCompProps>(
+    const { debug } = await render<ChildCompProps>(
       <ChildComp foo="abc" bar={123} baz>
         <div>Child should not be rendered.</div>
       </ChildComp>,
@@ -184,20 +184,20 @@ describe('debug', () => {
       );
     }
 
-    it('renders normal', () => {
-      const { debug } = render<{}>(<Outer />);
+    it('renders normal', async () => {
+      const { debug } = await render<{}>(<Outer />);
 
       expect(debug({ log: false })).toMatchSnapshot();
     });
 
-    it('hides DOM output', () => {
-      const { debug } = render<{}>(<Outer />);
+    it('hides DOM output', async () => {
+      const { debug } = await render<{}>(<Outer />);
 
       expect(debug({ hostElements: false, log: false })).toMatchSnapshot();
     });
 
-    it('hides React output', () => {
-      const { debug } = render<{}>(<Outer />);
+    it('hides React output', async () => {
+      const { debug } = await render<{}>(<Outer />);
 
       expect(debug({ reactElements: false, log: false })).toMatchSnapshot();
     });

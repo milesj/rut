@@ -42,7 +42,7 @@ being referenced, for use in determining and providing a custom mock. For exampl
 import { render } from 'rut';
 
 const spy = jest.fn();
-const { root } = render<LoginFormProps>(<LoginForm />, {
+const { root } = await render<LoginFormProps>(<LoginForm />, {
   mockRef(element) {
     if (element.type === 'input' && element.props.type === 'password') {
       return { onChange: spy };
@@ -105,7 +105,7 @@ functionality, and an improved API.
 import { render } from 'rut';
 
 test('renders a button', () => {
-  const result = render<ButtonProps>(<Button>Save</Button>);
+  const result = await render<ButtonProps>(<Button>Save</Button>);
 });
 ```
 
@@ -121,7 +121,7 @@ required.
 import { render, InferComponentProps } from 'rut';
 
 test('renders a native button', () => {
-  const result = render<InferComponentProps<'button'>>(<button type="submit">Save</button>);
+  const result = await render<InferComponentProps<'button'>>(<button type="submit">Save</button>);
 });
 ```
 

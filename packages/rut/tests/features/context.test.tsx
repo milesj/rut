@@ -49,8 +49,8 @@ describe('Context', () => {
   }
 
   describe('Provider', () => {
-    it('renders a provider without consumer, and its children', () => {
-      const result = render<ProviderProps>(<Provider>Child</Provider>);
+    it('renders a provider without consumer, and its children', async () => {
+      const result = await render<ProviderProps>(<Provider>Child</Provider>);
 
       expect(result).toMatchSnapshot();
       expect(result.root).toContainNode('Child');
@@ -58,17 +58,17 @@ describe('Context', () => {
   });
 
   describe('Consumer', () => {
-    it('renders without provider', () => {
+    it('renders without provider', async () => {
       const spy = jest.fn();
 
-      render<SpyProps>(<Consumer spy={spy} />);
+      await render<SpyProps>(<Consumer spy={spy} />);
 
       expect(spy).toHaveBeenCalledWith('default');
     });
 
-    it('renders within provider and inherits the defined value', () => {
+    it('renders within provider and inherits the defined value', async () => {
       const spy = jest.fn();
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <Provider theme="dark">
           <div>
             <Consumer spy={spy} />
@@ -80,9 +80,9 @@ describe('Context', () => {
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
-    it('updates with new value when provider changes', () => {
+    it('updates with new value when provider changes', async () => {
       const spy = jest.fn();
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <Provider theme="dark">
           <div>
             <Consumer spy={spy} />
@@ -97,10 +97,10 @@ describe('Context', () => {
       expect(spy).toHaveBeenCalledWith('light');
     });
 
-    it('updates consumer that has been memoized', () => {
+    it('updates consumer that has been memoized', async () => {
       const spy = jest.fn();
       const MemoConsumer = React.memo(Consumer);
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <Provider theme="dark">
           <MemoConsumer spy={spy} />
         </Provider>,
@@ -114,17 +114,17 @@ describe('Context', () => {
   });
 
   describe('useContext', () => {
-    it('renders without provider', () => {
+    it('renders without provider', async () => {
       const spy = jest.fn();
 
-      render<SpyProps>(<HookConsumer spy={spy} />);
+      await render<SpyProps>(<HookConsumer spy={spy} />);
 
       expect(spy).toHaveBeenCalledWith('default');
     });
 
-    it('renders within provider and inherits the defined value', () => {
+    it('renders within provider and inherits the defined value', async () => {
       const spy = jest.fn();
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <Provider theme="dark">
           <div>
             <HookConsumer spy={spy} />
@@ -136,9 +136,9 @@ describe('Context', () => {
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
-    it('updates with new value when provider changes', () => {
+    it('updates with new value when provider changes', async () => {
       const spy = jest.fn();
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <Provider theme="dark">
           <div>
             <HookConsumer spy={spy} />
@@ -153,10 +153,10 @@ describe('Context', () => {
       expect(spy).toHaveBeenCalledWith('light');
     });
 
-    it('updates consumer that has been memoized', () => {
+    it('updates consumer that has been memoized', async () => {
       const spy = jest.fn();
       const MemoConsumer = React.memo(HookConsumer);
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <Provider theme="dark">
           <MemoConsumer spy={spy} />
         </Provider>,
@@ -170,17 +170,17 @@ describe('Context', () => {
   });
 
   describe('contextType', () => {
-    it('renders without provider', () => {
+    it('renders without provider', async () => {
       const spy = jest.fn();
 
-      render<SpyProps>(<StaticConsumer spy={spy} />);
+      await render<SpyProps>(<StaticConsumer spy={spy} />);
 
       expect(spy).toHaveBeenCalledWith('default');
     });
 
-    it('renders within provider and inherits the defined value', () => {
+    it('renders within provider and inherits the defined value', async () => {
       const spy = jest.fn();
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <Provider theme="dark">
           <div>
             <StaticConsumer spy={spy} />
@@ -192,9 +192,9 @@ describe('Context', () => {
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
-    it('updates with new value when provider changes', () => {
+    it('updates with new value when provider changes', async () => {
       const spy = jest.fn();
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <Provider theme="dark">
           <div>
             <StaticConsumer spy={spy} />
@@ -209,7 +209,7 @@ describe('Context', () => {
       expect(spy).toHaveBeenCalledWith('light');
     });
 
-    it('updates consumer that is pure', () => {
+    it('updates consumer that is pure', async () => {
       class PureStaticConsumer extends React.PureComponent<SpyProps> {
         static contextType = ThemeContext;
 
@@ -221,7 +221,7 @@ describe('Context', () => {
       }
 
       const spy = jest.fn();
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <Provider theme="dark">
           <PureStaticConsumer spy={spy} />
         </Provider>,
@@ -261,17 +261,17 @@ describe('Context', () => {
       }
     }
 
-    it('renders without provider', () => {
+    it('renders without provider', async () => {
       const spy = jest.fn();
 
-      render<SpyProps>(<ChildContext spy={spy} />);
+      await render<SpyProps>(<ChildContext spy={spy} />);
 
       expect(spy).toHaveBeenCalledWith(undefined);
     });
 
-    it('renders within parent and inherits the defined value', () => {
+    it('renders within parent and inherits the defined value', async () => {
       const spy = jest.fn();
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <ParentContext theme="dark">
           <div>
             <ChildContext spy={spy} />
@@ -283,9 +283,9 @@ describe('Context', () => {
       expect(spy).toHaveBeenCalledWith('dark');
     });
 
-    it('updates with new value when provider changes', () => {
+    it('updates with new value when provider changes', async () => {
       const spy = jest.fn();
-      const result = render<ProviderProps>(
+      const result = await render<ProviderProps>(
         <ParentContext theme="dark">
           <div>
             <ChildContext spy={spy} />

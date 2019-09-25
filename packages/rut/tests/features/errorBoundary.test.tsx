@@ -45,9 +45,9 @@ describe('ErrorBoundary', () => {
     console.error = oldError;
   });
 
-  it('renders the child if no error', () => {
+  it('renders the child if no error', async () => {
     const spy = jest.fn();
-    const result = render<Props>(
+    const result = await render<Props>(
       <ErrorBoundary spy={spy}>
         <div>Content</div>
       </ErrorBoundary>,
@@ -57,13 +57,13 @@ describe('ErrorBoundary', () => {
     expect(result.root).toContainNode('Content');
   });
 
-  it('renders and logs a caught error', () => {
+  it('renders and logs a caught error', async () => {
     function BrokenComponent() {
       throw new Error('Oops!');
     }
 
     const spy = jest.fn();
-    const result = render<Props>(
+    const result = await render<Props>(
       <ErrorBoundary spy={spy}>
         // @ts-ignore
         <BrokenComponent />

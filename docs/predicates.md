@@ -12,7 +12,7 @@ Find all elements where their `key` matches the provided value or values.
 ```tsx
 import { render, whereKey } from 'rut';
 
-const { root } = render(
+const { root } = await render(
   <ItemList>
     {items.map(item => (
       <Item key={item.id} item={item} />
@@ -34,7 +34,7 @@ Find all elements in common with the provided props, regardless of component `ty
 ```tsx
 import { render, whereProps } from 'rut';
 
-const { root } = render(
+const { root } = await render(
   <ColorPalette>
     <Color value="red" />
     <Color value="blue" />

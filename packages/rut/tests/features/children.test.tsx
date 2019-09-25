@@ -2,20 +2,20 @@ import React from 'react';
 import { render } from '../../src/render';
 
 describe('Children', () => {
-  it('renders a function child', () => {
+  it('renders a function child', async () => {
     function FuncChildComp({ children }: { children: () => React.ReactNode }) {
       return <div>{children()}</div>;
     }
 
     const spy = jest.fn(() => <span>Child</span>);
-    const result = render<{}>(<FuncChildComp>{spy}</FuncChildComp>);
+    const result = await render<{}>(<FuncChildComp>{spy}</FuncChildComp>);
 
     expect(result).toMatchSnapshot();
     expect(result.root).toContainNode('Child');
     expect(spy).toHaveBeenCalled();
   });
 
-  it('renders an only child', () => {
+  it('renders an only child', async () => {
     interface Props {
       children: React.ReactNode;
     }
@@ -25,13 +25,13 @@ describe('Children', () => {
     }
 
     const node = <span>Child</span>;
-    const result = render<Props>(<OnlyChildComp>{node}</OnlyChildComp>);
+    const result = await render<Props>(<OnlyChildComp>{node}</OnlyChildComp>);
 
     expect(result).toMatchSnapshot();
     expect(result.root).toContainNode(node);
   });
 
-  it('renders mapped children', () => {
+  it('renders mapped children', async () => {
     interface Props {
       children: React.ReactNode;
     }
@@ -46,7 +46,7 @@ describe('Children', () => {
       );
     }
 
-    const result = render<Props>(
+    const result = await render<Props>(
       <MapChildComp>
         <div>1</div>
         <div>2</div>

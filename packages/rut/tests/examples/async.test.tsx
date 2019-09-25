@@ -92,8 +92,8 @@ describe('Async Example', () => {
   // We use `render` here instead of `renderAndWait`,
   // so that we can assert the loading state. Otherwise
   // the user card will be rendered in the result.
-  it('renders the loading state while request is in flight', () => {
-    const { root } = render<UserProfileProps>(<UserProfile id={1} />);
+  it.skip('renders the loading state while request is in flight', async () => {
+    const { root } = await render<UserProfileProps>(<UserProfile id={1} />);
 
     expect(root).toContainNode('Loading...');
   });

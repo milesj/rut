@@ -34,8 +34,8 @@ describe('Hooks', () => {
       );
     }
 
-    it('re-renders when state changes', () => {
-      const { root } = render<{}>(<CounterComp />);
+    it('re-renders when state changes', async () => {
+      const { root } = await render<{}>(<CounterComp />);
 
       expect(root.findOne('span')).toContainNode(0);
 
@@ -60,8 +60,8 @@ describe('Hooks', () => {
       );
     }
 
-    it('persists reference between updates', () => {
-      const { root, update } = render<{ id: string }>(<CallbackComp id="1" />);
+    it('persists reference between updates', async () => {
+      const { root, update } = await render<{ id: string }>(<CallbackComp id="1" />);
 
       // @ts-ignore
       const cb = root.findOne('button').element.props.onClick;
@@ -80,8 +80,8 @@ describe('Hooks', () => {
       return <span id={id}>{value}</span>;
     }
 
-    it('persists reference between updates', () => {
-      const { root, update } = render<{ id: string }>(<MemoComp id="1" />);
+    it('persists reference between updates', async () => {
+      const { root, update } = await render<{ id: string }>(<MemoComp id="1" />);
 
       // @ts-ignore
       const value = root.findOne('span').element.children[0];
@@ -110,9 +110,9 @@ describe('Hooks', () => {
       );
     }
 
-    it('sets and handles refs', () => {
+    it('sets and handles refs', async () => {
       const spy = jest.fn();
-      const { root } = render<{}>(<RefComp />, {
+      const { root } = await render<{}>(<RefComp />, {
         mockRef: () => ({ focus: spy }),
       });
 

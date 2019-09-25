@@ -17,8 +17,8 @@ describe('Events', () => {
     );
   }
 
-  it('can call methods on the event object', () => {
-    const result = render<{}>(<EventComp />);
+  it('can call methods on the event object', async () => {
+    const result = await render<{}>(<EventComp />);
     const event = mockSyntheticEvent<React.MouseEvent<HTMLButtonElement, MouseEvent>>('onClick');
     const spy = jest.spyOn(event, 'preventDefault');
 

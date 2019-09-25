@@ -6,8 +6,8 @@ describe.skip('Lazy', () => {
   // @ts-ignore
   const Comp = React.lazy(() => import('./__mocks__/Lazy'));
 
-  it('renders an imported lazy component', () => {
-    const result = render(
+  it('renders an imported lazy component', async () => {
+    const result = await render(
       <React.Suspense fallback="Loading...">
         <main>
           <Comp />

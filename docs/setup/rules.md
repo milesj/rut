@@ -31,7 +31,7 @@ import { render } from 'rut';
 import { act } from 'react-test-renderer';
 import Example from '../src/Example';
 
-const { update } = render(<Example id={1} />);
+const { update } = await render(<Example id={1} />);
 
 act(() => {
   update({ id: 2 });
@@ -43,7 +43,7 @@ act(() => {
 import { render } from 'rut';
 import Example from '../src/Example';
 
-const { update } = render(<Example id={1} />);
+const { update } = await render(<Example id={1} />);
 
 update({ id: 2 });
 ```
@@ -58,7 +58,7 @@ import { render } from 'rut';
 import debug from 'rut/lib/internals/debug';
 import Example from '../src/Example';
 
-const { root } = render(<Example id={1} />);
+const { root } = await render(<Example id={1} />);
 
 debug(root);
 ```
@@ -68,7 +68,7 @@ debug(root);
 import { render } from 'rut';
 import Example from '../src/Example';
 
-const { debug, root } = render(<Example id={1} />);
+const { debug, root } = await render(<Example id={1} />);
 
 debug();
 // Or
@@ -84,7 +84,7 @@ Require generics for `render()` and `renderAndWait()` functions.
 import { render } from 'rut';
 import Example from '../src/Example';
 
-const { root } = render(<Example id={1} />);
+const { root } = await render(<Example id={1} />);
 ```
 
 ```tsx
@@ -92,7 +92,7 @@ const { root } = render(<Example id={1} />);
 import { render } from 'rut';
 import Example, { ExampleProps } from '../src/Example';
 
-const { root } = render<ExampleProps>(<Example id={1} />);
+const { root } = await render<ExampleProps>(<Example id={1} />);
 ```
 
 > Does not apply to host (DOM) elements.

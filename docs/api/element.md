@@ -24,7 +24,7 @@ object, or nothing (will create an event behind the scenes). To ease integration
 ```tsx
 import { render, mockSyntheticEvent } from 'rut';
 
-const { root } = render<LoginFormProps>(<LoginForm />);
+const { root } = await render<LoginFormProps>(<LoginForm />);
 
 // Event created internally
 root.findOne('input').dispatch('onChange');
@@ -59,7 +59,7 @@ complete before returning the re-rendered result. Because of this, the function 
 import { render } from 'rut';
 
 it('waits for update call to finish', async () => {
-  const { root } = render<EditProfileProps>(<EditProfile id={1} onSubmit={updateUser} />);
+  const { root } = await render<EditProfileProps>(<EditProfile id={1} onSubmit={updateUser} />);
 
   await root.findOne('form').dispatchAndWait('onSubmit');
 });
@@ -78,7 +78,7 @@ If any are found, a list of `Element`s is returned.
 [A caveat exists for this method](../caveats.md).
 
 ```tsx
-const { root } = render<NewsReelProps>(<NewsReel />);
+const { root } = await render<NewsReelProps>(<NewsReel />);
 
 // By component
 const articles = root.find(NewsArticle);
@@ -91,7 +91,7 @@ Also accepts a partial props object as a 2nd argument. When defined, will furthe
 and only return those that have the defined props in common.
 
 ```tsx
-const { root } = render(
+const { root } = await render(
   <form>
     <input type="text" name="name" />
     <input type="email" name="email" />
@@ -114,7 +114,7 @@ Like [`find()`](#find) but returns the element at the defined index. Accepts sho
 `last` indices, or a numerical index. If no element is found, an error is thrown.
 
 ```tsx
-const { root } = render(
+const { root } = await render(
   <form>
     <input type="text" name="name" />
     <input type="text" name="email" />
@@ -146,7 +146,7 @@ Returns the name of the component (most commonly from `displayName`). If a compo
 wrapped with an HOC, it will attempt to preserve the name.
 
 ```tsx
-const { root } = render<ButtonProps>(<Button />);
+const { root } = await render<ButtonProps>(<Button />);
 
 expect(root.name()).toBe('Button');
 expect(root.name(true)).toBe('<Button />');
@@ -162,7 +162,7 @@ function. This predicate is passed the `react-rest-renderer` test instance and a
 for use in comparisons. To simplify this process, a [predicate](../predicates.md) can be used.
 
 ```tsx
-const { root } = render<NewsReelProps>(<NewsReel />);
+const { root } = await render<NewsReelProps>(<NewsReel />);
 
 const articles = root.query(node => node.type === NewsArticle);
 ```
@@ -194,7 +194,7 @@ class Input extends React.Component<InputProps> {
   }
 }
 
-const { root } = render<InputProps>(<Input />);
+const { root } = await render<InputProps>(<Input />);
 
 root.ref('inputRef'); // <input />
 ```

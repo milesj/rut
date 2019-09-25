@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '../../src/render';
 
 describe('Fragment', () => {
-  it('renders short form', () => {
+  it('renders short form', async () => {
     function Items() {
       return (
         <>
@@ -13,7 +13,7 @@ describe('Fragment', () => {
       );
     }
 
-    const result = render(
+    const result = await render(
       <ul>
         <Items />
       </ul>,
@@ -24,7 +24,7 @@ describe('Fragment', () => {
     expect(result.root.find('li')).toHaveLength(3);
   });
 
-  it('renders long form', () => {
+  it('renders long form', async () => {
     function Items() {
       return (
         // eslint-disable-next-line react/jsx-fragments
@@ -36,7 +36,7 @@ describe('Fragment', () => {
       );
     }
 
-    const result = render(
+    const result = await render(
       <ul>
         <Items />
       </ul>,
