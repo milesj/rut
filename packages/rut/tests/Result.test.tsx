@@ -103,6 +103,25 @@ describe('Result', () => {
     );
   });
 
+  it('catches and rethrows errors', () => {
+    // React logs when an error is thrown without a boundary
+    const spy = jest.spyOn(console, 'error');
+
+    function ErrorComp({ fail }: { fail: boolean }) {
+      if (fail) {
+        throw new Error('Failed for some reason...');
+      }
+
+      return null;
+    }
+
+    expect(() => {
+      render<{}>(<ErrorComp fail />);
+    }).toThrowError('Failed for some reason...');
+
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   describe('root()', () => {
     it('returns an element for a host component', () => {
       const { root } = render(<main />);

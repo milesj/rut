@@ -1,5 +1,10 @@
+/* eslint-disable no-console */
+
 import assert from 'assert';
 import Element from '../Element';
+
+const noop = () => {};
+const originalConsoleError = console.error.bind(console);
 
 export function deepEqual(a: unknown, b: unknown): boolean {
   try {
@@ -58,4 +63,15 @@ export function toArray<T>(value?: null | T | T[]): T[] {
   }
 
   return Array.isArray(value) ? value : [value];
+}
+
+// React logs errors to the console when an error is thrown,
+// even when a boundary exists. Silence it temporarily.
+// https://github.com/facebook/react/issues/15520
+export function silenceConsoleErrors(): () => void {
+  console.error = noop;
+
+  return () => {
+    console.error = originalConsoleError;
+  };
 }

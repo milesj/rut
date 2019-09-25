@@ -153,6 +153,9 @@ export default class Result<Props extends object = {}> {
       element = React.createElement(React.StrictMode, {}, element);
     }
 
+    // Wrap with error boundary
+    // return React.createElement(ErrorBoundary, {}, element);
+
     return element;
   }
 }
