@@ -1,7 +1,7 @@
 /* eslint-disable lines-between-class-members, no-dupe-class-members, @typescript-eslint/no-explicit-any */
 
 import React from 'react';
-import { ReactTestInstance } from 'react-test-renderer';
+import { ReactTestInstance, act } from 'react-test-renderer';
 import {
   InferEventFromHandler,
   InferComponentProps,
@@ -23,6 +23,8 @@ import { getPropForDispatching } from './internals/element';
 import { whereTypeAndProps } from './predicates';
 import { factorySyntheticEvent } from './mocks/event';
 
+const PROPS = Symbol('props');
+
 export default class Element<
   Type extends React.ElementType = React.ElementType,
   Host = InferHostElement<Type>
@@ -31,8 +33,11 @@ export default class Element<
 
   private readonly isRutElement = true;
 
+  private [PROPS]: { [prop: string]: unknown };
+
   constructor(element: ReactTestInstance) {
     this.element = element;
+    this[PROPS] = { ...element.props };
   }
 
   /**
@@ -236,5 +241,23 @@ export default class Element<
    */
   toString(): string {
     return this.name(true);
+  }
+
+  async waitForPropChange<K extends keyof InferComponentProps<Type>>(prop: K) {
+    await act(async () => {
+      await new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+          if (this.element.props[prop as string] !== this[PROPS][prop as string]) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, 50);
+
+        setTimeout(() => {
+          clearInterval(interval);
+          reject(new Error('Waiting for prop change has timed out.'));
+        });
+      });
+    });
   }
 }

@@ -656,7 +656,7 @@ describe('Result', () => {
         expect(spy).toHaveBeenCalledTimes(2);
       });
 
-      it('supports async `useEffect`', async () => {
+      it.only('supports async `useEffect`', async () => {
         const spy = jest.fn();
 
         const result = render<AsyncProps>(<AsyncHookComp id="first" onLoad={spy} />);
@@ -664,7 +664,9 @@ describe('Result', () => {
         expect(spy).toHaveBeenCalledTimes(0);
         expect(result.root).toContainNode('Loading...');
 
-        await result.updateAndWait({ id: 'second' });
+        result.update({ id: 'second' });
+
+        await result.waitForNode('Loaded');
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(result.root).toContainNode('Loaded');

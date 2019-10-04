@@ -1,5 +1,5 @@
 import React from 'react';
-import { create, ReactTestRenderer } from 'react-test-renderer';
+import { create, ReactTestRenderer, act } from 'react-test-renderer';
 import Element from './Element';
 import { doAct, doAsyncAct } from './internals/act';
 import { debug } from './internals/debug';
@@ -7,6 +7,7 @@ import { unwrapExoticType } from './internals/element';
 import { deepEqual } from './internals/utils';
 import { RendererOptions, DebugOptions } from './types';
 import { NodeLike } from './helpers';
+import toContainNode from './matchers/toContainNode';
 
 export default class Result<Props extends object = {}> {
   protected element: React.ReactElement<Props>;
@@ -117,6 +118,42 @@ export default class Result<Props extends object = {}> {
       this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
     );
   };
+
+  async waitForNodeMount(node: NonNullable<React.ReactNode>) {
+    await act(async () => {
+      await new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+          if (toContainNode(this.root, node).passed) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, 50);
+
+        setTimeout(() => {
+          clearInterval(interval);
+          reject(new Error('Waiting for a node to mount has timed out.'));
+        });
+      });
+    });
+  }
+
+  async waitForNodeUnmount(node: NonNullable<React.ReactNode>) {
+    await act(async () => {
+      await new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+          if (!toContainNode(this.root, node).passed) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, 50);
+
+        setTimeout(() => {
+          clearInterval(interval);
+          reject(new Error('Waiting for a node to unmount has timed out.'));
+        });
+      });
+    });
+  }
 
   /**
    * Replace the previous element with a new one. Return the new wrapped element.
