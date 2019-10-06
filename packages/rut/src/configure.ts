@@ -12,6 +12,6 @@ export const integrationOptions: IntegrationOptions = {
   },
 };
 
-export function configureIntegration(options: IntegrationOptions) {
+export function integrate(options: IntegrationOptions) {
   Object.assign(integrationOptions, options);
 }

@@ -4,11 +4,11 @@
  */
 
 import { matchers, unmockFetches, MatchResult } from 'rut';
-import { configureIntegration } from 'rut/lib/configure';
+import { integrate } from 'rut/lib/configure';
 import * as integration from './integration';
 import serializer from './serializer';
 
-configureIntegration(integration);
+integrate(integration);
 
 afterEach(unmockFetches);
 
