@@ -1,4 +1,5 @@
 import { act } from 'react-test-renderer';
+import { integrationOptions } from '../configure';
 import { silenceConsoleErrors } from './utils';
 
 type Actable<T> = () => T;
@@ -9,7 +10,7 @@ export function doAct<T>(cb: Actable<T>): T {
 
   try {
     act(() => {
-      value = cb();
+      value = integrationOptions.runWithTimers(cb);
     });
   } finally {
     restoreConsole();
@@ -24,7 +25,7 @@ export async function doAsyncAct<T>(cb: Actable<T>): Promise<T> {
 
   try {
     await act(async () => {
-      value = await cb();
+      value = await integrationOptions.runWithTimers(cb);
     });
   } finally {
     restoreConsole();

@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useContext } from 'react';
 import Element from '../src/Element';
 import { render, renderAndWait } from '../src/render';
-import { wait } from '../src/helpers';
 import {
   ClassComp,
   FuncComp,
@@ -273,8 +272,6 @@ describe('Result', () => {
 
         const { root } = await renderAndWait<AsyncProps>(<TimerCdmComp onLoad={spy} />);
 
-        await wait();
-
         expect(spy).toHaveBeenCalledTimes(1);
         expect(root).toContainNode('Loaded');
       });
@@ -322,8 +319,6 @@ describe('Result', () => {
         const spy = jest.fn();
 
         const { root } = await renderAndWait<AsyncProps>(<TimerHookComp onLoad={spy} />);
-
-        await wait();
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(root).toContainNode('Loaded');
@@ -562,7 +557,6 @@ describe('Result', () => {
         expect(result.root).toContainNode('Loading...');
 
         await result.updateAndWait({ id: 'second' });
-        await wait();
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(result.root).toContainNode('Loaded');
@@ -685,7 +679,6 @@ describe('Result', () => {
         expect(result.root).toContainNode('Loading...');
 
         await result.updateAndWait({ id: 'second' });
-        await wait();
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(result.root).toContainNode('Loaded');

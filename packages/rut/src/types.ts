@@ -43,6 +43,11 @@ export interface DispatchOptions {
   propagate?: boolean;
 }
 
+export interface IntegrationOptions {
+  /** Execute the callback and flush all timers before returning. */
+  runWithTimers: <T>(cb: () => T) => T;
+}
+
 export interface UnknownProps {
   [name: string]: unknown;
 }

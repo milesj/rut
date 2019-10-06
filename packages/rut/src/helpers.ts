@@ -145,7 +145,7 @@ export function formatValue(value: unknown): string {
 }
 
 /**
- * Wait for async calls to finish by delaying execution.
+ * Wait for async calls and timers to finish by delaying execution.
  */
 export async function wait(delay: number = 10): Promise<void> {
   await doAsyncAct(async () => {
