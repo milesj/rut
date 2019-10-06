@@ -9,7 +9,9 @@ export default class AsyncResult<Props extends object = {}> extends Result<Props
   rerenderAndWait = async (element: React.ReactElement<Props>, options?: RendererOptions) => {
     Object.assign(this.options, options);
 
-    await doAsyncAct(() => this.renderer.update(this.updateElement(element)));
+    await doAsyncAct(() =>
+      this.renderer.unstable_flushSync(() => this.renderer.update(this.updateElement(element))),
+    );
 
     return this.root;
   };

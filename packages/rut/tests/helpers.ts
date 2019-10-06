@@ -21,9 +21,7 @@ export function runMatcher(result: MatchResult, isNot: boolean = false) {
 
 export function runAsyncCall(done: () => void) {
   return new Promise(resolve => {
-    setTimeout(() => {
-      done();
-      resolve();
-    }, 50);
+    done();
+    resolve();
   });
 }

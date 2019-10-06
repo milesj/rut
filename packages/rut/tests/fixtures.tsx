@@ -102,13 +102,12 @@ export function AsyncHookComp({ id, onLoad }: AsyncProps) {
       return;
     }
 
-    runAsyncCall(onLoad)
-      .then(result => {
-        setInitialized(true);
+    async function load() {
+      await runAsyncCall(onLoad);
+      setInitialized(true);
+    }
 
-        return result;
-      })
-      .catch(() => {});
+    load();
   }, [id, onLoad]);
 
   return <span>{initialized ? 'Loaded' : 'Loading...'}</span>;
@@ -126,7 +125,7 @@ export class TimerCdmComp extends React.Component<AsyncProps, AsyncState> {
       this.setState({
         initialized: true,
       });
-    }, 250);
+    }, 0);
   }
 
   render() {
@@ -147,7 +146,7 @@ export class TimerCduComp extends React.Component<AsyncProps, AsyncState> {
         this.setState({
           initialized: true,
         });
-      }, 250);
+      }, 0);
     }
   }
 
@@ -167,7 +166,7 @@ export function TimerHookComp({ id, onLoad }: AsyncProps) {
     setTimeout(() => {
       onLoad();
       setInitialized(true);
-    }, 250);
+    }, 0);
   }, [id, onLoad]);
 
   return <span>{initialized ? 'Loaded' : 'Loading...'}</span>;
