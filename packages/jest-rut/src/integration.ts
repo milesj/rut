@@ -9,11 +9,13 @@ export function runWithTimers<T>(cb: () => T): T {
   }
 
   const value = cb();
+  let loop = 0;
 
-  if (jest.getTimerCount() !== 0) {
+  while (jest.getTimerCount() > 0 && loop < 10) {
     jest.runAllImmediates();
     jest.runAllTicks();
     jest.runAllTimers();
+    loop += 1;
   }
 
   if (!isFakeTimers) {
