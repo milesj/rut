@@ -43,6 +43,11 @@ export interface DispatchOptions {
   propagate?: boolean;
 }
 
+export interface IntegrationOptions {
+  /** Execute the callback and flush all timers before returning. */
+  runWithTimers: <T>(cb: () => T) => T;
+}
+
 export interface UnknownProps {
   [name: string]: unknown;
 }
@@ -166,6 +171,11 @@ export type PropsOf<T> = T extends RutResult<infer P>
 export type StructureOf<T> = { [K in keyof T]: T[K] };
 
 declare module 'react-test-renderer' {
+  interface ReactTestRenderer {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    unstable_flushSync<T>(cb: () => T): T;
+  }
+
   interface ReactTestInstance {
     _fiber: FiberNode;
   }

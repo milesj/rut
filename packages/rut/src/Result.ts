@@ -114,7 +114,9 @@ export default class Result<Props extends object = {}> {
    */
   updateAndWait = async (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
     await doAsyncAct(() =>
-      this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
+      this.renderer.unstable_flushSync(() =>
+        this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
+      ),
     );
   };
 

@@ -4,7 +4,13 @@
  */
 
 import { matchers, unmockFetches, MatchResult } from 'rut';
+import { integrate } from 'rut/lib/configure';
+import * as integration from './integration';
 import serializer from './serializer';
+
+integrate(integration);
+
+afterEach(unmockFetches);
 
 const jestMatchers: jest.ExpectExtendMap = {};
 
@@ -37,7 +43,5 @@ Object.entries(matchers).forEach(([name, matcher]) => {
 
 expect.extend(jestMatchers);
 expect.addSnapshotSerializer(serializer);
-
-afterEach(unmockFetches);
 
 export default jestMatchers;

@@ -1,5 +1,5 @@
 import { act } from 'react-test-renderer';
-import { wrapAndCaptureAsync } from './async';
+import { integrationOptions } from '../configure';
 import { silenceConsoleErrors } from './utils';
 
 type Actable<T> = () => T;
@@ -10,7 +10,7 @@ export function doAct<T>(cb: Actable<T>): T {
 
   try {
     act(() => {
-      value = cb();
+      value = integrationOptions.runWithTimers(cb);
     });
   } finally {
     restoreConsole();
@@ -20,18 +20,12 @@ export function doAct<T>(cb: Actable<T>): T {
 }
 
 export async function doAsyncAct<T>(cb: Actable<T>): Promise<T> {
-  const waitForQueue = wrapAndCaptureAsync();
   const restoreConsole = silenceConsoleErrors();
   let value: T;
 
   try {
     await act(async () => {
-      value = await cb();
-    });
-
-    // We need an additional act as async results may cause re-renders
-    await act(async () => {
-      await waitForQueue();
+      value = await integrationOptions.runWithTimers(cb);
     });
   } finally {
     restoreConsole();
