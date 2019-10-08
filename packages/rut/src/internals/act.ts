@@ -1,12 +1,12 @@
 import { act } from 'react-test-renderer';
 import { integrationOptions } from '../configure';
-import { patchConsoleErrors, patchReactDOM } from './patch';
+import { patchConsoleErrors, patchReactRenderer } from './patch';
 
 type Actable<T> = () => T;
 
 export function doAct<T>(cb: Actable<T>): T {
   const restoreConsole = patchConsoleErrors();
-  const restoreReactDOM = patchReactDOM();
+  const restoreRenderer = patchReactRenderer();
   let value: T;
 
   try {
@@ -15,7 +15,7 @@ export function doAct<T>(cb: Actable<T>): T {
     });
   } finally {
     restoreConsole();
-    restoreReactDOM();
+    restoreRenderer();
   }
 
   return value!;
@@ -23,7 +23,7 @@ export function doAct<T>(cb: Actable<T>): T {
 
 export async function doAsyncAct<T>(cb: Actable<T>): Promise<T> {
   const restoreConsole = patchConsoleErrors();
-  const restoreReactDOM = patchReactDOM();
+  const restoreRenderer = patchReactRenderer();
   let value: T;
 
   try {
@@ -32,7 +32,7 @@ export async function doAsyncAct<T>(cb: Actable<T>): Promise<T> {
     });
   } finally {
     restoreConsole();
-    restoreReactDOM();
+    restoreRenderer();
   }
 
   return value!;

@@ -1,8 +1,8 @@
-import { RendererOptions, IntegrationOptions } from './types';
+import { GlobalOptions, IntegrationOptions } from './types';
 
-export const globalOptions: RendererOptions = {};
+export const globalOptions: GlobalOptions = {};
 
-export function configure(options: RendererOptions) {
+export function configure(options: GlobalOptions) {
   Object.assign(globalOptions, options);
 }
 

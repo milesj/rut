@@ -3,15 +3,20 @@
 import React from 'react';
 import { unsupported } from './utils';
 
-const noop = () => {};
-
 // React logs errors to the console when an error is thrown,
 // even when a boundary exists. Silence it temporarily.
 // https://github.com/facebook/react/issues/15520
 const nativeConsoleError = console.error.bind(console);
+const silencedErrors = [/^The above error occurred in the <\w+> component:/u];
 
 export function patchConsoleErrors(): () => void {
-  console.error = noop;
+  console.error = (message: string) => {
+    const silence = silencedErrors.some(pattern => pattern.test(message));
+
+    if (!silence) {
+      nativeConsoleError(message);
+    }
+  };
 
   return () => {
     console.error = nativeConsoleError;
@@ -39,7 +44,7 @@ declare global {
   }
 }
 
-export function patchReactDOM(): () => void {
+function patchReactDOM(): () => void {
   let ReactDOM: ReactDOMLike = {};
   let nativeCreatePortal: ReactDOMLike['createPortal'];
   let nativeFindNode: ReactDOMLike['findDOMNode'];
@@ -69,4 +74,9 @@ export function patchReactDOM(): () => void {
       delete global.ReactDOM;
     }
   };
+}
+
+// Support different renderes, like `react-native`, in the future.
+export function patchReactRenderer(): () => void {
+  return patchReactDOM();
 }
