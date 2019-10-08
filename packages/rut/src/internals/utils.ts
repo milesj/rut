@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 import assert from 'assert';
 import Element from '../Element';
 
@@ -11,6 +9,12 @@ export function deepEqual(a: unknown, b: unknown): boolean {
   } catch {
     return false;
   }
+}
+
+export function deprecate(method: string) {
+  return () => {
+    throw new Error(`\`${method}\` is not supported by Rut.`);
+  };
 }
 
 export function isAllTextNodes(nodes: unknown[]): boolean {
