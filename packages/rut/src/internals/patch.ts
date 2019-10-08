@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, @typescript-eslint/no-namespace */
 
 import React from 'react';
 import { deprecate } from './utils';
@@ -31,6 +31,14 @@ interface ReactDOMLike {
   findDOMNode?: () => unknown;
 }
 
+declare global {
+  namespace NodeJS {
+    interface Global {
+      ReactDOM: ReactDOMLike;
+    }
+  }
+}
+
 export function patchReactDOM(): () => void {
   let ReactDOM: ReactDOMLike = {};
   let nativeCreatePortal: ReactDOMLike['createPortal'];
@@ -42,20 +50,10 @@ export function patchReactDOM(): () => void {
     nativeCreatePortal = ReactDOM.createPortal;
     nativeFindNode = ReactDOM.findDOMNode;
   } catch {
-    // Swallow
+    global.ReactDOM = ReactDOM;
   }
 
-  ReactDOM.createPortal = function createPortal(children) {
-    // return {
-    //   $$typeof: Symbol.for('react.portal'),
-    //   children,
-    //   containerInfo,
-    //   key,
-    // };
-
-    return children;
-  };
-
+  ReactDOM.createPortal = children => children;
   ReactDOM.findDOMNode = deprecate('ReactDOM.findDOMNode()');
 
   return () => {
@@ -65,6 +63,10 @@ export function patchReactDOM(): () => void {
 
     if (nativeFindNode) {
       ReactDOM.findDOMNode = nativeFindNode;
+    }
+
+    if (global.ReactDOM) {
+      delete global.ReactDOM;
     }
   };
 }

@@ -29,9 +29,9 @@
     "@types/react": "*",
     "@types/react-is": "*",
     "@types/react-test-renderer": "*",
-    "fetch-mock": "^7.3.9",
-    "react-is": "^16.9.0",
-    "react-test-renderer": "^16.9.0"
+    "fetch-mock": "^7.5.1",
+    "react-is": "^16.10.2",
+    "react-test-renderer": "^16.10.2"
   },
   "devDependencies": {
     "@types/prop-types": "^15.7.2",
