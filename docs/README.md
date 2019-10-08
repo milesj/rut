@@ -75,5 +75,5 @@ while avoiding implementation details.
 Does all the above sound great to you? Perfect!
 
 - [Setup and integrate Rut](./setup.md)
-- [Learn about rendering components](./api.md)
+- [Learn about rendering components](./api.md#render)
 - [Become a pro by using matchers](./matchers.md)

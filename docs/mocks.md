@@ -131,7 +131,7 @@ describe('<Form />', () => {
 When using TypeScript, the `T` generic will infer the event type based on the `dispatch()` event
 being dispatched. In the above example, the `T` would resolve to
 `React.MouseEvent<HTMLButtonElement, MouseEvent>`. However, this only works when the mock is created
-within `dispatch()`s arguments. If the event is created outside of it, the type will need to be
+within `dispatch()`s signature. If the event is created outside of it, the type will need to be
 explicitly defined.
 
 ```tsx

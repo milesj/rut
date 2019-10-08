@@ -117,7 +117,7 @@ from grace over the past few years. This is compounded by the following prevalen
 
 Rut aims to avoid these issues by utilizing the
 [react-test-renderer](https://reactjs.org/docs/test-renderer.html) provided by the React core team,
-and continually released alongside new REact versions.
+and continually released alongside new React versions.
 
 ## What about React Testing Library?
 

@@ -20,7 +20,7 @@ expect(root).toContainNode('Save'); // true
 
 ## `debug()`
 
-> debug(options?: DebugOptions): string
+> Result#debug(options?: DebugOptions): string
 
 Logs or returns a JSX representation of the _reconciled_ React component tree. By default this will
 log to the console.
@@ -53,13 +53,14 @@ The example above would log something similar to the following.
 - `hostElements` (`boolean`) - Include host elements (DOM) in the output. Defaults to `true`.
 - `keyAndRef` (`boolean`) - Include `key` and `ref` props in the output. Defaults to `true`.
 - `log` (`boolean`) - Log to the console automatically. Defaults to `true`.
-- `maxLength` (`number`) - Max length of arrays and objects before truncating. Defaults to 5.
+- `maxLength` (`number`) - Max length of arrays and objects before truncating. Defaults to `5`.
 - `reactElements` (`boolean`) - Include React elements in the output. Defaults to `true`.
 - `sortProps` (`boolean`) - Sort the props within each grouping from A-Z. Defaults to `true`.
 
 ## `rerender()`
 
-> rerender(element: React.ReactElement\<Props>, options?: RendererOptions): Element\<Props>
+> SyncResult#rerender(element: React.ReactElement\<Props>, options?: RendererOptions):
+> Element\<Props>
 
 Re-render the in-memory tree with an updated [root](#root) element and optional options, and return
 the new root element. This is a perfect opportunity to update or replace the `wrapper` element.
@@ -94,7 +95,7 @@ result.root; // Latest
 
 ## `rerenderAndWait()`
 
-> async rerenderAndWait(element: React.ReactElement\<Props>, options?: RendererOptions):
+> async AsyncResult#rerenderAndWait(element: React.ReactElement\<Props>, options?: RendererOptions):
 > Promise\<Element\<Props>>
 
 Like [`rerender()`](#rerender) but also awaits the re-render so that async calls have time to
@@ -115,7 +116,7 @@ const newRoot = await rerenderAndWait(<Input name="email" id="email" />, {
 
 ## `update()`
 
-> update(newProps?: Partial\<Props>, newChildren?: React.ReactNode): void
+> Result#update(newProps?: Partial\<Props>, newChildren?: React.ReactNode): void
 
 Can be used to update the [root](#root)'s props or children. When passing no arguments, will
 re-render the element with current props and children (useful for testing cache and conditionals).
@@ -142,7 +143,8 @@ update({ type: 'submit' }, <span>Submit</span>);
 
 ## `updateAndWait()`
 
-> async updateAndWait(newProps?: Partial\<Props>, newChildren?: React.ReactNode): Promise\<void>
+> async Result#updateAndWait(newProps?: Partial\<Props>, newChildren?: React.ReactNode):
+> Promise\<void>
 
 Like [`update()`](#update) but waits for async calls within the updating phase to complete before
 returning the re-rendered result. Because of this, the function must be `await`ed.
@@ -159,7 +161,7 @@ expect(root.find(User)).toHaveLength(3);
 
 ## `unmount()`
 
-> unmount(): void
+> Result#unmount(): void
 
 Like the name states, this triggers an unmount. This isn't necessary to call in every test, just
 when you want to test the unmounting phase.

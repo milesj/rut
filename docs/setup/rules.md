@@ -77,7 +77,7 @@ root.debug();
 
 ## `require-render-generics`
 
-Require generics for `render()` and `renderAndWait()` functions.
+Require TypeScript generics for `render()` and `renderAndWait()` functions.
 
 ```tsx
 // Invalid

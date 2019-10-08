@@ -3,7 +3,7 @@
 Matchers let you test values and patterns, either simple or complex, in a succint way.
 
 > The examples below are using Jest matchers, but the same approach can be used for other testing
-> frameworks.
+> frameworks with a bit of work.
 
 ## `toBeChecked()`
 

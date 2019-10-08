@@ -2,7 +2,7 @@
 
 ## `configure()`
 
-> configure(options: RendererOptions): void
+> configure(options: GlobalOptions): void
 
 Define global options that will be used across all tests.
 
@@ -20,7 +20,7 @@ configure({
 
 > DebugOptions
 
-Debug options that will be applied to every [`debug()`](./api/result.md#options) call. Can override
+Debug options that will be applied to every [`debug()`](./api/result.md#debug) call. Can override
 these options on a per-call basis.
 
 ```tsx

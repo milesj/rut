@@ -7,15 +7,15 @@ or when finding/querying through another `Element` instance.
 
 ## `debug()`
 
-> debug(options?: DebugOptions): string
+> Element#debug(options?: DebugOptions): string
 
 Like the rendered result [`debug()`](./result.md#debug) but only represents the current element
 tree.
 
 ## `dispatch()`
 
-> dispatch(name: EventType, event?: React.SyntheticEvent | EventOptions, options?: DispatchOptions):
-> this
+> Element#dispatch(name: EventType, event?: React.SyntheticEvent | EventOptions, options?:
+> DispatchOptions): this
 
 Dispatch an event for the defined event handler. Accepts a `SyntheticEvent`, an event options
 object, or nothing (will create an event behind the scenes). To ease integration, Rut provides a
@@ -49,8 +49,8 @@ root
 
 ## `dispatchAndWait()`
 
-> async dispatchAndWait(name: EventType, event?: React.SyntheticEvent | EventOptions, options?:
-> DispatchOptions): Promise<void>
+> async Element#dispatchAndWait(name: EventType, event?: React.SyntheticEvent | EventOptions,
+> options?: DispatchOptions): Promise<void>
 
 Like [`dispatch()`](#dispatch) but waits for async calls within the dispatch and updating phase to
 complete before returning the re-rendered result. Because of this, the function must be `await`ed.
@@ -67,10 +67,10 @@ it('waits for update call to finish', async () => {
 
 ## `find()`
 
-> find\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, props?:
+> Element#find\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, props?:
 > Partial\<P>): Element\<T>[]
 
-> find\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, props?:
+> Element#find\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, props?:
 > Partial\<P>): Element\<T>[]
 
 Search through the current tree for all elements that match the defined React component or HTML tag.
@@ -104,11 +104,11 @@ const input = root.find('input', { name: 'email' }); // 1
 
 ## `findAt()`
 
-> findAt\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, at: 'first' |
-> 'last' | number, props?: Partial\<P>): Element\<T>
+> Element#findAt\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, at:
+> 'first' | 'last' | number, props?: Partial\<P>): Element\<T>
 
-> findAt\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, at: 'first' |
-> 'last' | number, props?: Partial\<P>): Element\<T>
+> Element#findAt\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, at:
+> 'first' | 'last' | number, props?: Partial\<P>): Element\<T>
 
 Like [`find()`](#find) but returns the element at the defined index. Accepts shorthand `first` and
 `last` indices, or a numerical index. If no element is found, an error is thrown.
@@ -129,18 +129,18 @@ const password = root.findAt('input', 'last');
 
 ## `findOne()`
 
-> findOne\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, props?:
+> Element#findOne\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, props?:
 > Partial\<P>): Element\<T>
 
-> findOne\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, props?:
-> Partial\<P>): Element\<T>
+> Element#findOne\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T,
+> props?: Partial\<P>): Element\<T>
 
 Like [`find()`](#find) but only returns a single instance. If no elements are found, or too many
 elements are found, an error is thrown.
 
 ## `name()`
 
-> name(jsx: boolean = false): string
+> Element#name(jsx: boolean = false): string
 
 Returns the name of the component (most commonly from `displayName`). If a component has been
 wrapped with an HOC, it will attempt to preserve the name.
@@ -154,8 +154,8 @@ expect(root.name(true)).toBe('<Button />');
 
 ## `query()`
 
-> query\<T extends React.ElementType>(predicate: Predicate | ((node: TestNode, fiber: FiberNode) =>
-> boolean), options?: QueryOptions): Element\<T>[]
+> Element#query\<T extends React.ElementType>(predicate: Predicate | ((node: TestNode, fiber:
+> FiberNode) => boolean), options?: QueryOptions): Element\<T>[]
 
 A low-level abstraction for querying and finding components in the current tree using a predicate
 function. This predicate is passed the `react-rest-renderer` test instance and a `react` fiber node,
@@ -174,7 +174,7 @@ const articles = root.query(node => node.type === NewsArticle);
 
 ## `ref()`
 
-> ref\<T>(name?: string): T | null
+> Element#ref\<T>(name?: string): T | null
 
 Returns any ref associated with the current component. The renderer will attempt to find a valid ref
 using the following patterns, in order:
