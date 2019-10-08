@@ -1,7 +1,7 @@
 /* eslint-disable no-console, @typescript-eslint/no-namespace */
 
 import React from 'react';
-import { deprecate } from './utils';
+import { unsupported } from './utils';
 
 const noop = () => {};
 
@@ -54,7 +54,7 @@ export function patchReactDOM(): () => void {
   }
 
   ReactDOM.createPortal = children => children;
-  ReactDOM.findDOMNode = deprecate('ReactDOM.findDOMNode()');
+  ReactDOM.findDOMNode = unsupported('ReactDOM.findDOMNode()');
 
   return () => {
     if (nativeCreatePortal) {
