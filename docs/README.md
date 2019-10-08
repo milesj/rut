@@ -62,14 +62,13 @@ while avoiding implementation details.
 - Hooks: `useState()`, `useRef()`, `useEffect()`, and all other built-in hooks!
 - Context: `React.createContext()`, `useContext`, `contextType`, and even legacy.
 - Refs: `React.createRef()`, `React.forwardRef()`, callback refs, and string refs.
+- Portals: Even `ReactDOM.createPortal()` (we patch over `react-dom`)!
 - Error boundaries, fragments, strict mode, and more!
 
 ## Not Supported
 
 - [`React.lazy(), React.Suspense`](https://github.com/facebook/react/issues/14170) - Currently not
   supported by `react-test-renderer`.
-- [`ReactDOM.createPortal`](https://reactjs.org/docs/portals.html) - Requires the DOM. May be
-  supported in a future `rut-dom` package.
 
 ## What's next?
 
