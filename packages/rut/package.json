@@ -30,13 +30,13 @@
     "@types/react-is": "*",
     "@types/react-test-renderer": "*",
     "fetch-mock": "^7.5.1",
-    "react-is": "^16.10.2",
-    "react-test-renderer": "^16.10.2"
+    "react-is": "^16.11.0",
+    "react-test-renderer": "^16.11.0"
   },
   "devDependencies": {
-    "@types/prop-types": "^15.7.2",
-    "@types/react-dom": "^16.9.1",
+    "@types/prop-types": "^15.7.3",
+    "@types/react-dom": "^16.9.3",
     "prop-types": "^15.7.2",
-    "react-dom": "^16.10.2"
+    "react-dom": "^16.11.0"
   }
 }

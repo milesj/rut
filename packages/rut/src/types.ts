@@ -188,7 +188,7 @@ declare module 'react-test-renderer' {
 
 declare global {
   namespace jest {
-    interface Matchers<R> {
+    interface Matchers<R, T> {
       toBeChecked(): R;
       toBeDisabled(): R;
       toBeElementType(type: React.ElementType): R;
@@ -196,8 +196,8 @@ declare global {
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;
       toHaveKey(value: string | number): R;
-      toHaveProp<K extends keyof PropsOf<R>>(name: K, value?: PropsOf<R>[K]): R;
-      toHaveProps(props: Partial<PropsOf<R>>): R;
+      toHaveProp<K extends keyof PropsOf<T>>(name: K, value?: PropsOf<T>[K]): R;
+      toHaveProps(props: Partial<PropsOf<T>>): R;
       toHaveRendered(): R;
       toHaveValue(value: unknown): R;
     }
