@@ -1,8 +1,8 @@
 import Element from '../Element';
 import { getProp } from '../internals/element';
 import { isRutElement } from '../internals/utils';
+import { formatValue } from '../internals/react';
 import { MatchResult } from '../types';
-import { formatValue } from '../helpers';
 
 /**
  * Check that an element has a `className` prop that matches the defined value.

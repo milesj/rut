@@ -1,52 +1,18 @@
 /* eslint-disable complexity, max-classes-per-file */
 
-export class BaseEvent {
-  bubbles: boolean = true;
+import BaseEvent from './BaseEvent';
 
-  cancelable: boolean = true;
-
-  currentTarget: unknown = {};
-
-  defaultPrevented: boolean = false;
-
-  eventPhase: number = 0;
-
-  isTrusted: boolean = true;
-
-  propagationStopped: boolean = false;
-
-  srcElement: null = null;
-
-  target: unknown = {};
-
-  timeStamp: number;
-
-  type: string;
-
-  constructor(type: string) {
-    this.timeStamp = Date.now();
-    this.type = type;
-  }
-
-  preventDefault(): void {
-    this.defaultPrevented = true;
-  }
-
-  stopImmediatePropagation(): void {
-    this.propagationStopped = true;
-  }
-
-  stopPropagation(): void {
-    this.propagationStopped = true;
-  }
+interface EventLike {
+  preventDefault(): void;
+  stopPropagation(): void;
 }
 
-export class SyntheticEvent extends BaseEvent {
-  nativeEvent: Event;
+export default class SyntheticEvent<E extends EventLike = Event, T = unknown> extends BaseEvent<T> {
+  nativeEvent: E;
 
   persisted: boolean = false;
 
-  constructor(type: string, nativeEvent: Event) {
+  constructor(type: string, nativeEvent: E) {
     super(type);
 
     this.nativeEvent = nativeEvent;

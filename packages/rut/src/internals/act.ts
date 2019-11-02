@@ -1,5 +1,5 @@
 import { act } from 'react-test-renderer';
-import { integrationOptions } from '../configure';
+import { integrationOptions } from './config';
 import { patchConsoleErrors, patchReactRenderer } from './patch';
 
 type Actable<T> = () => T;

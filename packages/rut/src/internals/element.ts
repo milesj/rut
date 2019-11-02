@@ -1,8 +1,8 @@
 import React from 'react';
-import Element from '../Element';
-import { isReactNodeLike, NodeLike } from '../helpers';
-import { UnknownProps } from '../types';
+import { isReactNodeLike, NodeLike } from './react';
 import { deepEqual } from './utils';
+import Element from '../Element';
+import { UnknownProps } from '../types';
 
 export function getProp(element: Element, name: string): unknown {
   // @ts-ignore Allow internal access

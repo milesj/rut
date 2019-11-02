@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type HostComponentType = keyof JSX.IntrinsicElements;
 
 export type InferHostElement<T> = T extends keyof HTMLElementTagNameMap
@@ -19,10 +21,6 @@ export type EventMap<T> = Required<
 >;
 
 export type EventType = keyof EventMap<unknown>;
-
-export type InferEventFromHandler<T> = T extends (event: infer E) => void ? E : never;
-
-export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
 
 export type EventOptions<T, E> = {
   currentTarget?: Partial<T>;

@@ -1,12 +1,49 @@
-import React from 'react';
-import { Element, DispatchOptions } from 'rut';
-import { InferHostElement, InferComponentProps, EventType } from './types';
+/* eslint-disable lines-between-class-members, @typescript-eslint/no-explicit-any */
 
-export default class DomElement<Type extends React.ElementType = React.ElementType> extends Element<
-  Type,
-  InferComponentProps<Type>,
-  InferHostElement<Type>
-> {
+import React from 'react';
+import { AtIndexType, DispatchOptions, InferEventFromHandler, UnknownProps } from 'rut';
+import { Element, SyntheticEvent } from 'rut/lib/adapters';
+import { mockSyntheticEvent } from './mocks';
+import {
+  HostComponentType,
+  InferComponentProps,
+  InferHostElement,
+  EventMap,
+  EventType,
+  EventOptions,
+} from './types';
+
+export default class DomElement<
+  Type extends React.ElementType = React.ElementType,
+  Props = InferComponentProps<Type>,
+  Host = InferHostElement<Type>
+> extends Element<Type, Props, Host> {
+  createSyntheticEvent(
+    eventType: EventType,
+    event: unknown,
+    elementType: React.ElementType,
+  ): React.SyntheticEvent {
+    // Event provided by consumer, so use as is
+    if (event instanceof SyntheticEvent) {
+      return event as React.SyntheticEvent;
+    }
+
+    // Either event options or nothing provided
+    const options: EventOptions<HTMLElement, Event> =
+      typeof event === 'object' && event !== null ? event : {};
+
+    // Set a target automatically if not provided
+    if (typeof elementType === 'string' && !options.target) {
+      if (typeof document === 'undefined') {
+        options.target = { tagName: elementType.toUpperCase() };
+      } else {
+        options.target = document.createElement(elementType);
+      }
+    }
+
+    return mockSyntheticEvent(eventType, options);
+  }
+
   dispatch<K extends EventType>(
     name: K,
     eventOrConfig?:

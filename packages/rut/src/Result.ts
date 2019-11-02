@@ -5,8 +5,8 @@ import { doAct, doAsyncAct } from './internals/act';
 import { debug } from './internals/debug';
 import { unwrapExoticType } from './internals/element';
 import { deepEqual } from './internals/utils';
+import { NodeLike } from './internals/react';
 import { AdapterRendererOptions, DebugOptions } from './types';
-import { NodeLike } from './helpers';
 
 export default class Result<Props extends object = {}> {
   protected element: React.ReactElement<Props>;

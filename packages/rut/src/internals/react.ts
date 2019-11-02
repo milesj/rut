@@ -2,7 +2,6 @@
 
 import React from 'react';
 import * as ReactIs from 'react-is';
-import { doAsyncAct } from '../internals/act';
 import { UnknownProps } from '../types';
 
 export interface NodeLike {
@@ -142,15 +141,4 @@ export function formatValue(value: unknown): string {
   }
 
   return `\`${getTypeName(value)}\``;
-}
-
-/**
- * Wait for async calls and timers to finish by delaying execution.
- */
-export async function wait(delay: number = 10): Promise<void> {
-  await doAsyncAct(async () => {
-    await new Promise(resolve => {
-      setTimeout(resolve, delay);
-    });
-  });
 }

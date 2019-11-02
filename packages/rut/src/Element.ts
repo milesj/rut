@@ -10,12 +10,11 @@ import {
   AtIndexType,
   QueryOptions,
 } from './types';
-import { getTypeName } from './helpers';
+import { getTypeName } from './internals/react';
 import { doAct, doAsyncAct } from './internals/act';
 import { debug } from './internals/debug';
 import { getPropForDispatching } from './internals/element';
-import { whereTypeAndProps } from './helpers/predicates';
-import { factorySyntheticEvent } from './mocks/event';
+import { whereTypeAndProps } from './predicates';
 
 export default abstract class Element<
   Type extends React.ElementType = React.ElementType,
@@ -49,7 +48,7 @@ export default abstract class Element<
    */
   dispatch(name: string, eventOrConfig?: unknown, options: DispatchOptions = {}): this {
     const prop = getPropForDispatching(this, name);
-    const event = factorySyntheticEvent(name, eventOrConfig, this.element.type);
+    const event = this.createSyntheticEvent(name, eventOrConfig, this.element.type);
 
     // istanbul ignore next
     if (options.propagate) {

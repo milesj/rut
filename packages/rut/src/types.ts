@@ -119,6 +119,10 @@ export type NodeType =
 
 // AUGMENTATION
 
+export type InferEventFromHandler<T> = T extends (event: infer E) => void ? E : never;
+
+export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
+
 export type PropsOf<T> = T extends RutResult<infer P>
   ? P
   : T extends RutElement<any, infer P>

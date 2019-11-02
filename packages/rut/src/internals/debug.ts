@@ -1,10 +1,10 @@
 /* eslint-disable complexity, no-use-before-define, @typescript-eslint/no-use-before-define, @typescript-eslint/no-explicit-any */
 
 import React from 'react';
+import { globalOptions } from './config';
+import { getTypeName } from './react';
 import { isAllTextNodes, isClassInstance, toArray } from './utils';
-import { getTypeName } from '../helpers';
 import { DebugOptions, TestNode } from '../types';
-import { globalOptions } from '../configure';
 
 type Props = TestNode['props'];
 type Formatter = (value: any) => string;

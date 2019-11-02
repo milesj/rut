@@ -5,7 +5,7 @@
 
 import { configure } from './internals/config';
 
-export * from './helpers';
+export * from './predicates';
 export * from './mocks';
 export * from './types';
 
