@@ -1,9 +1,8 @@
 /* eslint-disable jest/expect-expect */
 
 import React from 'react';
-import { render } from '../../src/render';
 import toContainNode from '../../src/matchers/toContainNode';
-import { runMatcher } from '../helpers';
+import { render, runMatcher } from '../helpers';
 import { FuncComp, ClassComp } from '../fixtures';
 
 describe('toContainNode()', () => {

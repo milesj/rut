@@ -1,10 +1,9 @@
 /* eslint-disable rut/no-internals */
 
 import React from 'react';
-import { render } from '../../src/render';
 import { NodeType } from '../../src/types';
 import toBeNodeType from '../../src/matchers/toBeNodeType';
-import { runMatcher } from '../helpers';
+import { render, runMatcher } from '../helpers';
 import { FuncComp, ClassComp, ForwardRefComp, MemoComp } from '../fixtures';
 import Element from '../../src/Element';
 

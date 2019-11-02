@@ -1,7 +1,6 @@
 import React from 'react';
-import { render } from '../../src/render';
 import toBeElementType from '../../src/matchers/toBeElementType';
-import { runMatcher } from '../helpers';
+import { render, runMatcher } from '../helpers';
 import {
   FuncComp,
   FuncCompWithDisplayName,

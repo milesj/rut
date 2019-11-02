@@ -1,4 +1,4 @@
-import { configure, globalOptions } from '../src/configure';
+import { configure, globalOptions } from '../../src/internals/config';
 
 describe('configure()', () => {
   afterEach(() => {

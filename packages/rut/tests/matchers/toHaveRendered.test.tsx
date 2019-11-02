@@ -1,9 +1,8 @@
 /* eslint-disable jest/expect-expect, rut/require-render-generics */
 
 import React from 'react';
-import { render } from '../../src/render';
 import toHaveRendered from '../../src/matchers/toHaveRendered';
-import { runMatcher } from '../helpers';
+import { render, runMatcher } from '../helpers';
 import { FuncComp, ClassComp } from '../fixtures';
 
 describe('toHaveRendered()', () => {

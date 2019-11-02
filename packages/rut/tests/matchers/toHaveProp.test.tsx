@@ -1,8 +1,7 @@
 import React from 'react';
-import { render } from '../../src/render';
 import toHaveProp from '../../src/matchers/toHaveProp';
 import { InferComponentProps } from '../../src/types';
-import { runMatcher } from '../helpers';
+import { render, runMatcher } from '../helpers';
 
 describe('toHaveProp()', () => {
   type DivProps = InferComponentProps<'div'>;
