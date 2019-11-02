@@ -5,7 +5,7 @@ import { doAct, doAsyncAct } from './internals/act';
 import { debug } from './internals/debug';
 import { unwrapExoticType } from './internals/element';
 import { deepEqual } from './internals/utils';
-import { RendererOptions, DebugOptions } from './types';
+import { AdapterRendererOptions, DebugOptions } from './types';
 import { NodeLike } from './helpers';
 
 export default class Result<Props extends object = {}> {
@@ -13,11 +13,11 @@ export default class Result<Props extends object = {}> {
 
   protected readonly renderer: ReactTestRenderer;
 
-  protected options: RendererOptions;
+  protected options: AdapterRendererOptions;
 
   private readonly isRutResult = true;
 
-  constructor(element: React.ReactElement<Props>, options: RendererOptions = {}) {
+  constructor(element: React.ReactElement<Props>, options: AdapterRendererOptions) {
     this.options = options;
     this.element = element;
     this.renderer = create(
@@ -50,7 +50,7 @@ export default class Result<Props extends object = {}> {
    */
   get root(): Element<React.ComponentType<Props>> {
     const { element } = this;
-    const root = new Element(this.renderer.root);
+    const root = this.options.createElement(this.renderer.root);
     const rootType = unwrapExoticType((element as unknown) as NodeLike);
 
     // When being wrapped, we need to drill down and find the

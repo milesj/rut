@@ -18,7 +18,7 @@ export function getPropForDispatching(element: Element, name: string): React.Rea
     throw new TypeError(`Prop \`${name}\` is not a function.`);
     // @ts-ignore Allow internal access
   } else if (typeof element.element.type !== 'string') {
-    throw new TypeError('Dispatching events is only allowed on host components (DOM elements).');
+    throw new TypeError('Dispatching events is only allowed on host components.');
   }
 
   // @ts-ignore We check above

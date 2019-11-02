@@ -2,8 +2,8 @@
 
 import React from 'react';
 import * as ReactIs from 'react-is';
-import { UnknownProps } from './types';
-import { doAsyncAct } from './internals/act';
+import { doAsyncAct } from '../internals/act';
+import { UnknownProps } from '../types';
 
 export interface NodeLike {
   $$typeof: symbol | number;
