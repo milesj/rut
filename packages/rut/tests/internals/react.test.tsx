@@ -9,7 +9,7 @@ import {
   ForwardRefComp,
   LazyComp,
   MemoComp,
-} from '../fixtures';
+} from '../../src/testing/fixtures';
 
 describe('getTypeName()', () => {
   it('returns unknown for falsy values', () => {

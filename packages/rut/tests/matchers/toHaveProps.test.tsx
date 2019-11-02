@@ -1,10 +1,9 @@
 import React from 'react';
 import toHaveProps from '../../src/matchers/toHaveProps';
-import { InferComponentProps } from '../../src/types';
-import { render, runMatcher } from '../helpers';
+import { render, runMatcher } from '../../src/testing/helpers';
 
 describe('toHaveProps()', () => {
-  type DivProps = InferComponentProps<'div'>;
+  type DivProps = JSX.IntrinsicElements['div'];
 
   it('errors if a non-Element is passed', () => {
     expect(() => {

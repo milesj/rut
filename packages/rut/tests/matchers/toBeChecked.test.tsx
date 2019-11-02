@@ -1,6 +1,6 @@
 import React from 'react';
 import toBeChecked from '../../src/matchers/toBeChecked';
-import { render, runMatcher } from '../helpers';
+import { render, runMatcher } from '../../src/testing/helpers';
 
 describe('toBeChecked()', () => {
   it('errors if a non-Element is passed', () => {

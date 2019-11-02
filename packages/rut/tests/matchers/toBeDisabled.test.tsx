@@ -1,6 +1,6 @@
 import React from 'react';
 import toBeDisabled from '../../src/matchers/toBeDisabled';
-import { render, runMatcher } from '../helpers';
+import { render, runMatcher } from '../../src/testing/helpers';
 
 describe('toBeDisabled()', () => {
   it('errors if a non-Element is passed', () => {

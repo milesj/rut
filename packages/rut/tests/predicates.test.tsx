@@ -1,6 +1,6 @@
 import React from 'react';
 import { whereKey, whereProps } from '../src/predicates';
-import { render } from './helpers';
+import { render } from '../src/testing/helpers';
 
 describe('predicates', () => {
   describe('whereKey()', () => {

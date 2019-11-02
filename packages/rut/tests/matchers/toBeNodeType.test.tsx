@@ -3,8 +3,8 @@
 import React from 'react';
 import { NodeType } from '../../src/types';
 import toBeNodeType from '../../src/matchers/toBeNodeType';
-import { render, runMatcher } from '../helpers';
-import { FuncComp, ClassComp, ForwardRefComp, MemoComp } from '../fixtures';
+import { render, runMatcher } from '../../src/testing/helpers';
+import { FuncComp, ClassComp, ForwardRefComp, MemoComp } from '../../src/testing/fixtures';
 import Element from '../../src/Element';
 
 describe('toBeNodeType()', () => {

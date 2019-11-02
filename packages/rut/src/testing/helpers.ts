@@ -1,5 +1,5 @@
-import { createAdapter, Element, SyntheticEvent } from '../src/adapters';
-import { MatchResult } from '../src/types';
+import { createAdapter, Element, SyntheticEvent } from '../adapters';
+import { MatchResult } from '../types';
 
 class TestElement extends Element {
   createSyntheticEvent(type: string) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import toHaveKey from '../../src/matchers/toHaveKey';
-import { render, runMatcher } from '../helpers';
+import { render, runMatcher } from '../../src/testing/helpers';
 
 describe('toHaveKey()', () => {
   it('errors if a non-Element is passed', () => {

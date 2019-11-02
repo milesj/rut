@@ -1,6 +1,6 @@
 import React from 'react';
 import toHaveClassName from '../../src/matchers/toHaveClassName';
-import { render, runMatcher } from '../helpers';
+import { render, runMatcher } from '../../src/testing/helpers';
 
 describe('toHaveClassName()', () => {
   it('errors if a non-Element is passed', () => {

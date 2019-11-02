@@ -1,6 +1,6 @@
 import React from 'react';
 import toHaveValue from '../../src/matchers/toHaveValue';
-import { render, runMatcher } from '../helpers';
+import { render, runMatcher } from '../../src/testing/helpers';
 
 describe('toHaveValue()', () => {
   it('errors if a non-Element is passed', () => {
