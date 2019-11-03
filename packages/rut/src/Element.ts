@@ -1,5 +1,3 @@
-/* eslint-disable lines-between-class-members, no-dupe-class-members, @typescript-eslint/no-explicit-any */
-
 import React from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
 import { getTypeName } from './internals/react';
@@ -156,9 +154,12 @@ export default abstract class Element<
    * a list of `Element`s is returned.
    */
   query<T extends React.ElementType>(predicate: Predicate, options?: QueryOptions): Element<T>[] {
-    return this.element
-      .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
-      .map(node => new (this.constructor as any)(node));
+    return (
+      this.element
+        .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .map(node => new (this.constructor as any)(node))
+    );
   }
 
   /**

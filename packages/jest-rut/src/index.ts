@@ -5,10 +5,12 @@
 
 import { unmockFetches, MatchResult } from 'rut';
 import { integrate, matchers } from 'rut/lib/integrations';
-import * as integration from './integration';
+import { runWithTimers } from './integration';
 import serializer from './serializer';
 
-integrate(integration);
+integrate({
+  runWithTimers,
+});
 
 afterEach(unmockFetches);
 

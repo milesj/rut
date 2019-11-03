@@ -1,4 +1,4 @@
-/* eslint-disable max-classes-per-file */
+/* eslint-disable max-classes-per-file, react/prefer-stateless-function */
 
 import React, { useState, useEffect } from 'react';
 import { runAsyncCall } from './helpers';

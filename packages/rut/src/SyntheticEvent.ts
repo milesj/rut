@@ -1,5 +1,3 @@
-/* eslint-disable complexity, max-classes-per-file */
-
 import BaseEvent from './BaseEvent';
 
 interface EventLike {

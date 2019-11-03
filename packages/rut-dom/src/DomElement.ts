@@ -67,11 +67,11 @@ export default class DomElement<
   find<T extends HostComponentType, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
-  ): DomElement<T, P>[];
+  ): DomElement<T>[];
   find<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
-  ): DomElement<T, P>[];
+  ): DomElement<T>[];
   find(type: React.ElementType<unknown>, props?: UnknownProps): DomElement<React.ElementType>[] {
     return super.find(type, props);
   }
@@ -80,12 +80,12 @@ export default class DomElement<
     type: T,
     at: AtIndexType,
     props?: Partial<P>,
-  ): DomElement<T, P>;
+  ): DomElement<T>;
   findAt<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     at: AtIndexType,
     props?: Partial<P>,
-  ): DomElement<T, P>;
+  ): DomElement<T>;
   findAt(
     type: React.ElementType<unknown>,
     at: AtIndexType,
@@ -97,11 +97,11 @@ export default class DomElement<
   findOne<T extends HostComponentType, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
-  ): DomElement<T, P>;
+  ): DomElement<T>;
   findOne<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
-  ): DomElement<T, P>;
+  ): DomElement<T>;
   findOne(type: React.ElementType<unknown>, props?: UnknownProps): DomElement<React.ElementType> {
     return super.findOne(type, props);
   }
