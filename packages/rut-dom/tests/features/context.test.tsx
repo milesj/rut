@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { render } from '../../src/render';
+import { render } from '../../src';
 
 describe('Context', () => {
   const ThemeContext = React.createContext('default');

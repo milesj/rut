@@ -8,7 +8,7 @@ import { deepEqual } from './internals/utils';
 import { NodeLike } from './internals/react';
 import { AdapterRendererOptions, DebugOptions } from './types';
 
-export default class Result<Props extends object = {}> {
+export default class Result<Props extends object = {}, Root extends Element = Element> {
   protected element: React.ReactElement<Props>;
 
   protected readonly renderer: ReactTestRenderer;
@@ -48,7 +48,7 @@ export default class Result<Props extends object = {}> {
   /**
    * Return the root component as an `Element`.
    */
-  get root(): Element<React.ComponentType<Props>> {
+  get root(): Root {
     const { element } = this;
     const root = this.options.createElement(this.renderer.root);
     const rootType = unwrapExoticType((element as unknown) as NodeLike);
@@ -65,12 +65,12 @@ export default class Result<Props extends object = {}> {
         throw new Error('Unable to find root node. Wrapping elements may be obfuscating it.');
       }
 
-      return nodes[0];
+      return nodes[0] as Root;
     }
 
     // `StrictMode` does not appear in the rendered tree,
     // so we don't have to worry about handling it.
-    return root;
+    return root as Root;
   }
 
   /**

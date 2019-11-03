@@ -1,4 +1,4 @@
-import { mockEvent, mockSyntheticEvent } from '../src/mocks';
+import { mockEvent, mockSyntheticEvent } from '../src';
 
 describe('mockEvent()', () => {
   it('returns a custom event object', () => {

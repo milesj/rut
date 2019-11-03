@@ -1,6 +1,5 @@
 import React from 'react';
-import { render } from '../../src/render';
-import { mockSyntheticEvent } from '../../src/mocks/event';
+import { render, mockSyntheticEvent } from '../../src';
 
 describe('Events', () => {
   function EventComp() {

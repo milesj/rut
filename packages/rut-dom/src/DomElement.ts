@@ -1,4 +1,4 @@
-/* eslint-disable lines-between-class-members, @typescript-eslint/no-explicit-any */
+/* eslint-disable lines-between-class-members, no-dupe-class-members, @typescript-eslint/no-explicit-any */
 
 import React from 'react';
 import { AtIndexType, DispatchOptions, InferEventFromHandler, UnknownProps } from 'rut';
@@ -67,12 +67,12 @@ export default class DomElement<
   find<T extends HostComponentType, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
-  ): Element<T>[];
+  ): DomElement<T, P>[];
   find<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
-  ): Element<T>[];
-  find(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType>[] {
+  ): DomElement<T, P>[];
+  find(type: React.ElementType<unknown>, props?: UnknownProps): DomElement<React.ElementType>[] {
     return super.find(type, props);
   }
 
@@ -80,29 +80,29 @@ export default class DomElement<
     type: T,
     at: AtIndexType,
     props?: Partial<P>,
-  ): Element<T>;
+  ): DomElement<T, P>;
   findAt<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     at: AtIndexType,
     props?: Partial<P>,
-  ): Element<T>;
+  ): DomElement<T, P>;
   findAt(
     type: React.ElementType<unknown>,
     at: AtIndexType,
     props?: UnknownProps,
-  ): Element<React.ElementType> {
+  ): DomElement<React.ElementType> {
     return super.findAt(type, at, props);
   }
 
   findOne<T extends HostComponentType, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
-  ): Element<T>;
+  ): DomElement<T, P>;
   findOne<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
     type: T,
     props?: Partial<P>,
-  ): Element<T>;
-  findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType> {
+  ): DomElement<T, P>;
+  findOne(type: React.ElementType<unknown>, props?: UnknownProps): DomElement<React.ElementType> {
     return super.findOne(type, props);
   }
 }

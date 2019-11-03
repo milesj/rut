@@ -1,5 +1,6 @@
-import { createAdapter, Element, SyntheticEvent } from '../adapters';
-import { MatchResult } from '../types';
+import { ReactTestInstance } from 'react-test-renderer';
+import { doRender, doRenderAndWait, Element, SyntheticEvent } from '../adapters';
+import { MatchResult, RendererOptions } from '../types';
 
 class TestElement extends Element {
   createSyntheticEvent(type: string) {
@@ -11,7 +12,29 @@ class TestElement extends Element {
   }
 }
 
-export const { render, renderAndWait } = createAdapter(instance => new TestElement(instance));
+function createElement(instance: ReactTestInstance) {
+  return new TestElement(instance);
+}
+
+export function render<Props extends object = {}>(
+  element: React.ReactElement,
+  options?: RendererOptions,
+) {
+  return doRender<Props, TestElement>(element, {
+    ...options,
+    createElement,
+  });
+}
+
+export function renderAndWait<Props extends object = {}>(
+  element: React.ReactElement,
+  options?: RendererOptions,
+) {
+  return doRenderAndWait<Props, TestElement>(element, {
+    ...options,
+    createElement,
+  });
+}
 
 export function formatMatcherMessage(result: MatchResult, isNot: boolean) {
   return (isNot ? result.notMessage : result.message)

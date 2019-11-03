@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { render } from '../../src/render';
-import { FuncComp } from '../fixtures';
+import { FuncComp } from 'rut/lib/testing/fixtures';
+import { render } from '../../src';
 
 const nativeCreatePortal = ReactDOM.createPortal;
 const nativeFindNode = ReactDOM.findDOMNode;

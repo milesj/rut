@@ -1,6 +1,4 @@
 import React, { useEffect, useLayoutEffect, useContext } from 'react';
-import Element from '../src/Element';
-import { render, renderAndWait } from '../src/render';
 import {
   ClassComp,
   FuncComp,
@@ -13,7 +11,9 @@ import {
   TimerCduComp,
   TestProps,
   AsyncProps,
-} from './fixtures';
+} from 'rut/lib/testing/fixtures';
+import Element from '../src/DomElement';
+import { render, renderAndWait } from '../src';
 
 describe('Result', () => {
   const oldWarn = console.warn;

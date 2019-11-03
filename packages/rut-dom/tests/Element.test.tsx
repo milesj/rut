@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { render } from '../src/render';
-import { mockSyntheticEvent } from '../src/mocks/event';
 import {
   FuncComp,
   FuncCompWithDisplayName,
   ClassComp,
   ClassCompWithDisplayName,
   TestProps,
-} from './fixtures';
-import { runAsyncCall } from './helpers';
+} from 'rut/lib/testing/fixtures';
+import { runAsyncCall } from 'rut/lib/testing/helpers';
+import { render, mockSyntheticEvent } from '../src';
 
 describe('Element', () => {
   it('can serialize as a snapshot', () => {
@@ -80,7 +79,7 @@ describe('Element', () => {
 
         // @ts-ignore
         root.dispatch('onSomething');
-      }).toThrowError('Dispatching events is only allowed on host components (DOM elements).');
+      }).toThrowError('Dispatching events is only allowed on host components.');
     });
 
     it('executes the function prop', () => {

@@ -1,8 +1,12 @@
 import Result from './Result';
 import { RendererOptions } from './types';
 import { doAsyncAct } from './internals/act';
+import Element from './Element';
 
-export default class AsyncResult<Props extends object = {}> extends Result<Props> {
+export default class AsyncResult<
+  Props extends object = {},
+  Root extends Element = Element
+> extends Result<Props, Root> {
   /**
    * Like `rerender` but also awaits the re-render so that async calls have time to finish.
    */

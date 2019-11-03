@@ -2,6 +2,11 @@
 
 import React from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
+import { getTypeName } from './internals/react';
+import { doAct, doAsyncAct } from './internals/act';
+import { debug } from './internals/debug';
+import { getPropForDispatching } from './internals/element';
+import { whereTypeAndProps } from './predicates';
 import {
   Predicate,
   DispatchOptions,
@@ -10,11 +15,6 @@ import {
   AtIndexType,
   QueryOptions,
 } from './types';
-import { getTypeName } from './internals/react';
-import { doAct, doAsyncAct } from './internals/act';
-import { debug } from './internals/debug';
-import { getPropForDispatching } from './internals/element';
-import { whereTypeAndProps } from './predicates';
 
 export default abstract class Element<
   Type extends React.ElementType = React.ElementType,
