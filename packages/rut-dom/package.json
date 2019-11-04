@@ -19,11 +19,11 @@
     "node": ">=8.9.0"
   },
   "peerDependencies": {
-    "react": "^16.9.0"
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
   },
   "dependencies": {
-    "@types/react-dom": "^16.9.3",
-    "react-dom": "^16.11.0",
-    "rut": "*"
+    "@types/react-dom": "*",
+    "rut": "^0.8.1"
   }
 }

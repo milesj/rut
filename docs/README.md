@@ -6,7 +6,7 @@ practices, and reduce flakiness and code smells. It is a wrapper and abstraction
 process, while doing all the hard work behind the scenes.
 
 ```tsx
-import { render } from 'rut';
+import { render } from 'rut-dom';
 import Input, { InputProps } from '../src/Input';
 
 describe('<Input />', () => {
@@ -62,7 +62,7 @@ while avoiding implementation details.
 - Hooks: `useState()`, `useRef()`, `useEffect()`, and all other built-in hooks!
 - Context: `React.createContext()`, `useContext`, `contextType`, and even legacy.
 - Refs: `React.createRef()`, `React.forwardRef()`, callback refs, and string refs.
-- Portals: Even `ReactDOM.createPortal()` (we patch over `react-dom`)!
+- Portals: `ReactDOM.createPortal()`.
 - Error boundaries, fragments, strict mode, and more!
 
 ## Not Supported

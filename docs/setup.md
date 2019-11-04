@@ -1,10 +1,10 @@
 # Setup
 
-Begin by installing the `rut` package as a dev dependency. Since this is a React testing library, be
-sure `react` is also installed.
+Begin by installing the `rut-dom` package (or another renderer specific package) as a dev
+dependency. Since this is a React testing library, be sure `react` is also installed.
 
 ```bash
-yarn add --dev rut
+yarn add --dev rut-dom
 ```
 
 And that's it! Head over to the [API](./api.md) for more information on how to use `render()`,

@@ -14,7 +14,7 @@ a static property, like `Foo.WrappedComponent`, which can also be used.
 
 ```tsx
 import React from 'react';
-import { render } from 'rut';
+import { render } from 'rut-dom';
 
 function BaseComp() {
   return <div />;

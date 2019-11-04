@@ -10,7 +10,7 @@ factories can be used for generating predicate clauses.
 Find all elements where their `key` matches the provided value or values.
 
 ```tsx
-import { render, whereKey } from 'rut';
+import { render, whereKey } from 'rut-dom';
 
 const { root } = render(
   <ItemList>
@@ -32,7 +32,7 @@ root.query(whereKey([123, 456]));
 Find all elements in common with the provided props, regardless of component `type`.
 
 ```tsx
-import { render, whereProps } from 'rut';
+import { render, whereProps } from 'rut-dom';
 
 const { root } = render(
   <ColorPalette>

@@ -2,7 +2,7 @@
 
 What is testing without mocks? The following mock functions can be used for easier testing.
 
-## `mockEvent()`
+## `mockEvent()` (DOM only)
 
 > mockEvent\<T = Event>(type: string, options?: EventOptions): T
 
@@ -13,7 +13,7 @@ the defined event type, an appropriate sub-class will be used. For example, if t
 If using TypeScript, it's encouraged to type the event using generics.
 
 ```ts
-import { mockEvent } from 'rut';
+import { mockEvent } from 'rut-dom';
 
 const event = mockEvent<MouseEvent>('click');
 ```
@@ -49,7 +49,7 @@ Generates and mocks the global `fetch()` with pre-defined responses, using the r
 [fetch-mock](http://www.wheresrhys.co.uk/fetch-mock/) library.
 
 ```tsx
-import { renderAndWait, mockFetch } from 'rut';
+import { renderAndWait, mockFetch } from 'rut-dom';
 import UserProfile, { UserProfileProps } from '../src/UserProfile';
 
 describe('<Form />', () => {
@@ -113,7 +113,7 @@ the defined event type, an appropriate sub-class will be used. For example, if t
 `onClick`, then a `React.MouseEvent` (with a native `MouseEvent` of type `click`) will be used.
 
 ```tsx
-import { render, mockSyntheticEvent } from 'rut';
+import { render, mockSyntheticEvent } from 'rut-dom';
 import Form, { FormProps } from '../src/Form';
 
 describe('<Form />', () => {
