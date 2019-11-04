@@ -1,7 +1,7 @@
 {
   "name": "rut",
   "version": "0.8.2",
-  "description": "React unit testing made easy. DOM not included.",
+  "description": "React testing made easy.",
   "keywords": [
     "react",
     "test",
@@ -32,9 +32,5 @@
     "fetch-mock": "^7.5.1",
     "react-is": "^16.11.0",
     "react-test-renderer": "^16.11.0"
-  },
-  "devDependencies": {
-    "@types/prop-types": "^15.7.3",
-    "prop-types": "^15.7.2"
   }
 }

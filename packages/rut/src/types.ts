@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
-import RutElement from './Element';
-import RutResult from './Result';
+import Element from './Element';
+import Result from './Result';
 
 export interface RendererOptions {
   /** Options to pass to the debugger. */
@@ -20,7 +20,7 @@ export interface AdapterRendererOptions extends RendererOptions {
   /** Patch native APIs to work within the test renderer. */
   applyPatches: () => () => void;
   /** Wrap a react test instance with a Rut element. */
-  createElement: (instance: ReactTestInstance) => RutElement;
+  createElement: (instance: ReactTestInstance) => Element;
 }
 
 export interface DebugOptions {
@@ -125,17 +125,17 @@ export type InferEventFromHandler<T> = T extends (event: infer E) => void ? E : 
 
 export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
 
-export type PropsOf<T> = T extends RutResult<infer P>
+export type PropsOf<T> = T extends Result<infer P>
   ? P
-  : T extends RutElement<any, infer P>
+  : T extends Element<any, infer P>
   ? P
-  : {};
+  : never;
 
 export type StructureOf<T> = { [K in keyof T]: T[K] };
 
-export type ElementType<T extends React.ElementType, P> = StructureOf<RutElement<T, P>>;
+export type ElementType<T extends React.ElementType, P> = StructureOf<Element<T, P>>;
 
-export type ResultType<P extends object> = StructureOf<RutResult<P>>;
+export type ResultType<P extends object> = StructureOf<Result<P>>;
 
 declare module 'react-test-renderer' {
   interface ReactTestRenderer {
