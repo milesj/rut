@@ -10,7 +10,7 @@ const RESULT_INTERNALS = new Set([
   'wrapElement',
 ]);
 
-const ELEMENT_INTERNALS = new Set(['isRutElement', 'options']);
+const ELEMENT_INTERNALS = new Set(['isRutElement']);
 
 const ELEMENT_NODE_INTERNALS = new Set([
   '_fiber',
