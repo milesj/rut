@@ -116,6 +116,7 @@ describe('Async Example', () => {
     // structure is the same. (Only when using elements).
     expect(root).toContainNode(
       <h1>
+        {/* eslint-disable-next-line react/jsx-curly-brace-presence */}
         {'Bruce'} {'Wayne'}
       </h1>,
     );

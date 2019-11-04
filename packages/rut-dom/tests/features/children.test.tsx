@@ -21,6 +21,7 @@ describe('Children', () => {
     }
 
     function OnlyChildComp({ children }: Props) {
+      // eslint-disable-next-line react/jsx-no-useless-fragment
       return <>{React.Children.only(children)}</>;
     }
 

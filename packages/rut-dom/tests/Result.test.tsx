@@ -16,18 +16,6 @@ import Element from '../src/DomElement';
 import { render, renderAndWait } from '../src';
 
 describe('Result', () => {
-  const oldWarn = console.warn;
-  let warnSpy: jest.Mock;
-
-  beforeEach(() => {
-    warnSpy = jest.fn();
-    console.warn = warnSpy;
-  });
-
-  afterEach(() => {
-    console.warn = oldWarn;
-  });
-
   function Wrapper({ children }: { children?: React.ReactNode }) {
     return <TestContext.Provider value="wrapped">{children || null}</TestContext.Provider>;
   }
@@ -43,7 +31,10 @@ describe('Result', () => {
   });
 
   it('wraps with `StrictMode` when using `strict`', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
     class StrictComp extends React.Component {
+      // eslint-disable-next-line react/no-deprecated
       componentWillMount() {
         // Logs a warning to be UNSAFE
       }
@@ -59,6 +50,8 @@ describe('Result', () => {
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('componentWillMount has been renamed'),
     );
+
+    warnSpy.mockRestore();
   });
 
   it('wraps with another element when using `wrapper`', () => {
@@ -76,7 +69,10 @@ describe('Result', () => {
   });
 
   it('wraps with both `strict` and `wrapper`', () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
     class StrictComp extends React.Component {
+      // eslint-disable-next-line react/no-deprecated
       componentWillReceiveProps() {
         // Logs a warning to be UNSAFE
       }
@@ -101,6 +97,8 @@ describe('Result', () => {
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('componentWillReceiveProps has been renamed'),
     );
+
+    warnSpy.mockRestore();
   });
 
   it('catches and rethrows errors', () => {
@@ -117,7 +115,7 @@ describe('Result', () => {
 
     expect(() => {
       render<{}>(<ErrorComp fail />);
-    }).toThrowError('Failed for some reason...');
+    }).toThrow('Failed for some reason...');
 
     expect(spy).not.toHaveBeenCalled();
   });
@@ -277,7 +275,7 @@ describe('Result', () => {
       });
     });
 
-    describe('function component ', () => {
+    describe('function component', () => {
       it('triggers `useEffect` mount on hook', () => {
         const spy = jest.fn();
 
@@ -349,7 +347,7 @@ describe('Result', () => {
       });
     });
 
-    describe('function component ', () => {
+    describe('function component', () => {
       it('triggers `useEffect` unmount on hook', () => {
         const spy = jest.fn();
 

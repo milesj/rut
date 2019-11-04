@@ -49,7 +49,7 @@ describe('Element', () => {
 
         // @ts-ignore
         root.findOne('span').dispatch('onFake');
-      }).toThrowError('Prop `onFake` does not exist.');
+      }).toThrow('Prop `onFake` does not exist.');
     });
 
     it('errors if prop is not a function', () => {
@@ -62,7 +62,7 @@ describe('Element', () => {
 
         // @ts-ignore
         root.findOne('span').dispatch('id');
-      }).toThrowError('Prop `id` is not a function.');
+      }).toThrow('Prop `id` is not a function.');
     });
 
     it('errors if dispatching on a non-host component', () => {
@@ -79,7 +79,7 @@ describe('Element', () => {
 
         // @ts-ignore
         root.dispatch('onSomething');
-      }).toThrowError('Dispatching events is only allowed on host components.');
+      }).toThrow('Dispatching events is only allowed on host components.');
     });
 
     it('executes the function prop', () => {
@@ -311,7 +311,7 @@ describe('Element', () => {
       expect(() => {
         // @ts-ignore Allow invalid
         root.findAt('span', 'middle');
-      }).toThrowError('Invalid index type "middle".');
+      }).toThrow('Invalid index type "middle".');
     });
 
     it('errors if first not found', () => {
@@ -319,7 +319,7 @@ describe('Element', () => {
 
       expect(() => {
         root.findAt('span', 'first');
-      }).toThrowError('Expected to find an element at index 0 for `span`.');
+      }).toThrow('Expected to find an element at index 0 for `span`.');
     });
 
     it('errors if last not found', () => {
@@ -327,7 +327,7 @@ describe('Element', () => {
 
       expect(() => {
         root.findAt('span', 'last');
-      }).toThrowError('Expected to find an element at index -1 for `span`.');
+      }).toThrow('Expected to find an element at index -1 for `span`.');
     });
 
     it('errors if index not found', () => {
@@ -335,7 +335,7 @@ describe('Element', () => {
 
       expect(() => {
         root.findAt('span', 3);
-      }).toThrowError('Expected to find an element at index 3 for `span`.');
+      }).toThrow('Expected to find an element at index 3 for `span`.');
     });
   });
 
@@ -345,7 +345,7 @@ describe('Element', () => {
 
       expect(() => {
         root.findOne('span');
-      }).toThrowError('Expected to find 1 element for `span`, found 0.');
+      }).toThrow('Expected to find 1 element for `span`, found 0.');
     });
 
     it('errors if too many results found', () => {
@@ -359,7 +359,7 @@ describe('Element', () => {
 
       expect(() => {
         root.findOne('span');
-      }).toThrowError('Expected to find 1 element for `span`, found 3.');
+      }).toThrow('Expected to find 1 element for `span`, found 3.');
     });
 
     it('returns the HTML element found by name', () => {

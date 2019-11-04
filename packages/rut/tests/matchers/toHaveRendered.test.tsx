@@ -45,7 +45,7 @@ describe('toHaveRendered()', () => {
   it('errors if a non-Element is passed', () => {
     expect(() => {
       expect(123).toHaveRendered();
-    }).toThrowError('Expected a Rut `Element`.');
+    }).toThrow('Expected a Rut `Element`.');
   });
 
   it('returns false if null was returned', () => {

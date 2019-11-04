@@ -6,31 +6,31 @@ describe('toBeChecked()', () => {
   it('errors if a non-Element is passed', () => {
     expect(() => {
       expect(123).toBeChecked();
-    }).toThrowError('Expected a Rut `Element`.');
+    }).toThrow('Expected a Rut `Element`.');
 
     expect(() => {
       // @ts-ignore Allow invalid
       runMatcher(toBeChecked(123));
-    }).toThrowError('Expected a Rut `Element`.');
+    }).toThrow('Expected a Rut `Element`.');
   });
 
   describe('normal', () => {
     it('passes when checked', () => {
       expect(() => {
         runMatcher(toBeChecked(render(<input checked />).root));
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('passes when default checked', () => {
       expect(() => {
         runMatcher(toBeChecked(render(<input defaultChecked />).root));
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('errors when not checked', () => {
       expect(() => {
         runMatcher(toBeChecked(render(<input />).root));
-      }).toThrowError(
+      }).toThrow(
         'expected <input /> to have a "checked" prop with a value of `true`, instead has a value of `undefined`',
       );
     });
@@ -40,13 +40,13 @@ describe('toBeChecked()', () => {
     it('passes when not checked', () => {
       expect(() => {
         runMatcher(toBeChecked(render(<input />).root), true);
-      }).not.toThrowError();
+      }).not.toThrow();
     });
 
     it('errors when checked', () => {
       expect(() => {
         runMatcher(toBeChecked(render(<input checked />).root), true);
-      }).toThrowError(
+      }).toThrow(
         'expected <input /> not to have a "checked" prop with a value of `true`, instead has a value of `true`',
       );
     });
@@ -54,7 +54,7 @@ describe('toBeChecked()', () => {
     it('errors when default checked', () => {
       expect(() => {
         runMatcher(toBeChecked(render(<input defaultChecked />).root), true);
-      }).toThrowError(
+      }).toThrow(
         'expected <input /> not to have a "defaultChecked" prop with a value of `true`, instead has a value of `true`',
       );
     });

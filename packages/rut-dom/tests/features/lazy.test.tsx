@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '../../src';
 
 // Not supported by RTR: https://github.com/facebook/react/issues/14170
+// eslint-disable-next-line jest/no-disabled-tests
 describe.skip('Lazy', () => {
   // @ts-ignore
   const Comp = React.lazy(() => import('./__mocks__/Lazy'));

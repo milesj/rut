@@ -11,7 +11,7 @@ describe('toBeNodeType()', () => {
   it('errors if a non-Element is passed', () => {
     expect(() => {
       expect(123).toBeNodeType('function-component');
-    }).toThrowError('Expected a Rut `Element`.');
+    }).toThrow('Expected a Rut `Element`.');
   });
 
   it('errors if an invalid node type', () => {
@@ -54,7 +54,7 @@ describe('toBeNodeType()', () => {
       it('passes when types match', () => {
         expect(() => {
           runMatcher(toBeNodeType(expectedNode, typeName));
-        }).not.toThrowError();
+        }).not.toThrow();
       });
 
       it('errors when types dont match', () => {
@@ -77,7 +77,7 @@ describe('toBeNodeType()', () => {
             ),
             true,
           );
-        }).not.toThrowError();
+        }).not.toThrow();
       });
 
       it('errors when types dont match (not negation)', () => {
