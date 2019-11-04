@@ -9,11 +9,11 @@ import { NodeLike } from './internals/react';
 import { AdapterRendererOptions, DebugOptions } from './types';
 
 export default class Result<Props extends object = {}, Root extends Element = Element> {
+  options: AdapterRendererOptions;
+
   protected element: React.ReactElement<Props>;
 
   protected readonly renderer: ReactTestRenderer;
-
-  protected options: AdapterRendererOptions;
 
   private readonly isRutResult = true;
 
@@ -52,6 +52,9 @@ export default class Result<Props extends object = {}, Root extends Element = El
     const { element } = this;
     const root = this.options.createElement(this.renderer.root);
     const rootType = unwrapExoticType((element as unknown) as NodeLike);
+
+    // Pass down options
+    root.options = this.options;
 
     // When being wrapped, we need to drill down and find the
     // element that matches the one initially passed in.
@@ -98,7 +101,7 @@ export default class Result<Props extends object = {}, Root extends Element = El
   unmount = () => {
     doAct(() => {
       this.renderer.unmount();
-    });
+    }, this.options.applyPatches);
   };
 
   /**
@@ -106,17 +109,22 @@ export default class Result<Props extends object = {}, Root extends Element = El
    * it will force an update of the current element.
    */
   update = (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
-    doAct(() => this.renderer.update(this.updateElement(newPropsOrElement, newChildren)));
+    doAct(
+      () => this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
+      this.options.applyPatches,
+    );
   };
 
   /**
    * Like `update` but also awaits the update so that async calls have time to finish.
    */
   updateAndWait = async (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
-    await doAsyncAct(() =>
-      this.renderer.unstable_flushSync(() =>
-        this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
-      ),
+    await doAsyncAct(
+      () =>
+        this.renderer.unstable_flushSync(() =>
+          this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
+        ),
+      this.options.applyPatches,
     );
   };
 

@@ -20,6 +20,7 @@ export function doRender<Props extends object, Root extends Element>(
         ...globalOptions,
         ...options,
       }),
+    options.applyPatches,
   );
 }
 
@@ -33,5 +34,6 @@ export async function doRenderAndWait<Props extends object, Root extends Element
         ...globalOptions,
         ...options,
       }),
+    options.applyPatches,
   );
 }

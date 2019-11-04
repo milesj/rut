@@ -12,6 +12,7 @@ import {
   UnknownProps,
   AtIndexType,
   QueryOptions,
+  AdapterRendererOptions,
 } from './types';
 
 export default abstract class Element<
@@ -19,6 +20,9 @@ export default abstract class Element<
   Props = UnknownProps,
   Host = unknown
 > {
+  // @ts-ignore Set after instantiation
+  options: AdapterRendererOptions;
+
   protected element: ReactTestInstance;
 
   private readonly isRutElement = true;
@@ -54,7 +58,7 @@ export default abstract class Element<
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    doAct(() => prop(event));
+    doAct(() => prop(event), this.options.applyPatches);
 
     return this;
   }
@@ -76,7 +80,7 @@ export default abstract class Element<
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    await doAsyncAct(() => prop(event));
+    await doAsyncAct(() => prop(event), this.options.applyPatches);
   }
 
   /**
@@ -154,12 +158,14 @@ export default abstract class Element<
    * a list of `Element`s is returned.
    */
   query<T extends React.ElementType>(predicate: Predicate, options?: QueryOptions): Element<T>[] {
-    return (
-      this.element
-        .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .map(node => new (this.constructor as any)(node))
-    );
+    return this.element
+      .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
+      .map(node => {
+        const element = this.options.createElement(node);
+        element.options = this.options;
+
+        return element;
+      });
   }
 
   /**

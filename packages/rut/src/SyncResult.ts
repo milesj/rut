@@ -17,7 +17,7 @@ export default class SyncResult<
   rerender = (element: React.ReactElement<Props>, options?: RendererOptions) => {
     Object.assign(this.options, options);
 
-    doAct(() => this.renderer.update(this.updateElement(element)));
+    doAct(() => this.renderer.update(this.updateElement(element)), this.options.applyPatches);
 
     return this.root;
   };

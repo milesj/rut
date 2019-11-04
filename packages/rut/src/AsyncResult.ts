@@ -13,8 +13,10 @@ export default class AsyncResult<
   rerenderAndWait = async (element: React.ReactElement<Props>, options?: RendererOptions) => {
     Object.assign(this.options, options);
 
-    await doAsyncAct(() =>
-      this.renderer.unstable_flushSync(() => this.renderer.update(this.updateElement(element))),
+    await doAsyncAct(
+      () =>
+        this.renderer.unstable_flushSync(() => this.renderer.update(this.updateElement(element))),
+      this.options.applyPatches,
     );
 
     return this.root;

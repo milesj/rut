@@ -17,6 +17,8 @@ export interface RendererOptions {
 }
 
 export interface AdapterRendererOptions extends RendererOptions {
+  /** Patch native APIs to work within the test renderer. */
+  applyPatches: () => () => void;
   /** Wrap a react test instance with a Rut element. */
   createElement: (instance: ReactTestInstance) => RutElement;
 }

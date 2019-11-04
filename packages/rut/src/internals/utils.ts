@@ -59,9 +59,3 @@ export function toArray<T>(value?: null | T | T[]): T[] {
 
   return Array.isArray(value) ? value : [value];
 }
-
-export function unsupported(method: string) {
-  return () => {
-    throw new Error(`\`${method}\` is not supported by Rut.`);
-  };
-}

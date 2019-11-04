@@ -12,6 +12,10 @@ class TestElement extends Element {
   }
 }
 
+function applyPatches() {
+  return () => () => {};
+}
+
 function createElement(instance: ReactTestInstance) {
   return new TestElement(instance);
 }
@@ -22,6 +26,7 @@ export function render<Props extends object = {}>(
 ) {
   return doRender<Props, TestElement>(element, {
     ...options,
+    applyPatches,
     createElement,
   });
 }
@@ -32,6 +37,7 @@ export function renderAndWait<Props extends object = {}>(
 ) {
   return doRenderAndWait<Props, TestElement>(element, {
     ...options,
+    applyPatches,
     createElement,
   });
 }
