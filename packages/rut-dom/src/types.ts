@@ -12,7 +12,7 @@ export type InferComponentProps<T> = T extends HostComponentType
   ? JSX.IntrinsicElements[T]
   : T extends React.ComponentType<infer P>
   ? P
-  : {};
+  : never;
 
 // EVENTS
 

@@ -131,6 +131,12 @@ export type PropsOf<T> = T extends RutResult<infer P>
   ? P
   : {};
 
+export type StructureOf<T> = { [K in keyof T]: T[K] };
+
+export type ElementType<T extends React.ElementType, P> = StructureOf<RutElement<T, P>>;
+
+export type ResultType<P extends object> = StructureOf<RutResult<P>>;
+
 declare module 'react-test-renderer' {
   interface ReactTestRenderer {
     // eslint-disable-next-line @typescript-eslint/camelcase

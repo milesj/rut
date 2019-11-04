@@ -17,7 +17,7 @@ import {
 
 export default abstract class Element<
   Type extends React.ElementType = React.ElementType,
-  Props = UnknownProps,
+  Props = never,
   Host = unknown
 > {
   // @ts-ignore Set after instantiation

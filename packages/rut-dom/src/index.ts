@@ -12,7 +12,7 @@ export * from './mocks';
 export * from './types';
 
 // Rut needs to support portals, but they aren't supported
-// in `react-test-renderer`, because they're DOM only.
+// in `react-test-renderer` because they're DOM only.
 // The only way to currently handle this is by patching
 // the native APIS and restoring later.
 
