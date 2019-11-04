@@ -125,8 +125,6 @@ export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer 
 
 export type PropsOf<T> = T extends RutResult<infer P>
   ? P
-  : T extends RutElement<React.ComponentType<infer P>>
-  ? P
   : T extends RutElement<any, infer P>
   ? P
   : {};
