@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+
 import React from 'react';
+import DomElement from './DomElement';
 
 export type HostComponentType = keyof JSX.IntrinsicElements;
 
@@ -47,3 +50,14 @@ export type ExpandedEventOptions<T> = T extends React.AnimationEvent | Animation
   : T extends React.TransitionEvent | TransitionEvent
   ? { propertyName?: string }
   : {};
+
+export type DomPropsOf<T> = T extends DomElement<React.ElementType, infer P> ? P : never;
+
+declare global {
+  namespace jest {
+    interface Matchers<R, T> {
+      toHaveProp<K extends keyof DomPropsOf<T>>(name: K, value?: DomPropsOf<T>[K]): R;
+      toHaveProps(props: Partial<DomPropsOf<T>>): R;
+    }
+  }
+}

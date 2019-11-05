@@ -125,12 +125,6 @@ export type InferEventFromHandler<T> = T extends (event: infer E) => void ? E : 
 
 export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
 
-export type PropsOf<T> = T extends Result<infer P>
-  ? P
-  : T extends Element<any, infer P>
-  ? P
-  : never;
-
 export type StructureOf<T> = { [K in keyof T]: T[K] };
 
 export type ElementType<T extends React.ElementType, P> = StructureOf<Element<T, P>>;
@@ -158,10 +152,12 @@ declare global {
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;
       toHaveKey(value: string | number): R;
-      toHaveProp<K extends keyof PropsOf<T>>(name: K, value?: PropsOf<T>[K]): R;
-      toHaveProps(props: Partial<PropsOf<T>>): R;
       toHaveRendered(): R;
       toHaveValue(value: unknown): R;
+      // These are typed as `never` so that adapters
+      // can type and overload them correctly.
+      toHaveProp(name: never, value?: unknown): R;
+      toHaveProps(props: never): R;
     }
   }
 }

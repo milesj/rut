@@ -26,6 +26,7 @@ describe('toHaveProps()', () => {
 
     it('passes when using `expect` utils', () => {
       expect(render<DivProps>(<div id="foo" className="foo" />).root).toHaveProps(
+        // @ts-ignore Not typed in core
         expect.objectContaining({
           className: 'foo',
         }),

@@ -412,7 +412,9 @@ describe('Result', () => {
       const result = render<TestProps>(<FuncComp name="mount" />, { strict: true });
 
       expect(result).toMatchSnapshot();
-      expect(result.root).toHaveProp('name', 'mount');
+      expect(result.root).toHaveProps({
+        name: 'mount',
+      });
 
       result.update({ name: 'update' });
 
@@ -424,7 +426,9 @@ describe('Result', () => {
       const result = render<TestProps>(<FuncComp name="mount" />, { wrapper: <Wrapper /> });
 
       expect(result).toMatchSnapshot();
-      expect(result.root).toHaveProp('name', 'mount');
+      expect(result.root).toHaveProps({
+        name: 'mount',
+      });
 
       result.update({ name: 'update' });
 
@@ -439,7 +443,9 @@ describe('Result', () => {
       });
 
       expect(result).toMatchSnapshot();
-      expect(result.root).toHaveProp('name', 'mount');
+      expect(result.root).toHaveProps({
+        name: 'mount',
+      });
 
       result.update({ name: 'update' });
 
