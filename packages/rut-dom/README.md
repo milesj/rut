@@ -32,7 +32,7 @@ describe('<Input />', () => {
 ## Installation
 
 ```
-yarn add --dev rut-dom
+yarn add --dev rut-dom react react-dom
 ```
 
 ## Documentation

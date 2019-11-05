@@ -1,6 +1,6 @@
 {
   "name": "rut-dom",
-  "version": "0.7.0",
+  "version": "0.0.0",
   "description": "React testing for DOM based components.",
   "keywords": [
     "react",

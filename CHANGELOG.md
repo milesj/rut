@@ -19,4 +19,4 @@ yarn remove rut
 yarn add rut-dom
 ```
 
-Then find and change all `rut` imports to `rut-dom`.
+Then find and change all `rut` imports to `rut-dom`. The APIs are the same.

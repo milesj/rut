@@ -1,7 +1,8 @@
 # Setup
 
 Begin by installing the `rut-dom` package (or another renderer specific package) as a dev
-dependency. Since this is a React testing library, be sure `react` is also installed.
+dependency. Since this is a React testing library, be sure `react`, and `react-dom` (or
+`react-native`, etc) is also installed.
 
 ```bash
 yarn add --dev rut-dom

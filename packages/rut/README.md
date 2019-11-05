@@ -34,7 +34,7 @@ application.
 ## Installation
 
 ```
-yarn add --dev rut
+yarn add --dev rut react
 ```
 
 ## Documentation
