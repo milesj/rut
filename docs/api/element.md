@@ -154,7 +154,7 @@ expect(root.name(true)).toBe('<Button />');
 
 ## `query()`
 
-> Element#query\<T extends React.ElementType>(predicate: Predicate | ((node: TestNode, fiber:
+> Element#query\<T extends ElementType>(predicate: Predicate | ((node: TestNode, fiber:
 > FiberNode) => boolean), options?: QueryOptions): Element\<T>[]
 
 A low-level abstraction for querying and finding components in the current tree using a predicate

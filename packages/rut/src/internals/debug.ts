@@ -4,7 +4,7 @@ import React from 'react';
 import { globalOptions } from './config';
 import { getTypeName } from './react';
 import { isAllTextNodes, isClassInstance, toArray } from './utils';
-import { DebugOptions, TestNode } from '../types';
+import { DebugOptions, TestNode, ElementType } from '../types';
 
 type Props = TestNode['props'];
 type Formatter = (value: any) => string;
@@ -415,7 +415,7 @@ export function debugFromElement(element: React.ReactElement, options?: DebugOpt
       instance: null,
       parent: null,
       props,
-      type: element.type as React.ElementType,
+      type: element.type as ElementType,
     },
     options,
   );

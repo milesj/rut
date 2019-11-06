@@ -1,5 +1,5 @@
 import React from 'react';
-import { Predicate, UnknownProps } from './types';
+import { ElementType, Predicate, UnknownProps } from './types';
 import { containsProps } from './internals/element';
 
 /**
@@ -20,6 +20,6 @@ export function whereProps(props: UnknownProps): Predicate {
  * Find all elements where the `type` matches the provided type and
  * have in common the provided props.
  */
-export function whereTypeAndProps(type: React.ElementType, props?: UnknownProps): Predicate {
+export function whereTypeAndProps(type: ElementType, props?: UnknownProps): Predicate {
   return node => node.type === type && (props ? containsProps(node.props, props) : true);
 }

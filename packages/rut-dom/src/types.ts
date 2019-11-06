@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import React from 'react';
+import { ElementType } from 'rut';
 import DomElement from './DomElement';
 
 export type HostComponentType = keyof JSX.IntrinsicElements;
@@ -51,7 +52,7 @@ export type ExpandedEventOptions<T> = T extends React.AnimationEvent | Animation
   ? { propertyName?: string }
   : {};
 
-export type DomPropsOf<T> = T extends DomElement<React.ElementType, infer P> ? P : never;
+export type DomPropsOf<T> = T extends DomElement<ElementType, infer P> ? P : never;
 
 declare global {
   namespace jest {

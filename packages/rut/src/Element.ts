@@ -13,10 +13,11 @@ import {
   AtIndexType,
   QueryOptions,
   AdapterRendererOptions,
+  ElementType,
 } from './types';
 
 export default abstract class Element<
-  Type extends React.ElementType = React.ElementType,
+  Type extends ElementType = ElementType,
   Props = never,
   Host = unknown
 > {
@@ -87,7 +88,7 @@ export default abstract class Element<
    * Search through the current tree for all elements that match the defined React
    * component or HTML type. If any are found, a list of `Element`s is returned.
    */
-  find(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType>[] {
+  find(type: ElementType, props?: UnknownProps): Element<ElementType>[] {
     return this.query(whereTypeAndProps(type, props));
   }
 
@@ -96,11 +97,7 @@ export default abstract class Element<
    * component or HTML type. If any are found, return the `Element` at the defined
    * index. Accepts shorthand `first` and `last` indices.
    */
-  findAt(
-    type: React.ElementType<unknown>,
-    at: AtIndexType,
-    props?: UnknownProps,
-  ): Element<React.ElementType> {
+  findAt(type: ElementType, at: AtIndexType, props?: UnknownProps): Element<ElementType> {
     const results = this.query(whereTypeAndProps(type, props));
     let index: number;
 
@@ -130,7 +127,7 @@ export default abstract class Element<
    * component or HTML type. If exactly 1 is found, a `Element`s is returned,
    * otherwise an error is thrown.
    */
-  findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType> {
+  findOne(type: ElementType, props?: UnknownProps): Element<ElementType> {
     const results = this.find(type, props);
 
     if (results.length !== 1) {
@@ -157,7 +154,7 @@ export default abstract class Element<
    * ReactTestRenderer node and internal React fiber node. If any are found,
    * a list of `Element`s is returned.
    */
-  query<T extends React.ElementType>(predicate: Predicate, options?: QueryOptions): Element<T>[] {
+  query<T extends ElementType>(predicate: Predicate, options?: QueryOptions): Element<T>[] {
     return this.element
       .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
       .map(node => {
@@ -207,6 +204,6 @@ export default abstract class Element<
   abstract createSyntheticEvent(
     name: string,
     eventOrConfig: unknown,
-    type: React.ElementType,
+    type: ElementType,
   ): React.SyntheticEvent;
 }

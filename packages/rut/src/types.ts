@@ -61,6 +61,12 @@ export interface IntegrationOptions {
   runWithTimers: <T>(cb: () => T) => T;
 }
 
+// REACT
+
+// We do not use `React.ElementType` since it includes HTML tag names,
+// and we want an agnostic type used for non-DOM as well.
+export type ElementType<P = any> = string | React.ComponentType<P>;
+
 export interface UnknownProps {
   [name: string]: unknown;
 }
@@ -75,12 +81,12 @@ export interface TestNode {
   } | null;
   parent: TestNode | null;
   props: UnknownProps;
-  type: React.ElementType;
+  type: ElementType;
 }
 
 export interface FiberNode {
   child: FiberNode | null;
-  elementType: React.ElementType;
+  elementType: ElementType;
   index: number;
   key: string | null;
   mode: number;
@@ -88,7 +94,7 @@ export interface FiberNode {
   return: FiberNode | null;
   sibling: FiberNode | null;
   tag: number;
-  type: React.ElementType;
+  type: ElementType;
 }
 
 // QUERY
@@ -127,9 +133,9 @@ export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer 
 
 export type StructureOf<T> = { [K in keyof T]: T[K] };
 
-export type ElementType<T extends React.ElementType, P> = StructureOf<Element<T, P>>;
+export type ElementShape<T extends ElementType, P> = StructureOf<Element<T, P>>;
 
-export type ResultType<P extends object> = StructureOf<Result<P>>;
+export type ResultShape<P extends object> = StructureOf<Result<P>>;
 
 declare module 'react-test-renderer' {
   interface ReactTestRenderer {
@@ -142,14 +148,14 @@ declare module 'react-test-renderer' {
   }
 }
 
-export type PropsOf<T> = T extends Element<React.ElementType, infer P> ? P : never;
+export type PropsOf<T> = T extends Element<ElementType, infer P> ? P : never;
 
 declare global {
   namespace jest {
     interface Matchers<R, T> {
       toBeChecked(): R;
       toBeDisabled(): R;
-      toBeElementType(type: React.ElementType): R;
+      toBeElementType(type: ElementType): R;
       toBeNodeType(type: NodeType): R;
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;

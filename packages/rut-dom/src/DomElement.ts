@@ -1,7 +1,13 @@
 /* eslint-disable lines-between-class-members, no-dupe-class-members, @typescript-eslint/no-explicit-any */
 
 import React from 'react';
-import { AtIndexType, DispatchOptions, InferEventFromHandler, UnknownProps } from 'rut';
+import {
+  ElementType,
+  AtIndexType,
+  DispatchOptions,
+  InferEventFromHandler,
+  UnknownProps,
+} from 'rut';
 import { Element, SyntheticEvent } from 'rut/lib/adapters';
 import { mockSyntheticEvent } from './mocks';
 import {
@@ -14,14 +20,14 @@ import {
 } from './types';
 
 export default class DomElement<
-  Type extends React.ElementType = React.ElementType,
+  Type extends ElementType = ElementType,
   Props = InferComponentProps<Type>,
   Host = InferHostElement<Type>
 > extends Element<Type, Props, Host> {
   createSyntheticEvent(
     eventType: EventType,
     event: unknown,
-    elementType: React.ElementType,
+    elementType: ElementType,
   ): React.SyntheticEvent {
     // Event provided by consumer, so use as is
     if (event instanceof SyntheticEvent) {
@@ -72,7 +78,7 @@ export default class DomElement<
     type: T,
     props?: Partial<P>,
   ): DomElement<T>[];
-  find(type: React.ElementType<unknown>, props?: UnknownProps): DomElement<React.ElementType>[] {
+  find(type: React.ElementType, props?: UnknownProps): DomElement<React.ElementType>[] {
     return super.find(type, props);
   }
 
@@ -87,7 +93,7 @@ export default class DomElement<
     props?: Partial<P>,
   ): DomElement<T>;
   findAt(
-    type: React.ElementType<unknown>,
+    type: React.ElementType,
     at: AtIndexType,
     props?: UnknownProps,
   ): DomElement<React.ElementType> {
@@ -102,7 +108,7 @@ export default class DomElement<
     type: T,
     props?: Partial<P>,
   ): DomElement<T>;
-  findOne(type: React.ElementType<unknown>, props?: UnknownProps): DomElement<React.ElementType> {
+  findOne(type: React.ElementType, props?: UnknownProps): DomElement<React.ElementType> {
     return super.findOne(type, props);
   }
 }
