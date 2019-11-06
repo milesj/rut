@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DomElement can serialize as a snapshot 1`] = `
+exports[`Element can serialize as a snapshot 1`] = `
 <FuncComp>
   <span>
     <b>Child</b>
@@ -8,7 +8,7 @@ exports[`DomElement can serialize as a snapshot 1`] = `
 </FuncComp>
 `;
 
-exports[`DomElement debug() debugs based on element depth 1`] = `
+exports[`Element debug() debugs based on element depth 1`] = `
 "<div>
   <section>
     <article>
@@ -18,7 +18,7 @@ exports[`DomElement debug() debugs based on element depth 1`] = `
 </div>"
 `;
 
-exports[`DomElement debug() debugs based on element depth 2`] = `
+exports[`Element debug() debugs based on element depth 2`] = `
 "<section>
   <article>
     <h1>Title</h1>
@@ -26,4 +26,4 @@ exports[`DomElement debug() debugs based on element depth 2`] = `
 </section>"
 `;
 
-exports[`DomElement debug() debugs based on element depth 3`] = `"<h1>Title</h1>"`;
+exports[`Element debug() debugs based on element depth 3`] = `"<h1>Title</h1>"`;

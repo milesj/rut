@@ -1,30 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { ReactTestInstance } from 'react-test-renderer';
-import { doRender, doRenderAndWait, Element, SyntheticEvent } from '../adapters';
+import { doRender, doRenderAndWait, SyntheticEvent } from '../adapters';
+import RutElement from '../Element';
 import SyncResult from '../SyncResult';
 import AsyncResult from '../AsyncResult';
 import { MatchResult, RendererOptions } from '../types';
 
 export interface RenderTestSuite {
+  mockSyntheticEvent<T>(type: string, options?: unknown): T;
+
   render<P extends object>(
     element: React.ReactElement<P>,
     options?: RendererOptions,
-  ): SyncResult<P, Element<any, P>>;
+  ): SyncResult<P, RutElement<any, P>>;
 
   renderAndWait<P extends object>(
     element: React.ReactElement<P>,
     options?: RendererOptions,
-  ): Promise<AsyncResult<P, Element<any, P>>>;
+  ): Promise<AsyncResult<P, RutElement<any, P>>>;
 }
 
-class TestElement extends Element {
-  createSyntheticEvent(type: string) {
-    // @ts-ignore
-    return new SyntheticEvent(type, {
-      preventDefault() {},
-      stopPropagation() {},
-    });
+export function mockSyntheticEvent<T>(type: string): T {
+  // @ts-ignore
+  return new SyntheticEvent(type, {
+    preventDefault() {},
+    stopPropagation() {},
+  });
+}
+
+export class TestElement extends RutElement {
+  createSyntheticEvent(type: string, event: unknown) {
+    if (event instanceof SyntheticEvent) {
+      return event;
+    }
+
+    return mockSyntheticEvent(type) as React.SyntheticEvent;
   }
 }
 
