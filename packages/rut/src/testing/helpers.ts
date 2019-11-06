@@ -1,6 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { ReactTestInstance } from 'react-test-renderer';
 import { doRender, doRenderAndWait, Element, SyntheticEvent } from '../adapters';
+import SyncResult from '../SyncResult';
+import AsyncResult from '../AsyncResult';
 import { MatchResult, RendererOptions } from '../types';
+
+export interface RenderTestSuite {
+  render<P extends object>(
+    element: React.ReactElement<P>,
+    options?: RendererOptions,
+  ): SyncResult<P, Element<any, P>>;
+  renderAndWait<P extends object>(
+    element: React.ReactElement<P>,
+    options?: RendererOptions,
+  ): Promise<AsyncResult<P, Element<any, P>>>;
+}
 
 class TestElement extends Element {
   createSyntheticEvent(type: string) {

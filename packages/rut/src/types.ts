@@ -142,6 +142,8 @@ declare module 'react-test-renderer' {
   }
 }
 
+export type PropsOf<T> = T extends Element<React.ElementType, infer P> ? P : never;
+
 declare global {
   namespace jest {
     interface Matchers<R, T> {
@@ -152,12 +154,10 @@ declare global {
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;
       toHaveKey(value: string | number): R;
+      toHaveProp<K extends keyof PropsOf<T>>(name: K, value?: PropsOf<T>[K]): R;
+      toHaveProps(props: Partial<PropsOf<T>>): R;
       toHaveRendered(): R;
       toHaveValue(value: unknown): R;
-      // These are typed as `never` so that adapters
-      // can type and overload them correctly.
-      toHaveProp(name: never, value?: unknown): R;
-      toHaveProps(props: never): R;
     }
   }
 }
