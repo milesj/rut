@@ -25,15 +25,6 @@ interface ReactDOMLike {
   findDOMNode?: () => unknown;
 }
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace NodeJS {
-    interface Global {
-      ReactDOM: ReactDOMLike;
-    }
-  }
-}
-
 function applyPatches(): () => void {
   let ReactDOM: ReactDOMLike = {};
   let nativeCreatePortal: ReactDOMLike['createPortal'];
@@ -45,7 +36,7 @@ function applyPatches(): () => void {
     nativeCreatePortal = ReactDOM.createPortal;
     nativeFindNode = ReactDOM.findDOMNode;
   } catch {
-    global.ReactDOM = ReactDOM;
+    // Nothing
   }
 
   ReactDOM.createPortal = children => children;
@@ -60,10 +51,6 @@ function applyPatches(): () => void {
 
     if (nativeFindNode) {
       ReactDOM.findDOMNode = nativeFindNode;
-    }
-
-    if (global.ReactDOM) {
-      delete global.ReactDOM;
     }
   };
 }

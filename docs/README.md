@@ -62,7 +62,7 @@ while avoiding implementation details.
 - Hooks: `useState()`, `useRef()`, `useEffect()`, and all other built-in hooks!
 - Context: `React.createContext()`, `useContext`, `contextType`, and even legacy.
 - Refs: `React.createRef()`, `React.forwardRef()`, callback refs, and string refs.
-- Portals: `ReactDOM.createPortal()` (requires JSDOM).
+- Portals: Even `ReactDOM.createPortal()` (we patch over `react-dom`)!
 - Error boundaries, fragments, strict mode, and more!
 
 ## Not Supported

@@ -11,6 +11,7 @@ export interface RenderTestSuite {
     element: React.ReactElement<P>,
     options?: RendererOptions,
   ): SyncResult<P, Element<any, P>>;
+
   renderAndWait<P extends object>(
     element: React.ReactElement<P>,
     options?: RendererOptions,
