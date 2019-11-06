@@ -1,5 +1,5 @@
 import * as integration from 'jest-rut/src/integration';
-import { integrate } from 'rut/src/configure';
+import { integrate } from 'rut/src/internals/config';
 
 // Since this is a monorepo and our imports use lib/,
 // it causes problems when running tests as Jest uses src/.

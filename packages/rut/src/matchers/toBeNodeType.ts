@@ -1,7 +1,7 @@
 import Element from '../Element';
 import { MatchResult, NodeType } from '../types';
 import { isRutElement } from '../internals/utils';
-import { formatValue } from '../helpers';
+import { formatValue } from '../internals/react';
 
 // Keep in sync with React upstream!
 // https://github.com/facebook/react/blob/master/packages/shared/ReactWorkTags.js

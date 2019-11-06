@@ -11,6 +11,6 @@
 - [Predicates](./predicates.md)
 - [Caveats](./caveats.md)
 - Examples
-  - [Async](https://github.com/milesj/rut/blob/master/packages/rut/tests/examples/async.test.tsx)
-  - [Forms](https://github.com/milesj/rut/blob/master/packages/rut/tests/examples/forms.test.tsx)
+  - [Async](https://github.com/milesj/rut/blob/master/packages/rut-dom/tests/examples/async.test.tsx)
+  - [Forms](https://github.com/milesj/rut/blob/master/packages/rut-dom/tests/examples/forms.test.tsx)
 - [Changelog](https://github.com/milesj/rut/blob/master/CHANGELOG.md)

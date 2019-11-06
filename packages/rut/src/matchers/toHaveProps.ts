@@ -1,7 +1,7 @@
 import Element from '../Element';
-import { formatValue } from '../helpers';
-import { MatchResult, UnknownProps } from '../types';
+import { formatValue } from '../internals/react';
 import { isRutElement, deepEqual } from '../internals/utils';
+import { MatchResult, UnknownProps } from '../types';
 
 /**
  * Check that an element's props match all the provided props and their values.

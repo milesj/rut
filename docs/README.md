@@ -6,7 +6,7 @@ practices, and reduce flakiness and code smells. It is a wrapper and abstraction
 process, while doing all the hard work behind the scenes.
 
 ```tsx
-import { render } from 'rut';
+import { render } from 'rut-dom';
 import Input, { InputProps } from '../src/Input';
 
 describe('<Input />', () => {

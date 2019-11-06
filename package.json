@@ -18,7 +18,7 @@
     "posttest": "yarn run eslint"
   },
   "devDependencies": {
-    "@milesj/build-tools": "^0.57.0",
+    "@milesj/build-tools": "^0.58.0",
     "@types/jest": "^24.0.21",
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.3",

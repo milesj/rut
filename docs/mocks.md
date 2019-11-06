@@ -2,45 +2,9 @@
 
 What is testing without mocks? The following mock functions can be used for easier testing.
 
-## `mockEvent()`
+## Shared
 
-> mockEvent\<T = Event>(type: string, options?: EventOptions): T
-
-If for some reason you need to mock a native DOM event, `mockEvent()` will do just that. Based on
-the defined event type, an appropriate sub-class will be used. For example, if the `type` is
-`click`, then a `MouseEvent` will be used.
-
-If using TypeScript, it's encouraged to type the event using generics.
-
-```ts
-import { mockEvent } from 'rut';
-
-const event = mockEvent<MouseEvent>('click');
-```
-
-> Event type format must match the native host format, usually lower case. For example, `click`
-> instead of `onClick`.
-
-### Options
-
-All options are _optional_.
-
-- `currentTarget` (`HTMLElement`) - Partial element in which the event was bound to.
-- `target` (`HTMLElement`) - Partial element that triggered the event. If `currentTarget` is not
-  defined, this will be used for both fields.
-- **AnimationEvent**
-  - `animationName` (`string`) - Name of the animation being triggered.
-- **MouseEvent, KeyboardEvent, TouchEvent**
-  - `altKey` ( `boolean`) - The alt key was pressed.
-  - `ctrlKey` (`boolean`) - The control key was pressed.
-  - `key` (`string`) - The key that was pressed.
-  - `keyCode` (`number`) - The key that was pressed, as a numerical code.
-  - `metaKey` (`boolean`) - The command key was pressed (Mac only).
-  - `shiftKey` (`boolean`) - The shift key was pressed.
-- **TransitionEvent**
-  - `propertyName` (`string`) - Name of the property that triggered the transition.
-
-## `mockFetch()`
+### `mockFetch()`
 
 > mockFetch(matcher: MockMatcher, response: MockResponse | MockResponseFunction, options?:
 > MockOptions): FetchMockStatic
@@ -49,7 +13,7 @@ Generates and mocks the global `fetch()` with pre-defined responses, using the r
 [fetch-mock](http://www.wheresrhys.co.uk/fetch-mock/) library.
 
 ```tsx
-import { renderAndWait, mockFetch } from 'rut';
+import { renderAndWait, mockFetch } from 'rut-dom';
 import UserProfile, { UserProfileProps } from '../src/UserProfile';
 
 describe('<Form />', () => {
@@ -104,7 +68,47 @@ afterEach(() => {
 });
 ```
 
-## `mockSyntheticEvent()`
+## DOM
+
+### `mockEvent()`
+
+> mockEvent\<T = Event>(type: string, options?: EventOptions): T
+
+If for some reason you need to mock a native DOM event, `mockEvent()` will do just that. Based on
+the defined event type, an appropriate sub-class will be used. For example, if the `type` is
+`click`, then a `MouseEvent` will be used.
+
+If using TypeScript, it's encouraged to type the event using generics.
+
+```ts
+import { mockEvent } from 'rut-dom';
+
+const event = mockEvent<MouseEvent>('click');
+```
+
+> Event type format must match the native host format, usually lower case. For example, `click`
+> instead of `onClick`.
+
+#### Options
+
+All options are _optional_.
+
+- `currentTarget` (`HTMLElement`) - Partial element in which the event was bound to.
+- `target` (`HTMLElement`) - Partial element that triggered the event. If `currentTarget` is not
+  defined, this will be used for both fields.
+- **AnimationEvent**
+  - `animationName` (`string`) - Name of the animation being triggered.
+- **MouseEvent, KeyboardEvent, TouchEvent**
+  - `altKey` ( `boolean`) - The alt key was pressed.
+  - `ctrlKey` (`boolean`) - The control key was pressed.
+  - `key` (`string`) - The key that was pressed.
+  - `keyCode` (`number`) - The key that was pressed, as a numerical code.
+  - `metaKey` (`boolean`) - The command key was pressed (Mac only).
+  - `shiftKey` (`boolean`) - The shift key was pressed.
+- **TransitionEvent**
+  - `propertyName` (`string`) - Name of the property that triggered the transition.
+
+### `mockSyntheticEvent()`
 
 > mockSyntheticEvent\<T = React.SyntheticEvent>(type: EventType, options?: EventOptions): T
 
@@ -113,7 +117,7 @@ the defined event type, an appropriate sub-class will be used. For example, if t
 `onClick`, then a `React.MouseEvent` (with a native `MouseEvent` of type `click`) will be used.
 
 ```tsx
-import { render, mockSyntheticEvent } from 'rut';
+import { render, mockSyntheticEvent } from 'rut-dom';
 import Form, { FormProps } from '../src/Form';
 
 describe('<Form />', () => {

@@ -44,7 +44,7 @@ export function isRutElement(value: unknown) {
     typeof value === 'object' &&
     value !== null &&
     // @ts-ignore Allow private access
-    (value.constructor.name === 'Element' || (value as Element).isRutElement === true)
+    (value.constructor.name.endsWith('Element') || (value as Element).isRutElement === true)
   ) {
     return;
   }
@@ -58,10 +58,4 @@ export function toArray<T>(value?: null | T | T[]): T[] {
   }
 
   return Array.isArray(value) ? value : [value];
-}
-
-export function unsupported(method: string) {
-  return () => {
-    throw new Error(`\`${method}\` is not supported by Rut.`);
-  };
 }

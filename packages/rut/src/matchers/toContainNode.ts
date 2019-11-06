@@ -2,7 +2,7 @@ import React from 'react';
 import Element from '../Element';
 import { debugFromElement } from '../internals/debug';
 import { isAllTextNodes, isRutElement, deepEqual } from '../internals/utils';
-import { formatValue } from '../helpers';
+import { formatValue } from '../internals/react';
 import { MatchResult } from '../types';
 
 /**

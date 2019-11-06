@@ -1,13 +1,13 @@
 import Element from '../Element';
-import { formatValue } from '../helpers';
-import { MatchResult } from '../types';
+import { formatValue } from '../internals/react';
 import { isRutElement } from '../internals/utils';
+import { MatchResult, ElementType } from '../types';
 
 /**
  * Check that an element is a valid React element type.
  * Accepts either a class or function component, or the name of a host component (HTML tag).
  */
-export default function toBeElementType(element: Element, type: React.ElementType): MatchResult {
+export default function toBeElementType(element: Element, type: ElementType): MatchResult {
   isRutElement(element);
 
   // @ts-ignore Allow internal access

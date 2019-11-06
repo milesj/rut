@@ -1,6 +1,6 @@
 import Element from '../Element';
-import { MatchResult } from '../types';
 import { isRutElement } from '../internals/utils';
+import { MatchResult } from '../types';
 
 /**
  * Check that a component has rendered children. If a component returns `null`,

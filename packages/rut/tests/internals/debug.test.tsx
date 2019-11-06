@@ -1,8 +1,8 @@
 import React from 'react';
-import { render } from '../../src/render';
-import { ClassComp, FuncComp, TestProps } from '../fixtures';
+import { render } from '../../src/testing/helpers';
+import { ClassComp, FuncComp, TestProps } from '../../src/testing/fixtures';
 
-describe('debug', () => {
+describe('debug()', () => {
   it('adds key and ref props first', () => {
     const ref = React.createRef<ClassComp>();
     const result = render<TestProps>(<ClassComp key={123} ref={ref} name="test" />);

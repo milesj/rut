@@ -17,7 +17,7 @@ waiting for them to resolve before returning a rendered result. This is typicall
 and other methods like `*AndWait`.
 
 An example of this can be found in the
-[official async tests](https://github.com/milesj/rut/blob/master/packages/rut/tests/examples/async.test.tsx).
+[official async tests](https://github.com/milesj/rut/blob/master/packages/rut-dom/tests/examples/async.test.tsx).
 
 ## How to check the props of an element?
 

@@ -5,19 +5,19 @@ import { doAct, doAsyncAct } from './internals/act';
 import { debug } from './internals/debug';
 import { unwrapExoticType } from './internals/element';
 import { deepEqual } from './internals/utils';
-import { RendererOptions, DebugOptions } from './types';
-import { NodeLike } from './helpers';
+import { NodeLike } from './internals/react';
+import { AdapterRendererOptions, DebugOptions } from './types';
 
-export default class Result<Props extends object = {}> {
+export default class Result<Props extends object = {}, Root extends Element = Element> {
+  options: AdapterRendererOptions;
+
   protected element: React.ReactElement<Props>;
 
   protected readonly renderer: ReactTestRenderer;
 
-  protected options: RendererOptions;
-
   private readonly isRutResult = true;
 
-  constructor(element: React.ReactElement<Props>, options: RendererOptions = {}) {
+  constructor(element: React.ReactElement<Props>, options: AdapterRendererOptions) {
     this.options = options;
     this.element = element;
     this.renderer = create(
@@ -48,10 +48,13 @@ export default class Result<Props extends object = {}> {
   /**
    * Return the root component as an `Element`.
    */
-  get root(): Element<React.ComponentType<Props>> {
+  get root(): Root {
     const { element } = this;
-    const root = new Element(this.renderer.root);
+    const root = this.options.createElement(this.renderer.root);
     const rootType = unwrapExoticType((element as unknown) as NodeLike);
+
+    // Pass down options
+    root.options = this.options;
 
     // When being wrapped, we need to drill down and find the
     // element that matches the one initially passed in.
@@ -65,12 +68,12 @@ export default class Result<Props extends object = {}> {
         throw new Error('Unable to find root node. Wrapping elements may be obfuscating it.');
       }
 
-      return nodes[0];
+      return nodes[0] as Root;
     }
 
     // `StrictMode` does not appear in the rendered tree,
     // so we don't have to worry about handling it.
-    return root;
+    return root as Root;
   }
 
   /**
@@ -98,7 +101,7 @@ export default class Result<Props extends object = {}> {
   unmount = () => {
     doAct(() => {
       this.renderer.unmount();
-    });
+    }, this.options.applyPatches);
   };
 
   /**
@@ -106,17 +109,22 @@ export default class Result<Props extends object = {}> {
    * it will force an update of the current element.
    */
   update = (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
-    doAct(() => this.renderer.update(this.updateElement(newPropsOrElement, newChildren)));
+    doAct(
+      () => this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
+      this.options.applyPatches,
+    );
   };
 
   /**
    * Like `update` but also awaits the update so that async calls have time to finish.
    */
   updateAndWait = async (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
-    await doAsyncAct(() =>
-      this.renderer.unstable_flushSync(() =>
-        this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
-      ),
+    await doAsyncAct(
+      () =>
+        this.renderer.unstable_flushSync(() =>
+          this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
+        ),
+      this.options.applyPatches,
     );
   };
 

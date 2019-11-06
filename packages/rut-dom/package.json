@@ -1,0 +1,29 @@
+{
+  "name": "rut-dom",
+  "version": "0.0.0",
+  "description": "React testing for DOM based components.",
+  "keywords": [
+    "react",
+    "testing",
+    "dom"
+  ],
+  "repository": "https://github.com/milesj/rut/tree/master/packages/rut-dom",
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "peerDependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
+  "dependencies": {
+    "@types/react-dom": "*",
+    "rut": "^0.8.1"
+  }
+}

@@ -10,7 +10,7 @@ practices, and reduce flakiness and code smells. It is a wrapper and abstraction
 process, while doing all the hard work behind the scenes.
 
 ```tsx
-import { render } from 'rut';
+import { render } from 'rut-dom';
 import Input, { InputProps } from '../src/Input';
 
 describe('<Input />', () => {
@@ -27,6 +27,10 @@ describe('<Input />', () => {
   });
 });
 ```
+
+The `rut` package provides core functionality for adapters to expand upon. For example, a DOM
+adapter for `react-dom`, a mobile native adapter for `react-native`, or even a custom adapter unique
+to your application.
 
 ## Features
 

@@ -9,24 +9,9 @@ practices, and reduce flakiness and code smells. It is a wrapper and abstraction
 [react-test-renderer](https://reactjs.org/docs/test-renderer.html) that simplifies the test writing
 process, while doing all the hard work behind the scenes.
 
-```tsx
-import { render } from 'rut';
-import Input, { InputProps } from '../src/Input';
-
-describe('<Input />', () => {
-  it('renders an input field', () => {
-    const { root, update } = render<InputProps>(<Input name="rut" value="foo" />);
-
-    expect(root).toHaveProp('name', 'rut');
-    expect(root).toHaveValue('foo');
-    expect(root).not.toBeDisabled();
-
-    update({ disabled: true });
-
-    expect(root).toBeDisabled();
-  });
-});
-```
+This package provides core functionality for adapters to expand upon. For example, a DOM adapter for
+`react-dom`, a mobile native adapter for `react-native`, or even a custom adapter unique to your
+application.
 
 ## Features
 
@@ -49,7 +34,7 @@ describe('<Input />', () => {
 ## Installation
 
 ```
-yarn add --dev rut
+yarn add --dev rut react
 ```
 
 ## Documentation

@@ -3,20 +3,10 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import { configure } from './configure';
-import matchers from './matchers';
-import { render, renderAndWait } from './render';
-import BaseElement from './Element';
-import BaseResult from './Result';
-import { StructureOf } from './types';
+import { configure } from './internals/config';
 
-export * from './helpers';
-export * from './mocks';
 export * from './predicates';
+export * from './mocks';
 export * from './types';
 
-export { configure, matchers, render, renderAndWait };
-
-// We don't want to export the classes, only the types
-export type Element<T extends React.ElementType> = StructureOf<BaseElement<T>>;
-export type Result<T extends object> = StructureOf<BaseResult<T>>;
+export { configure };

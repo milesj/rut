@@ -22,7 +22,7 @@ object, or nothing (will create an event behind the scenes). To ease integration
 [`mockSyntheticEvent()`](../mocks.md) function.
 
 ```tsx
-import { render, mockSyntheticEvent } from 'rut';
+import { render, mockSyntheticEvent } from 'rut-dom';
 
 const { root } = render<LoginFormProps>(<LoginForm />);
 
@@ -56,7 +56,7 @@ Like [`dispatch()`](#dispatch) but waits for async calls within the dispatch and
 complete before returning the re-rendered result. Because of this, the function must be `await`ed.
 
 ```tsx
-import { render } from 'rut';
+import { render } from 'rut-dom';
 
 it('waits for update call to finish', async () => {
   const { root } = render<EditProfileProps>(<EditProfile id={1} onSubmit={updateUser} />);
@@ -154,7 +154,7 @@ expect(root.name(true)).toBe('<Button />');
 
 ## `query()`
 
-> Element#query\<T extends React.ElementType>(predicate: Predicate | ((node: TestNode, fiber:
+> Element#query\<T extends ElementType>(predicate: Predicate | ((node: TestNode, fiber:
 > FiberNode) => boolean), options?: QueryOptions): Element\<T>[]
 
 A low-level abstraction for querying and finding components in the current tree using a predicate

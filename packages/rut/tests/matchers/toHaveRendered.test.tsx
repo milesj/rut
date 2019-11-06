@@ -1,10 +1,9 @@
 /* eslint-disable jest/expect-expect, rut/require-render-generics */
 
 import React from 'react';
-import { render } from '../../src/render';
 import toHaveRendered from '../../src/matchers/toHaveRendered';
-import { runMatcher } from '../helpers';
-import { FuncComp, ClassComp } from '../fixtures';
+import { render, runMatcher } from '../../src/testing/helpers';
+import { FuncComp, ClassComp } from '../../src/testing/fixtures';
 
 describe('toHaveRendered()', () => {
   function NullRender() {
@@ -46,7 +45,7 @@ describe('toHaveRendered()', () => {
   it('errors if a non-Element is passed', () => {
     expect(() => {
       expect(123).toHaveRendered();
-    }).toThrowError('Expected a Rut `Element`.');
+    }).toThrow('Expected a Rut `Element`.');
   });
 
   it('returns false if null was returned', () => {

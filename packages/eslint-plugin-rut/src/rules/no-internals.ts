@@ -65,7 +65,8 @@ const rule: Rule.RuleModule = {
           node.type === 'ImportDeclaration' &&
           node.source.type === 'Literal' &&
           String(node.source.value).startsWith('rut') &&
-          String(node.source.value) !== 'rut'
+          String(node.source.value) !== 'rut' &&
+          !String(node.source.value).includes('testing')
         ) {
           context.report({
             node,

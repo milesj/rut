@@ -1,16 +1,15 @@
 /* eslint-disable jest/expect-expect */
 
 import React from 'react';
-import { render } from '../../src/render';
 import toContainNode from '../../src/matchers/toContainNode';
-import { runMatcher } from '../helpers';
-import { FuncComp, ClassComp } from '../fixtures';
+import { render, runMatcher } from '../../src/testing/helpers';
+import { FuncComp, ClassComp } from '../../src/testing/fixtures';
 
 describe('toContainNode()', () => {
   it('errors if a non-Element is passed', () => {
     expect(() => {
       expect(123).toContainNode('Foo');
-    }).toThrowError('Expected a Rut `Element`.');
+    }).toThrow('Expected a Rut `Element`.');
   });
 
   it('supports non-referential nodes (shallow equality)', () => {
@@ -38,7 +37,7 @@ describe('toContainNode()', () => {
 
     expect(() => {
       runMatcher(toContainNode(render<{}>(<TestComp />).root, <span id="foo">Foo</span>));
-    }).toThrowError('expected <TestComp /> to contain node <span id="foo" />');
+    }).toThrow('expected <TestComp /> to contain node <span id="foo" />');
   });
 
   it('supports nodes passed through props', () => {

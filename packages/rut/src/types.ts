@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-namespace */
 
 import React from 'react';
-import RutElement from './Element';
-import RutResult from './Result';
+import { ReactTestInstance } from 'react-test-renderer';
+import Element from './Element';
+import Result from './Result';
 
 export interface RendererOptions {
   /** Options to pass to the debugger. */
@@ -13,6 +14,13 @@ export interface RendererOptions {
   strict?: boolean;
   /** Wraps the root element in the provided React element. */
   wrapper?: React.ReactElement;
+}
+
+export interface AdapterRendererOptions extends RendererOptions {
+  /** Patch native APIs to work within the test renderer. */
+  applyPatches: () => () => void;
+  /** Wrap a react test instance with a Rut element. */
+  createElement: (instance: ReactTestInstance) => Element;
 }
 
 export interface DebugOptions {
@@ -43,15 +51,21 @@ export interface DispatchOptions {
   propagate?: boolean;
 }
 
-export interface GlobalOptions extends RendererOptions {
-  /** React renderer that is being tested. */
-  renderer?: 'dom';
+export interface QueryOptions {
+  /** Search through the entire React trender tree. */
+  deep?: boolean;
 }
 
 export interface IntegrationOptions {
   /** Execute the callback and flush all timers before returning. */
   runWithTimers: <T>(cb: () => T) => T;
 }
+
+// REACT
+
+// We do not use `React.ElementType` since it includes HTML tag names,
+// and we want an agnostic type used for non-DOM as well.
+export type ElementType<P = any> = string | React.ComponentType<P>;
 
 export interface UnknownProps {
   [name: string]: unknown;
@@ -67,12 +81,12 @@ export interface TestNode {
   } | null;
   parent: TestNode | null;
   props: UnknownProps;
-  type: React.ElementType;
+  type: ElementType;
 }
 
 export interface FiberNode {
   child: FiberNode | null;
-  elementType: React.ElementType;
+  elementType: ElementType;
   index: number;
   key: string | null;
   mode: number;
@@ -80,7 +94,7 @@ export interface FiberNode {
   return: FiberNode | null;
   sibling: FiberNode | null;
   tag: number;
-  type: React.ElementType;
+  type: ElementType;
 }
 
 // QUERY
@@ -111,69 +125,17 @@ export type NodeType =
   | 'host-component'
   | 'memo';
 
-// COMPONENTS
-
-export type HostComponentType = keyof JSX.IntrinsicElements;
-
-export type InferHostElement<T> = T extends keyof HTMLElementTagNameMap
-  ? HTMLElementTagNameMap[T]
-  : T extends keyof SVGElementTagNameMap
-  ? SVGElementTagNameMap[T]
-  : unknown;
-
-export type InferComponentProps<T> = T extends HostComponentType
-  ? JSX.IntrinsicElements[T]
-  : T extends React.ComponentType<infer P>
-  ? P
-  : {};
-
-// EVENTS
+// AUGMENTATION
 
 export type InferEventFromHandler<T> = T extends (event: infer E) => void ? E : never;
 
 export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
 
-export type EventMap<T> = Required<
-  Omit<React.DOMAttributes<T>, 'children' | 'dangerouslySetInnerHTML'>
->;
-
-export type EventType = keyof EventMap<unknown>;
-
-export type EventOptions<T, E> = {
-  currentTarget?: Partial<T>;
-  target?: Partial<T>;
-} & ExpandedEventOptions<E>;
-
-export type ExpandedEventOptions<T> = T extends React.AnimationEvent | AnimationEvent
-  ? { animationName?: string }
-  : T extends
-      | React.MouseEvent
-      | React.KeyboardEvent
-      | React.TouchEvent
-      | MouseEvent
-      | KeyboardEvent
-      | TouchEvent
-  ? {
-      altKey?: boolean;
-      ctrlKey?: boolean;
-      key?: string;
-      keyCode?: number;
-      metaKey?: boolean;
-      shiftKey?: boolean;
-    }
-  : T extends React.TransitionEvent | TransitionEvent
-  ? { propertyName?: string }
-  : {};
-
-// AUGMENTATION
-
-export type PropsOf<T> = T extends RutResult<infer P>
-  ? P
-  : T extends RutElement<infer E>
-  ? InferComponentProps<E>
-  : {};
-
 export type StructureOf<T> = { [K in keyof T]: T[K] };
+
+export type ElementShape<T extends ElementType, P> = StructureOf<Element<T, P>>;
+
+export type ResultShape<P extends object> = StructureOf<Result<P>>;
 
 declare module 'react-test-renderer' {
   interface ReactTestRenderer {
@@ -186,12 +148,14 @@ declare module 'react-test-renderer' {
   }
 }
 
+export type PropsOf<T> = T extends Element<ElementType, infer P> ? P : never;
+
 declare global {
   namespace jest {
     interface Matchers<R, T> {
       toBeChecked(): R;
       toBeDisabled(): R;
-      toBeElementType(type: React.ElementType): R;
+      toBeElementType(type: ElementType): R;
       toBeNodeType(type: NodeType): R;
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;

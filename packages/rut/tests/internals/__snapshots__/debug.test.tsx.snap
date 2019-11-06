@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`debug adds key and ref props first 1`] = `
+exports[`debug() adds key and ref props first 1`] = `
 <ClassComp key="123" ref={new ClassComp()} name="test">
   <div />
 </ClassComp>
 `;
 
-exports[`debug adds key and ref props first 2`] = `
+exports[`debug() adds key and ref props first 2`] = `
 "<ClassComp name=\\"test\\">
   <div />
 </ClassComp>"
 `;
 
-exports[`debug doesnt render children 1`] = `"<ChildComp baz bar={123} foo=\\"abc\\" />"`;
+exports[`debug() doesnt render children 1`] = `"<ChildComp baz bar={123} foo=\\"abc\\" />"`;
 
-exports[`debug element output hides DOM output 1`] = `
+exports[`debug() element output hides DOM output 1`] = `
 "<Outer>
   <Header>TitleDescription!</Header>
   Description.
@@ -22,7 +22,7 @@ exports[`debug element output hides DOM output 1`] = `
 </Outer>"
 `;
 
-exports[`debug element output hides React output 1`] = `
+exports[`debug() element output hides React output 1`] = `
 "<main role=\\"main\\">
   <div>
     <header id=\\"header\\">
@@ -37,7 +37,7 @@ exports[`debug element output hides React output 1`] = `
 </main>"
 `;
 
-exports[`debug element output renders normal 1`] = `
+exports[`debug() element output renders normal 1`] = `
 "<Outer>
   <main role=\\"main\\">
     <Header>
@@ -58,13 +58,13 @@ exports[`debug element output renders normal 1`] = `
 </Outer>"
 `;
 
-exports[`debug formats array props 1`] = `
+exports[`debug() formats array props 1`] = `
 <ArrayProp list={[ "string", 123, true, null, {}, ... 1 more ]}>
   <ul />
 </ArrayProp>
 `;
 
-exports[`debug formats array props 2`] = `
+exports[`debug() formats array props 2`] = `
 <ArrayProp
   list={[
     { id: 1, name: "Bruce Wayne" },
@@ -79,37 +79,37 @@ exports[`debug formats array props 2`] = `
 </ArrayProp>
 `;
 
-exports[`debug formats function and class instance props 1`] = `
+exports[`debug() formats function and class instance props 1`] = `
 <FuncProp func={funcName()} inst={new ClassName()}>
   <div />
 </FuncProp>
 `;
 
-exports[`debug formats map props 1`] = `
+exports[`debug() formats map props 1`] = `
 <MapProp map={new Map({ foo: 123, bar: 456, baz: 789 })}>
   <div />
 </MapProp>
 `;
 
-exports[`debug formats object props 1`] = `
+exports[`debug() formats object props 1`] = `
 <ObjectProp data={{ id: 1, name: "Bruce Wayne", alias: "Batman", age: 40 }}>
   <div />
 </ObjectProp>
 `;
 
-exports[`debug formats regex props 1`] = `
+exports[`debug() formats regex props 1`] = `
 <RegexProp pattern={/foo|bar|baz/u}>
   <div />
 </RegexProp>
 `;
 
-exports[`debug formats set props 1`] = `
+exports[`debug() formats set props 1`] = `
 <SetProp set={new Set([ "foo", "bar", "baz" ])}>
   <div />
 </SetProp>
 `;
 
-exports[`debug sorts props, and groups into: true first, everything else, event handlers last 1`] = `
+exports[`debug() sorts props, and groups into: true first, everything else, event handlers last 1`] = `
 <SortOrder
   enabled
   content={<div />}
@@ -122,7 +122,7 @@ exports[`debug sorts props, and groups into: true first, everything else, event 
 </SortOrder>
 `;
 
-exports[`debug sorts props, and groups into: true first, everything else, event handlers last 2`] = `
+exports[`debug() sorts props, and groups into: true first, everything else, event handlers last 2`] = `
 "<SortOrder
   content={<div />}
   enabled
@@ -135,7 +135,7 @@ exports[`debug sorts props, and groups into: true first, everything else, event 
 </SortOrder>"
 `;
 
-exports[`debug sorts props, and groups into: true first, everything else, event handlers last 3`] = `
+exports[`debug() sorts props, and groups into: true first, everything else, event handlers last 3`] = `
 "<SortOrder
   enabled
   selected={false}
@@ -148,7 +148,7 @@ exports[`debug sorts props, and groups into: true first, everything else, event 
 </SortOrder>"
 `;
 
-exports[`debug sorts props, and groups into: true first, everything else, event handlers last 4`] = `
+exports[`debug() sorts props, and groups into: true first, everything else, event handlers last 4`] = `
 "<SortOrder
   onClick={mockConstructor()}
   selected={false}

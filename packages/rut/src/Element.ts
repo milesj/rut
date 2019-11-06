@@ -1,32 +1,29 @@
-/* eslint-disable lines-between-class-members, no-dupe-class-members, @typescript-eslint/no-explicit-any */
-
 import React from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
+import { getTypeName } from './internals/react';
+import { doAct, doAsyncAct } from './internals/act';
+import { debug } from './internals/debug';
+import { getPropForDispatching } from './internals/element';
+import { whereTypeAndProps } from './predicates';
 import {
-  InferEventFromHandler,
-  InferComponentProps,
-  HostComponentType,
   Predicate,
   DispatchOptions,
   DebugOptions,
   UnknownProps,
   AtIndexType,
-  EventType,
-  EventOptions,
-  InferHostElement,
-  EventMap,
+  QueryOptions,
+  AdapterRendererOptions,
+  ElementType,
 } from './types';
-import { getTypeName } from './helpers';
-import { doAct, doAsyncAct } from './internals/act';
-import { debug } from './internals/debug';
-import { getPropForDispatching } from './internals/element';
-import { whereTypeAndProps } from './predicates';
-import { factorySyntheticEvent } from './mocks/event';
 
-export default class Element<
-  Type extends React.ElementType = React.ElementType,
-  Host = InferHostElement<Type>
+export default abstract class Element<
+  Type extends ElementType = ElementType,
+  Props = never,
+  Host = unknown
 > {
+  // @ts-ignore Set after instantiation
+  options: AdapterRendererOptions;
+
   protected element: ReactTestInstance;
 
   private readonly isRutElement = true;
@@ -50,17 +47,11 @@ export default class Element<
    * Dispatch an event listener for the defined prop name. Requires a synthetic event
    * based on the original event type.
    *
-   * Note: This may only be executed on host components (DOM elements).
+   * Note: This may only be executed on host components.
    */
-  dispatch<K extends EventType>(
-    name: K,
-    eventOrConfig?:
-      | InferEventFromHandler<EventMap<Host>[K]>
-      | EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
-    options: DispatchOptions = {},
-  ): this {
+  dispatch(name: string, eventOrConfig?: unknown, options: DispatchOptions = {}): this {
     const prop = getPropForDispatching(this, name);
-    const event = factorySyntheticEvent(name, eventOrConfig, this.element.type);
+    const event = this.createSyntheticEvent(name, eventOrConfig, this.element.type);
 
     // istanbul ignore next
     if (options.propagate) {
@@ -68,7 +59,7 @@ export default class Element<
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    doAct(() => prop(event));
+    doAct(() => prop(event), this.options.applyPatches);
 
     return this;
   }
@@ -76,16 +67,13 @@ export default class Element<
   /**
    * Like `dispatch` but also awaits the event so that async calls have time to finish.
    */
-
-  async dispatchAndWait<K extends EventType>(
-    name: K,
-    eventOrConfig?:
-      | InferEventFromHandler<EventMap<Host>[K]>
-      | EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
+  async dispatchAndWait(
+    name: string,
+    eventOrConfig?: unknown,
     options: DispatchOptions = {},
   ): Promise<void> {
     const prop = getPropForDispatching(this, name);
-    const event = factorySyntheticEvent(name, eventOrConfig, this.element.type);
+    const event = this.createSyntheticEvent(name, eventOrConfig, this.element.type);
 
     // istanbul ignore next
     if (options.propagate) {
@@ -93,22 +81,14 @@ export default class Element<
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    await doAsyncAct(() => prop(event));
+    await doAsyncAct(() => prop(event), this.options.applyPatches);
   }
 
   /**
    * Search through the current tree for all elements that match the defined React
    * component or HTML type. If any are found, a list of `Element`s is returned.
    */
-  find<T extends HostComponentType, P extends InferComponentProps<T>>(
-    type: T,
-    props?: Partial<P>,
-  ): Element<T>[];
-  find<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
-    type: T,
-    props?: Partial<P>,
-  ): Element<T>[];
-  find(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType>[] {
+  find(type: ElementType, props?: UnknownProps): Element<ElementType>[] {
     return this.query(whereTypeAndProps(type, props));
   }
 
@@ -117,21 +97,7 @@ export default class Element<
    * component or HTML type. If any are found, return the `Element` at the defined
    * index. Accepts shorthand `first` and `last` indices.
    */
-  findAt<T extends HostComponentType, P extends InferComponentProps<T>>(
-    type: T,
-    at: AtIndexType,
-    props?: Partial<P>,
-  ): Element<T>;
-  findAt<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
-    type: T,
-    at: AtIndexType,
-    props?: Partial<P>,
-  ): Element<T>;
-  findAt(
-    type: React.ElementType<unknown>,
-    at: AtIndexType,
-    props?: UnknownProps,
-  ): Element<React.ElementType> {
+  findAt(type: ElementType, at: AtIndexType, props?: UnknownProps): Element<ElementType> {
     const results = this.query(whereTypeAndProps(type, props));
     let index: number;
 
@@ -161,15 +127,7 @@ export default class Element<
    * component or HTML type. If exactly 1 is found, a `Element`s is returned,
    * otherwise an error is thrown.
    */
-  findOne<T extends HostComponentType, P extends InferComponentProps<T>>(
-    type: T,
-    props?: Partial<P>,
-  ): Element<T>;
-  findOne<T extends React.ComponentType<any>, P extends InferComponentProps<T>>(
-    type: T,
-    props?: Partial<P>,
-  ): Element<T>;
-  findOne(type: React.ElementType<unknown>, props?: UnknownProps): Element<React.ElementType> {
+  findOne(type: ElementType, props?: UnknownProps): Element<ElementType> {
     const results = this.find(type, props);
 
     if (results.length !== 1) {
@@ -196,13 +154,15 @@ export default class Element<
    * ReactTestRenderer node and internal React fiber node. If any are found,
    * a list of `Element`s is returned.
    */
-  query<T extends React.ElementType>(
-    predicate: Predicate,
-    options?: { deep?: boolean },
-  ): Element<T>[] {
+  query<T extends ElementType>(predicate: Predicate, options?: QueryOptions): Element<T>[] {
     return this.element
       .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
-      .map(node => new Element(node));
+      .map(node => {
+        const element = this.options.createElement(node);
+        element.options = this.options;
+
+        return element;
+      });
   }
 
   /**
@@ -237,4 +197,13 @@ export default class Element<
   toString(): string {
     return this.name(true);
   }
+
+  /**
+   * Create a synthetic event specific to this renderer.
+   */
+  abstract createSyntheticEvent(
+    name: string,
+    eventOrConfig: unknown,
+    type: ElementType,
+  ): React.SyntheticEvent;
 }

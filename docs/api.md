@@ -7,7 +7,7 @@
 Define global options that will be used across all tests.
 
 ```ts
-import { configure } from 'rut';
+import { configure } from 'rut-dom';
 
 configure({
   strict: true,
@@ -39,7 +39,7 @@ Mock a ref found within the current render tree. This mock function is passed th
 being referenced, for use in determining and providing a custom mock. For example:
 
 ```tsx
-import { render } from 'rut';
+import { render } from 'rut-dom';
 
 const spy = jest.fn();
 const { root } = render<LoginFormProps>(<LoginForm />, {
@@ -102,7 +102,7 @@ Accepts a React element and an optional [options](#configure) object, and return
 functionality, and an improved API.
 
 ```tsx
-import { render } from 'rut';
+import { render } from 'rut-dom';
 
 test('renders a button', () => {
   const result = render<ButtonProps>(<Button>Save</Button>);
@@ -118,7 +118,7 @@ Furthermore, if the `root` is a host component (DOM element), you can apply prop
 required.
 
 ```tsx
-import { render, InferComponentProps } from 'rut';
+import { render, InferComponentProps } from 'rut-dom';
 
 test('renders a native button', () => {
   const result = render<InferComponentProps<'button'>>(<button type="submit">Save</button>);
@@ -135,7 +135,7 @@ mounting phase to complete before returning the [rendered result](./api/result.m
 the function must be `await`ed.
 
 ```tsx
-import { renderAndWait } from 'rut';
+import { renderAndWait } from 'rut-dom';
 
 test('renders a user profile', async () => {
   const result = await renderAndWait<UserProfileProps>(<UserProfile id={1} />);

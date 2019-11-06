@@ -9,7 +9,7 @@ const serializer: jest.SnapshotSerializerPlugin = {
     return (
       typeof value === 'object' &&
       !!value &&
-      ((value.isRutElement === true && value.constructor.name === 'Element') ||
+      ((value.isRutElement === true && value.constructor.name.endsWith('Element')) ||
         (value.isRutResult === true && RESULT_NAMES.includes(value.constructor.name)))
     );
   },

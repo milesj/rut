@@ -1,8 +1,8 @@
 import React from 'react';
 import Element from '../Element';
-import { formatValue } from '../helpers';
-import { MatchResult } from '../types';
+import { formatValue } from '../internals/react';
 import { isRutElement } from '../internals/utils';
+import { MatchResult } from '../types';
 
 /**
  * Check that an element has a React `key` that matches the provided value.

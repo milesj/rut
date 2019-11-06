@@ -6,7 +6,7 @@ Verify and enforce the correct event types are used when mocking or dispatching 
 
 ```tsx
 // Invalid
-import { mockEvent, mockSyntheticEvent } from 'rut';
+import { mockEvent, mockSyntheticEvent } from 'rut-dom';
 
 mockEvent('onKeyDown');
 mockSyntheticEvent('keydown');
@@ -14,7 +14,7 @@ mockSyntheticEvent('keydown');
 
 ```tsx
 // Valid
-import { mockEvent, mockSyntheticEvent } from 'rut';
+import { mockEvent, mockSyntheticEvent } from 'rut-dom';
 
 mockEvent('keydown');
 mockSyntheticEvent('onKeyDown');
@@ -27,7 +27,7 @@ be necessary.
 
 ```tsx
 // Invalid
-import { render } from 'rut';
+import { render } from 'rut-dom';
 import { act } from 'react-test-renderer';
 import Example from '../src/Example';
 
@@ -40,7 +40,7 @@ act(() => {
 
 ```tsx
 // Valid
-import { render } from 'rut';
+import { render } from 'rut-dom';
 import Example from '../src/Example';
 
 const { update } = render(<Example id={1} />);
@@ -54,7 +54,7 @@ Disallow import and usage of Rut's internal APIs. Accessing these directly is a 
 
 ```tsx
 // Invalid
-import { render } from 'rut';
+import { render } from 'rut-dom';
 import debug from 'rut/lib/internals/debug';
 import Example from '../src/Example';
 
@@ -65,7 +65,7 @@ debug(root);
 
 ```tsx
 // Valid
-import { render } from 'rut';
+import { render } from 'rut-dom';
 import Example from '../src/Example';
 
 const { debug, root } = render(<Example id={1} />);
@@ -81,7 +81,7 @@ Require TypeScript generics for `render()` and `renderAndWait()` functions.
 
 ```tsx
 // Invalid
-import { render } from 'rut';
+import { render } from 'rut-dom';
 import Example from '../src/Example';
 
 const { root } = render(<Example id={1} />);
@@ -89,7 +89,7 @@ const { root } = render(<Example id={1} />);
 
 ```tsx
 // Valid
-import { render } from 'rut';
+import { render } from 'rut-dom';
 import Example, { ExampleProps } from '../src/Example';
 
 const { root } = render<ExampleProps>(<Example id={1} />);

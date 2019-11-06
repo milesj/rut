@@ -1,8 +1,8 @@
 import Element from '../Element';
 import { getProp } from '../internals/element';
-import { formatValue } from '../helpers';
-import { MatchResult } from '../types';
+import { formatValue } from '../internals/react';
 import { isRutElement, deepEqual } from '../internals/utils';
+import { MatchResult } from '../types';
 
 /**
  * Check that an element has a prop that matches the provided name, with optional matching value.
