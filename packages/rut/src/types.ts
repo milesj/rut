@@ -26,6 +26,8 @@ export interface AdapterRendererOptions extends RendererOptions {
 export interface DebugOptions {
   /** Render children. Defaults to `true`. */
   children?: boolean;
+  /** Include falsy props in the output. Defaults to `false`. */
+  falsy?: boolean;
   /** Group props into the following: key & ref, truthy booleans, everything
   else, event handlers. Defaults to `true`. */
   groupProps?: boolean;
@@ -137,17 +139,6 @@ export type ElementShape<T extends ElementType, P> = StructureOf<Element<T, P>>;
 
 export type ResultShape<P extends object> = StructureOf<Result<P>>;
 
-declare module 'react-test-renderer' {
-  interface ReactTestRenderer {
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    unstable_flushSync<T>(cb: () => T): T;
-  }
-
-  interface ReactTestInstance {
-    _fiber: FiberNode;
-  }
-}
-
 export type PropsOf<T> = T extends Element<ElementType, infer P> ? P : never;
 
 declare global {
@@ -165,5 +156,16 @@ declare global {
       toHaveRendered(): R;
       toHaveValue(value: unknown): R;
     }
+  }
+}
+
+declare module 'react-test-renderer' {
+  interface ReactTestRenderer {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    unstable_flushSync<T>(cb: () => T): T;
+  }
+
+  interface ReactTestInstance {
+    _fiber: FiberNode;
   }
 }

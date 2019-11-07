@@ -109,12 +109,23 @@ exports[`debug() formats set props 1`] = `
 </SetProp>
 `;
 
+exports[`debug() includes falsy props 1`] = `
+"<ChildComp foo>
+  <div />
+</ChildComp>"
+`;
+
+exports[`debug() includes falsy props 2`] = `
+"<ChildComp foo bar={false} baz={null}>
+  <div />
+</ChildComp>"
+`;
+
 exports[`debug() sorts props, and groups into: true first, everything else, event handlers last 1`] = `
 <SortOrder
   enabled
   content={<div />}
   name="Rut"
-  selected={false}
   onClick={mockConstructor()}
   onUpdate={mockConstructor()}
 >
@@ -129,7 +140,6 @@ exports[`debug() sorts props, and groups into: true first, everything else, even
   name=\\"Rut\\"
   onClick={mockConstructor()}
   onUpdate={mockConstructor()}
-  selected={false}
 >
   <div />
 </SortOrder>"
@@ -138,7 +148,6 @@ exports[`debug() sorts props, and groups into: true first, everything else, even
 exports[`debug() sorts props, and groups into: true first, everything else, event handlers last 3`] = `
 "<SortOrder
   enabled
-  selected={false}
   name=\\"Rut\\"
   content={<div />}
   onClick={mockConstructor()}
@@ -151,7 +160,6 @@ exports[`debug() sorts props, and groups into: true first, everything else, even
 exports[`debug() sorts props, and groups into: true first, everything else, event handlers last 4`] = `
 "<SortOrder
   onClick={mockConstructor()}
-  selected={false}
   name=\\"Rut\\"
   content={<div />}
   enabled

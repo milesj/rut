@@ -47,6 +47,7 @@ class Debugger {
 
     this.options = {
       children: true,
+      falsy: false,
       groupProps: true,
       hostElements: true,
       keyAndRef: true,
@@ -236,6 +237,10 @@ class Debugger {
 
     Object.entries(props).forEach(([key, value]) => {
       if (key === 'children') {
+        return;
+      }
+
+      if (!this.options.falsy && (value === false || value === null || value === undefined)) {
         return;
       }
 

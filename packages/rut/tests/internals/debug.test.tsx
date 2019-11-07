@@ -160,6 +160,23 @@ describe('debug()', () => {
     expect(debug({ children: false, log: false })).toMatchSnapshot();
   });
 
+  it('includes falsy props', () => {
+    interface ChildCompProps {
+      foo?: boolean;
+      bar?: boolean;
+      baz?: boolean | null;
+    }
+
+    function ChildComp(props: ChildCompProps) {
+      return <div />;
+    }
+
+    const { debug } = render<ChildCompProps>(<ChildComp foo bar={false} baz={null} />);
+
+    expect(debug({ falsy: false, log: false })).toMatchSnapshot();
+    expect(debug({ falsy: true, log: false })).toMatchSnapshot();
+  });
+
   describe('element output', () => {
     function Header() {
       return (
