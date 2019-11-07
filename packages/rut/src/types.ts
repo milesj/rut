@@ -26,6 +26,8 @@ export interface AdapterRendererOptions extends RendererOptions {
 export interface DebugOptions {
   /** Render children. Defaults to `true`. */
   children?: boolean;
+  /** Exclude all props by name that match the regex pattern. */
+  excludeProps?: RegExp;
   /** Include falsy props in the output. Defaults to `false`. */
   falsy?: boolean;
   /** Group props into the following: key & ref, truthy booleans, everything

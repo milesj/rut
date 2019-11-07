@@ -161,20 +161,36 @@ describe('debug()', () => {
   });
 
   it('includes falsy props', () => {
-    interface ChildCompProps {
+    interface FalsyProps {
       foo?: boolean;
       bar?: boolean;
       baz?: boolean | null;
     }
 
-    function ChildComp(props: ChildCompProps) {
+    function FalsyComp(props: FalsyProps) {
       return <div />;
     }
 
-    const { debug } = render<ChildCompProps>(<ChildComp foo bar={false} baz={null} />);
+    const { debug } = render<FalsyProps>(<FalsyComp foo bar={false} baz={null} />);
 
     expect(debug({ falsy: false, log: false })).toMatchSnapshot();
     expect(debug({ falsy: true, log: false })).toMatchSnapshot();
+  });
+
+  it('excludes props by name', () => {
+    interface ExcludeProps {
+      foo?: string;
+      bar?: number;
+      baz?: boolean;
+    }
+
+    function ExcludeComp(props: ExcludeProps) {
+      return <div />;
+    }
+
+    const { debug } = render<ExcludeProps>(<ExcludeComp foo="abc" bar={123} baz />);
+
+    expect(debug({ excludeProps: /foo|baz/, log: false })).toMatchSnapshot();
   });
 
   describe('element output', () => {

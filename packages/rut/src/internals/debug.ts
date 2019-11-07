@@ -36,7 +36,7 @@ class Debugger {
 
   node: TestNode;
 
-  options: Required<DebugOptions>;
+  options: DebugOptions;
 
   root: TreeNode;
 
@@ -231,6 +231,7 @@ class Debugger {
   }
 
   getProps(props: Props, internal: Props): string[] {
+    const { excludeProps, falsy, groupProps } = this.options;
     const all: string[] = [];
     const truthies: string[] = [];
     const handlers: string[] = [];
@@ -240,11 +241,15 @@ class Debugger {
         return;
       }
 
-      if (!this.options.falsy && (value === false || value === null || value === undefined)) {
+      if (excludeProps instanceof RegExp && key.match(excludeProps)) {
         return;
       }
 
-      if (this.options.groupProps) {
+      if (!falsy && (value === false || value === null || value === undefined)) {
+        return;
+      }
+
+      if (groupProps) {
         if (value === true) {
           truthies.push(key);
         } else if (key.startsWith('on') && typeof value === 'function') {
@@ -274,8 +279,8 @@ class Debugger {
     const items = values.slice(0, maxLength);
     const indentLength = INDENT_CHARS.repeat(this.currentDepth).length;
 
-    if (values.length > maxLength) {
-      items.push(`... ${values.length - maxLength} more`);
+    if (values.length > maxLength!) {
+      items.push(`... ${values.length - maxLength!} more`);
     }
 
     const stackedItems = items.map(item => INDENT_CHARS + item);
