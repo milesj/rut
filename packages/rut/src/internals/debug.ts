@@ -85,7 +85,13 @@ class Debugger {
   }
 
   buildTree(node: TestNode | string, parent: TreeNode): TreeNode {
-    const { hostElements, keyAndRef, children: includeChildren, reactElements } = this.options;
+    const {
+      excludeComponents,
+      hostElements,
+      keyAndRef,
+      children: includeChildren,
+      reactElements,
+    } = this.options;
 
     if (!includeChildren && parent.name !== 'ROOT') {
       return parent;
@@ -113,9 +119,15 @@ class Debugger {
     }
 
     // Build new parent and tree
+    const name = getTypeName(node.type);
+
+    if (excludeComponents instanceof RegExp && name.match(excludeComponents)) {
+      return parent;
+    }
+
     const tree = {
       children: [],
-      name: getTypeName(node.type),
+      name,
       props: this.getProps(node.props, keyAndRef ? this.getKeyAndRef(node) : {}),
     };
 

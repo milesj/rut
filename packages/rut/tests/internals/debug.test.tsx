@@ -177,6 +177,24 @@ describe('debug()', () => {
     expect(debug({ falsy: true, log: false })).toMatchSnapshot();
   });
 
+  it('excludes components by name', () => {
+    function ExcludeComp() {
+      return (
+        <div>
+          <b>Bold</b>
+          <i>Italic</i>
+          <span>
+            <u>Underline</u>
+          </span>
+        </div>
+      );
+    }
+
+    const { debug } = render<{}>(<ExcludeComp />);
+
+    expect(debug({ excludeComponents: /^(i|span)$/, log: false })).toMatchSnapshot();
+  });
+
   it('excludes props by name', () => {
     interface ExcludeProps {
       foo?: string;

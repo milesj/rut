@@ -58,6 +58,14 @@ exports[`debug() element output renders normal 1`] = `
 </Outer>"
 `;
 
+exports[`debug() excludes components by name 1`] = `
+"<ExcludeComp>
+  <div>
+    <b>Bold</b>
+  </div>
+</ExcludeComp>"
+`;
+
 exports[`debug() excludes props by name 1`] = `
 "<ExcludeComp bar={123}>
   <div />
