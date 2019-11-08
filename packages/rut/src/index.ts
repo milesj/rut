@@ -4,9 +4,11 @@
  */
 
 import { configure } from './internals/config';
+import Element from './Element';
+import Result from './Result';
 
 export * from './predicates';
 export * from './mocks';
 export * from './types';
 
-export { configure };
+export { configure, Element, Result };

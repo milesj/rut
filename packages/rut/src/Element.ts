@@ -159,6 +159,7 @@ export default abstract class Element<
       .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
       .map(node => {
         const element = this.options.createElement(node);
+
         element.options = this.options;
 
         return element;

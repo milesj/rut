@@ -10,6 +10,7 @@ import DomElement from './DomElement';
 export * from 'rut';
 export * from './mocks';
 export * from './types';
+export { DomElement };
 
 // Rut needs to support portals, but they aren't supported
 // in `react-test-renderer` because they're DOM only.
@@ -58,7 +59,7 @@ function applyPatches(): () => void {
 export function render<Props extends object = {}>(
   element: React.ReactElement,
   options?: RendererOptions,
-) {
+) /* infer */ {
   return doRender<Props, DomElement<React.ComponentType<Props>, Props>>(element, {
     ...options,
     applyPatches,
@@ -69,7 +70,7 @@ export function render<Props extends object = {}>(
 export function renderAndWait<Props extends object = {}>(
   element: React.ReactElement,
   options?: RendererOptions,
-) {
+) /* infer */ {
   return doRenderAndWait<Props, DomElement<React.ComponentType<Props>, Props>>(element, {
     ...options,
     applyPatches,

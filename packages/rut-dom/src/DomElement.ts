@@ -7,6 +7,8 @@ import {
   DispatchOptions,
   InferEventFromHandler,
   UnknownProps,
+  Predicate,
+  QueryOptions,
 } from 'rut';
 import { Element, SyntheticEvent } from 'rut/lib/adapters';
 import { mockSyntheticEvent } from './mocks';
@@ -110,5 +112,9 @@ export default class DomElement<
   ): DomElement<T>;
   findOne(type: React.ElementType, props?: UnknownProps): DomElement<React.ElementType> {
     return super.findOne(type, props);
+  }
+
+  query<T extends ElementType>(predicate: Predicate, options?: QueryOptions): DomElement<T>[] {
+    return super.query(predicate, options);
   }
 }

@@ -4,6 +4,7 @@ import { wrapAwait, createRule } from '../helpers';
 createRule().run('no-internals', rule, {
   valid: [
     'import { render } from "rut"',
+    'import { renderAndWait } from "rut-dom"',
     'import { FuncComp } from "rut/lib/testing/fixtures"',
     // Result destructure
     'const { debug } = render(<Foo />);',

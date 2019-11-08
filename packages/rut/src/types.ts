@@ -3,7 +3,6 @@
 import React from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
 import Element from './Element';
-import Result from './Result';
 
 export interface RendererOptions {
   /** Options to pass to the debugger. */
@@ -136,12 +135,6 @@ export type NodeType =
 export type InferEventFromHandler<T> = T extends (event: infer E) => void ? E : never;
 
 export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer E> ? E : Element;
-
-export type StructureOf<T> = { [K in keyof T]: T[K] };
-
-export type ElementShape<T extends ElementType, P> = StructureOf<Element<T, P>>;
-
-export type ResultShape<P extends object> = StructureOf<Result<P>>;
 
 export type PropsOf<T> = T extends Element<ElementType, infer P> ? P : never;
 
