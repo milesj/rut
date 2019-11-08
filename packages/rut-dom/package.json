@@ -1,6 +1,6 @@
 {
   "name": "rut-dom",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "React testing for DOM based components.",
   "keywords": [
     "react",
@@ -24,6 +24,6 @@
   },
   "dependencies": {
     "@types/react-dom": "*",
-    "rut": "^0.8.1"
+    "rut": "^0.9.0"
   }
 }
