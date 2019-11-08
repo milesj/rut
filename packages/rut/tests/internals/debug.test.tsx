@@ -192,7 +192,7 @@ describe('debug()', () => {
 
     const { debug } = render<{}>(<ExcludeComp />);
 
-    expect(debug({ excludeComponents: /^(i|span)$/, log: false })).toMatchSnapshot();
+    expect(debug({ excludeComponents: /^(i|span)$/u, log: false })).toMatchSnapshot();
   });
 
   it('excludes props by name', () => {
@@ -208,7 +208,40 @@ describe('debug()', () => {
 
     const { debug } = render<ExcludeProps>(<ExcludeComp foo="abc" bar={123} baz />);
 
-    expect(debug({ excludeProps: /foo|baz/, log: false })).toMatchSnapshot();
+    expect(debug({ excludeProps: /foo|baz/u, log: false })).toMatchSnapshot();
+  });
+
+  it('indents large data structure props correctly', () => {
+    interface IndentProps {
+      arr: unknown[];
+      obj: object;
+    }
+
+    function IndentComp(props: IndentProps) {
+      return <div />;
+    }
+
+    const { debug } = render<IndentProps>(
+      <IndentComp
+        arr={[1, [2, [4, [5]]], 3]}
+        obj={{
+          foo1: 123,
+          foo2: 'abc',
+          foo3: {
+            bar1: 456,
+            bar2: {
+              baz1: { value: 123, val: 456, v: 789 },
+              baz2: [1, 2, 3, 4, 5],
+              baz3: true,
+              baz4: false,
+            },
+            bar3: 'xyz',
+          },
+        }}
+      />,
+    );
+
+    expect(debug({ log: false })).toMatchSnapshot();
   });
 
   describe('element output', () => {

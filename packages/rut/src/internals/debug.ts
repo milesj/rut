@@ -7,7 +7,7 @@ import { isAllTextNodes, isClassInstance, toArray } from './utils';
 import { DebugOptions, TestNode, ElementType } from '../types';
 
 type Props = TestNode['props'];
-type Formatter = (value: any) => string;
+type Formatter<T = any> = (value: T, depth: number) => string;
 
 interface TreeNode {
   children: (string | TreeNode)[];
@@ -140,7 +140,7 @@ class Debugger {
     return parent;
   }
 
-  format(value: any): string {
+  format = (value: any, depth: number = 0): string => {
     const type = toString.call(value);
 
     // React element
@@ -150,7 +150,7 @@ class Debugger {
 
     // Built-in type
     if (this.types[type]) {
-      return this.types[type](value);
+      return this.types[type](value, depth).trim();
     }
 
     // DOM element
@@ -165,9 +165,10 @@ class Debugger {
 
     // Unknown, so cast to string
     return String(value);
-  }
+  };
 
-  formatArray = (value: any[]) => this.transformList(value.map(val => this.format(val)), '[', ']');
+  formatArray = (value: any[], depth: number) =>
+    this.transformList(value, this.format, '[', ']', depth);
 
   formatAsyncFunction = (value: Function) => `async ${this.formatFunction(value)}`;
 
@@ -179,14 +180,16 @@ class Debugger {
 
   formatFunction = (value: Function) => `${value.name || 'func'}()`;
 
-  formatMap = (value: Map<any, any>) =>
+  formatMap = (value: Map<any, any>, depth: number) =>
     this.transformList(
-      Array.from(value.entries()).map(([key, val]) => `${key}: ${this.format(val)}`),
+      Array.from(value.entries()),
+      ([key, val], nextDepth) => `${key}: ${this.format(val, nextDepth)}`,
       'new Map({',
       '})',
+      depth,
     );
 
-  formatObject = (value: { [key: string]: any }) => {
+  formatObject = (value: { [key: string]: any }, depth: number) => {
     // React refs
     if ('current' in value) {
       return this.format((value as React.RefObject<object>).current!);
@@ -204,16 +207,18 @@ class Debugger {
 
     // Plain objects
     return this.transformList(
-      Object.entries(value).map(([key, val]) => `${key}: ${this.format(val)}`),
+      Object.entries(value),
+      ([key, val], nextDepth) => `${key}: ${this.format(val, nextDepth)}`,
       '{',
       '}',
+      depth,
     );
   };
 
   formatRegExp = (value: RegExp) => `/${value.source}/${value.flags}`;
 
-  formatSet = (value: Set<any>) =>
-    this.transformList(Array.from(value).map(val => this.format(val)), 'new Set([', '])');
+  formatSet = (value: Set<any>, depth: number) =>
+    this.transformList(Array.from(value), this.format, 'new Set([', '])', depth);
 
   formatString = (value: string) => `"${value}"`;
 
@@ -282,28 +287,39 @@ class Debugger {
     ];
   }
 
-  transformList(values: string[], openChar: string, closeChar: string): string {
+  transformList<T>(
+    values: T[],
+    format: Formatter<T>,
+    openChar: string,
+    closeChar: string,
+    depth: number = 0,
+  ): string {
     if (values.length === 0) {
       return openChar + closeChar;
     }
 
-    const { maxLength } = this.options;
-    const items = values.slice(0, maxLength);
-    const indentLength = INDENT_CHARS.repeat(this.currentDepth).length;
+    const { maxLength = 0 } = this.options;
+    const items = values.slice(0, maxLength).map(value => format(value, depth + 1));
 
-    if (values.length > maxLength!) {
-      items.push(`... ${values.length - maxLength!} more`);
+    if (values.length > maxLength) {
+      items.push(`... ${values.length - maxLength} more`);
     }
 
-    const stackedItems = items.map(item => INDENT_CHARS + item);
+    const rootIndent = INDENT_CHARS.repeat(this.currentDepth);
+    const stackIndent = INDENT_CHARS.repeat(depth + 1);
+    const stackedItems = items.map(item => stackIndent + item);
     const inlineItems = items.join(', ');
 
     // Items are too long, stack vertically
     if (
-      indentLength + getLongestItem(stackedItems) > TERM_WIDTH ||
-      indentLength + inlineItems.length > TERM_WIDTH
+      rootIndent.length + getLongestItem(stackedItems) > TERM_WIDTH ||
+      rootIndent.length + inlineItems.length > TERM_WIDTH
     ) {
-      return `${openChar}\n${stackedItems.join(',\n')},\n${closeChar}`;
+      return [
+        stackIndent + openChar,
+        `${stackedItems.join(',\n')},`,
+        stackIndent.slice(2) + closeChar,
+      ].join('\n');
     }
 
     return `${openChar} ${inlineItems} ${closeChar}`;

@@ -48,6 +48,9 @@ The example above would log something similar to the following.
 ### Options
 
 - `children` (`boolean`) - Render children. Defaults to `true`.
+- `excludeComponents` (`RegExp`) - Exclude all components by name that match the regex pattern.
+- `excludeProps` (`RegExp`) - Exclude all props by name that match the regex pattern.
+- `falsy` (`boolean`) - Include falsy props in the output. Defaults to `false`.
 - `groupProps` (`boolean`) - Group props into the following: key & ref, truthy booleans, everything
   else, event handlers. Defaults to `true`.
 - `hostElements` (`boolean`) - Include host elements (DOM) in the output. Defaults to `true`.
