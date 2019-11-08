@@ -30,9 +30,7 @@ describe('toBeChecked()', () => {
     it('errors when not checked', () => {
       expect(() => {
         runMatcher(toBeChecked(render(<input />).root));
-      }).toThrow(
-        'expected <input /> to have a "checked" prop with a value of `true`, instead has a value of `undefined`',
-      );
+      }).toThrow('expected <input /> to have a "checked" prop with a value');
     });
   });
 
@@ -46,17 +44,13 @@ describe('toBeChecked()', () => {
     it('errors when checked', () => {
       expect(() => {
         runMatcher(toBeChecked(render(<input checked />).root), true);
-      }).toThrow(
-        'expected <input /> not to have a "checked" prop with a value of `true`, instead has a value of `true`',
-      );
+      }).toThrow('expected <input /> not to have a "checked" prop with a value');
     });
 
     it('errors when default checked', () => {
       expect(() => {
         runMatcher(toBeChecked(render(<input defaultChecked />).root), true);
-      }).toThrow(
-        'expected <input /> not to have a "defaultChecked" prop with a value of `true`, instead has a value of `true`',
-      );
+      }).toThrow('expected <input /> not to have a "defaultChecked" prop with a value');
     });
   });
 });

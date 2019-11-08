@@ -11,19 +11,18 @@ import { MatchResult } from '../types';
 export default function toHaveProp(element: Element, name: string, value?: unknown): MatchResult {
   isRutElement(element);
 
-  const prop = getProp(element, name);
+  const actualValue = getProp(element, name);
   const formattedName = formatValue(name);
-  const formattedValue = formatValue(value);
-  const actualValue = formatValue(prop);
 
   if (value !== undefined) {
     return {
       actual: actualValue,
-      expected: formattedValue,
-      message: `expected {{received}} to have a ${formattedName} prop with a value of {{expected}}, instead has a value of {{actual}}`,
+      diff: true,
+      expected: value,
+      message: `expected {{received}} to have a ${formattedName} prop with a value`,
       name: 'toHaveProp',
-      notMessage: `expected {{received}} not to have a ${formattedName} prop with a value of {{expected}}, instead has a value of {{actual}}`,
-      passed: equals => (equals ? equals(prop, value) : deepEqual(prop, value)),
+      notMessage: `expected {{received}} not to have a ${formattedName} prop with a value`,
+      passed: equals => (equals ? equals(actualValue, value) : deepEqual(actualValue, value)),
       received: element.toString(),
     };
   }
@@ -32,7 +31,7 @@ export default function toHaveProp(element: Element, name: string, value?: unkno
     message: `expected {{received}} to have a ${formattedName} prop`,
     name: 'toHaveProp',
     notMessage: `expected {{received}} not to have a ${formattedName} prop`,
-    passed: prop !== undefined,
+    passed: actualValue !== undefined,
     received: element.toString(),
   };
 }

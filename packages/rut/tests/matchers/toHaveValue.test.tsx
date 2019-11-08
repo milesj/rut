@@ -25,7 +25,7 @@ describe('toHaveValue()', () => {
     it('errors when value doesnt match', () => {
       expect(() => {
         runMatcher(toHaveValue(render(<input value="foo" />).root, 'bar'));
-      }).toThrow('expected <input /> to have a "value" prop with a value of "bar"');
+      }).toThrow('expected <input /> to have a "value" prop with a value');
     });
   });
 
@@ -39,13 +39,13 @@ describe('toHaveValue()', () => {
     it('errors when value matches', () => {
       expect(() => {
         runMatcher(toHaveValue(render(<input value="foo" />).root, 'foo'), true);
-      }).toThrow('expected <input /> not to have a "value" prop with a value of "foo"');
+      }).toThrow('expected <input /> not to have a "value" prop with a value');
     });
 
     it('errors when default value matches', () => {
       expect(() => {
         runMatcher(toHaveValue(render(<input defaultValue="foo" />).root, 'foo'), true);
-      }).toThrow('expected <input /> not to have a "defaultValue" prop with a value of "foo"');
+      }).toThrow('expected <input /> not to have a "defaultValue" prop with a value');
     });
   });
 });
