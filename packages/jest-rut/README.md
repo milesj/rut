@@ -1,6 +1,6 @@
 # Jest + Rut
 
-[![Build Status](https://travis-ci.org/milesj/rut.svg?branch=master)](https://travis-ci.org/milesj/rut)
+[![Build Status](https://github.com/milesj/rut/workflows/Build/badge.svg)](https://github.com/milesj/rut/actions?query=branch%3Amaster)
 [![npm version](https://badge.fury.io/js/jest-rut.svg)](https://www.npmjs.com/package/jest-rut)
 [![npm deps](https://david-dm.org/milesj/rut.svg?path=packages/jest-rut)](https://www.npmjs.com/package/jest-rut)
 
