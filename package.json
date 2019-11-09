@@ -24,6 +24,7 @@
     "@types/react-dom": "^16.9.4",
     "@types/react-is": "^16.7.1",
     "@types/react-test-renderer": "^16.9.1",
+    "conventional-changelog-beemo": "^1.5.1",
     "lerna": "^3.18.4",
     "react": "^16.11.0",
     "react-dom": "^16.11.0"
