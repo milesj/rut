@@ -28,5 +28,9 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.22"
+  },
+  "funding": {
+    "type": "ko-fi",
+    "url": "https://ko-fi.com/milesjohnson"
   }
 }
