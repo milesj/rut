@@ -30,8 +30,8 @@
     "@types/react-is": "*",
     "@types/react-test-renderer": "*",
     "fetch-mock": "^7.7.3",
-    "react-is": "^16.11.0",
-    "react-test-renderer": "^16.11.0"
+    "react-is": "^16.12.0",
+    "react-test-renderer": "^16.12.0"
   },
   "funding": {
     "type": "ko-fi",

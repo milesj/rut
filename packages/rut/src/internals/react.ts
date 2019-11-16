@@ -99,7 +99,9 @@ export function getTypeName(type: unknown): string {
     return 'Lazy';
   }
 
-  if (ReactIs.isMemo(type) || typeOf === ReactIs.Memo) {
+  if (ReactIs.isMemo(type)) {
+    return getTypeName(type.type);
+  } else if (typeOf === ReactIs.Memo) {
     return `Memo(${getTypeName(type.type)})`;
   }
 

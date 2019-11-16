@@ -27,7 +27,7 @@
     "rut": "*"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.22"
+    "@types/jest": "^24.0.23"
   },
   "funding": {
     "type": "ko-fi",
