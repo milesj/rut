@@ -49,8 +49,15 @@ mockFetch('/', 200)
   .post('/users', 200);
 ```
 
-Lastly, if _not_ using [Jest](./setup.md#jest), you'll need to unmock the fetch after every test
-using `restore()`.
+If you are using Jest and would like to spy on all `fetch()` calls, you can use a combination of
+`jest.spyOn()` and `global`. The spy needs to be created _after_ the mock.
+
+```ts
+const spy = jest.spyOn(global, 'fetch');
+```
+
+Lastly, if _not_ using the [Jest](./setup.md#jest) integration, you'll need to unmock the fetch
+after every test using `restore()`.
 
 ```ts
 let mock: MockFetchResult;
