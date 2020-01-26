@@ -105,7 +105,15 @@ describe('debug()', () => {
     }
 
     const result = render<{}>(
-      <MapProp map={new Map([['foo', 123], ['bar', 456], ['baz', 789]])} />,
+      <MapProp
+        map={
+          new Map([
+            ['foo', 123],
+            ['bar', 456],
+            ['baz', 789],
+          ])
+        }
+      />,
     );
 
     expect(result).toMatchSnapshot();
