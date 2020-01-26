@@ -4,7 +4,8 @@
 [![npm version](https://badge.fury.io/js/rut-dom.svg)](https://www.npmjs.com/package/rut-dom)
 [![npm deps](https://david-dm.org/milesj/rut.svg?path=packages/rut-dom)](https://www.npmjs.com/package/rut-dom)
 
-A [Rut](https://www.npmjs.com/package/rut) testing adapter for DOM based applications.
+React DOM testing made easy! Rut DOM is a [Rut](https://www.npmjs.com/package/rut) testing adapter
+that provides a simple streamlined API for writing component based integration tests.
 
 ```tsx
 import { render } from 'rut-dom';
