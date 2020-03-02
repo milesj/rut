@@ -52,6 +52,7 @@ export function runResultTestSuite({ render, renderAndWait }: RenderTestSuite) {
       expect(result).toMatchSnapshot();
       expect(warnSpy).toHaveBeenCalledWith(
         expect.stringContaining('componentWillMount has been renamed'),
+        'StrictComp',
       );
 
       warnSpy.mockRestore();
@@ -99,6 +100,7 @@ export function runResultTestSuite({ render, renderAndWait }: RenderTestSuite) {
       expect(result.debug({ log: false })).toContain('<Wrapper>');
       expect(warnSpy).toHaveBeenCalledWith(
         expect.stringContaining('componentWillReceiveProps has been renamed'),
+        'StrictComp',
       );
 
       warnSpy.mockRestore();

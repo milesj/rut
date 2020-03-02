@@ -29,8 +29,8 @@
     "@types/react-is": "*",
     "@types/react-test-renderer": "*",
     "fetch-mock": "^8.3.2",
-    "react-is": "^16.12.0",
-    "react-test-renderer": "^16.12.0"
+    "react-is": "^16.13.0",
+    "react-test-renderer": "^16.13.0"
   },
   "funding": {
     "type": "ko-fi",
