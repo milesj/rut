@@ -85,7 +85,7 @@ function createEvent(type: string): Event {
       return new MessageEvent(type);
     case 'pagehide':
     case 'pageshow':
-      return new PageTransitionEvent();
+      return new PageTransitionEvent(type);
     case 'gotpointercapture':
     case 'lostpointercapture':
     case 'pointercancel':
