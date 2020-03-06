@@ -1,6 +1,6 @@
 {
   "name": "jest-rut",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Custom Jest matchers and serializer for Rut (React testing).",
   "keywords": [
     "react",
