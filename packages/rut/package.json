@@ -19,7 +19,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=8.9.0"
+    "node": ">=10.10.0"
   },
   "peerDependencies": {
     "react": "^16.9.0"
@@ -28,7 +28,7 @@
     "@types/react": "*",
     "@types/react-is": "*",
     "@types/react-test-renderer": "*",
-    "fetch-mock": "^9.0.0",
+    "fetch-mock": "^9.1.1",
     "react-is": "^16.13.0",
     "react-test-renderer": "^16.13.0"
   },
