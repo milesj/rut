@@ -37,7 +37,7 @@ export const TestContext = React.createContext('');
 TestContext.displayName = 'TestContext';
 
 export const ForwardRefComp = React.forwardRef((props, ref) => {
-  // @ts-ignore
+  // @ts-expect-error
   return <ClassComp {...props} ref={ref} />;
 });
 
@@ -107,7 +107,8 @@ export function AsyncHookComp({ id, onLoad }: AsyncProps) {
       setInitialized(true);
     }
 
-    load();
+    // eslint-disable-next-line no-void
+    void load();
   }, [id, onLoad]);
 
   return <span>{initialized ? 'Loaded' : 'Loading...'}</span>;

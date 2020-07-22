@@ -54,6 +54,8 @@ export type ExpandedEventOptions<T> = T extends React.AnimationEvent | Animation
 
 export type DomPropsOf<T> = T extends DomElement<ElementType, infer P> ? P : never;
 
+/* eslint-disable @typescript-eslint/method-signature-style */
+
 declare global {
   namespace jest {
     interface Matchers<R, T> {

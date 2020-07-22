@@ -7,7 +7,6 @@ describe('toHaveProp()', () => {
 
   it('errors if a non-Element is passed', () => {
     expect(() => {
-      // @ts-ignore
       expect(123).toHaveProp('foo');
     }).toThrow('Expected a Rut `Element`.');
   });

@@ -138,6 +138,8 @@ export type InferHostElementFromEvent<T> = T extends React.SyntheticEvent<infer 
 
 export type PropsOf<T> = T extends Element<ElementType, infer P> ? P : never;
 
+/* eslint-disable @typescript-eslint/method-signature-style */
+
 declare global {
   namespace jest {
     interface Matchers<R, T> {
@@ -158,7 +160,6 @@ declare global {
 
 declare module 'react-test-renderer' {
   interface ReactTestRenderer {
-    // eslint-disable-next-line @typescript-eslint/camelcase
     unstable_flushSync<T>(cb: () => T): T;
   }
 

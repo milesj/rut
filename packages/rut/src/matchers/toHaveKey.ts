@@ -10,7 +10,7 @@ import { MatchResult } from '../types';
 export default function toHaveKey(element: Element, value: React.Key): MatchResult {
   isRutElement(element);
 
-  // @ts-ignore Allow internal access
+  // @ts-expect-error Allow internal access
   const { key } = element.element._fiber;
   const actualValue = formatValue(key);
   const expectedValue = formatValue(value);

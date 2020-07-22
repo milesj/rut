@@ -11,6 +11,7 @@ export function doAct<T>(cb: Actable<T>, patchAdapter: Patcher): T {
   let value: T;
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     act(() => {
       value = integrationOptions.runWithTimers(cb);
     });

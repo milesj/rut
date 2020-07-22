@@ -32,7 +32,7 @@ function getTypeFromTag(tag: number): string {
 export default function toBeNodeType(element: Element, type: NodeType): MatchResult {
   isRutElement(element);
 
-  // @ts-ignore Allow internal access
+  // @ts-expect-error Allow internal access
   const fiberTag = element.element._fiber.tag;
   const nodeToTag = nodeTypeMap[type];
 

@@ -9,7 +9,7 @@ describe('toBeChecked()', () => {
     }).toThrow('Expected a Rut `Element`.');
 
     expect(() => {
-      // @ts-ignore Allow invalid
+      // @ts-expect-error Allow invalid
       runMatcher(toBeChecked(123));
     }).toThrow('Expected a Rut `Element`.');
   });

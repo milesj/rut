@@ -21,7 +21,7 @@ export default abstract class Element<
   Props = never,
   Host = unknown
 > {
-  // @ts-ignore Set after instantiation
+  // @ts-expect-error Set after instantiation
   options: AdapterRendererOptions;
 
   protected element: ReactTestInstance;
@@ -172,6 +172,7 @@ export default abstract class Element<
    * Otherwise an instance, callback, or string ref may be referenced by name.
    */
   ref<T>(name?: string): T | null {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const inst = this.element.instance;
     const fiber = this.element._fiber;
 

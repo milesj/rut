@@ -12,7 +12,7 @@ describe('Portals', () => {
 
     componentWillUnmount() {
       if (this.node) {
-        document.body.removeChild(this.node);
+        this.node.remove();
         delete this.node;
       }
     }
@@ -30,13 +30,13 @@ describe('Portals', () => {
   // Rut tests don't use JSDOM, so fake this.
   beforeEach(() => {
     global.document = {
-      // @ts-ignore
+      // @ts-expect-error
       body: {
         append() {},
       },
-      // @ts-ignore
+      // @ts-expect-error
       createElement() {},
-      // @ts-ignore
+      // @ts-expect-error
       removeChild() {},
     };
   });

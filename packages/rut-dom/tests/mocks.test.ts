@@ -50,7 +50,7 @@ describe('mockEvent()', () => {
 
     event.stopPropagation();
 
-    // @ts-ignore Non-standard
+    // @ts-expect-error Non-standard
     expect(event.propagationStopped).toBe(true);
   });
 
@@ -59,7 +59,7 @@ describe('mockEvent()', () => {
 
     event.stopImmediatePropagation();
 
-    // @ts-ignore Non-standard
+    // @ts-expect-error Non-standard
     expect(event.propagationStopped).toBe(true);
   });
 });
@@ -85,7 +85,7 @@ describe('mockSyntheticEvent()', () => {
 
     event.persist();
 
-    // @ts-ignore Not typed upstream
+    // @ts-expect-error Not typed upstream
     expect(event.isPersistent()).toBe(true);
   });
 

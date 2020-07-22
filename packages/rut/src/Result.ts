@@ -139,6 +139,7 @@ export default class Result<Props extends object = {}, Root extends Element = El
       children?: React.ReactNode;
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     this.element = React.isValidElement(newPropsOrElement)
       ? newPropsOrElement
       : React.cloneElement(this.element, newPropsOrElement, newChildren || children);

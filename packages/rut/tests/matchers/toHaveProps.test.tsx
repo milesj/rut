@@ -7,7 +7,7 @@ describe('toHaveProps()', () => {
 
   it('errors if a non-Element is passed', () => {
     expect(() => {
-      // @ts-ignore
+      // @ts-expect-error
       expect(123).toHaveProps('foo');
     }).toThrow('Expected a Rut `Element`.');
   });
@@ -26,7 +26,6 @@ describe('toHaveProps()', () => {
 
     it('passes when using `expect` utils', () => {
       expect(render<DivProps>(<div id="foo" className="foo" />).root).toHaveProps(
-        // @ts-ignore Not typed in core
         expect.objectContaining({
           className: 'foo',
         }),

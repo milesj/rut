@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/method-signature-style */
 
 import { ReactTestInstance } from 'react-test-renderer';
 import { doRender, doRenderAndWait, SyntheticEvent } from '../adapters';
@@ -22,7 +22,7 @@ export interface RenderTestSuite {
 }
 
 export function mockSyntheticEvent<T>(type: string): T {
-  // @ts-ignore
+  // @ts-expect-error
   return new SyntheticEvent(type, {
     preventDefault() {},
     stopPropagation() {},

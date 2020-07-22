@@ -13,7 +13,7 @@ export default function toHaveRendered(element: Element): MatchResult {
     message: `expected {{received}} to have rendered children`,
     name: 'toHaveRendered',
     notMessage: `expected {{received}} not to have rendered children`,
-    // @ts-ignore Allow internal access
+    // @ts-expect-error Allow internal access
     passed: element.element.children.length > 0,
     received: element.toString(),
   };

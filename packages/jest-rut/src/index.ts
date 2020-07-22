@@ -18,6 +18,7 @@ const jestMatchers: jest.ExpectExtendMap = {};
 
 Object.entries(matchers).forEach(([name, matcher]) => {
   jestMatchers[name] = function jestMatcher(this: jest.MatcherUtils, ...args: unknown[]) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const result: MatchResult = (matcher as Function).call(this, ...args);
     let message = `${this.utils.matcherHint(result.name)}\n\n`;
 

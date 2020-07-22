@@ -27,7 +27,7 @@ const rule: Rule.RuleModule = {
             return;
           }
 
-          // @ts-ignore
+          // @ts-expect-error
           const element = node.arguments[0] as JSXElement;
 
           // Not JSX
