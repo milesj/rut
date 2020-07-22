@@ -23,7 +23,7 @@
     "react-dom": "^16.9.0"
   },
   "dependencies": {
-    "@types/react-dom": "*",
+    "@types/react-dom": "16.9.8",
     "rut": "^1.0.1"
   },
   "funding": {
