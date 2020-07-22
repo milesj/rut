@@ -97,7 +97,7 @@ describe('Refs', () => {
         return (
           <input
             value={this.props.value}
-            ref={ref => {
+            ref={(ref) => {
               this.inputRef = ref;
             }}
           />

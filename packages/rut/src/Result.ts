@@ -60,7 +60,7 @@ export default class Result<Props extends object = {}, Root extends Element = El
     // element that matches the one initially passed in.
     if (this.options.wrapper) {
       const nodes = root.query(
-        node => node.type === rootType && deepEqual(node.props, element.props),
+        (node) => node.type === rootType && deepEqual(node.props, element.props),
       );
 
       // istanbul ignore next

@@ -15,8 +15,9 @@ describe('HOCs', () => {
         return <WrappedComponent {...props} styles={{ color: 'green' }} />;
       }
 
-      WithStyles.displayName = `withStyles(${WrappedComponent.displayName ||
-        WrappedComponent.name})`;
+      WithStyles.displayName = `withStyles(${
+        WrappedComponent.displayName || WrappedComponent.name
+      })`;
 
       return WithStyles;
     };

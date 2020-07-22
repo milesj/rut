@@ -85,7 +85,7 @@ const rule: Rule.RuleModule = {
         if (isRender(render)) {
           // Destructure
           if (render.id.type === 'ObjectPattern') {
-            render.id.properties.forEach(property => {
+            render.id.properties.forEach((property) => {
               if (property.key.type === 'Identifier' && RESULT_INTERNALS.has(property.key.name)) {
                 context.report({
                   node: property,

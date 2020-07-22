@@ -12,7 +12,7 @@ export default function toHaveProps(element: Element, props: UnknownProps): Matc
 
   // @ts-ignore Allow internal access
   const actualProps = element.element.props;
-  const keys = Object.keys(props).map(key => formatValue(key));
+  const keys = Object.keys(props).map((key) => formatValue(key));
 
   return {
     actual: actualProps,
@@ -21,7 +21,7 @@ export default function toHaveProps(element: Element, props: UnknownProps): Matc
     message: `expected {{received}} to have matching props for ${keys.join(', ')}`,
     name: 'toHaveProps',
     notMessage: `expected {{received}} not to have matching props for ${keys.join(', ')}`,
-    passed: equals => (equals ? equals(actualProps, props) : deepEqual(actualProps, props)),
+    passed: (equals) => (equals ? equals(actualProps, props) : deepEqual(actualProps, props)),
     received: element.toString(),
   };
 }

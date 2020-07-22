@@ -43,9 +43,7 @@ describe('mockFetch()', () => {
   });
 
   it('can define multiple routes', async () => {
-    mockFetch('/', 200)
-      .get('/foo', 201)
-      .get('/bar', 301);
+    mockFetch('/', 200).get('/foo', 201).get('/bar', 301);
 
     const foo = await fetch('/foo');
 
@@ -57,9 +55,7 @@ describe('mockFetch()', () => {
   });
 
   it('can spy on it using `spyOn`', async () => {
-    mockFetch('/', 200)
-      .get('/foo', 201)
-      .post('/bar', 301);
+    mockFetch('/', 200).get('/foo', 201).post('/bar', 301);
 
     const spy = jest.spyOn(global, 'fetch');
 

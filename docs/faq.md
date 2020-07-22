@@ -62,7 +62,7 @@ class StateExample extends React.Component<{}, { active: boolean }> {
   };
 
   handleToggle = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       active: !prevState.active,
     }));
   };

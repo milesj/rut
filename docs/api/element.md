@@ -164,7 +164,7 @@ for use in comparisons. To simplify this process, a [predicate](../predicates.md
 ```tsx
 const { root } = render<NewsReelProps>(<NewsReel />);
 
-const articles = root.query(node => node.type === NewsArticle);
+const articles = root.query((node) => node.type === NewsArticle);
 ```
 
 ### Options

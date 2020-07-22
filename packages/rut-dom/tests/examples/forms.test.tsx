@@ -27,7 +27,7 @@ describe('Forms Example', () => {
             name="email"
             type="email"
             value={email}
-            onChange={event => setEmail(event.currentTarget.value)}
+            onChange={(event) => setEmail(event.currentTarget.value)}
           />
         </div>
 
@@ -39,7 +39,7 @@ describe('Forms Example', () => {
             name="username"
             type="text"
             value={username}
-            onChange={event => setUsername(event.currentTarget.value)}
+            onChange={(event) => setUsername(event.currentTarget.value)}
           />
         </div>
 
@@ -51,7 +51,7 @@ describe('Forms Example', () => {
             name="password"
             type="password"
             value={password}
-            onChange={event => setPassword(event.currentTarget.value)}
+            onChange={(event) => setPassword(event.currentTarget.value)}
           />
         </div>
 

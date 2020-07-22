@@ -22,7 +22,7 @@ export default function toHaveProp(element: Element, name: string, value?: unkno
       message: `expected {{received}} to have a ${formattedName} prop with a value`,
       name: 'toHaveProp',
       notMessage: `expected {{received}} not to have a ${formattedName} prop with a value`,
-      passed: equals => (equals ? equals(actualValue, value) : deepEqual(actualValue, value)),
+      passed: (equals) => (equals ? equals(actualValue, value) : deepEqual(actualValue, value)),
       received: element.toString(),
     };
   }

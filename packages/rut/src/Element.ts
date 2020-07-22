@@ -156,8 +156,8 @@ export default abstract class Element<
    */
   query<T extends ElementType>(predicate: Predicate, options?: QueryOptions): Element<T>[] {
     return this.element
-      .findAll(node => predicate(node, node._fiber), { deep: true, ...options })
-      .map(node => {
+      .findAll((node) => predicate(node, node._fiber), { deep: true, ...options })
+      .map((node) => {
         const element = this.options.createElement(node);
 
         element.options = this.options;

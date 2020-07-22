@@ -9,7 +9,7 @@ describe('State', () => {
       };
 
       handleToggle = () => {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           active: !prevState.active,
         }));
       };

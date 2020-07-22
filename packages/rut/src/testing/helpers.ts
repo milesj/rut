@@ -89,7 +89,7 @@ export function runMatcher(result: MatchResult, isNot: boolean = false) {
 }
 
 export function runAsyncCall(done: () => void) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     done();
     resolve();
   });

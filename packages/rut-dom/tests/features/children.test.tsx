@@ -40,7 +40,7 @@ describe('Children', () => {
     function MapChildComp({ children }: Props) {
       return (
         <ul>
-          {React.Children.map(children, child => (
+          {React.Children.map(children, (child) => (
             <li>{child}</li>
           ))}
         </ul>
