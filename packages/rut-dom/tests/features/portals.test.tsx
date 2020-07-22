@@ -29,12 +29,14 @@ describe('Portals', () => {
 
   // Rut tests don't use JSDOM, so fake this.
   beforeEach(() => {
-    // @ts-ignore
     global.document = {
+      // @ts-ignore
       body: {
         append() {},
       },
+      // @ts-ignore
       createElement() {},
+      // @ts-ignore
       removeChild() {},
     };
   });
