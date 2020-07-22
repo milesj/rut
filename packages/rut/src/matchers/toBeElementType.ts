@@ -10,7 +10,7 @@ import { MatchResult, ElementType } from '../types';
 export default function toBeElementType(element: Element, type: ElementType): MatchResult {
   isRutElement(element);
 
-  // @ts-ignore Allow internal access
+  // @ts-expect-error Allow internal access
   const actualType = element.element.type;
   const typeName = formatValue(type);
 

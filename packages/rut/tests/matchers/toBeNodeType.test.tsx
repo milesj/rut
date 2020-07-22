@@ -17,7 +17,7 @@ describe('toBeNodeType()', () => {
   it('errors if an invalid node type', () => {
     expect(() => {
       expect(render(<div />).root).toBeNodeType(
-        // @ts-ignore Allow invalid
+        // @ts-expect-error Allow invalid
         'unknown-type',
       );
     }).toThrowErrorMatchingSnapshot();
@@ -26,7 +26,7 @@ describe('toBeNodeType()', () => {
       runMatcher(
         toBeNodeType(
           render(<div />).root,
-          // @ts-ignore Allow invalid
+          // @ts-expect-error Allow invalid
           'unknown-type',
         ),
       );
@@ -42,7 +42,7 @@ describe('toBeNodeType()', () => {
   };
 
   Object.entries(nodeTypes).forEach(([testTypeName, testNode]) => {
-    // @ts-ignore
+    // @ts-expect-error
     const expectedNode = new Element(render(<div>{testNode}</div>).root.element.children[0]);
     const typeName = testTypeName as NodeType;
 

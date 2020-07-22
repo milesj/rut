@@ -47,7 +47,6 @@ export function runElementTestSuite(name: string, { render, mockSyntheticEvent }
             </div>,
           );
 
-          // @ts-ignore
           root.findOne('span').dispatch('onFake');
         }).toThrow('Prop `onFake` does not exist.');
       });
@@ -60,7 +59,6 @@ export function runElementTestSuite(name: string, { render, mockSyntheticEvent }
             </div>,
           );
 
-          // @ts-ignore
           root.findOne('span').dispatch('id');
         }).toThrow('Prop `id` is not a function.');
       });
@@ -77,7 +75,6 @@ export function runElementTestSuite(name: string, { render, mockSyntheticEvent }
         expect(() => {
           const { root } = render<DispatchProps>(<DispatchComp onSomething={() => {}} />);
 
-          // @ts-ignore
           root.dispatch('onSomething');
         }).toThrow('Dispatching events is only allowed on host components.');
       });
@@ -285,7 +282,7 @@ export function runElementTestSuite(name: string, { render, mockSyntheticEvent }
         const { root } = render(<div />);
 
         expect(() => {
-          // @ts-ignore Allow invalid
+          // @ts-expect-error Allow invalid
           root.findAt('span', 'middle');
         }).toThrow('Invalid index type "middle".');
       });

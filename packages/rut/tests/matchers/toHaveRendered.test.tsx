@@ -53,7 +53,7 @@ describe('toHaveRendered()', () => {
   });
 
   it('returns false if false was returned', () => {
-    // @ts-ignore
+    // @ts-expect-error
     runMatcher(toHaveRendered(render(<FalseRender />).root), true);
   });
 
@@ -74,12 +74,12 @@ describe('toHaveRendered()', () => {
   });
 
   it('returns true if a string was rendered', () => {
-    // @ts-ignore
+    // @ts-expect-error
     runMatcher(toHaveRendered(render(<StringRender />).root));
   });
 
   it('returns true if an array of nodes was rendered', () => {
-    // @ts-ignore
+    // @ts-expect-error
     runMatcher(toHaveRendered(render(<ArrayRender />).root));
   });
 

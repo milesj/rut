@@ -35,7 +35,7 @@ describe('Refs', () => {
         render() {
           const { forwardedRef, ...rest } = this.props;
 
-          // @ts-ignore
+          // @ts-expect-error
           return <WrappedComponent ref={forwardedRef} {...rest} />;
         }
       }

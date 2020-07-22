@@ -1,8 +1,8 @@
 import BaseEvent from './BaseEvent';
 
 interface EventLike {
-  preventDefault(): void;
-  stopPropagation(): void;
+  preventDefault: () => void;
+  stopPropagation: () => void;
 }
 
 export default class SyntheticEvent<E extends EventLike = Event, T = unknown> extends BaseEvent<T> {
@@ -20,6 +20,7 @@ export default class SyntheticEvent<E extends EventLike = Event, T = unknown> ex
       if (typeof value !== 'function') {
         Object.defineProperty(this, key, {
           enumerable: true,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           value,
         });
       }

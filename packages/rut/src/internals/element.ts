@@ -5,7 +5,7 @@ import Element from '../Element';
 import { UnknownProps } from '../types';
 
 export function getProp(element: Element, name: string): unknown {
-  // @ts-ignore Allow internal access
+  // @ts-expect-error Allow internal access
   return element.element.props[name];
 }
 
@@ -16,12 +16,12 @@ export function getPropForDispatching(element: Element, name: string): React.Rea
     throw new Error(`Prop \`${name}\` does not exist.`);
   } else if (typeof prop !== 'function') {
     throw new TypeError(`Prop \`${name}\` is not a function.`);
-    // @ts-ignore Allow internal access
+    // @ts-expect-error Allow internal access
   } else if (typeof element.element.type !== 'string') {
     throw new TypeError('Dispatching events is only allowed on host components.');
   }
 
-  // @ts-ignore We check above
+  // @ts-expect-error We check above
   return prop;
 }
 

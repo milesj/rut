@@ -1,4 +1,4 @@
-/* eslint-disable complexity, no-use-before-define, @typescript-eslint/no-use-before-define, @typescript-eslint/no-explicit-any */
+/* eslint-disable complexity, no-use-before-define, @typescript-eslint/no-use-before-define, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
 
 import React from 'react';
 import { globalOptions } from './config';
@@ -233,7 +233,7 @@ class Debugger {
       return props;
     }
 
-    // @ts-ignore Allow internal access
+    // @ts-expect-error Allow internal access
     const { key, ref } = node._fiber || node.instance._reactInternalFiber;
 
     if (key) {

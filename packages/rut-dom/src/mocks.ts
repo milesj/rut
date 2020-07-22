@@ -136,7 +136,7 @@ export function mockEvent<T = Event>(type: string, options?: EventOptions<Elemen
   // JSDOM environment does not exist, which means we do not have events.
   // Return a very custom low-level event object for the time being.
   if (typeof window === 'undefined') {
-    // @ts-ignore Ignore legacy fields
+    // @ts-expect-error Ignore legacy fields
     event = new BaseEvent(type);
   } else {
     event = createEvent(type);
@@ -159,11 +159,12 @@ export function mockEvent<T = Event>(type: string, options?: EventOptions<Elemen
   Object.entries(props).forEach(([prop, value]) => {
     Object.defineProperty(event, prop, {
       enumerable: true,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       value,
     });
   });
 
-  // @ts-ignore Infer generics
+  // @ts-expect-error Infer generics
   return event;
 }
 
@@ -180,6 +181,6 @@ export function mockSyntheticEvent<T = React.SyntheticEvent>(
     eventType = eventType.slice(2);
   }
 
-  // @ts-ignore Infer generics
+  // @ts-expect-error Infer generics
   return new SyntheticEvent(eventType, mockEvent(eventType, options));
 }

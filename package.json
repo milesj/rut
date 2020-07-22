@@ -7,7 +7,7 @@
     "clean": "rm -rf packages/*/{*.tsbuildinfo,lib}",
     "coverage": "yarn run jest --coverage",
     "coverage:open": "open ./coverage/lcov-report/index.html",
-    "eslint": "beemo eslint",
+    "lint": "beemo eslint",
     "jest": "beemo jest",
     "prettier": "beemo prettier",
     "release": "lerna publish",
@@ -15,7 +15,7 @@
     "prerelease": "yarn run clean && yarn test",
     "pretest": "yarn run type",
     "test": "yarn run coverage",
-    "posttest": "yarn run eslint"
+    "posttest": "yarn run lint"
   },
   "devDependencies": {
     "@milesj/build-tools": "^2.9.0",
