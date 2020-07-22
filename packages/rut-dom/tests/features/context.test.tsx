@@ -21,7 +21,7 @@ describe('Context', () => {
   function Consumer({ spy }: SpyProps) {
     return (
       <ThemeContext.Consumer>
-        {theme => {
+        {(theme) => {
           spy(theme);
 
           return <div>Consumed!</div>;

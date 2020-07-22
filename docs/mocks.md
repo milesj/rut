@@ -43,10 +43,7 @@ Since this mock returns a `fetch-mock` instance, all upstream API methods are av
 example, we can easily mock multiple requests using a fluent interface.
 
 ```ts
-mockFetch('/', 200)
-  .get('/users/1', 200)
-  .get('/users/2', 404)
-  .post('/users', 200);
+mockFetch('/', 200).get('/users/1', 200).get('/users/2', 404).post('/users', 200);
 ```
 
 If you are using Jest and would like to spy on all `fetch()` calls, you can use a combination of

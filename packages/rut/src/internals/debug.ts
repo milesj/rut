@@ -27,7 +27,7 @@ function getLongestItem(values: string[]): number {
 function indentAllLines(value: string, indent: string): string {
   return value
     .split('\n')
-    .map(line => indent + line)
+    .map((line) => indent + line)
     .join('\n');
 }
 
@@ -111,7 +111,7 @@ class Debugger {
       (typeof node.type === 'string' && !hostElements) ||
       (typeof node.type === 'function' && !reactElements)
     ) {
-      children.forEach(child => {
+      children.forEach((child) => {
         this.buildTree(child, parent);
       });
 
@@ -131,7 +131,7 @@ class Debugger {
       props: this.getProps(node.props, keyAndRef ? this.getKeyAndRef(node) : {}),
     };
 
-    children.forEach(child => {
+    children.forEach((child) => {
       this.buildTree(child, tree);
     });
 
@@ -299,7 +299,7 @@ class Debugger {
     }
 
     const { maxLength = 0 } = this.options;
-    const items = values.slice(0, maxLength).map(value => format(value, depth + 1));
+    const items = values.slice(0, maxLength).map((value) => format(value, depth + 1));
 
     if (values.length > maxLength) {
       items.push(`... ${values.length - maxLength} more`);
@@ -307,7 +307,7 @@ class Debugger {
 
     const rootIndent = INDENT_CHARS.repeat(this.currentDepth);
     const stackIndent = INDENT_CHARS.repeat(depth + 1);
-    const stackedItems = items.map(item => stackIndent + item);
+    const stackedItems = items.map((item) => stackIndent + item);
     const inlineItems = items.join(', ');
 
     // Items are too long, stack vertically
@@ -335,7 +335,7 @@ class Debugger {
     }
 
     if (node.name === 'ROOT') {
-      return node.children.map(child => this.transformNode(child)).join('\n');
+      return node.children.map((child) => this.transformNode(child)).join('\n');
     }
 
     const inlineProps = node.props.join(' ');
@@ -353,7 +353,7 @@ class Debugger {
     // Stack props vertically
     if (isStacked) {
       output += '\n';
-      output += node.props.map(prop => indentAllLines(prop, `${indent}  `)).join('\n');
+      output += node.props.map((prop) => indentAllLines(prop, `${indent}  `)).join('\n');
       output += '\n';
 
       // Otherwise inline them
@@ -386,7 +386,7 @@ class Debugger {
       // Otherwise continue nested indentation
     } else {
       output += '\n';
-      output += node.children.map(child => this.transformNode(child, depth + 1)).join('\n');
+      output += node.children.map((child) => this.transformNode(child, depth + 1)).join('\n');
       output += `\n${indent}`;
     }
 
@@ -403,7 +403,7 @@ class Debugger {
       names.sort();
     }
 
-    names.forEach(name => {
+    names.forEach((name) => {
       const value = props[name];
 
       if (value === undefined) {

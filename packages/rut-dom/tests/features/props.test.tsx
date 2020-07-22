@@ -40,7 +40,7 @@ describe('Props', () => {
     }
 
     const result = render<RenderPropCompProps>(
-      <RenderPropComp renderItem={value => <b>{value * 2}</b>} />,
+      <RenderPropComp renderItem={(value) => <b>{value * 2}</b>} />,
     );
 
     expect(result).toMatchSnapshot();

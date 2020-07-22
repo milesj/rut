@@ -35,13 +35,13 @@ describe('Async Example', () => {
 
     loadUser = () => {
       fetch(`/users/${this.props.id}`)
-        .then(response => response.json())
-        .then(user => {
+        .then((response) => response.json())
+        .then((user) => {
           this.setState({ user });
 
           return user;
         })
-        .catch(error => {
+        .catch((error) => {
           this.setState({ error });
         });
     };

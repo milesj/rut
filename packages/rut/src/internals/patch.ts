@@ -8,7 +8,7 @@ const silencedErrors = [/^The above error occurred in the <\w+> component:/u];
 
 export function patchConsoleErrors(): () => void {
   console.error = (message: string) => {
-    const silence = silencedErrors.some(pattern => pattern.test(message));
+    const silence = silencedErrors.some((pattern) => pattern.test(message));
 
     if (!silence) {
       nativeConsoleError(message);

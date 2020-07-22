@@ -12,7 +12,7 @@ export function deepEqual(a: unknown, b: unknown): boolean {
 }
 
 export function isAllTextNodes(nodes: unknown[]): boolean {
-  return nodes.every(node => typeof node === 'string');
+  return nodes.every((node) => typeof node === 'string');
 }
 
 export function isClassInstance(value: unknown): value is Function {

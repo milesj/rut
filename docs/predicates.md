@@ -14,7 +14,7 @@ import { render, whereKey } from 'rut-dom';
 
 const { root } = render(
   <ItemList>
-    {items.map(item => (
+    {items.map((item) => (
       <Item key={item.id} item={item} />
     ))}
   </ItemList>,

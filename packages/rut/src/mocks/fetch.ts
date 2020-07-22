@@ -29,7 +29,7 @@ export function mockFetch(
  * Unmock and restore all fetch instances.
  */
 export function unmockFetches() {
-  instances.forEach(instance => {
+  instances.forEach((instance) => {
     instance.restore();
   });
 }

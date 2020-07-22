@@ -26,7 +26,7 @@ export function getPropForDispatching(element: Element, name: string): React.Rea
 }
 
 export function containsProps(props: UnknownProps, contains: UnknownProps): boolean {
-  return Object.keys(contains).every(prop => deepEqual(props[prop], contains[prop]));
+  return Object.keys(contains).every((prop) => deepEqual(props[prop], contains[prop]));
 }
 
 /**

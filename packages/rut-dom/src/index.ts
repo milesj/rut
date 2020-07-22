@@ -40,7 +40,7 @@ function applyPatches(): () => void {
     // Nothing
   }
 
-  ReactDOM.createPortal = children => children;
+  ReactDOM.createPortal = (children) => children;
   ReactDOM.findDOMNode = () => {
     throw new Error('`ReactDOM.findDOMNode()` is not supported by Rut.');
   };
@@ -63,7 +63,7 @@ export function render<Props extends object = {}>(
   return doRender<Props, DomElement<React.ComponentType<Props>, Props>>(element, {
     ...options,
     applyPatches,
-    createElement: instance => new DomElement(instance),
+    createElement: (instance) => new DomElement(instance),
   });
 }
 
@@ -74,6 +74,6 @@ export function renderAndWait<Props extends object = {}>(
   return doRenderAndWait<Props, DomElement<React.ComponentType<Props>, Props>>(element, {
     ...options,
     applyPatches,
-    createElement: instance => new DomElement(instance),
+    createElement: (instance) => new DomElement(instance),
   });
 }

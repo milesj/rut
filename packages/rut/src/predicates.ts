@@ -13,7 +13,7 @@ export function whereKey(value: React.Key | React.Key[]): Predicate {
  * Find all elements in common with the provided props, regardless of component `type`.
  */
 export function whereProps(props: UnknownProps): Predicate {
-  return node => containsProps(node.props, props);
+  return (node) => containsProps(node.props, props);
 }
 
 /**
@@ -21,5 +21,5 @@ export function whereProps(props: UnknownProps): Predicate {
  * have in common the provided props.
  */
 export function whereTypeAndProps(type: ElementType, props?: UnknownProps): Predicate {
-  return node => node.type === type && (props ? containsProps(node.props, props) : true);
+  return (node) => node.type === type && (props ? containsProps(node.props, props) : true);
 }
