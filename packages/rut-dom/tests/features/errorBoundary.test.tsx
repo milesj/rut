@@ -60,12 +60,13 @@ describe('ErrorBoundary', () => {
   it('renders and logs a caught error', () => {
     function BrokenComponent() {
       throw new Error('Oops!');
+
+      return null;
     }
 
     const spy = jest.fn();
     const result = render<Props>(
       <ErrorBoundary spy={spy}>
-        // @ts-ignore
         <BrokenComponent />
       </ErrorBoundary>,
     );

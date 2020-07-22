@@ -86,7 +86,11 @@ const rule: Rule.RuleModule = {
           // Destructure
           if (render.id.type === 'ObjectPattern') {
             render.id.properties.forEach((property) => {
-              if (property.key.type === 'Identifier' && RESULT_INTERNALS.has(property.key.name)) {
+              if (
+                property.type === 'Property' &&
+                property.key.type === 'Identifier' &&
+                RESULT_INTERNALS.has(property.key.name)
+              ) {
                 context.report({
                   node: property,
                   messageId: 'noInternalApis',
