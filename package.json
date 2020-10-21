@@ -26,8 +26,8 @@
     "@types/react-test-renderer": "^16.9.3",
     "conventional-changelog-beemo": "^2.0.0",
     "lerna": "^3.22.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
   },
   "workspaces": [
     "packages/*"

@@ -22,15 +22,15 @@
     "node": ">=10.10.0"
   },
   "peerDependencies": {
-    "react": "^16.9.0"
+    "react": "^17.0.0"
   },
   "dependencies": {
-    "@types/react": "16.9.53",
+    "@types/react": "*",
     "@types/react-is": "*",
-    "@types/react-test-renderer": "16.9.3",
+    "@types/react-test-renderer": "*",
     "fetch-mock": "^9.10.7",
-    "react-is": "^16.13.1",
-    "react-test-renderer": "^16.13.1"
+    "react-is": "^17.0.0",
+    "react-test-renderer": "^17.0.0"
   },
   "funding": {
     "type": "ko-fi",

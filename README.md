@@ -63,7 +63,8 @@ while avoiding implementation details.
 
 ## Requirements
 
-- React 16.9+
+- React 16.9+ (Rut v1)
+- React 17+ (Rut v2)
 - Jest or another testing framework
 
 ## Documentation
