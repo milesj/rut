@@ -1,8 +1,7 @@
-/* eslint-disable complexity */
+/* eslint-disable complexity, @typescript-eslint/no-unsafe-assignment */
 
 import React from 'react';
-import { InferHostElementFromEvent } from 'rut';
-import { BaseEvent, SyntheticEvent } from 'rut/lib/adapters';
+import { InferHostElementFromEvent, BaseEvent, SyntheticEvent } from 'rut';
 import { EventType, EventOptions } from './types';
 
 /**

@@ -5,7 +5,7 @@
 
 import rules from './rules';
 
-export = {
+export default {
   rules,
   configs: {
     recommended: {

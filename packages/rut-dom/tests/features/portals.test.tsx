@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { FuncComp } from 'rut/lib/testing/fixtures';
+import { FuncComp } from 'rut/test';
 import { render } from '../../src';
 
 const nativeCreatePortal = ReactDOM.createPortal;

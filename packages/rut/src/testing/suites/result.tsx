@@ -1,7 +1,6 @@
 /* eslint-disable max-classes-per-file, react/no-unsafe, react/prefer-stateless-function */
 
 import React, { useEffect, useLayoutEffect, useContext } from 'react';
-import Element from '../../Element';
 import {
   ClassComp,
   FuncComp,
@@ -17,7 +16,7 @@ import {
 } from '../fixtures';
 import { RenderTestSuite } from '../helpers';
 
-export function runResultTestSuite({ render, renderAndWait }: RenderTestSuite) {
+export function runResultTestSuite({ render, renderAndWait, Element }: RenderTestSuite) {
   describe('Result', () => {
     function Wrapper({ children }: { children?: React.ReactNode }) {
       return <TestContext.Provider value="wrapped">{children || null}</TestContext.Provider>;

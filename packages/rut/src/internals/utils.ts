@@ -1,5 +1,4 @@
 import assert from 'assert';
-import Element from '../Element';
 
 export function deepEqual(a: unknown, b: unknown): boolean {
   try {
@@ -36,15 +35,11 @@ export function isClassInstance(value: unknown): value is Function {
 }
 
 export function isRutElement(value: unknown) {
-  if (value instanceof Element) {
-    return;
-  }
-
   if (
     typeof value === 'object' &&
     value !== null &&
-    // @ts-expect-error Allow private access
-    (value.constructor.name.endsWith('Element') || (value as Element).isRutElement === true)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (value.constructor.name.endsWith('Element') || (value as any).isRutElement === true)
   ) {
     return;
   }

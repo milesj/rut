@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import React from 'react';
-import { ReactTestInstance } from 'react-test-renderer';
+import type { ReactTestInstance } from 'react-test-renderer';
 import { getTypeName } from './internals/react';
 import { doAct, doAsyncAct } from './internals/act';
 import { debug } from './internals/debug';

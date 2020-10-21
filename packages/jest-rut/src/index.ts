@@ -3,8 +3,7 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import { unmockFetches, MatchResult } from 'rut';
-import { integrate, matchers } from 'rut/lib/integrations';
+import { unmockFetches, MatchResult, integrate, matchers } from 'rut';
 import { runWithTimers } from './integration';
 import serializer from './serializer';
 
@@ -39,6 +38,7 @@ Object.entries(matchers).forEach(([name, matcher]) => {
 
     return {
       message: () => message,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       pass: typeof result.passed === 'function' ? result.passed(this.equals) : result.passed,
     };
   };

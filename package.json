@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "yarn run type",
-    "clean": "rm -rf packages/*/{*.tsbuildinfo,lib}",
+    "build": "packemon build --addEngines --checkLicenses",
+    "clean": "rm -rf packages/*/{dts,lib}",
     "coverage": "yarn run jest --coverage",
     "coverage:open": "open ./coverage/lcov-report/index.html",
     "lint": "beemo eslint",
@@ -39,7 +39,11 @@
       "eslint",
       "jest",
       "prettier",
-      "typescript"
+      {
+        "driver": "typescript",
+        "buildFolder": "dts",
+        "declarationOnly": true
+      }
     ],
     "settings": {
       "node": true,

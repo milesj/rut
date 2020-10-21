@@ -13,6 +13,7 @@ logs/
 _book/
 coverage/
 dist/
+dts/
 esm/
 lib/
 tmp/

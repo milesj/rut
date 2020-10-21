@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/method-signature-style */
 
-import { ReactTestInstance } from 'react-test-renderer';
-import { doRender, doRenderAndWait, SyntheticEvent } from '../adapters';
+import type { ReactTestInstance } from 'react-test-renderer';
+import { doRender, doRenderAndWait } from '../adapters';
+import SyntheticEvent from '../SyntheticEvent';
 import RutElement from '../Element';
 import SyncResult from '../SyncResult';
 import AsyncResult from '../AsyncResult';
 import { MatchResult, RendererOptions } from '../types';
 
 export interface RenderTestSuite {
+  Element: Function & { prototype: RutElement<any, any, any> };
+
   mockSyntheticEvent<T>(type: string, options?: unknown): T;
 
   render<P extends object>(

@@ -1,8 +1,9 @@
 import React from 'react';
-import { runElementTestSuite } from 'rut/lib/testing/suites/element';
-import { render, renderAndWait, mockSyntheticEvent } from '../src';
+import { runElementTestSuite } from 'rut/test';
+import { render, renderAndWait, mockSyntheticEvent, DomElement } from '../src';
 
 runElementTestSuite('DomElement', {
+  Element: DomElement,
   mockSyntheticEvent,
   render,
   renderAndWait,

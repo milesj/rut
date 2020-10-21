@@ -2,6 +2,8 @@
 
 import React from 'react';
 import {
+  Element,
+  SyntheticEvent,
   ElementType,
   AtIndexType,
   DispatchOptions,
@@ -10,7 +12,6 @@ import {
   Predicate,
   QueryOptions,
 } from 'rut';
-import { Element, SyntheticEvent } from 'rut/lib/adapters';
 import { mockSyntheticEvent } from './mocks';
 import {
   HostComponentType,
@@ -62,7 +63,7 @@ export default class DomElement<
     return super.dispatch(name, eventOrConfig, options);
   }
 
-  async dispatchAndWait<K extends EventType>(
+  dispatchAndWait<K extends EventType>(
     name: K,
     eventOrConfig?:
       | InferEventFromHandler<EventMap<Host>[K]>

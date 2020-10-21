@@ -1,7 +1,7 @@
 import React from 'react';
 import { isReactNodeLike, NodeLike } from './react';
 import { deepEqual } from './utils';
-import Element from '../Element';
+import type Element from '../Element';
 import { UnknownProps } from '../types';
 
 export function getProp(element: Element, name: string): unknown {

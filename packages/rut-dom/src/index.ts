@@ -3,8 +3,7 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import { RendererOptions } from 'rut';
-import { doRender, doRenderAndWait } from 'rut/lib/adapters';
+import { RendererOptions, doRender, doRenderAndWait } from 'rut';
 import DomElement from './DomElement';
 
 export * from 'rut';

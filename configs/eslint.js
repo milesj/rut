@@ -10,6 +10,7 @@ module.exports = {
     'react/no-unused-prop-types': 'off',
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
+    'unicorn/import-index': 'off',
 
     // Broken
     'no-use-before-define': 'off',
