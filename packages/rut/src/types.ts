@@ -163,6 +163,7 @@ declare module 'react-test-renderer' {
     unstable_flushSync<T>(cb: () => T): T;
   }
 
+  // eslint-disable-next-line no-shadow
   interface ReactTestInstance {
     _fiber: FiberNode;
   }

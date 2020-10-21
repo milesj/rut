@@ -107,7 +107,6 @@ export function AsyncHookComp({ id, onLoad }: AsyncProps) {
       setInitialized(true);
     }
 
-    // eslint-disable-next-line no-void
     void load();
   }, [id, onLoad]);
 

@@ -1,4 +1,4 @@
-/* eslint-disable complexity, no-use-before-define, @typescript-eslint/no-use-before-define, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable complexity, @typescript-eslint/no-use-before-define, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
 
 import React from 'react';
 import { globalOptions } from './config';

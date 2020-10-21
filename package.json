@@ -18,12 +18,12 @@
     "posttest": "yarn run lint"
   },
   "devDependencies": {
-    "@milesj/build-tools": "^2.9.0",
-    "@types/jest": "^26.0.5",
-    "@types/react": "^16.9.43",
+    "@milesj/build-tools": "^2.13.1",
+    "@types/jest": "^26.0.15",
+    "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "@types/react-is": "^16.7.1",
-    "@types/react-test-renderer": "^16.9.2",
+    "@types/react-test-renderer": "^16.9.3",
     "conventional-changelog-beemo": "^2.0.0",
     "lerna": "^3.22.1",
     "react": "^16.13.1",

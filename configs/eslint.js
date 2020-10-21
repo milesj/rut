@@ -1,3 +1,5 @@
+/* eslint-disable sort-keys */
+
 module.exports = {
   extends: ['plugin:rut/recommended'],
   rules: {
@@ -8,5 +10,8 @@ module.exports = {
     'react/no-unused-prop-types': 'off',
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
+
+    // Broken
+    'no-use-before-define': 'off',
   },
 };
