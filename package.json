@@ -10,7 +10,7 @@
     "lint": "beemo eslint",
     "jest": "beemo jest",
     "prettier": "beemo prettier",
-    "release": "lerna publish",
+    "release": "lerna version --conventional-commits --changelog-preset conventional-changelog-beemo --create-release github --push && lerna publish from-git",
     "type": "beemo typescript --build --reference-workspaces",
     "prerelease": "yarn run clean && yarn test",
     "pretest": "yarn run type",
@@ -20,14 +20,14 @@
   "devDependencies": {
     "@milesj/build-tools": "^2.13.1",
     "@types/jest": "^26.0.15",
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
+    "@types/react": "^16.9.55",
+    "@types/react-dom": "^16.9.9",
     "@types/react-is": "^16.7.1",
     "@types/react-test-renderer": "^16.9.3",
     "conventional-changelog-beemo": "^2.0.0",
     "lerna": "^3.22.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "workspaces": [
     "packages/*"
