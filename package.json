@@ -10,7 +10,7 @@
     "lint": "beemo eslint",
     "jest": "beemo jest",
     "prettier": "beemo prettier",
-    "release": "lerna publish",
+    "release": "lerna version --conventional-commits --changelog-preset conventional-changelog-beemo --create-release github --push && lerna publish from-git",
     "type": "beemo typescript --build --reference-workspaces",
     "prerelease": "yarn run clean && yarn test",
     "pretest": "yarn run type",
