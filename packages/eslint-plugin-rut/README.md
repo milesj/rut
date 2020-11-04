@@ -8,7 +8,7 @@ ESLint plugin for enforcing Rut best practices.
 
 ## Requirements
 
-- ESLint 5, 6+
+- ESLint 6/7+
 
 ## Documentation
 
