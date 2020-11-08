@@ -40,4 +40,4 @@ yarn add --dev rut react
 
 ## Documentation
 
-[https://milesj.gitbook.io/rut](https://milesj.gitbook.io/rut)
+[https://ruttest.dev](https://ruttest.dev)

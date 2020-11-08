@@ -12,4 +12,4 @@ ESLint plugin for enforcing Rut best practices.
 
 ## Documentation
 
-[https://milesj.gitbook.io/rut/setup#eslint](https://milesj.gitbook.io/rut/setup#eslint)
+[https://ruttest.dev/docs/tooling/eslint](https://ruttest.dev/docs/tooling/eslint)
