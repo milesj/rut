@@ -1,7 +1,9 @@
-# Predicates
+---
+title: Predicates
+---
 
-A predicate is a function for [querying](./api#query) against a React element's tree. The following
-factories can be used for generating predicate clauses.
+A predicate is a function for [querying](./api/element.md#query) against a React element's tree. The
+following factories can be used for generating predicate clauses.
 
 ## `whereKey()`
 

@@ -1,0 +1,41 @@
+---
+title: Setup
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Begin by installing the `rut-dom` package (or another renderer specific package) as a dev
+dependency. Since this is a React testing library, be sure `react`, and `react-dom` (or
+`react-native`, etc) is also installed.
+
+<Tabs
+  groupId="package-manager"
+  defaultValue="yarn"
+  values={[
+    { label: 'Yarn', value: 'yarn' },
+    { label: 'NPM', value: 'npm' },
+  ]}
+>
+  <TabItem value="yarn">
+
+
+```bash
+yarn add --dev rut-dom
+```
+
+  </TabItem>
+  <TabItem value="npm">
+
+
+```bash
+npm install --save-dev rut-dom
+```
+
+  </TabItem>
+</Tabs>
+
+
+And that's it! Head over to the [API](./api/render.md) for more information on how to use
+`render()`, `renderAndWait()`, and others -- or continue reading for testing framework specific
+functionality.

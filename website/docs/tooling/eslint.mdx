@@ -1,6 +1,67 @@
-# ESLint Rules
+---
+title: ESLint
+---
 
-## `consistent-event-type`
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Install the `eslint-plugin-rut` package as a dev dependency.
+
+<Tabs
+  groupId="package-manager"
+  defaultValue="yarn"
+  values={[
+    { label: 'Yarn', value: 'yarn' },
+    { label: 'NPM', value: 'npm' },
+  ]}
+>
+  <TabItem value="yarn">
+
+
+```bash
+yarn add --dev eslint-plugin-rut
+```
+
+  </TabItem>
+  <TabItem value="npm">
+
+
+```bash
+npm install --save-dev eslint-plugin-rut
+```
+
+  </TabItem>
+</Tabs>
+
+
+Once installed, add the recommended config to your `.eslintrc.js` file. By default this will target
+all test files using ESLint overrides in the format of `*.test.(ts|js)x?`.
+
+```js title=".eslintrc.js"
+module.exports = {
+  extends: ['plugin:rut/recommended'],
+};
+```
+
+If you prefer to manage the targets yourself, something like the following will suffice.
+
+```js title=".eslintrc.js"
+module.exports = {
+  overrides: [
+    {
+      files: ['*.spec.ts', '*.spec.js'],
+      plugins: ['rut'],
+      rules: {
+        'rut/no-act': 'error',
+      },
+    },
+  ],
+};
+```
+
+## Rules
+
+### `consistent-event-type`
 
 Verify and enforce the correct event types are used when mocking or dispatching events.
 
@@ -20,7 +81,7 @@ mockEvent('keydown');
 mockSyntheticEvent('onKeyDown');
 ```
 
-## `no-act`
+### `no-act`
 
 Disallow usage of React's `act()` within tests. This functionality is provided by Rut and shouldn't
 be necessary.
@@ -48,7 +109,7 @@ const { update } = render(<Example id={1} />);
 update({ id: 2 });
 ```
 
-## `no-internals`
+### `no-internals`
 
 Disallow import and usage of Rut's internal APIs. Accessing these directly is a code smell.
 
@@ -75,7 +136,7 @@ debug();
 root.debug();
 ```
 
-## `require-render-generics`
+### `require-render-generics`
 
 Require TypeScript generics for `render()` and `renderAndWait()` functions.
 

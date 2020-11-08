@@ -1,4 +1,6 @@
-# FAQ
+---
+title: FAQ
+---
 
 ## Is the DOM really not required?
 
