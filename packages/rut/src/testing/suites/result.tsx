@@ -1,19 +1,19 @@
 /* eslint-disable max-classes-per-file, react/no-unsafe, react/prefer-stateless-function */
 
-import React, { useEffect, useLayoutEffect, useContext } from 'react';
+import React, { useContext, useEffect, useLayoutEffect } from 'react';
 import Element from '../../Element';
 import {
+  AsyncCdmComp,
+  AsyncCduComp,
+  AsyncHookComp,
+  AsyncProps,
   ClassComp,
   FuncComp,
   TestContext,
-  AsyncHookComp,
-  AsyncCdmComp,
-  AsyncCduComp,
-  TimerCdmComp,
-  TimerHookComp,
-  TimerCduComp,
   TestProps,
-  AsyncProps,
+  TimerCdmComp,
+  TimerCduComp,
+  TimerHookComp,
 } from '../fixtures';
 import { RenderTestSuite } from '../helpers';
 
@@ -357,9 +357,7 @@ export function runResultTestSuite({ render, renderAndWait }: RenderTestSuite) {
           const spy = jest.fn();
 
           function UnmountTest() {
-            useEffect(() => {
-              return spy;
-            });
+            useEffect(() => spy);
 
             return null;
           }

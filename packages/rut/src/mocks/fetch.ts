@@ -1,8 +1,8 @@
 import fetchMock, {
   MockMatcher,
+  MockOptions,
   MockResponse,
   MockResponseFunction,
-  MockOptions,
 } from 'fetch-mock';
 
 export type MockFetchResult = fetchMock.FetchMockStatic;

@@ -2,8 +2,8 @@
 
 import React from 'react';
 import toContainNode from '../../src/matchers/toContainNode';
+import { ClassComp, FuncComp } from '../../src/testing/fixtures';
 import { render, runMatcher } from '../../src/testing/helpers';
-import { FuncComp, ClassComp } from '../../src/testing/fixtures';
 
 describe('toContainNode()', () => {
   it('errors if a non-Element is passed', () => {

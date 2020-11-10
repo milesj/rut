@@ -10,13 +10,11 @@ describe('Refs', () => {
     }
 
     const Button = React.forwardRef(
-      ({ children }: ButtonProps, ref: React.Ref<HTMLButtonElement>) => {
-        return (
-          <button type="button" ref={ref}>
-            {children}
-          </button>
-        );
-      },
+      ({ children }: ButtonProps, ref: React.Ref<HTMLButtonElement>) => (
+        <button type="button" ref={ref}>
+          {children}
+        </button>
+      ),
     );
 
     it('resolves the ref from the inner component', () => {
@@ -40,9 +38,7 @@ describe('Refs', () => {
         }
       }
 
-      return React.forwardRef((props, ref) => {
-        return <WithRef {...props} forwardedRef={ref} />;
-      });
+      return React.forwardRef((props, ref) => <WithRef {...props} forwardedRef={ref} />);
     }
 
     class InnerButton extends React.Component<{ children: React.ReactNode }> {

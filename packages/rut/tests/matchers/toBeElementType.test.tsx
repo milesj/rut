@@ -1,13 +1,13 @@
 import React from 'react';
 import toBeElementType from '../../src/matchers/toBeElementType';
-import { render, runMatcher } from '../../src/testing/helpers';
 import {
-  FuncComp,
-  FuncCompWithDisplayName,
   ClassComp,
   ClassCompWithDisplayName,
+  FuncComp,
+  FuncCompWithDisplayName,
   TestProps,
 } from '../../src/testing/fixtures';
+import { render, runMatcher } from '../../src/testing/helpers';
 
 describe('toBeElementType()', () => {
   it('errors if a non-Element is passed', () => {

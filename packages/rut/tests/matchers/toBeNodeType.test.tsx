@@ -1,11 +1,11 @@
 /* eslint-disable rut/no-internals */
 
 import React from 'react';
-import { NodeType } from '../../src/types';
-import toBeNodeType from '../../src/matchers/toBeNodeType';
-import { render, runMatcher } from '../../src/testing/helpers';
-import { FuncComp, ClassComp, ForwardRefComp, MemoComp } from '../../src/testing/fixtures';
 import Element from '../../src/Element';
+import toBeNodeType from '../../src/matchers/toBeNodeType';
+import { ClassComp, ForwardRefComp, FuncComp, MemoComp } from '../../src/testing/fixtures';
+import { render, runMatcher } from '../../src/testing/helpers';
+import { NodeType } from '../../src/types';
 
 describe('toBeNodeType()', () => {
   it('errors if a non-Element is passed', () => {

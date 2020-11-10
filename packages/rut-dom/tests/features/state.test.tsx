@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { render, mockSyntheticEvent } from '../../src';
+import { mockSyntheticEvent, render } from '../../src';
 
 describe('State', () => {
   describe('class components', () => {

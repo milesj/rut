@@ -3,7 +3,7 @@
 import React from 'react';
 import { InferHostElementFromEvent } from 'rut';
 import { BaseEvent, SyntheticEvent } from 'rut/lib/adapters';
-import { EventType, EventOptions } from './types';
+import { EventOptions, EventType } from './types';
 
 /**
  * In both the `mockEvent` and `mockSyntheticEvent` functions below,
@@ -131,16 +131,10 @@ function createEvent(type: string): Event {
  */
 export function mockEvent<T = Event>(type: string, options?: EventOptions<Element, T>): T {
   const { currentTarget, target, ...props } = options || {};
-  let event: Event;
 
   // JSDOM environment does not exist, which means we do not have events.
   // Return a very custom low-level event object for the time being.
-  if (typeof window === 'undefined') {
-    // @ts-expect-error Ignore legacy fields
-    event = new BaseEvent(type);
-  } else {
-    event = createEvent(type);
-  }
+  const event = typeof window === 'undefined' ? new BaseEvent(type) : createEvent(type);
 
   if (target) {
     Object.defineProperty(event, 'target', {

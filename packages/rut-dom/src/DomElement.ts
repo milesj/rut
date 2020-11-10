@@ -2,23 +2,23 @@
 
 import React from 'react';
 import {
-  ElementType,
   AtIndexType,
   DispatchOptions,
+  ElementType,
   InferEventFromHandler,
-  UnknownProps,
   Predicate,
   QueryOptions,
+  UnknownProps,
 } from 'rut';
 import { Element, SyntheticEvent } from 'rut/lib/adapters';
 import { mockSyntheticEvent } from './mocks';
 import {
+  EventMap,
+  EventOptions,
+  EventType,
   HostComponentType,
   InferComponentProps,
   InferHostElement,
-  EventMap,
-  EventType,
-  EventOptions,
 } from './types';
 
 export default class DomElement<
@@ -55,8 +55,8 @@ export default class DomElement<
   dispatch<K extends EventType>(
     name: K,
     eventOrConfig?:
-      | InferEventFromHandler<EventMap<Host>[K]>
-      | EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
+      | EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>
+      | InferEventFromHandler<EventMap<Host>[K]>,
     options: DispatchOptions = {},
   ): this {
     return super.dispatch(name, eventOrConfig, options);
@@ -65,8 +65,8 @@ export default class DomElement<
   async dispatchAndWait<K extends EventType>(
     name: K,
     eventOrConfig?:
-      | InferEventFromHandler<EventMap<Host>[K]>
-      | EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>,
+      | EventOptions<Host, InferEventFromHandler<EventMap<Host>[K]>>
+      | InferEventFromHandler<EventMap<Host>[K]>,
     options: DispatchOptions = {},
   ): Promise<void> {
     return super.dispatchAndWait(name, eventOrConfig, options);

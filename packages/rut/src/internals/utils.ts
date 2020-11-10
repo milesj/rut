@@ -52,7 +52,7 @@ export function isRutElement(value: unknown) {
   throw new Error('Expected a Rut `Element`.');
 }
 
-export function toArray<T>(value?: null | T | T[]): T[] {
+export function toArray<T>(value?: T | T[] | null): T[] {
   if (!value) {
     return [];
   }

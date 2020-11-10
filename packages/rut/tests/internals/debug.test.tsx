@@ -1,6 +1,6 @@
 import React from 'react';
-import { render } from '../../src/testing/helpers';
 import { ClassComp, FuncComp, TestProps } from '../../src/testing/fixtures';
+import { render } from '../../src/testing/helpers';
 
 describe('debug()', () => {
   it('adds key and ref props first', () => {

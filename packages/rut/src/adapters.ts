@@ -1,14 +1,14 @@
 import React from 'react';
-import Element from './Element';
-import BaseEvent from './BaseEvent';
-import SyntheticEvent from './SyntheticEvent';
 import AsyncResult from './AsyncResult';
-import SyncResult from './SyncResult';
-import { globalOptions } from './internals/config';
+import BaseEvent from './BaseEvent';
+import Element from './Element';
 import { doAct, doAsyncAct } from './internals/act';
+import { globalOptions } from './internals/config';
+import SyncResult from './SyncResult';
+import SyntheticEvent from './SyntheticEvent';
 import { AdapterRendererOptions } from './types';
 
-export { Element, BaseEvent, SyntheticEvent };
+export { BaseEvent, Element, SyntheticEvent };
 
 export function doRender<Props extends object, Root extends Element>(
   element: React.ReactElement<Props>,

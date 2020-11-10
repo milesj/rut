@@ -1,7 +1,7 @@
 import Element from '../Element';
 import { formatValue } from '../internals/react';
 import { isRutElement } from '../internals/utils';
-import { MatchResult, ElementType } from '../types';
+import { ElementType, MatchResult } from '../types';
 
 /**
  * Check that an element is a valid React element type.

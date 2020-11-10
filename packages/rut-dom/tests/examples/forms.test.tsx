@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 import React, { useState } from 'react';
-import { render, mockSyntheticEvent } from '../../src';
+import { mockSyntheticEvent, render } from '../../src';
 
 describe('Forms Example', () => {
   interface SignupFormProps {
@@ -27,7 +27,7 @@ describe('Forms Example', () => {
             name="email"
             type="email"
             value={email}
-            onChange={(event) => setEmail(event.currentTarget.value)}
+            onChange={(event) => void setEmail(event.currentTarget.value)}
           />
         </div>
 
@@ -39,7 +39,7 @@ describe('Forms Example', () => {
             name="username"
             type="text"
             value={username}
-            onChange={(event) => setUsername(event.currentTarget.value)}
+            onChange={(event) => void setUsername(event.currentTarget.value)}
           />
         </div>
 
@@ -51,7 +51,7 @@ describe('Forms Example', () => {
             name="password"
             type="password"
             value={password}
-            onChange={(event) => setPassword(event.currentTarget.value)}
+            onChange={(event) => void setPassword(event.currentTarget.value)}
           />
         </div>
 

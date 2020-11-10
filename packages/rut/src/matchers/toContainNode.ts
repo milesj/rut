@@ -1,8 +1,8 @@
 import React from 'react';
 import Element from '../Element';
 import { debugFromElement } from '../internals/debug';
-import { isAllTextNodes, isRutElement, deepEqual } from '../internals/utils';
 import { formatValue } from '../internals/react';
+import { deepEqual, isAllTextNodes, isRutElement } from '../internals/utils';
 import { MatchResult } from '../types';
 
 /**

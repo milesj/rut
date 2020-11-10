@@ -1,4 +1,4 @@
-import { RendererOptions, IntegrationOptions } from '../types';
+import { IntegrationOptions, RendererOptions } from '../types';
 
 export const globalOptions: RendererOptions = {};
 

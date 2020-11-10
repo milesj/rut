@@ -1,8 +1,8 @@
 import React from 'react';
-import { isReactNodeLike, NodeLike } from './react';
-import { deepEqual } from './utils';
 import Element from '../Element';
 import { UnknownProps } from '../types';
+import { isReactNodeLike, NodeLike } from './react';
+import { deepEqual } from './utils';
 
 export function getProp(element: Element, name: string): unknown {
   // @ts-expect-error Allow internal access

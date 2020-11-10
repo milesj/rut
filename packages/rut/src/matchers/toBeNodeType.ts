@@ -1,11 +1,11 @@
 import Element from '../Element';
-import { MatchResult, NodeType } from '../types';
-import { isRutElement } from '../internals/utils';
 import { formatValue } from '../internals/react';
+import { isRutElement } from '../internals/utils';
+import { MatchResult, NodeType } from '../types';
 
 // Keep in sync with React upstream!
 // https://github.com/facebook/react/blob/master/packages/shared/ReactWorkTags.js
-const nodeTypeMap: { [K in NodeType]: number | number[] } = {
+const nodeTypeMap: { [K in NodeType]: number[] | number } = {
   'class-component': 1,
   'forward-ref': 11,
   'function-component': 0,

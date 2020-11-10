@@ -9,7 +9,7 @@ declare module 'estree' {
   export interface JSXAttribute extends BaseNode {
     type: 'JSXAttribute';
     name: JSXIdentifier;
-    value: Literal | JSXExpression | null;
+    value: JSXExpression | Literal | null;
   }
 
   export interface JSXClosingElement extends BaseNode {
@@ -83,6 +83,6 @@ declare module 'estree' {
   }
 
   export type JSXChild = JSXElement | JSXExpression | JSXFragment | JSXText;
-  export type JSXExpression = JSXEmptyExpression | JSXSpreadChild | JSXExpressionContainer;
+  export type JSXExpression = JSXEmptyExpression | JSXExpressionContainer | JSXSpreadChild;
   export type JSXTagNameExpression = JSXIdentifier | JSXMemberExpression;
 }

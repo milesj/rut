@@ -1,7 +1,7 @@
+import Element from './Element';
+import { doAct } from './internals/act';
 import Result from './Result';
 import { RendererOptions } from './types';
-import { doAct } from './internals/act';
-import Element from './Element';
 
 export default class SyncResult<
   Props extends object = {},
@@ -17,7 +17,7 @@ export default class SyncResult<
   rerender = (element: React.ReactElement<Props>, options?: RendererOptions) => {
     Object.assign(this.options, options);
 
-    doAct(() => this.renderer.update(this.updateElement(element)), this.options.applyPatches);
+    doAct(() => void this.renderer.update(this.updateElement(element)), this.options.applyPatches);
 
     return this.root;
   };

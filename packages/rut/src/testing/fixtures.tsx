@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file, react/prefer-stateless-function */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { runAsyncCall } from './helpers';
 
 export interface TestProps {
@@ -36,10 +36,10 @@ export const TestContext = React.createContext('');
 
 TestContext.displayName = 'TestContext';
 
-export const ForwardRefComp = React.forwardRef((props, ref) => {
+export const ForwardRefComp = React.forwardRef((props, ref) => (
   // @ts-expect-error
-  return <ClassComp {...props} ref={ref} />;
-});
+  <ClassComp {...props} ref={ref} />
+));
 
 export const LazyComp = React.lazy(() => Promise.resolve({ default: FuncComp }));
 

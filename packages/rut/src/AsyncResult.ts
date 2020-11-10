@@ -1,7 +1,7 @@
+import Element from './Element';
+import { doAsyncAct } from './internals/act';
 import Result from './Result';
 import { RendererOptions } from './types';
-import { doAsyncAct } from './internals/act';
-import Element from './Element';
 
 export default class AsyncResult<
   Props extends object = {},
@@ -15,7 +15,9 @@ export default class AsyncResult<
 
     await doAsyncAct(
       () =>
-        this.renderer.unstable_flushSync(() => this.renderer.update(this.updateElement(element))),
+        void this.renderer.unstable_flushSync(
+          () => void this.renderer.update(this.updateElement(element)),
+        ),
       this.options.applyPatches,
     );
 

@@ -70,14 +70,14 @@ export interface IntegrationOptions {
 
 // We do not use `React.ElementType` since it includes HTML tag names,
 // and we want an agnostic type used for non-DOM as well.
-export type ElementType<P = any> = string | React.ComponentType<P>;
+export type ElementType<P = any> = React.ComponentType<P> | string;
 
 export interface UnknownProps {
   [name: string]: unknown;
 }
 
 export interface TestNode {
-  children: string | (TestNode | string)[];
+  children: (TestNode | string)[] | string;
   instance: {
     context: object;
     props: UnknownProps;
@@ -104,7 +104,7 @@ export interface FiberNode {
 
 // QUERY
 
-export type AtIndexType = 'first' | 'last' | number;
+export type AtIndexType = number | 'first' | 'last';
 
 export type Predicate = (node: TestNode, fiber: FiberNode) => boolean;
 
@@ -149,7 +149,7 @@ declare global {
       toBeNodeType(type: NodeType): R;
       toContainNode(node: NonNullable<React.ReactNode>): R;
       toHaveClassName(name: string): R;
-      toHaveKey(value: string | number): R;
+      toHaveKey(value: number | string): R;
       toHaveProp<K extends keyof PropsOf<T>>(name: K, value?: PropsOf<T>[K]): R;
       toHaveProps(props: Partial<PropsOf<T>>): R;
       toHaveRendered(): R;

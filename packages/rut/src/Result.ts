@@ -4,8 +4,8 @@ import Element from './Element';
 import { doAct, doAsyncAct } from './internals/act';
 import { debug } from './internals/debug';
 import { unwrapExoticType } from './internals/element';
-import { deepEqual } from './internals/utils';
 import { NodeLike } from './internals/react';
+import { deepEqual } from './internals/utils';
 import { AdapterRendererOptions, DebugOptions } from './types';
 
 export default class Result<Props extends object = {}, Root extends Element = Element> {
@@ -110,7 +110,7 @@ export default class Result<Props extends object = {}, Root extends Element = El
    */
   update = (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
     doAct(
-      () => this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
+      () => void this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
       this.options.applyPatches,
     );
   };
@@ -121,8 +121,8 @@ export default class Result<Props extends object = {}, Root extends Element = El
   updateAndWait = async (newPropsOrElement?: Partial<Props>, newChildren?: React.ReactNode) => {
     await doAsyncAct(
       () =>
-        this.renderer.unstable_flushSync(() =>
-          this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
+        void this.renderer.unstable_flushSync(
+          () => void this.renderer.update(this.updateElement(newPropsOrElement, newChildren)),
         ),
       this.options.applyPatches,
     );

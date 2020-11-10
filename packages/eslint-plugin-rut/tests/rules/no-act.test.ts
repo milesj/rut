@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-act';
-import { wrapAwait, createRule } from '../helpers';
+import { createRule, wrapAwait } from '../helpers';
 
 const NON_ACT_CODE = 'const result = render(<Foo />);';
 

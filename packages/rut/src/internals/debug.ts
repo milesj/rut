@@ -1,16 +1,16 @@
 /* eslint-disable complexity, @typescript-eslint/no-use-before-define, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment */
 
 import React from 'react';
+import { DebugOptions, ElementType, TestNode } from '../types';
 import { globalOptions } from './config';
 import { getTypeName } from './react';
 import { isAllTextNodes, isClassInstance, toArray } from './utils';
-import { DebugOptions, TestNode, ElementType } from '../types';
 
 type Props = TestNode['props'];
 type Formatter<T = any> = (value: T, depth: number) => string;
 
 interface TreeNode {
-  children: (string | TreeNode)[];
+  children: (TreeNode | string)[];
   name: string;
   props: string[];
 }
@@ -363,21 +363,13 @@ class Debugger {
 
     // If no children, self close and return
     if (node.children.length === 0) {
-      if (isStacked) {
-        output += `${indent}/>`;
-      } else {
-        output += ' />';
-      }
+      output += isStacked ? `${indent}/>` : ' />';
 
       return output;
     }
 
     // Otherwise finish opening tag
-    if (isStacked) {
-      output += `${indent}>`;
-    } else {
-      output += '>';
-    }
+    output += isStacked ? `${indent}>` : '>';
 
     // Inline if only text with no props
     if (isAllTextNodes(node.children) && inlineProps.length === 0) {

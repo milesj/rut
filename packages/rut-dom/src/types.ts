@@ -26,19 +26,19 @@ export type EventMap<T> = Required<
 
 export type EventType = keyof EventMap<unknown>;
 
-export type EventOptions<T, E> = {
+export type EventOptions<T, E> = ExpandedEventOptions<E> & {
   currentTarget?: Partial<T>;
   target?: Partial<T>;
-} & ExpandedEventOptions<E>;
+};
 
-export type ExpandedEventOptions<T> = T extends React.AnimationEvent | AnimationEvent
+export type ExpandedEventOptions<T> = T extends AnimationEvent | React.AnimationEvent
   ? { animationName?: string }
   : T extends
-      | React.MouseEvent
-      | React.KeyboardEvent
-      | React.TouchEvent
-      | MouseEvent
       | KeyboardEvent
+      | MouseEvent
+      | React.KeyboardEvent
+      | React.MouseEvent
+      | React.TouchEvent
       | TouchEvent
   ? {
       altKey?: boolean;

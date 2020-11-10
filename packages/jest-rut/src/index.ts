@@ -3,7 +3,7 @@
  * @license     https://opensource.org/licenses/MIT
  */
 
-import { unmockFetches, MatchResult } from 'rut';
+import { MatchResult, unmockFetches } from 'rut';
 import { integrate, matchers } from 'rut/lib/integrations';
 import { runWithTimers } from './integration';
 import serializer from './serializer';

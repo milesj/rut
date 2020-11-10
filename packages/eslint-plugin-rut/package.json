@@ -26,8 +26,8 @@
     "eslint": "^6.0.0 || ^7.0.0"
   },
   "devDependencies": {
-    "@types/eslint": "^7.2.4",
-    "@types/estree": "^0.0.45"
+    "@types/eslint": "^7.2.6",
+    "@types/estree": "^0.0.46"
   },
   "funding": {
     "type": "ko-fi",

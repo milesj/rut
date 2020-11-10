@@ -1,5 +1,4 @@
 import { Rule } from 'eslint';
-import { Literal } from 'estree';
 
 const rule: Rule.RuleModule = {
   meta: {
@@ -31,7 +30,7 @@ const rule: Rule.RuleModule = {
         }
 
         const { name } = node.callee;
-        const arg = node.arguments[0] as Literal;
+        const arg = node.arguments[0];
         const type = String(arg.value);
 
         // mockEvent()
@@ -64,7 +63,7 @@ const rule: Rule.RuleModule = {
           if (
             mock.callee.type === 'Identifier' &&
             mock.callee.name === 'mockSyntheticEvent' &&
-            mock.arguments.length >= 1 &&
+            mock.arguments.length > 0 &&
             mock.arguments[0].type === 'Literal' &&
             String(mock.arguments[0].value) !== type
           ) {

@@ -5,7 +5,7 @@ import * as ReactIs from 'react-is';
 import { UnknownProps } from '../types';
 
 export interface NodeLike {
-  $$typeof: symbol | number;
+  $$typeof: number | symbol;
   type?: NodeLike;
   props?: UnknownProps;
 }

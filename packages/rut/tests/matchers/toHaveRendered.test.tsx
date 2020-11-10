@@ -2,8 +2,8 @@
 
 import React from 'react';
 import toHaveRendered from '../../src/matchers/toHaveRendered';
+import { ClassComp, FuncComp } from '../../src/testing/fixtures';
 import { render, runMatcher } from '../../src/testing/helpers';
-import { FuncComp, ClassComp } from '../../src/testing/fixtures';
 
 describe('toHaveRendered()', () => {
   function NullRender() {

@@ -1,7 +1,7 @@
 import Element from '../Element';
 import { getProp } from '../internals/element';
 import { formatValue } from '../internals/react';
-import { isRutElement, deepEqual } from '../internals/utils';
+import { deepEqual, isRutElement } from '../internals/utils';
 import { MatchResult } from '../types';
 
 /**

@@ -28,7 +28,7 @@
     "@types/react": "*",
     "@types/react-is": "*",
     "@types/react-test-renderer": "*",
-    "fetch-mock": "^9.10.7",
+    "fetch-mock": "^9.11.0",
     "react-is": "^17.0.1",
     "react-test-renderer": "^17.0.1"
   },

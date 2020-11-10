@@ -2,9 +2,9 @@
 
 import { ReactTestInstance } from 'react-test-renderer';
 import { doRender, doRenderAndWait, SyntheticEvent } from '../adapters';
+import AsyncResult from '../AsyncResult';
 import RutElement from '../Element';
 import SyncResult from '../SyncResult';
-import AsyncResult from '../AsyncResult';
 import { MatchResult, RendererOptions } from '../types';
 
 export interface RenderTestSuite {
@@ -35,6 +35,7 @@ export class TestElement extends RutElement {
       return event;
     }
 
+    // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
     return mockSyntheticEvent(type) as React.SyntheticEvent;
   }
 }
@@ -91,6 +92,6 @@ export function runMatcher(result: MatchResult, isNot: boolean = false) {
 export function runAsyncCall(done: () => void) {
   return new Promise((resolve) => {
     done();
-    resolve();
+    resolve(undefined);
   });
 }

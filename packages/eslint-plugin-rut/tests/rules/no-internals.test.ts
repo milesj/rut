@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-internals';
-import { wrapAwait, createRule } from '../helpers';
+import { createRule, wrapAwait } from '../helpers';
 
 createRule().run('no-internals', rule, {
   valid: [

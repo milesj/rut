@@ -1,14 +1,14 @@
 import React from 'react';
 import { getTypeName } from '../../src/internals/react';
 import {
-  FuncComp,
-  FuncCompWithDisplayName,
   ClassComp,
   ClassCompWithDisplayName,
-  TestContext,
   ForwardRefComp,
+  FuncComp,
+  FuncCompWithDisplayName,
   LazyComp,
   MemoComp,
+  TestContext,
 } from '../../src/testing/fixtures';
 
 describe('getTypeName()', () => {

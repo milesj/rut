@@ -27,7 +27,7 @@ describe('HOCs', () => {
     id: number;
   }
 
-  class Wrapped extends React.Component<WrappedProps & WithStylesProps> {
+  class Wrapped extends React.Component<WithStylesProps & WrappedProps> {
     render() {
       return <div>Styled!</div>;
     }
@@ -61,7 +61,7 @@ describe('HOCs', () => {
   }
 
   // Non-factory style
-  function connect<P>(WrappedComponent: React.ComponentType<P & ConnectProps>) {
+  function connect<P>(WrappedComponent: React.ComponentType<ConnectProps & P>) {
     function Connect(props: P) {
       return <WrappedComponent {...props} connected />;
     }
@@ -71,7 +71,7 @@ describe('HOCs', () => {
     return Connect;
   }
 
-  class DeepWrapped extends React.Component<{ id: number } & WithStylesProps & ConnectProps> {
+  class DeepWrapped extends React.Component<ConnectProps & WithStylesProps & { id: number }> {
     render() {
       return <div>Styled!</div>;
     }

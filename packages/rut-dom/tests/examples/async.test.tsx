@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, renderAndWait, mockFetch, MockFetchResult } from '../../src';
+import { mockFetch, MockFetchResult, render, renderAndWait } from '../../src';
 
 describe('Async Example', () => {
   interface User {

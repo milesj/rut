@@ -2,20 +2,20 @@
 
 import React from 'react';
 import { ReactTestInstance } from 'react-test-renderer';
-import { getTypeName } from './internals/react';
 import { doAct, doAsyncAct } from './internals/act';
 import { debug } from './internals/debug';
 import { getPropForDispatching } from './internals/element';
+import { getTypeName } from './internals/react';
 import { whereTypeAndProps } from './predicates';
 import {
-  Predicate,
-  DispatchOptions,
-  DebugOptions,
-  UnknownProps,
-  AtIndexType,
-  QueryOptions,
   AdapterRendererOptions,
+  AtIndexType,
+  DebugOptions,
+  DispatchOptions,
   ElementType,
+  Predicate,
+  QueryOptions,
+  UnknownProps,
 } from './types';
 
 export default abstract class Element<
@@ -61,7 +61,7 @@ export default abstract class Element<
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    doAct(() => prop(event), this.options.applyPatches);
+    doAct(() => void prop(event), this.options.applyPatches);
 
     return this;
   }
@@ -83,7 +83,7 @@ export default abstract class Element<
       console.warn('Event propagation is experimental and is not fully implemented.');
     }
 
-    await doAsyncAct(() => prop(event), this.options.applyPatches);
+    await doAsyncAct(() => void prop(event), this.options.applyPatches);
   }
 
   /**

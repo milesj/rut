@@ -1,6 +1,6 @@
 import Element from '../Element';
 import { formatValue } from '../internals/react';
-import { isRutElement, deepEqual } from '../internals/utils';
+import { deepEqual, isRutElement } from '../internals/utils';
 import { MatchResult, UnknownProps } from '../types';
 
 /**

@@ -7,9 +7,9 @@ import { RendererOptions } from 'rut';
 import { doRender, doRenderAndWait } from 'rut/lib/adapters';
 import DomElement from './DomElement';
 
-export * from 'rut';
 export * from './mocks';
 export * from './types';
+export * from 'rut';
 export { DomElement };
 
 // Rut needs to support portals, but they aren't supported
@@ -21,7 +21,7 @@ interface ReactDOMLike {
   createPortal?: (
     children: React.ReactNode,
     containerInfo: Element,
-    key?: null | string,
+    key?: string | null,
   ) => unknown;
   findDOMNode?: () => unknown;
 }

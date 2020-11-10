@@ -59,7 +59,7 @@ If you are using Jest and would like to spy on all `fetch()` calls, you can use 
 const spy = jest.spyOn(global, 'fetch');
 ```
 
-Lastly, if _not_ using the [Jest](./setup.md#jest) integration, you'll need to unmock the fetch
+Lastly, if _not_ using the [Jest](./tooling/jest.mdx) integration, you'll need to unmock the fetch
 after every test using `restore()`.
 
 ```ts

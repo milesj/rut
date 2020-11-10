@@ -1,7 +1,7 @@
 /* eslint-disable rut/no-internals */
 
-import React, { useReducer, useCallback, useMemo, useRef } from 'react';
-import { render, mockSyntheticEvent } from '../../src';
+import React, { useCallback, useMemo, useReducer, useRef } from 'react';
+import { mockSyntheticEvent, render } from '../../src';
 
 // useState, useContext, useEffect covered in other tests
 describe('Hooks', () => {
@@ -23,10 +23,10 @@ describe('Hooks', () => {
       return (
         <>
           Count: <span>{state.count}</span>
-          <button type="button" onClick={() => dispatch({ type: 'increment' })}>
+          <button type="button" onClick={() => void dispatch({ type: 'increment' })}>
             +
           </button>
-          <button type="button" onClick={() => dispatch({ type: 'decrement' })}>
+          <button type="button" onClick={() => void dispatch({ type: 'decrement' })}>
             -
           </button>
         </>
