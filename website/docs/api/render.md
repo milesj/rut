@@ -1,4 +1,6 @@
-# API
+---
+title: Render
+---
 
 ## `configure()`
 
@@ -20,8 +22,8 @@ configure({
 
 > DebugOptions
 
-Debug options that will be applied to every [`debug()`](./api/result.md#debug) call. Can override
-these options on a per-call basis.
+Debug options that will be applied to every [`debug()`](./result.md#debug) call. Can override these
+options on a per-call basis.
 
 ```tsx
 configure({
@@ -59,8 +61,8 @@ expect(spy).toHaveBeenCalled();
 
 > boolean
 
-Wraps the [root](./api/result.md#root) element in `React.StrictMode`, logging all deprecations
-within the current tree. Can be used in unison with the `wrapper` option below.
+Wraps the [root](./result.md#root) element in `React.StrictMode`, logging all deprecations within
+the current tree. Can be used in unison with the `wrapper` option below.
 
 ```tsx
 render<ButtonProps>(<Button>Save</Button>, {
@@ -72,9 +74,9 @@ render<ButtonProps>(<Button>Save</Button>, {
 
 > React.ReactElement
 
-Wraps the [root](./api/result.md#root) element in the provided React element. Useful for wrapping
-shared functionality across multiple test suites, like contexts. Can be used in unison with the
-`strict` option above.
+Wraps the [root](./result.md#root) element in the provided React element. Useful for wrapping shared
+functionality across multiple test suites, like contexts. Can be used in unison with the `strict`
+option above.
 
 ```tsx
 function Wrapper({ children }: { children?: React.ReactNode }) {
@@ -94,10 +96,10 @@ render<ButtonProps>(<Button>Save</Button>, {
 
 ## `render()`
 
-> render\<Props>(element: React.ReactElement, options?: RendererOptions): Result\<Props>
+> render<Props\>(element: React.ReactElement, options?: RendererOptions): Result<Props\>
 
 Accepts a React element and an optional [options](#configure) object, and returns a
-[rendered result](./api/result.md). This function is merely a wrapper around
+[rendered result](./result.md). This function is merely a wrapper around
 [react-test-renderer](https://reactjs.org/docs/test-renderer.html), providing additional
 functionality, and an improved API.
 
@@ -127,12 +129,12 @@ test('renders a native button', () => {
 
 ## `renderAndWait()`
 
-> async renderAndWait\<Props>(element: React.ReactElement, options?: RendererOptions):
-> Result\<Props>
+> async renderAndWait<Props\>(element: React.ReactElement, options?: RendererOptions):
+> Result<Props\>
 
 Works in a similar fashion to [`render()`](#render) but also waits for async calls within the
-mounting phase to complete before returning the [rendered result](./api/result.md). Because of this,
-the function must be `await`ed.
+mounting phase to complete before returning the [rendered result](./result.md). Because of this, the
+function must be `await`ed.
 
 ```tsx
 import { renderAndWait } from 'rut-dom';

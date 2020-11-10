@@ -1,4 +1,7 @@
-# Rut
+---
+title: Introduction
+slug: /
+---
 
 Rut is a DOM-less React testing library that aims to be lightweight, encourage great testing
 practices, and reduce flakiness and code smells. It is a wrapper and abstraction around
@@ -38,7 +41,7 @@ describe('<Input />', () => {
 - Apply pre-built mocks for robust and accurate testing.
 - Utilize an array of pre-built matchers for easily querying, expecting, and asserting.
 
-## Best Practices
+## Best practices
 
 Encourages the [Arrange-Act-Assert](http://wiki.c2.com/?ArrangeActAssert) testing pattern.
 
@@ -65,7 +68,7 @@ while avoiding implementation details.
 - Portals: Even `ReactDOM.createPortal()` (we patch over `react-dom`)!
 - Error boundaries, fragments, strict mode, and more!
 
-## Not Supported
+## Not supported
 
 - [`React.lazy(), React.Suspense`](https://github.com/facebook/react/issues/14170) - Currently not
   supported by `react-test-renderer`.
@@ -74,6 +77,6 @@ while avoiding implementation details.
 
 Does all the above sound great to you? Perfect!
 
-- [Setup and integrate Rut](./setup.md)
-- [Learn about rendering components](./api.md#render)
+- [Setup and integrate Rut](./setup.mdx)
+- [Learn about rendering components](./api/render.md#render)
 - [Become a pro by using matchers](./matchers.md)

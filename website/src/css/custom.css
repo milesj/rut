@@ -1,0 +1,42 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+:root {
+  --ifm-code-font-size: 95%;
+}
+
+/* https://colorbox.io/?c0=%26p%24s%24%3D7%26p%24h%24st%24%3D178%26p%24h%24e%24%3D207%26p%24h%24c%24%3Deqo%26p%24sa%24st%24%3D0.08%26p%24sa%24e%24%3D1%26p%24sa%24r%24%3D1%26p%24sa%24c%24%3Deqo%26p%24b%24st%24%3D0.9%26p%24b%24e%24%3D0.2%26p%24b%24c%24%3Deqti%26o%24n%24%3DBlue%26o%24ms%24%3D0%2C1%26o%24ro%24%3Dcw */
+html[data-theme='light'] {
+  --ifm-color-primary: #57bfe1;
+  --ifm-color-primary-dark: #2ea0da;
+  --ifm-color-primary-darker: #1481c9;
+  --ifm-color-primary-darkest: #04518b;
+  --ifm-color-primary-light: #74cee2;
+  --ifm-color-primary-lighter: #91dae4;
+  --ifm-color-primary-lightest: #b2e3e5;
+}
+
+/* https://colorbox.io/?c0=%26p%24s%24%3D7%26p%24h%24st%24%3D178%26p%24h%24e%24%3D207%26p%24h%24c%24%3Deqo%26p%24sa%24st%24%3D0.08%26p%24sa%24e%24%3D1%26p%24sa%24r%24%3D1%26p%24sa%24c%24%3Deqo%26p%24b%24st%24%3D1%26p%24b%24e%24%3D0.2%26p%24b%24c%24%3Deqti%26o%24n%24%3DBlue%26o%24ms%24%3D0%2C1%26o%24ro%24%3Dcw */
+html[data-theme='dark'] {
+  --ifm-color-primary: #61d4fa;
+  --ifm-color-primary-dark: #33b1f2;
+  --ifm-color-primary-darker: #168fdf;
+  --ifm-color-primary-darkest: #055897;
+  --ifm-color-primary-light: #81e5fc;
+  --ifm-color-primary-lighter: #a1f2fd;
+  --ifm-color-primary-lightest: #c6fcfe;
+}
+
+.hero__subtitle {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text--muted {
+  color: var(--ifm-color-secondary-darkest);
+}

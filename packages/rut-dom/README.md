@@ -39,4 +39,4 @@ yarn add --dev rut-dom react react-dom
 
 ## Documentation
 
-[https://milesj.gitbook.io/rut](https://milesj.gitbook.io/rut)
+[https://ruttest.dev](https://ruttest.dev)

@@ -1,4 +1,6 @@
-# `Element`
+---
+title: Element
+---
 
 An `Element` is a wrapper around a React element (more specifically a
 [test instance](https://reactjs.org/docs/test-renderer.html)) that hides implementation details and
@@ -50,7 +52,7 @@ root
 ## `dispatchAndWait()`
 
 > async Element#dispatchAndWait(name: EventType, event?: React.SyntheticEvent | EventOptions,
-> options?: DispatchOptions): Promise<void>
+> options?: DispatchOptions): Promise<void\>
 
 Like [`dispatch()`](#dispatch) but waits for async calls within the dispatch and updating phase to
 complete before returning the re-rendered result. Because of this, the function must be `await`ed.
@@ -67,11 +69,11 @@ it('waits for update call to finish', async () => {
 
 ## `find()`
 
-> Element#find\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, props?:
-> Partial\<P>): Element\<T>[]
+> Element#find<T extends HostComponentType, P extends InferComponentProps<T\>\>(type: T, props?:
+> Partial<P\>): Element<T\>[]
 
-> Element#find\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, props?:
-> Partial\<P>): Element\<T>[]
+> Element#find<T extends React.ComponentType, P extends InferComponentProps<T\>\>(type: T, props?:
+> Partial<P\>): Element<T\>[]
 
 Search through the current tree for all elements that match the defined React component or HTML tag.
 If any are found, a list of `Element`s is returned.
@@ -104,11 +106,11 @@ const input = root.find('input', { name: 'email' }); // 1
 
 ## `findAt()`
 
-> Element#findAt\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, at:
-> 'first' | 'last' | number, props?: Partial\<P>): Element\<T>
+> Element#findAt<T extends HostComponentType, P extends InferComponentProps<T\>\>(type: T, at:
+> 'first' | 'last' | number, props?: Partial<P\>): Element<T\>
 
-> Element#findAt\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T, at:
-> 'first' | 'last' | number, props?: Partial\<P>): Element\<T>
+> Element#findAt<T extends React.ComponentType, P extends InferComponentProps<T\>\>(type: T, at:
+> 'first' | 'last' | number, props?: Partial<P\>): Element<T\>
 
 Like [`find()`](#find) but returns the element at the defined index. Accepts shorthand `first` and
 `last` indices, or a numerical index. If no element is found, an error is thrown.
@@ -129,11 +131,11 @@ const password = root.findAt('input', 'last');
 
 ## `findOne()`
 
-> Element#findOne\<T extends HostComponentType, P extends InferComponentProps\<T>>(type: T, props?:
-> Partial\<P>): Element\<T>
+> Element#findOne<T extends HostComponentType, P extends InferComponentProps<T\>\>(type: T, props?:
+> Partial<P\>): Element<T\>
 
-> Element#findOne\<T extends React.ComponentType, P extends InferComponentProps\<T>>(type: T,
-> props?: Partial\<P>): Element\<T>
+> Element#findOne<T extends React.ComponentType, P extends InferComponentProps<T\>\>(type: T,
+> props?: Partial<P\>): Element<T\>
 
 Like [`find()`](#find) but only returns a single instance. If no elements are found, or too many
 elements are found, an error is thrown.
@@ -154,8 +156,8 @@ expect(root.name(true)).toBe('<Button />');
 
 ## `query()`
 
-> Element#query\<T extends ElementType>(predicate: Predicate | ((node: TestNode, fiber: FiberNode)
-> => boolean), options?: QueryOptions): Element\<T>[]
+> Element#query<T extends ElementType\>(predicate: Predicate | ((node: TestNode, fiber: FiberNode)
+> => boolean), options?: QueryOptions): Element<T\>[]
 
 A low-level abstraction for querying and finding components in the current tree using a predicate
 function. This predicate is passed the `react-rest-renderer` test instance and a `react` fiber node,
@@ -174,7 +176,7 @@ const articles = root.query((node) => node.type === NewsArticle);
 
 ## `ref()`
 
-> Element#ref\<T>(name?: string): T | null
+> Element#ref<T\>(name?: string): T | null
 
 Returns any ref associated with the current component. The renderer will attempt to find a valid ref
 using the following patterns, in order:
@@ -199,4 +201,4 @@ const { root } = render<InputProps>(<Input />);
 root.ref('inputRef'); // <input />
 ```
 
-> Be sure to mock your ref using the [`mockRef()`](../api.md#mockref) option.
+> Be sure to mock your ref using the [`mockRef()`](../api/render.md#mockref) option.

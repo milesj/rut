@@ -1,4 +1,6 @@
-# Matchers
+---
+title: Matchers
+---
 
 Matchers let you test values and patterns, either simple or complex, in a succint way.
 

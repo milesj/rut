@@ -1,10 +1,12 @@
-# Result
+---
+title: Result
+---
 
 The rendered result contains a handful of methods and properties for asserting against, they are:
 
 ## `root`
 
-> Element\<Props>
+> Element<Props\>
 
 The React element passed to `render`, represented as an [Element](./element.md) instance. This is
 the entry point into the entire rendered React tree.
@@ -62,8 +64,8 @@ The example above would log something similar to the following.
 
 ## `rerender()`
 
-> SyncResult#rerender(element: React.ReactElement\<Props>, options?: RendererOptions):
-> Element\<Props>
+> SyncResult#rerender(element: React.ReactElement<Props\>, options?: RendererOptions):
+> Element<Props\>
 
 Re-render the in-memory tree with an updated [root](#root) element and optional options, and return
 the new root element. This is a perfect opportunity to update or replace the `wrapper` element.
@@ -98,8 +100,8 @@ result.root; // Latest
 
 ## `rerenderAndWait()`
 
-> async AsyncResult#rerenderAndWait(element: React.ReactElement\<Props>, options?: RendererOptions):
-> Promise\<Element\<Props>>
+> async AsyncResult#rerenderAndWait(element: React.ReactElement<Props\>, options?: RendererOptions):
+> Promise<Element<Props\>\>
 
 Like [`rerender()`](#rerender) but also awaits the re-render so that async calls have time to
 finish.
@@ -119,7 +121,7 @@ const newRoot = await rerenderAndWait(<Input name="email" id="email" />, {
 
 ## `update()`
 
-> Result#update(newProps?: Partial\<Props>, newChildren?: React.ReactNode): void
+> Result#update(newProps?: Partial<Props\>, newChildren?: React.ReactNode): void
 
 Can be used to update the [root](#root)'s props or children. When passing no arguments, will
 re-render the element with current props and children (useful for testing cache and conditionals).
@@ -146,8 +148,8 @@ update({ type: 'submit' }, <span>Submit</span>);
 
 ## `updateAndWait()`
 
-> async Result#updateAndWait(newProps?: Partial\<Props>, newChildren?: React.ReactNode):
-> Promise\<void>
+> async Result#updateAndWait(newProps?: Partial<Props\>, newChildren?: React.ReactNode):
+> Promise<void\>
 
 Like [`update()`](#update) but waits for async calls within the updating phase to complete before
 returning the re-rendered result. Because of this, the function must be `await`ed.

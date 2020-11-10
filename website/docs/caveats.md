@@ -1,4 +1,6 @@
-# Caveats
+---
+title: Caveats
+---
 
 ## Do not find a `React.memo()` component
 

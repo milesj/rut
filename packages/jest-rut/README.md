@@ -12,4 +12,4 @@ Provides built-in matchers and serializers for testing Rut render results.
 
 ## Documentation
 
-[https://milesj.gitbook.io/rut/setup#jest](https://milesj.gitbook.io/rut/setup#jest)
+[https://ruttest.dev/docs/tooling/jest](https://ruttest.dev/docs/tooling/jest)

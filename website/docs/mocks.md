@@ -1,4 +1,6 @@
-# Mocks
+---
+title: Mocks
+---
 
 What is testing without mocks? The following mock functions can be used for easier testing.
 
@@ -80,7 +82,7 @@ afterEach(() => {
 
 ### `mockEvent()`
 
-> mockEvent\<T = Event>(type: string, options?: EventOptions): T
+> mockEvent<T = Event\>(type: string, options?: EventOptions): T
 
 If for some reason you need to mock a native DOM event, `mockEvent()` will do just that. Based on
 the defined event type, an appropriate sub-class will be used. For example, if the `type` is
@@ -118,7 +120,7 @@ All options are _optional_.
 
 ### `mockSyntheticEvent()`
 
-> mockSyntheticEvent\<T = React.SyntheticEvent>(type: EventType, options?: EventOptions): T
+> mockSyntheticEvent<T = React.SyntheticEvent\>(type: EventType, options?: EventOptions): T
 
 Generates `React.SyntheticEvent` and native `Event` mocks for use within event dispatching. Based on
 the defined event type, an appropriate sub-class will be used. For example, if the `type` is

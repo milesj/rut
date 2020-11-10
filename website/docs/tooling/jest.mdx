@@ -1,0 +1,50 @@
+---
+title: Jest
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Install the `jest-rut` package as a dev dependency.
+
+<Tabs
+  groupId="package-manager"
+  defaultValue="yarn"
+  values={[
+    { label: 'Yarn', value: 'yarn' },
+    { label: 'NPM', value: 'npm' },
+  ]}
+>
+  <TabItem value="yarn">
+
+
+```bash
+yarn add --dev jest-rut
+```
+
+  </TabItem>
+  <TabItem value="npm">
+
+
+```bash
+npm install --save-dev jest-rut
+```
+
+  </TabItem>
+</Tabs>
+
+
+Once installed, add `jest-rut` to `setupFilesAfterEnv` in your `jest.config.js` file.
+
+```js title="jest.config.js"
+module.exports = {
+  setupFilesAfterEnv: ['jest-rut'],
+};
+```
+
+This will automatically register the snapshot serializer and all matchers. No need to import within
+your test files.
+
+## Matchers
+
+View the [matchers](./matchers.md) documentation for a full list of available matchers.
