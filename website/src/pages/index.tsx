@@ -15,32 +15,29 @@ interface FeatureProps {
 const features: FeatureProps[][] = [
   [
     {
-      title: '💻 Cross-platform',
+      title: '♻️ Pattern based testing',
       description: (
         <>
-          Whether on MacOS, Windows, or Linux, take confidence in your code running on any and all
-          platforms.
+          Encourages the Arrange-Act-Assert testing pattern for a clear separation of concerns, to
+          clarify attention and intent, and make assertions much more readable and obvious.
         </>
       ),
     },
     {
-      title: '🔬 Type-safe',
+      title: '🔋 Side-effects aware',
       description: (
         <>
-          With the power of{' '}
-          <a href="https://www.typescriptlang.org/" target="_blank">
-            TypeScript
-          </a>
-          , we provide a strict, type-safe, and ergonomic API for a better developer experience.
+          Testing React components and their side-effects can be tricky, but with Rut and its
+          async-first and side-effect aware implementation, it becomes a breeze.
         </>
       ),
     },
     {
-      title: '🔀 Async-first',
+      title: '🧩 Custom renders',
       description: (
         <>
-          Engineered all APIs and abstractions to be async-first for maximum performance,
-          efficiency, and portability.
+          Whether you target the DOM or Native, Rut supports any type of React renderer through a
+          pluggable and type-safe abstraction layer.
         </>
       ),
     },

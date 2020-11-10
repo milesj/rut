@@ -10,7 +10,8 @@ const pkgs = [
 
 module.exports = {
   title: 'Rut',
-  tagline: 'React testing made easy. Supports DOM and custom renderers. ',
+  tagline:
+    'Rut is a DOM-less React testing library that aims to be lightweight, encourage great testing practices, and reduce flakiness and code smells.',
   url: 'https://ruttest.dev',
   baseUrl: '/',
   onBrokenLinks: 'throw',
