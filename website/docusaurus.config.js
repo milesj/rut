@@ -1,12 +1,12 @@
 /* eslint-disable sort-keys */
 
 const pkgs = [
-  'eslint-plugin-rut',
-  'jest-rut',
   'rut',
   'rut-dom',
+  'eslint-plugin-rut',
+  'jest-rut',
   // eslint-disable-next-line
-].map((name) => require(`${name}/package.json`));
+].map((name) => require(`../packages/${name}/package.json`));
 
 module.exports = {
   title: 'Rut',
